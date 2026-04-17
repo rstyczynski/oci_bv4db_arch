@@ -1,6 +1,6 @@
 # Sprint 4 — Implementation
 
-## Status: under_construction
+## Status: failed
 
 ## Planned Implementation
 
@@ -39,7 +39,20 @@
 |----------|------|--------|
 | fio profile | `progress/sprint_4/oracle-layout.fio` | Complete |
 | Runner script | `tools/run_bv_fio_oracle.sh` | Complete |
-| Integration tests | `tests/integration/test_bv4db_oracle.sh` | Skeleton ready |
+| Integration tests | `tests/integration/test_bv4db_oracle.sh` | Implemented |
+| Smoke fio result | `progress/sprint_4/fio-results-oracle-smoke.json` | Complete |
+| Smoke iostat result | `progress/sprint_4/iostat-oracle-smoke.json` | Complete |
+| Smoke analysis | `progress/sprint_4/fio-analysis-oracle-smoke.md` | Complete |
+| Integration fio result | `progress/sprint_4/fio-results-oracle-integration.json` | Complete |
+| Integration iostat result | `progress/sprint_4/iostat-oracle-integration.json` | Complete |
+| Integration analysis | `progress/sprint_4/fio-analysis-oracle-integration.md` | Complete |
+
+## Failure
+
+- Sprint 4 result is invalid.
+- `progress/sprint_4/oracle-layout.fio` enabled `group_reporting=1`.
+- That setting caused fio to emit a single aggregated reporting group instead of distinct workload results for `data-8k`, `redo`, and `fra-1m`.
+- Because of that, the produced fio JSON cannot be used as a correct per-workload benchmark result for BV4DB-9.
 
 ## Usage
 
@@ -61,8 +74,14 @@ After successful execution:
 - `progress/sprint_4/fio-results-oracle-smoke.json` — fio raw output
 - `progress/sprint_4/iostat-oracle-smoke.json` — device utilization
 - `progress/sprint_4/fio-analysis-oracle-smoke.md` — summary report
+- `progress/sprint_4/fio-results-oracle-integration.json` — fio raw output
+- `progress/sprint_4/iostat-oracle-integration.json` — device utilization
+- `progress/sprint_4/fio-analysis-oracle-integration.md` — summary report
 
 ## Current Status
 
-- Implementation complete
-- Awaiting smoke run execution for artifact validation
+- Smoke run completed in `eu-zurich-1`
+- Integration run completed in `eu-zurich-1`
+- Automatic teardown completed for compute and all five block volumes after both runs
+- Device-level `iostat` confirms expected separation between data, redo, and FRA traffic
+- Sprint 4 is failed because fio reporting is aggregated and therefore not valid for workload-level result reporting

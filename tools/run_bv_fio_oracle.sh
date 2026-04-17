@@ -6,13 +6,14 @@ set -E
 
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SCAFFOLD_DIR="$REPO_DIR/oci_scaffold"
-PROGRESS_DIR="$REPO_DIR/progress/sprint_4"
+PROGRESS_DIR="${PROGRESS_DIR:-$REPO_DIR/progress/sprint_4}"
 SPRINT1_DIR="$REPO_DIR/progress/sprint_1"
 INFRA_STATE="$SPRINT1_DIR/state-bv4db.json"
-PROFILE_FILE="$PROGRESS_DIR/oracle-layout.fio"
+PROFILE_FILE="${PROFILE_FILE:-$PROGRESS_DIR/oracle-layout.fio}"
+SPRINT_LABEL="${SPRINT_LABEL:-Sprint 4}"
 
 export PATH="$SCAFFOLD_DIR/do:$SCAFFOLD_DIR/resource:$PATH"
-export NAME_PREFIX="bv4db-oracle-run"
+export NAME_PREFIX="${NAME_PREFIX:-bv4db-oracle-run}"
 export OCI_REGION="${OCI_REGION:-}"
 export OCI_CLI_REGION="${OCI_CLI_REGION:-${OCI_REGION:-}}"
 RUN_LEVEL="${RUN_LEVEL:-smoke}"
@@ -116,12 +117,28 @@ resolve_mpath_device() {
 set -euo pipefail
 EXPECTED_PATH="$1"
 RESOLVED_PATH=$(readlink -f "$EXPECTED_PATH" 2>/dev/null || echo "$EXPECTED_PATH")
-MAPPER_PATH=$(lsblk -nrpo NAME,TYPE "$RESOLVED_PATH" | awk '$2 == "mpath" { print $1; exit }')
-if [ -n "${MAPPER_PATH:-}" ]; then
-  echo "$MAPPER_PATH"
-else
-  echo "$EXPECTED_PATH"
+DEVICE="$RESOLVED_PATH"
+while :; do
+  TYPE=$(lsblk -dnro TYPE "$DEVICE" 2>/dev/null || true)
+  if [ "$TYPE" = "mpath" ]; then
+    echo "$DEVICE"
+    exit 0
+  fi
+  PKNAME=$(lsblk -dnro PKNAME "$DEVICE" 2>/dev/null || true)
+  if [ -z "${PKNAME:-}" ]; then
+    break
+  fi
+  DEVICE="/dev/$PKNAME"
+done
+SERIAL=$(lsblk -dnro SERIAL "$RESOLVED_PATH" 2>/dev/null || true)
+if [ -n "${SERIAL:-}" ]; then
+  MAPPER_NAME=$(multipath -ll 2>/dev/null | awk -v s="3${SERIAL}" '$1 ~ /^mpath/ && $2 == "(" s ")" { print $1; exit }')
+  if [ -n "${MAPPER_NAME:-}" ]; then
+    echo "/dev/mapper/${MAPPER_NAME}"
+    exit 0
+  fi
 fi
+echo "$EXPECTED_PATH"
 EOF
 }
 
@@ -191,9 +208,11 @@ run_remote_fio_with_iostat() {
   local remote_runner="/tmp/run-oracle-${RUN_LEVEL}.sh"
   local local_json="$PROGRESS_DIR/fio-results-oracle-${RUN_LEVEL}.json"
   local local_iostat="$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json"
-  local max_wait_sec=$((runtime_sec + 300))
+  local max_wait_sec
   local elapsed=0
   local tmp_profile
+  local iostat_samples=$((((runtime_sec + 30) / 10) + 3))
+  local ramp_time_sec
 
   # Adjust runtime in profile
   tmp_profile=$(mktemp)
@@ -201,35 +220,40 @@ run_remote_fio_with_iostat() {
     /^runtime=/ { print "runtime=" runtime; next }
     { print }
   ' "$PROFILE_FILE" > "$tmp_profile"
+  ramp_time_sec=$(awk -F= '/^ramp_time=/ { gsub(/[[:space:]]/, "", $2); print $2; exit }' "$tmp_profile")
+  if [ -z "${ramp_time_sec:-}" ]; then
+    ramp_time_sec=0
+  fi
+  max_wait_sec=$((runtime_sec + ramp_time_sec + 900))
   _scp_to_remote "$tmp_profile" "$remote_profile"
   rm -f "$tmp_profile"
   _ssh "sudo chown opc:opc '$remote_profile'"
 
   # Create runner script with iostat capture
   _ssh_script bash -s -- \
-    "$runtime_sec" "$remote_profile" "$remote_json" "$remote_iostat" "$remote_log" "$exit_file" "$pid_file" "$remote_runner" <<'EOF'
+    "$runtime_sec" "$iostat_samples" "$remote_profile" "$remote_json" "$remote_iostat" "$remote_log" "$exit_file" "$pid_file" "$remote_runner" <<'EOF'
 set -euo pipefail
 RUNTIME_SEC="$1"
-REMOTE_PROFILE="$2"
-REMOTE_JSON="$3"
-REMOTE_IOSTAT="$4"
-REMOTE_LOG="$5"
-EXIT_FILE="$6"
-PID_FILE="$7"
-REMOTE_RUNNER="$8"
+IOSTAT_SAMPLES="$2"
+REMOTE_PROFILE="$3"
+REMOTE_JSON="$4"
+REMOTE_IOSTAT="$5"
+REMOTE_LOG="$6"
+EXIT_FILE="$7"
+PID_FILE="$8"
+REMOTE_RUNNER="$9"
 rm -f "$REMOTE_JSON" "$REMOTE_IOSTAT" "$REMOTE_LOG" "$EXIT_FILE" "$PID_FILE" "$REMOTE_RUNNER"
 cat > "$REMOTE_RUNNER" <<RUNNER
 #!/usr/bin/env bash
-# Start iostat in background (10s intervals, JSON output)
-iostat -xdmz 10 -o JSON > "$REMOTE_IOSTAT" 2>&1 &
+# Capture a bounded number of samples so the JSON closes cleanly.
+iostat -xdmz 10 "$IOSTAT_SAMPLES" -o JSON > "$REMOTE_IOSTAT" 2>&1 &
 IOSTAT_PID=\$!
 
 # Run fio
 fio --runtime="$RUNTIME_SEC" --output="$REMOTE_JSON" --output-format=json "$REMOTE_PROFILE" >"$REMOTE_LOG" 2>&1
 rc=\$?
 
-# Stop iostat
-kill \$IOSTAT_PID 2>/dev/null || true
+# Let iostat flush its final sample and close JSON cleanly.
 wait \$IOSTAT_PID 2>/dev/null || true
 
 echo "\$rc" > "$EXIT_FILE"
@@ -239,19 +263,19 @@ nohup bash "$REMOTE_RUNNER" >/dev/null 2>&1 &
 echo $! > "$PID_FILE"
 EOF
 
-  echo "  [INFO] Waiting for Oracle fio completion (${runtime_sec}s) ..."
+  echo "  [INFO] Waiting for Oracle fio completion (${runtime_sec}s) ..." >&2
   while ! _ssh "test -f '$exit_file'"; do
     sleep 10
     elapsed=$((elapsed + 10))
-    printf "\033[2K\r  [WAIT] oracle-fio %ds" "$elapsed"
+    printf "\033[2K\r  [WAIT] oracle-fio %ds" "$elapsed" >&2
     if [ "$elapsed" -ge "$max_wait_sec" ]; then
-      echo ""
+      echo "" >&2
       echo "  [ERROR] oracle-fio did not finish within ${max_wait_sec} seconds" >&2
       _ssh "tail -n 80 '$remote_log' || true" >&2 || true
       exit 1
     fi
   done
-  echo ""
+  echo "" >&2
 
   local exit_code
   exit_code=$(_ssh "cat '$exit_file'")
@@ -334,6 +358,7 @@ echo ""
 # Provision and attach all block volumes
 declare -A ATTACH_OCIDS
 declare -A MPATH_DEVICES
+MAIN_NAME_PREFIX="$NAME_PREFIX"
 
 for vol_name in data1 data2 redo1 redo2 fra; do
   IFS=':' read -r dev_path vpu size_gb <<< "${VOLUMES[$vol_name]}"
@@ -341,10 +366,11 @@ for vol_name in data1 data2 redo1 redo2 fra; do
 
   # Create a separate state file for each volume
   vol_state="$PROGRESS_DIR/state-bv-${vol_name}.json"
+  export NAME_PREFIX="bv-${vol_name}"
+  export STATE_FILE="$vol_state"
 
   # Set volume-specific inputs
-  export STATE_FILE="$vol_state"
-  _state_set '.inputs.name_prefix' "bv4db-${vol_name}"
+  _state_set '.inputs.name_prefix' "$NAME_PREFIX"
   _state_set '.inputs.oci_compartment' "$COMPARTMENT_OCID"
   _state_set '.inputs.bv_size_gb' "$size_gb"
   _state_set '.inputs.bv_vpus_per_gb' "$vpu"
@@ -364,6 +390,7 @@ for vol_name in data1 data2 redo1 redo2 fra; do
 done
 
 # Reset STATE_FILE to main state
+export NAME_PREFIX="$MAIN_NAME_PREFIX"
 export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
 
 # Configure LVM
@@ -384,7 +411,7 @@ echo "  [INFO] Results saved: $RESULT_JSON"
 # Generate analysis
 ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-oracle-${RUN_LEVEL}.md"
 {
-  echo "# Sprint 4 — Oracle Layout fio Analysis (${RUN_LEVEL})"
+  echo "# ${SPRINT_LABEL} — Oracle Layout fio Analysis (${RUN_LEVEL})"
   echo ""
   echo "## Context"
   echo ""
@@ -395,17 +422,65 @@ ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-oracle-${RUN_LEVEL}.md"
   echo ""
   echo "## Measured Results"
   echo ""
-  jq -r '
-    .jobs[] |
-    "### Job: \(.jobname)\n" +
-    "- Read: \((.read.iops // 0)|round) IOPS, \(((.read.bw // 0)/1024)|round) MB/s, mean lat \((((.read.lat_ns.mean // 0)/1000000))|round) ms\n" +
-    "- Write: \((.write.iops // 0)|round) IOPS, \(((.write.bw // 0)/1024)|round) MB/s, mean lat \((((.write.lat_ns.mean // 0)/1000000))|round) ms\n"
-  ' "$RESULT_JSON"
+  python3 - "$RESULT_JSON" "$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1]) as f:
+    result = json.load(f)
+
+jobs = result.get("jobs", [])
+if len(jobs) == 1:
+    job = jobs[0]
+    print("### Aggregated fio result")
+    print(f"- fio reported a single aggregated group: `{job['jobname']}`")
+    print(f"- Read: `{round(job['read'].get('iops', 0))} IOPS`, `{round(job['read'].get('bw', 0) / 1024)} MB/s`, mean latency `{round(job['read'].get('lat_ns', {}).get('mean', 0) / 1_000_000)} ms`")
+    print(f"- Write: `{round(job['write'].get('iops', 0))} IOPS`, `{round(job['write'].get('bw', 0) / 1024)} MB/s`, mean latency `{round(job['write'].get('lat_ns', {}).get('mean', 0) / 1_000_000)} ms`")
+    print("")
+else:
+    print("### fio per-job results")
+    for job in jobs:
+        print(f"#### {job['jobname']}")
+        print(f"- Read: `{round(job['read'].get('iops', 0))} IOPS`, `{round(job['read'].get('bw', 0) / 1024)} MB/s`, mean latency `{round(job['read'].get('lat_ns', {}).get('mean', 0) / 1_000_000)} ms`")
+        print(f"- Write: `{round(job['write'].get('iops', 0))} IOPS`, `{round(job['write'].get('bw', 0) / 1024)} MB/s`, mean latency `{round(job['write'].get('lat_ns', {}).get('mean', 0) / 1_000_000)} ms`")
+        print("")
+
+with open(sys.argv[2]) as f:
+    iostat = json.load(f)
+
+stats = iostat["sysstat"]["hosts"][0]["statistics"]
+totals = {}
+for snap in stats:
+    for disk in snap.get("disk", []):
+        name = disk["disk_device"]
+        entry = totals.setdefault(name, {"rMB/s": 0.0, "wMB/s": 0.0, "util": 0.0, "count": 0})
+        entry["rMB/s"] += float(disk.get("rMB/s", 0.0))
+        entry["wMB/s"] += float(disk.get("wMB/s", 0.0))
+        entry["util"] += float(disk.get("util", 0.0))
+        entry["count"] += 1
+
+def render(label, devices):
+    print(f"### {label}")
+    for device in devices:
+        entry = totals.get(device)
+        if not entry or entry["count"] == 0:
+            continue
+        rmb = entry["rMB/s"] / entry["count"]
+        wmb = entry["wMB/s"] / entry["count"]
+        util = entry["util"] / entry["count"]
+        print(f"- `{device}` avg read `{rmb:.2f} MB/s`, avg write `{wmb:.2f} MB/s`, avg util `{util:.2f}%`")
+    print("")
+
+render("Data stripe", ["dm-2", "dm-3", "dm-4", "sdb", "sdg"])
+render("Redo stripe", ["dm-5", "sdl", "sdm"])
+render("FRA", ["sdn"])
+PY
   echo ""
   echo "## Interpretation"
   echo ""
-  echo "This Sprint 4 run validates the Oracle-style multi-volume layout with concurrent fio workloads."
-  echo "Each storage class (data, redo, FRA) runs its characteristic I/O pattern simultaneously."
+  echo "This run validates the Oracle-style multi-volume layout with concurrent fio workloads."
+  echo "Device-level iostat is used to confirm separation between data, redo, and FRA traffic."
+  echo "For valid per-job fio output, the fio result must contain distinct entries for each concurrent workload."
 } > "$ANALYSIS_MD"
 _state_set '.artifacts.analysis_md' "$ANALYSIS_MD"
 echo "  [INFO] Analysis saved: $ANALYSIS_MD"
@@ -420,12 +495,14 @@ echo "  [INFO] Tearing down compute and block volumes ..."
 for vol_name in data1 data2 redo1 redo2 fra; do
   vol_state="$PROGRESS_DIR/state-bv-${vol_name}.json"
   if [ -f "$vol_state" ]; then
+    export NAME_PREFIX="bv-${vol_name}"
     export STATE_FILE="$vol_state"
     "$SCAFFOLD_DIR/do/teardown.sh" || true
   fi
 done
 
 # Teardown compute
+export NAME_PREFIX="$MAIN_NAME_PREFIX"
 export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
 "$SCAFFOLD_DIR/do/teardown.sh"
 

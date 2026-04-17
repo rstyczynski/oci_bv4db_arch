@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "created": 3,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "56833-13992-1776445821",
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-17T17:12:02Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 40,
+    "compute_memory_gb": 64,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "run_level": "smoke",
+    "fio_runtime_sec": 60
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicngrfdoguwvpwilcfp3juicbbuzp644pthkfna3az6tnq",
+    "created": true,
+    "name": "bv4db-oracle-run-instance",
+    "public_ip": "144.24.251.237",
+    "private_ip": "10.0.0.139",
+    "deleted": true
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4b4n4h6cagbmwqurayupts5a3vl7gk4ujbfrxwsxvr6r45pwsiuq",
+    "attachment_ocid": "",
+    "device_path": "",
+    "vpus_per_gb": 10,
+    "iqn": "iqn.2015-12.com.oracleiaas:9354659d-f2c5-4ed5-a19e-fdb5ab8144d0",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "deleted": true
+  }
+}
