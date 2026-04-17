@@ -118,32 +118,37 @@ time_based=1
 runtime=450
 ramp_time=30
 group_reporting=1
-numjobs=4
-iodepth=32
 invalidate=1
-fsync_on_close=1
 
-# Data workload — 70/30 read/write, 8k random (OLTP pattern)
+# Data workload — 70/30 read/write, 8k random (OLTP-like)
 [data-8k]
 filename=/u02/oradata/testfile
 size=32G
 rw=randrw
 rwmixread=70
 bs=8k
+numjobs=4
+iodepth=32
+fsync_on_close=1
 
-# Redo workload — sequential write, 512b (redo log pattern)
-[redo-512b]
+# Redo workload — sequential sync write, low queue depth
+[redo]
 filename=/u03/redo/testfile
 size=4G
 rw=write
-bs=512
+bs=256k
+numjobs=1
+iodepth=1
+fsync=1
 
-# FRA workload — sequential read/write, 1M (backup/archive pattern)
+# FRA workload — large-block sequential traffic
 [fra-1m]
 filename=/u04/fra/testfile
 size=16G
 rw=rw
 bs=1M
+numjobs=2
+iodepth=16
 ```
 
 **Device Utilization Capture:**
@@ -284,7 +289,7 @@ Sprint Test Configuration:
 
 #### IT-14: Oracle fio profile file present
 
-- **What it verifies:** fio profile file exists with three job sections (data-8k, redo-512b, fra-1m)
+- **What it verifies:** fio profile file exists with three job sections (data-8k, redo, fra-1m)
 - **Pass criteria:** File exists and contains all three job section headers
 - **Target file:** tests/integration/test_bv4db_oracle.sh
 

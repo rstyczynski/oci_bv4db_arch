@@ -25,7 +25,7 @@ test_IT14_oracle_profile_present() {
   [ -f "$PROFILE_FILE" ] || { _fail "IT-14: oracle-layout.fio not found"; return 1; }
   local has_data has_redo has_fra
   has_data=$(grep -c '\[data-8k\]' "$PROFILE_FILE" || echo 0)
-  has_redo=$(grep -c '\[redo-512b\]' "$PROFILE_FILE" || echo 0)
+  has_redo=$(grep -c '\[redo\]' "$PROFILE_FILE" || echo 0)
   has_fra=$(grep -c '\[fra-1m\]' "$PROFILE_FILE" || echo 0)
   if [ "$has_data" -ge 1 ] && [ "$has_redo" -ge 1 ] && [ "$has_fra" -ge 1 ]; then
     _pass "IT-14: Oracle fio profile has all three job sections"
