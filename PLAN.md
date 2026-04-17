@@ -8,7 +8,7 @@ Instruction for the implementor: keep analysis, design and implementation as sim
 
 ## Sprint 1 - Network and compute with block volume fio test
 
-Status: Progress
+Status: Done
 Mode: Managed
 Test: integration
 Regression: none
@@ -23,3 +23,55 @@ Backlog Items:
 * BV4DB-4. Block volume ensure and teardown scripts in oci_scaffold
 * BV4DB-5. Compute instance with block volume and basic fio test
 * BV4DB-6. fio performance report for block volume
+
+## Sprint 2 - Maximum-performance block volume benchmark
+
+Status: Done
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 2 reuses the shared compartment, network, and vault created in Sprint 1. The benchmark compute instance and block volume remain ephemeral and are torn down automatically after the benchmark run.
+
+Backlog Items:
+
+* BV4DB-7. Maximum-performance block volume configuration benchmark
+
+## Sprint 3 - Mixed 8k fio profile on Sprint 2 topology
+
+Status: Done
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 3 reuses the Sprint 2 compute and block volume configuration profile, but executes fio from a workload profile file. The sprint starts with the `60`-second smoke run and keeps the `15`-minute integration run as the second execution level on the same topology.
+
+Backlog Items:
+
+* BV4DB-8. Mixed 8k database-oriented benchmark profile on Sprint 2 topology
+
+## Sprint 4 - Oracle-style block volume layout with concurrent workload
+
+Status: Failed
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 4 provisions a compute instance with five block volumes arranged as three storage classes: two UHP volumes striped into a data LV at `/u02/oradata`, two HP volumes striped into a redo LV at `/u03/redo`, and one balanced volume at `/u04/fra`. Guest LVM striping is configured on the instance using the OCI consistent device paths. The sprint supports two execution levels — a `60`-second smoke run and a `15`-minute integration run — using the same prescribed fio profile file.
+
+Backlog Items:
+
+* BV4DB-9. Minimal Oracle-style block volume layout with concurrent workload validation
+
+## Sprint 5 - Oracle-style layout rerun with corrected fio job reporting
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 5 reexecutes the Sprint 4 Oracle-style storage layout with a corrected fio workload profile that disables grouped reporting and uses the revised workload parameters for data, redo, and FRA jobs. The sprint reuses the Sprint 4 topology, analysis approach, validation approach, and teardown flow, and changes only the fio job description file so the rerun produces valid per-job fio result artifacts.
+
+Backlog Items:
+
+* BV4DB-10. Reexecute Oracle-style layout with corrected fio job reporting
