@@ -1,0 +1,5 @@
+# Sprint 1 new tests
+integration:test_bv4db.sh:test_IT1_infra_provisioned
+integration:test_bv4db.sh:test_IT2_ssh_via_vault_key
+integration:test_bv4db.sh:test_IT3_block_volume_mounted
+integration:test_bv4db.sh:test_IT4_fio_report_produced
