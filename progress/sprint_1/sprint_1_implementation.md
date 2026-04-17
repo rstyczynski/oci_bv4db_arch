@@ -38,7 +38,7 @@ Results saved to `progress/sprint_1/fio-results.json`. Summary printed to stdout
 
 - **iSCSI attachment** (operator decision, recorded in design): block volume attached via iSCSI, not paravirtualized, to match production database host configurations.
 - **Two state lifecycles**: infra (`state-bv4db.json`, `NAME_PREFIX=bv4db`) is persistent; compute+BV (`state-bv4db-run.json`, `NAME_PREFIX=bv4db-run`) is ephemeral.
-- **Private key handling**: key retrieved from vault at runtime via `oci vault secret get-secret-bundle`, written to a temp file with `chmod 600`, removed after use.
+- **Private key handling**: key retrieved from vault at runtime via `oci secrets secret-bundle get`, written to a temp file with `chmod 600`, removed after use.
 - **oci_scaffold branch**: all scaffold additions committed to `oci_scaffold` branch `oci_bv4db_arch`; merge to upstream main is a separate task.
 
 ## Files Produced

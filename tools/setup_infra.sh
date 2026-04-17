@@ -8,7 +8,7 @@
 # SSH public key: progress/sprint_1/bv4db-key.pub
 #
 # Usage:
-#   OCI_REGION=eu-frankfurt-1 ./setup_infra.sh
+#   OCI_REGION=eu-zurich-1 ./setup_infra.sh
 
 set -euo pipefail
 set -E
@@ -19,6 +19,7 @@ PROGRESS_DIR="$REPO_DIR/progress/sprint_1"
 export PATH="$SCAFFOLD_DIR/do:$SCAFFOLD_DIR/resource:$PATH"
 export NAME_PREFIX="bv4db"
 export OCI_REGION="${OCI_REGION:-}"
+ROTATE_SSH_KEY="${ROTATE_SSH_KEY:-false}"
 
 _on_err() {
   local ec=$? line=${BASH_LINENO[0]:-?} cmd=${BASH_COMMAND:-?}
@@ -56,9 +57,12 @@ ensure-subnet.sh
 
 # ── SSH key pair ──────────────────────────────────────────────────────────
 PUBKEY_FILE="$PROGRESS_DIR/bv4db-key.pub"
+SECRET_OCID=$(_state_get '.secret.ocid')
 
-if [ ! -f "$PUBKEY_FILE" ] && [ -z "$(_state_get '.secret.ocid')" ]; then
-  ssh-keygen -t rsa -b 4096 -N "" -f /tmp/bv4db-key -C "bv4db" -q
+if [ "$ROTATE_SSH_KEY" = "true" ] || [ -z "$SECRET_OCID" ]; then
+  # If the pubkey exists but the secret does not, rotate the keypair so the
+  # public key and vault secret stay consistent after a region move.
+  ssh-keygen -m PEM -t rsa -b 4096 -N "" -f /tmp/bv4db-key -C "bv4db" -q
   PRIVATE_KEY=$(cat /tmp/bv4db-key)
   cp /tmp/bv4db-key.pub "$PUBKEY_FILE"
   rm -f /tmp/bv4db-key /tmp/bv4db-key.pub

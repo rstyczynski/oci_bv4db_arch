@@ -6,7 +6,7 @@
 # fio results:       progress/sprint_1/fio-results.json
 #
 # Usage:
-#   OCI_REGION=eu-frankfurt-1 ./tools/run_bv_fio.sh
+#   OCI_REGION=eu-zurich-1 ./tools/run_bv_fio.sh
 #   KEEP_INFRA=true ./tools/run_bv_fio.sh   # skip teardown
 
 set -euo pipefail
@@ -70,7 +70,7 @@ PORT=$(_state_get '.blockvolume.port')
 # ── retrieve SSH private key from vault ──────────────────────────────────
 TMPKEY=$(mktemp)
 chmod 600 "$TMPKEY"
-oci vault secret get-secret-bundle \
+oci secrets secret-bundle get \
   --secret-id "$SECRET_OCID" \
   --query 'data."secret-bundle-content".content' --raw-output \
   | base64 --decode > "$TMPKEY"

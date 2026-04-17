@@ -1,0 +1,95 @@
+{
+  "summary": {
+    "created": 4,
+    "existing": 0,
+    "tested": 0,
+    "failed": 2
+  },
+  "meta": {
+    "run_id": "99973-14691-1776429336",
+    "creation_order": [
+      "compartment",
+      "vcn",
+      "sl",
+      "igw",
+      "rt",
+      "subnet",
+      "vault",
+      "key",
+      "secret"
+    ]
+  },
+  "inputs": {
+    "oci_region": "eu-frankfurt-1",
+    "name_prefix": "bv4db",
+    "compartment_path": "/oci_bv4db_arch",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "subnet_prohibit_public_ip": false,
+    "sl_ingress_cidr": "0.0.0.0/0",
+    "sl_ingress_protocol": 6,
+    "sl_ingress_port": 22,
+    "vault_type": "DEFAULT",
+    "key_algorithm": "AES",
+    "key_protection_mode": "SOFTWARE",
+    "secret_name": "bv4db-ssh-key",
+    "secret_value": ""
+  },
+  "compartments": [
+    {
+      "path": "/oci_bv4db_arch",
+      "name": "oci_bv4db_arch",
+      "ocid": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "parent_ocid": "ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a",
+      "created": true,
+      "deleted": false
+    }
+  ],
+  "compartment": {
+    "ocid": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "path": "/oci_bv4db_arch"
+  },
+  "vcn": {
+    "created": true,
+    "ocid": "ocid1.vcn.oc1.eu-frankfurt-1.amaaaaaaknhfuyiartojlfk5dgo564bbqbcoexj5rqi7qpvrhqiqu35kli7q",
+    "cidr": "10.0.0.0/16",
+    "deleted": true
+  },
+  "sl": {
+    "created": true,
+    "ocid": "ocid1.securitylist.oc1.eu-frankfurt-1.aaaaaaaawa3krbcxxdwjylpk4at6bumencmg4iv5ri5jnxx6yzdan7x34j3a",
+    "deleted": true
+  },
+  "igw": {
+    "created": true,
+    "ocid": "ocid1.internetgateway.oc1.eu-frankfurt-1.aaaaaaaahbp3wa3aglp3ew5jktt4xavxpcgapoke3235kokwofx4vzbrst7q",
+    "deleted": true
+  },
+  "rt": {
+    "created": true,
+    "ocid": "ocid1.routetable.oc1.eu-frankfurt-1.aaaaaaaaz3t6j4yanwzrfx22ld7p4k5us3profd3a6zslcl4hm6khw7cc2xq",
+    "deleted": true
+  },
+  "subnet": {
+    "created": false,
+    "ocid": "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaonhfv5iq4z4vrhp4joekcgg2536pr7ezdavzqth7vt4tuu4ped2q",
+    "cidr": "10.0.0.0/24",
+    "deleted": true
+  },
+  "vault": {
+    "created": true,
+    "ocid": "ocid1.vault.oc1.eu-frankfurt-1.enu6ei5gaac5e.abtheljtehomi3powmmsdtwxg4jgkx5avqg7r4r24meb3met2eeb5fktzpea",
+    "mgmt_endpoint": "https://enu6ei5gaac5e-management.kms.eu-frankfurt-1.oraclecloud.com",
+    "deletion_scheduled": true
+  },
+  "key": {
+    "created": true,
+    "ocid": "ocid1.key.oc1.eu-frankfurt-1.enu6ei5gaac5e.abtheljrybzelqidohijxolutukmxvrxjifqxolixrrxxbekfyaewkdfzv3a",
+    "deletion_scheduled": true
+  },
+  "secret": {
+    "created": true,
+    "ocid": "ocid1.vaultsecret.oc1.eu-frankfurt-1.amaaaaaaknhfuyia2gvu4fovnonq42ow62fm5jgpp6xve7ljufze3i4sbtla",
+    "name": "bv4db-ssh-key",
+    "deletion_scheduled": true
+  }
+}

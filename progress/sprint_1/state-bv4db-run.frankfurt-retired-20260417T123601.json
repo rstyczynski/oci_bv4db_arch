@@ -1,0 +1,26 @@
+{
+  "summary": {
+    "created": 0,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "99095-5258-1776428947"
+  },
+  "inputs": {
+    "oci_region": "eu-frankfurt-1",
+    "name_prefix": "bv4db-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E4.Flex",
+    "compute_ocpus": 2,
+    "compute_memory_gb": 16,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "bv_size_gb": 50,
+    "bv_attach_type": "iscsi"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaaonhfv5iq4z4vrhp4joekcgg2536pr7ezdavzqth7vt4tuu4ped2q"
+  }
+}

@@ -21,7 +21,7 @@
 ### Provision infra (prerequisite for all tests)
 
 ```bash
-OCI_REGION=eu-frankfurt-1 ./tools/setup_infra.sh
+OCI_REGION=eu-zurich-1 ./tools/setup_infra.sh
 ```
 
 Expected output (abbreviated):
@@ -35,7 +35,7 @@ Expected output (abbreviated):
 ### Provision compute + block volume + run fio (prerequisite for IT-2/IT-3)
 
 ```bash
-KEEP_INFRA=true ./tools/run_bv_fio.sh
+KEEP_INFRA=true OCI_REGION=eu-zurich-1 OCI_CLI_REGION=eu-zurich-1 ./tools/run_bv_fio.sh
 ```
 
 Expected output (abbreviated):
@@ -60,7 +60,7 @@ Expected output (abbreviated):
 **What it checks:** `state-bv4db.json` contains OCIDs for compartment, subnet, and vault secret; `bv4db-key.pub` exists.
 
 ```bash
-./tests/integration/test_bv4db.sh
+OCI_REGION=eu-zurich-1 OCI_CLI_REGION=eu-zurich-1 ./tests/integration/test_bv4db.sh
 ```
 
 Expected output:
@@ -77,7 +77,7 @@ jq '{compartment: .compartment.ocid, subnet: .subnet.ocid, secret: .secret.ocid}
 
 Expected: all three fields non-null, non-empty strings starting with `ocid1.`.
 
-**Test status:** pending execution against live OCI tenancy
+**Test status:** passed in `eu-zurich-1`
 
 ---
 
@@ -90,7 +90,7 @@ Expected: all three fields non-null, non-empty strings starting with `ocid1.`.
 **Requires:** compute running (`KEEP_INFRA=true`)
 
 ```bash
-./tests/integration/test_bv4db.sh
+OCI_REGION=eu-zurich-1 OCI_CLI_REGION=eu-zurich-1 ./tests/integration/test_bv4db.sh
 ```
 
 Expected output (IT-2 section):
@@ -104,7 +104,7 @@ Manual verification:
 SECRET_OCID=$(jq -r '.secret.ocid' progress/sprint_1/state-bv4db.json)
 PUBLIC_IP=$(jq -r '.compute.public_ip' progress/sprint_1/state-bv4db-run.json)
 TMPKEY=$(mktemp) && chmod 600 "$TMPKEY"
-oci vault secret get-secret-bundle --secret-id "$SECRET_OCID" \
+oci secrets secret-bundle get --secret-id "$SECRET_OCID" \
   --query 'data."secret-bundle-content".content' --raw-output \
   | base64 --decode > "$TMPKEY"
 ssh -i "$TMPKEY" -o StrictHostKeyChecking=no "opc@${PUBLIC_IP}" "echo ok"
@@ -113,7 +113,7 @@ rm -f "$TMPKEY"
 
 Expected: `ok`
 
-**Test status:** pending execution against live OCI tenancy
+**Test status:** passed in `eu-zurich-1` against public IP `140.86.212.210`
 
 ---
 
@@ -126,7 +126,7 @@ Expected: `ok`
 **Requires:** compute running (`KEEP_INFRA=true`)
 
 ```bash
-./tests/integration/test_bv4db.sh
+OCI_REGION=eu-zurich-1 OCI_CLI_REGION=eu-zurich-1 ./tests/integration/test_bv4db.sh
 ```
 
 Expected output (IT-3 section):
@@ -143,7 +143,7 @@ ssh -i "$TMPKEY" -o StrictHostKeyChecking=no "opc@${PUBLIC_IP}" \
 
 Expected: df shows `/mnt/bv` with ~50 GB capacity; lsblk shows `/dev/sdb` mounted at `/mnt/bv`.
 
-**Test status:** pending execution against live OCI tenancy
+**Test status:** passed in `eu-zurich-1` against public IP `140.86.212.210`
 
 ---
 
@@ -154,7 +154,7 @@ Expected: df shows `/mnt/bv` with ~50 GB capacity; lsblk shows `/dev/sdb` mounte
 **What it checks:** `fio-results.json` exists, is valid JSON, contains `.sequential.jobs[0]` and `.random.jobs[0]` with IOPS fields.
 
 ```bash
-./tests/integration/test_bv4db.sh
+OCI_REGION=eu-zurich-1 OCI_CLI_REGION=eu-zurich-1 ./tests/integration/test_bv4db.sh
 ```
 
 Expected output (IT-4 section):
@@ -175,7 +175,17 @@ jq '{
 
 Expected: object with four positive integer fields.
 
-**Test status:** pending execution against live OCI tenancy
+**Test status:** passed in `eu-zurich-1` with `seq read 11 IOPS 11 MB/s` and `rand read 1520 IOPS 6 MB/s`
+
+### fio Result Interpretation
+
+- This Sprint 1 fio run is a valid baseline for `eu-zurich-1`, not a tuned performance target.
+- Sequential `1M` throughput was low at about `11-12 MB/s`, which is enough for architecture verification but weak for throughput-heavy database operations.
+- Random `4k` performance reached about `1520` read IOPS and `1520` write IOPS, proving the volume path works end to end under concurrent load.
+- Random write latency was the main weakness: about `68 ms` mean, `132 ms` p95, and `198 ms` p99, with higher tail outliers.
+- fio reported `~100%` disk utilization in both workloads, so the storage path, not the VM, appears to be the limiting component in this run.
+
+Detailed analysis is recorded in `progress/sprint_1/fio_analysis.md`.
 
 ---
 
@@ -183,9 +193,9 @@ Expected: object with four positive integer fields.
 
 | Test | Backlog Items | Requires Live Compute | Status |
 | ---- | ------------- | --------------------- | ------ |
-| IT-1 | BV4DB-1,2,3 | No | pending |
-| IT-2 | BV4DB-3,5 | Yes (KEEP_INFRA=true) | pending |
-| IT-3 | BV4DB-4,5 | Yes (KEEP_INFRA=true) | pending |
-| IT-4 | BV4DB-6 | No | pending |
+| IT-1 | BV4DB-1,2,3 | No | passed |
+| IT-2 | BV4DB-3,5 | Yes (KEEP_INFRA=true) | passed |
+| IT-3 | BV4DB-4,5 | Yes (KEEP_INFRA=true) | passed |
+| IT-4 | BV4DB-6 | No | passed |
 
-All tests pending execution against a live OCI tenancy. Test code is complete and verified syntactically.
+All Sprint 1 integration tests passed against the live OCI tenancy in `eu-zurich-1`. Shared infra remains in Zurich; the ephemeral compute and block volume were torn down after verification.

@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "created": 0,
+    "existing": 10,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "4049-20479-1776430090",
+    "creation_order": [
+      "compartment",
+      "vcn",
+      "sl",
+      "igw",
+      "rt",
+      "subnet",
+      "vault",
+      "key",
+      "secret"
+    ]
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db",
+    "compartment_path": "/oci_bv4db_arch",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "subnet_prohibit_public_ip": false,
+    "sl_ingress_cidr": "0.0.0.0/0",
+    "sl_ingress_protocol": 6,
+    "sl_ingress_port": 22,
+    "vault_type": "DEFAULT",
+    "key_algorithm": "AES",
+    "key_protection_mode": "SOFTWARE",
+    "secret_name": "bv4db-ssh-key",
+    "secret_value": ""
+  },
+  "compartments": [
+    {
+      "path": "/oci_bv4db_arch",
+      "name": "oci_bv4db_arch",
+      "ocid": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "parent_ocid": "ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a",
+      "created": false,
+      "deleted": false
+    }
+  ],
+  "compartment": {
+    "ocid": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "path": "/oci_bv4db_arch"
+  },
+  "vcn": {
+    "created": true,
+    "ocid": "ocid1.vcn.oc1.eu-zurich-1.amaaaaaaknhfuyia4kiqpa5aywd2bi3wuyjuu36u32xz5oy2x5hgwqjpzkpq",
+    "cidr": "10.0.0.0/16"
+  },
+  "sl": {
+    "created": true,
+    "ocid": "ocid1.securitylist.oc1.eu-zurich-1.aaaaaaaaobeohqfd2xqycjiytngsxu7xielletx5g7pu7sngst3gd5cdxnwa"
+  },
+  "igw": {
+    "created": true,
+    "ocid": "ocid1.internetgateway.oc1.eu-zurich-1.aaaaaaaaerutagdcwk7b53tqxru4yzuy65gkzsloez5lgaozixjxxq7afjra"
+  },
+  "rt": {
+    "created": true,
+    "ocid": "ocid1.routetable.oc1.eu-zurich-1.aaaaaaaa33bwqyvniqebh2xzrs4ftxwdaetu2fgo2odchmpb7wthn2u5hooq"
+  },
+  "subnet": {
+    "created": true,
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka",
+    "cidr": "10.0.0.0/24"
+  },
+  "vault": {
+    "created": false,
+    "ocid": "ocid1.vault.oc1.eu-zurich-1.fju6ekkcaafda.ab5heljrghsab2gjecvpwgt5ponpccvxs6kwz37jnfvku6ftdpuy4w6e54zq",
+    "mgmt_endpoint": "https://fju6ekkcaafda-management.kms.eu-zurich-1.oraclecloud.com"
+  },
+  "key": {
+    "created": false,
+    "ocid": "ocid1.key.oc1.eu-zurich-1.fju6ekkcaafda.ab5heljr3orjdapllxrvjzf6phb7e34qdcfegcxqesdxxemjutyg5sovcgha"
+  },
+  "secret": {
+    "created": false,
+    "ocid": "ocid1.vaultsecret.oc1.eu-zurich-1.amaaaaaaknhfuyiadtutos2gii4kcmoeysl3wchl7qg36wegczy4flotdohq",
+    "name": "bv4db-ssh-key"
+  }
+}

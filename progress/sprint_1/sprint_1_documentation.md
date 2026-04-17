@@ -3,7 +3,7 @@
 ## Documentation Validation
 
 **Validation Date:** 2026-04-17
-**Sprint Status:** implemented
+**Sprint Status:** tested
 
 ### Documentation Files Reviewed
 
@@ -30,7 +30,7 @@
 - [x] Test sequences copy-paste-able
 - [x] No prohibited commands
 - [x] Expected outcomes documented
-- [x] Test results recorded (pending — requires live OCI tenancy)
+- [x] Test results recorded against live OCI tenancy in `eu-zurich-1`
 - [x] Error cases covered
 - [x] Test summary table present
 
@@ -51,7 +51,7 @@
 ### Consistency Check
 
 - [x] Backlog Item names consistent across all documents
-- [x] Status values match in PROGRESS_BOARD.md (`implemented` for all 6)
+- [x] Status values match in PROGRESS_BOARD.md (`tested` for all 6)
 - [x] State file names consistent (`state-bv4db.json`, `state-bv4db-run.json`)
 - [x] Cross-references between setup_infra.sh and run_bv_fio.sh documented
 
@@ -99,10 +99,12 @@ All snippets are copy-paste-able. No `exit` commands present. No placeholder tok
 - iSCSI operator decision explicitly called out in design and implementation docs
 - Test sequences are fully copy-paste-able with manual verification alternatives
 - oci_scaffold branch model (`oci_bv4db_arch`) documented in implementation
+- fio baseline is now documented with measured Zurich results and a separate analysis note
 
 **Areas for Improvement:**
 
 - IT-2 and IT-3 tests require `KEEP_INFRA=true` — could add a combined smoke-test wrapper script in a future sprint
+- Sprint 1 fio numbers are useful as a baseline only; storage tuning should vary VPU level, queue depth, and workload mix in a future sprint
 
 ## Status
 

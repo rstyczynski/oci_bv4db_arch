@@ -78,7 +78,7 @@ test_IT2_ssh_via_vault_key() {
     tmpkey=$(mktemp)
     chmod 600 "$tmpkey"
 
-    if ! oci vault secret get-secret-bundle \
+    if ! oci secrets secret-bundle get \
            --secret-id "$secret_ocid" \
            --query 'data."secret-bundle-content".content' --raw-output \
            | base64 --decode > "$tmpkey" 2>/dev/null; then
@@ -130,7 +130,7 @@ test_IT3_block_volume_mounted() {
     tmpkey=$(mktemp)
     chmod 600 "$tmpkey"
 
-    oci vault secret get-secret-bundle \
+    oci secrets secret-bundle get \
         --secret-id "$secret_ocid" \
         --query 'data."secret-bundle-content".content' --raw-output \
         | base64 --decode > "$tmpkey" 2>/dev/null || {
