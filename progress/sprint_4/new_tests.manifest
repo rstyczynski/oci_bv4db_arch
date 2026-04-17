@@ -1,0 +1,8 @@
+# Sprint 4 new tests — used by tests/run.sh --new-only
+
+# Integration tests (specific functions)
+integration:test_bv4db_oracle.sh:test_IT14_oracle_profile_present
+integration:test_bv4db_oracle.sh:test_IT15_smoke_run_completed
+integration:test_bv4db_oracle.sh:test_IT16_iostat_captured
+integration:test_bv4db_oracle.sh:test_IT17_io_isolation_validated
+integration:test_bv4db_oracle.sh:test_IT18_resources_torn_down

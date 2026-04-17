@@ -1,2 +1,4 @@
 integration:test_bv4db.sh
 integration:test_bv4db_perf.sh
+integration:test_bv4db_mixed8k.sh
+integration:test_bv4db_oracle.sh
