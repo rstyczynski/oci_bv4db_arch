@@ -1,0 +1,58 @@
+{
+  "summary": {
+    "created": 3,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "44166-26256-1776441106",
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-17T15:53:57Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-mixed8k-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 40,
+    "compute_memory_gb": 64,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "bv_size_gb": 1500,
+    "bv_vpus_per_gb": 120,
+    "bv_attach_type": "iscsi",
+    "bv_device_path": "/dev/oracleoci/oraclevdb",
+    "run_level": "smoke",
+    "fio_runtime_sec": 60
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicbwxvnkarpznqg6dsnpz3r7dxnxt3vc532wxz5ntklmfq",
+    "created": true,
+    "name": "bv4db-mixed8k-run-instance",
+    "public_ip": "152.67.79.219",
+    "private_ip": "10.0.0.41",
+    "deleted": true
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrqmsh6gci4c3tkkxemd3sbtwj5lx6ktv3ffpfftlfo7zuilw2xr6q",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdb",
+    "vpus_per_gb": 120,
+    "iqn": "iqn.2015-12.com.oracleiaas:48d71ec8-f719-4e17-94e0-e232d3be2b98",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "is_multipath": true,
+    "deleted": true
+  },
+  "artifacts": {
+    "result_json": "  [INFO] Waiting for mixed-8k completion (60s) ...\n\u001b[2K\r  [WAIT] mixed-8k 5s\u001b[2K\r  [WAIT] mixed-8k 10s\u001b[2K\r  [WAIT] mixed-8k 15s\u001b[2K\r  [WAIT] mixed-8k 20s\u001b[2K\r  [WAIT] mixed-8k 25s\u001b[2K\r  [WAIT] mixed-8k 30s\u001b[2K\r  [WAIT] mixed-8k 35s\u001b[2K\r  [WAIT] mixed-8k 40s\u001b[2K\r  [WAIT] mixed-8k 45s\u001b[2K\r  [WAIT] mixed-8k 50s\u001b[2K\r  [WAIT] mixed-8k 55s\u001b[2K\r  [WAIT] mixed-8k 60s\u001b[2K\r  [WAIT] mixed-8k 65s\u001b[2K\r  [WAIT] mixed-8k 70s\u001b[2K\r  [WAIT] mixed-8k 75s\u001b[2K\r  [WAIT] mixed-8k 80s\n/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/fio-results-mixed8k-smoke.json"
+  }
+}

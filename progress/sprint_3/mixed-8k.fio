@@ -1,0 +1,23 @@
+[global]
+ioengine=libaio
+direct=1
+time_based=1
+runtime=450
+ramp_time=30
+group_reporting=1
+
+filename=/mnt/bv/testfile-perf
+size=64G
+
+# concurrency model
+numjobs=4
+iodepth=32
+
+# avoid cache / reuse artifacts
+invalidate=1
+fsync_on_close=1
+
+[mixed-8k]
+rw=randrw
+rwmixread=70
+bs=8k
