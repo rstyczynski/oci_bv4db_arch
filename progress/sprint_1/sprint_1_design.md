@@ -2,7 +2,7 @@
 
 ## BV4DB-1. Compartment for all project resources
 
-Status: Proposed
+Status: Approved
 
 ### Requirement Summary
 
@@ -120,29 +120,111 @@ rm -f /tmp/bv4db-key.pub
 
 ---
 
-## BV4DB-4. Compute instance with block volume
+## BV4DB-4. Block volume ensure and teardown scripts in oci_scaffold
 
 Status: Proposed
 
 ### Requirement Summary
 
-AMD64 `VM.Standard.E4.Flex` instance on the public subnet, SSH key from BV4DB-3, with one 50 GB block volume attached as paravirtualized device, formatted ext4, mounted at `/mnt/bv`. Ephemeral — torn down after test.
+Add `ensure-blockvolume.sh` and `teardown-blockvolume.sh` to the `oci_bv4db_arch` branch of oci_scaffold, following the same idempotent adopt-or-create pattern used by all other ensure scripts.
+
+### Feasibility Analysis
+
+**API Availability:** OCI CLI provides `oci bv volume create`, `oci compute volume-attachment attach --type iscsi`, and `oci compute volume-attachment get` for all required operations. Fully available.
+
+**Technical Constraints:** Scripts must follow oci_scaffold conventions — source `do/oci_scaffold.sh`, read inputs from state file, write outputs to state file.
+
+**Risk Assessment:**
+
+- Low: pattern is well-established by existing ensure scripts in oci_scaffold
+
+### Technical Specification
+
+**ensure-blockvolume.sh inputs (from state file):**
+
+| Key | Value |
+| --- | --- |
+| `.inputs.oci_compartment` | compartment OCID |
+| `.inputs.name_prefix` | resource name prefix |
+| `.inputs.bv_size_gb` | volume size in GB (default: 50) |
+| `.inputs.bv_attach_type` | `iscsi` (operator decision) |
+| `.compute.ocid` | instance to attach to |
+| `.compute.availability_domain` | must match volume AD |
+
+**ensure-blockvolume.sh outputs (to state file):**
+
+| Key | Value |
+| --- | --- |
+| `.blockvolume.ocid` | block volume OCID |
+| `.blockvolume.attachment_ocid` | volume attachment OCID |
+| `.blockvolume.iqn` | iSCSI IQN |
+| `.blockvolume.ipv4` | iSCSI target IP |
+| `.blockvolume.port` | iSCSI target port |
+| `.blockvolume.created` | `true` (created) or `false` (adopted) |
+
+**Internal OCI CLI sequence (inside ensure-blockvolume.sh):**
+
+```bash
+# Create volume in same AD as compute instance
+BV_OCID=$(oci bv volume create \
+  --compartment-id "$COMPARTMENT_OCID" \
+  --availability-domain "$AD" \
+  --display-name "${NAME_PREFIX}-bv" \
+  --size-in-gbs "${BV_SIZE_GB:-50}" \
+  --wait-for-state AVAILABLE \
+  --query 'data.id' --raw-output)
+
+# Attach via iSCSI (operator decision)
+ATTACH_OCID=$(oci compute volume-attachment attach \
+  --instance-id "$COMPUTE_OCID" \
+  --type iscsi \
+  --volume-id "$BV_OCID" \
+  --wait-for-state ATTACHED \
+  --query 'data.id' --raw-output)
+
+# Read iSCSI connection details into state
+IQN=$(oci compute volume-attachment get \
+  --volume-attachment-id "$ATTACH_OCID" \
+  --query 'data.iqn' --raw-output)
+IP=$(oci compute volume-attachment get \
+  --volume-attachment-id "$ATTACH_OCID" \
+  --query 'data."ipv4"' --raw-output)
+PORT=$(oci compute volume-attachment get \
+  --volume-attachment-id "$ATTACH_OCID" \
+  --query 'data.port' --raw-output)
+```
+
+**teardown-blockvolume.sh:** detaches the volume (iSCSI detach via OCI CLI) then deletes it, only when `.blockvolume.created=true`.
+
+---
+
+## BV4DB-5. Compute instance with block volume
+
+Status: Proposed
+
+### Requirement Summary
+
+AMD64 `VM.Standard.E4.Flex` instance on the public subnet, SSH key from BV4DB-3, with one 50 GB block volume attached via **iSCSI** (operator decision), formatted ext4, mounted at `/mnt/bv`. Ephemeral — torn down after test.
 
 ### Feasibility Analysis
 
 **Compute:** `ensure-compute.sh` supports arbitrary shape via `.inputs.compute_shape`. Fully available.
 
-**Block volume:** No oci_scaffold script — implemented directly via OCI CLI in `run_bv_fio.sh` using `oci bv volume create` and `oci compute volume-attachment attach`.
+**Block volume:** `ensure-blockvolume.sh` and `teardown-blockvolume.sh` added to oci_scaffold in branch `oci_bv4db_arch` (BV4DB-4). `run_bv_fio.sh` calls these scripts from the branch.
+
+**Attachment type: iSCSI** — operator decision. iSCSI is the preferred protocol for database-grade block volume access as it exposes the device as a standard SCSI disk and avoids hypervisor mediation.
 
 **Technical Constraints:**
 - Block volume availability domain must match compute instance AD
-- Device path on OracleLinux: `/dev/oracleoci/oraclevdb` (first paravirtualized BV)
+- iSCSI requires `iscsiadm` on the instance (pre-installed on OracleLinux)
+- After attach, OCI returns IQN, IP, and port — used to log in via `iscsiadm`
+- Device appears as `/dev/sdb` (or next available SCSI device)
 - Compute state file must contain `.subnet.ocid` copied from infra state
 
 **Risk Assessment:**
 
-- Low: paravirtualized attach is the default and simplest attach type
-- Low: block volume OCI CLI commands are stable and well-documented
+- Low: `iscsiadm` is pre-installed on OracleLinux; login sequence is well-documented by OCI
+- Low: iSCSI attach is stable and deterministic for single-volume scenarios
 
 ### Design Overview
 
@@ -153,8 +235,8 @@ AMD64 `VM.Standard.E4.Flex` instance on the public subnet, SSH key from BV4DB-3,
 3. Calls `ensure-compute.sh` (VM.Standard.E4.Flex, 2 OCPU, 16 GB RAM)
 4. Retrieves SSH private key from vault secret
 5. Creates 50 GB block volume in same AD as compute instance
-6. Attaches block volume (paravirtualized), waits for ATTACHED state
-7. SSHes in: formats ext4, mounts at `/mnt/bv`
+6. Attaches block volume (iSCSI — operator decision), waits for ATTACHED state
+7. SSHes in: runs iscsiadm login sequence, formats ext4, mounts at `/mnt/bv`
 8. Runs fio (BV4DB-5)
 9. Tears down: detach BV → delete BV → teardown compute via scaffold
 
@@ -172,40 +254,42 @@ AMD64 `VM.Standard.E4.Flex` instance on the public subnet, SSH key from BV4DB-3,
 
 **State file:** `STATE_FILE=progress/sprint_1/state-compute.json`
 
-**Block volume OCI CLI sequence:**
+**Block volume provisioning via oci_scaffold:**
 
 ```bash
-AD=$(oci compute instance get --instance-id "$COMPUTE_OCID" \
-  --query 'data."availability-domain"' --raw-output)
-
-BV_OCID=$(oci bv volume create \
-  --compartment-id "$COMPARTMENT_OCID" \
-  --availability-domain "$AD" \
-  --display-name "bv4db-bv" \
-  --size-in-gbs 50 \
-  --wait-for-state AVAILABLE \
-  --query 'data.id' --raw-output)
-
-ATTACH_OCID=$(oci compute volume-attachment attach \
-  --instance-id "$COMPUTE_OCID" \
-  --type paravirtualized \
-  --volume-id "$BV_OCID" \
-  --wait-for-state ATTACHED \
-  --query 'data.id' --raw-output)
+ensure-blockvolume.sh   # creates volume + iSCSI attach; writes to compute state
 ```
 
-**On-instance setup:**
+The raw OCI CLI sequence (create volume, attach iSCSI, retrieve IQN/IP/port) is encapsulated inside `ensure-blockvolume.sh` — see BV4DB-4 design for its internal specification. `run_bv_fio.sh` only calls the ensure script and reads the resulting state keys.
+
+**State keys written by ensure-blockvolume.sh:**
+
+| Key | Value |
+| --- | --- |
+| `.blockvolume.ocid` | block volume OCID |
+| `.blockvolume.attachment_ocid` | attachment OCID |
+| `.blockvolume.iqn` | iSCSI IQN |
+| `.blockvolume.ipv4` | iSCSI target IP |
+| `.blockvolume.port` | iSCSI target port |
+
+**On-instance iSCSI login and mount (operator decision: iSCSI):**
 
 ```bash
-sudo mkfs.ext4 /dev/oracleoci/oraclevdb
+# Discover and log in
+sudo iscsiadm -m node -o new -T "$IQN" -p "$IP:$PORT"
+sudo iscsiadm -m node -o update -T "$IQN" -n node.startup -v automatic
+sudo iscsiadm -m node -T "$IQN" -p "$IP:$PORT" -l
+
+# Format and mount (device is /dev/sdb after iSCSI login)
+sudo mkfs.ext4 /dev/sdb
 sudo mkdir -p /mnt/bv
-sudo mount /dev/oracleoci/oraclevdb /mnt/bv
+sudo mount /dev/sdb /mnt/bv
 sudo chown opc:opc /mnt/bv
 ```
 
 ---
 
-## BV4DB-5. fio performance report
+## BV4DB-6. fio performance report
 
 Status: Proposed
 
@@ -356,5 +440,6 @@ Sprint Test Configuration:
 | BV4DB-1 | IT-1 |
 | BV4DB-2 | IT-1, IT-2 |
 | BV4DB-3 | IT-2 |
-| BV4DB-4 | IT-2, IT-3 |
-| BV4DB-5 | IT-4 |
+| BV4DB-4 | IT-1, IT-3 |
+| BV4DB-5 | IT-2, IT-3 |
+| BV4DB-6 | IT-4 |

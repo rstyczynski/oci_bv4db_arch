@@ -9,7 +9,7 @@ Instruction for the implementor: keep analysis, design and implementation as sim
 ## Sprint 1 - Network and compute with block volume fio test
 
 Status: Progress
-Mode: YOLO
+Mode: Managed
 Test: integration
 Regression: none
 
@@ -20,5 +20,6 @@ Backlog Items:
 * BV4DB-1. Compartment for all project resources
 * BV4DB-2. Public network for compute access over SSH
 * BV4DB-3. Shared SSH key stored in OCI Vault for compute access
-* BV4DB-4. Compute instance with block volume and basic fio test
-* BV4DB-5. fio performance report for block volume
+* BV4DB-4. Block volume ensure and teardown scripts in oci_scaffold
+* BV4DB-5. Compute instance with block volume and basic fio test
+* BV4DB-6. fio performance report for block volume

@@ -1,39 +1,45 @@
-# RUP Strikes Back demo
+# oci_bv4db_arch
 
 version: 1
 
-Weather forecast application is three tier application presenting weather information for a given city. Interacts with externals providers to provide data.
-
-This Backlog presents exemplary project coded using RUP Strikes Back method. Exemplary program informs about weather forecast using regular software stack: CLI, REST API and Web UI. Demo is build in phases presenting iterative approach of agentic coding with full traceability.
+OCI Block Volume for Database Architecture project.
 
 ## Backlog
 
 Project aim is to deliver all the features listed in a below Backlog. Backlog Items selected for implementation are added to iterations detailed in `PLAN.md`. Full list of Backlog Items presents general direction and aim for this project.
 
-### RSB-1. Prepare tools and techniques
+### BV4DB-1. Compartment for all project resources
 
-Project is coded using Go! language on OSX, Linux or Windows. It is mandatory to document system configuration to prepare for development and runtime. This is is the moment to select proper public weather service that will be used by this solution.
+All OCI resources created in this project must be isolated in a dedicated compartment to simplify cost tracking, access control, and teardown. The compartment is provisioned using oci_scaffold at path `/oci_bv4db_arch` and is created before any other resource in the project.
 
-### RSB-2. Weather forecast CLI
+Test: all project resources are created inside the `/oci_bv4db_arch` compartment.
 
-Application's foundation is a command-line interface application that provides weather forecast information to users through their terminal. Users can interact with the weather service by typing commands and receiving text-based weather data. This represents the foundational layer establishing core weather data retrieval and display functionality. User provides city name or GPS coordinates to get current weather information and forecast for next 3 days.
+### BV4DB-2. Public network for compute access over SSH
 
-### RSB-3. Weather forecast CLI asks for user's name to remember her/his preferences
+A reusable OCI network environment is needed to host compute instances accessible directly over SSH without bastion. The network consists of a VCN, internet gateway, route table, public subnet, and security list permitting SSH ingress. It is provisioned once using oci_scaffold and reused across all subsequent sprints without being torn down between them.
 
-Application provides personalization by prompting for the user's name and storing their preferences across sessions. The system would remember settings like preferred location, temperature units, or display format. This introduces data persistence and user profile management to make the CLI more user-friendly.
+Test: an instance placed in the subnet is reachable via SSH on its public IP from the internet.
 
-### RSB-4. Weather forecast exposes REST API
+### BV4DB-3. Shared SSH key stored in OCI Vault for compute access
 
-Application provides a RESTful API that exposes weather forecast data through standard HTTP methods. The API enables programmatic access to weather information in formats like JSON, allowing multiple client types to consume the service. This creates a service-oriented architecture that separates data logic from presentation layers. The product is kept in ./weather-api following ./weather-cli approach. Prepare CORS as Web UI will call the API from different origin.
+A single SSH key pair is needed that is shared across all compute instances in the project so that access does not depend on per-instance generated keys. The private key is stored as a secret in a software-defined OCI Vault provisioned by oci_scaffold, and retrieved at instance creation time to avoid storing key material on disk long-term.
 
-### RSB-5. Weather forecast WebUI
+Test: an instance is reachable via SSH using the key retrieved from the vault secret.
 
-Application provides a web-based graphical user interface accessible through browsers. The WebUI would provide an interactive experience with visual elements like weather icons, maps, and charts while consuming the REST API. This represents the most sophisticated presentation layer demonstrating full-stack development with modern frontend frameworks and responsive design. WebUI is another process consuming REST API by http requests. The product is kept in ./weather-web following ./weather-cli and ./weather-api approach.
+### BV4DB-4. Block volume ensure and teardown scripts in oci_scaffold
 
-### RSB-6. WebUI: Add map presentation for city location disambiguation
+oci_scaffold has no support for OCI block volumes, making it impossible to provision and clean up block volumes as part of a scripted cycle. Add `ensure-blockvolume.sh` and `teardown-blockvolume.sh` to oci_scaffold following the same idempotent adopt-or-create pattern used by other ensure scripts. Work is done in a dedicated branch `oci_bv4db_arch` in the oci_scaffold submodule and merged to main when complete.
 
-Enhance the WebUI by integrating a map view that visually presents the location of the searched city. As city names can often be ambiguous (multiple cities with the same name in different regions or countries), this feature will display a map centered on the selected city's coordinates to help users confirm the intended location. The map should update dynamically based on the user's search input and be clearly visible alongside or near the weather data. Incorporate open-source map solutions (such as OpenStreetMap or Leaflet.js) and ensure seamless interaction between the map and the existing REST API-based weather data retrieval. Weather REST API need to return geo-coordinates for searched city to be sure that map shows always the same location that weather REST API uses. 
+Test: a block volume is created, attached to a compute instance, and deleted by the teardown script, with state recorded correctly in the state file.
 
-### RSB-7. WebUI: User clicks on a map to get forecast for this point
+### BV4DB-5. Compute instance with block volume and basic fio test
 
-WebUI enables users to click on any location within the map embedded in the WebUI to instantly receive a weather forecast for that specific point. Upon a map click, the application should extract the corresponding coordinates, request the appropriate weather data from the REST API, and display the forecast details in the user interface. This feature improves interactivity and flexibility by allowing both city-based and arbitrary geographic weather queries directly from the map.
+An AMD64 OCI compute instance with a single attached block volume is needed as the baseline environment for block volume performance research. The instance uses the network from BV4DB-2 and the SSH key from BV4DB-3, is reachable over SSH via a public IP without bastion, and a basic fio benchmark must run against the block volume to confirm it is usable. Compute and block volume are provisioned using oci_scaffold and cleaned up after the test while the network remains intact. Operator may request to keep the infrastructure.
+
+Test: fio completes without error on the attached block volume and the instance is reachable via SSH on its public IP.
+
+### BV4DB-6. fio performance report for block volume
+
+A structured performance report produced by fio is needed as the primary deliverable for block volume benchmarking. The report must cover sequential and random I/O patterns at representative block sizes and capture IOPS, throughput, and latency so that results can be compared across different block volume configurations in later sprints.
+
+Test: fio produces a report file containing IOPS, throughput, and latency metrics for both sequential and random I/O workloads.

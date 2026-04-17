@@ -7,6 +7,13 @@ Welcome! This document is your starting point after checking out this project.
 > - `@rup-manager.md` → `@RUPStrikesBack/.claude/commands/rup-manager.md`
 > - `.claude/commands/` → `RUPStrikesBack/.claude/commands/`
 
+## Project Rules
+
+**Submodule rules:**
+
+- `RUPStrikesBack/` is strictly read-only. Never modify any file inside it. If a change is needed, stop and inform the user.
+- `oci_scaffold/` submodule has its own branch `oci_bv4db_arch` for changes needed by this project. Commits to oci_scaffold go to that branch only — never to oci_scaffold main. This parent project (`oci_bv4db_arch`) always stays on its own `main` branch. Merging oci_scaffold branch to its main is a separate task.
+
 ## Quick Start
 
 To execute a complete development cycle automatically:
