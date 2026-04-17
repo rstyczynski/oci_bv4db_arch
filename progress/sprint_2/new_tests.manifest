@@ -1,0 +1,6 @@
+# Sprint 2 new tests
+integration:test_bv4db_perf.sh:test_IT5_perf_compute_provisioned
+integration:test_bv4db_perf.sh:test_IT6_uhp_volume_attached
+integration:test_bv4db_perf.sh:test_IT7_15min_benchmark_completed
+integration:test_bv4db_perf.sh:test_IT8_analysis_written
+integration:test_bv4db_perf.sh:test_IT9_resources_torn_down

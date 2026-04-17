@@ -1,1 +1,2 @@
 integration:test_bv4db.sh
+integration:test_bv4db_perf.sh
