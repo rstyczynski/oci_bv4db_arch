@@ -351,6 +351,12 @@ The next useful step after this README is to continue turning the scaling paths 
 
 The design guidance in this repository aligns with Oracle documentation in the following areas:
 
+- General Oracle I/O and storage layout design:
+  - <a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">Oracle Database Performance Tuning Guide: I/O Configuration and Design</a>
+- Redo log management and placement:
+  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-the-redo-log.html" target="_blank" rel="noopener noreferrer">Oracle Database 23ai: Managing the Redo Log</a>
+- Redo planning, sizing, and placing redo on different disks from datafiles:
+  - <a href="https://docs.oracle.com/html/E25494_01/onlineredo002.htm" target="_blank" rel="noopener noreferrer">Oracle Database Administrator's Guide: Planning the Redo Log</a>
 - Fast Recovery Area overview and sizing:
   - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html" target="_blank" rel="noopener noreferrer">Oracle Database 19c: About the Fast Recovery Area and Fast Recovery Area Disk Group</a>
 - RMAN environment guidance, including keeping the recovery area separate from active database files:
