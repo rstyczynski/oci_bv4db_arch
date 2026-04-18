@@ -1,370 +1,257 @@
-# Oracle Database on OCI Block Volumes: Practical Sizing and Scalability Guide
+# Oracle Database on OCI Block Volumes: Practical Layout Guide
 
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [What The Project Already Proved](#what-the-project-already-proved)
-- [Storage Domains](#storage-domains)
-  - [DATA](#data)
-  - [REDO](#redo)
-  - [FRA](#fra)
-- [Entry-Level Oracle Database](#entry-level-oracle-database)
-- [Mid-Level Oracle Database](#mid-level-oracle-database)
-- [Top-End Oracle Database](#top-end-oracle-database)
-- [Scalability Scenarios](#scalability-scenarios)
-  - [Scenario 1: Capacity Growth Without Major Throughput Growth](#scenario-1-capacity-growth-without-major-throughput-growth)
-  - [Scenario 2: OLTP Growth With Commit Pressure](#scenario-2-oltp-growth-with-commit-pressure)
-  - [Scenario 3: Recovery and Backup Growth](#scenario-3-recovery-and-backup-growth)
-  - [Scenario 4: Mixed Growth](#scenario-4-mixed-growth)
-- [RMAN Backup During Production Time](#rman-backup-during-production-time)
-- [FIO Testing Model](#fio-testing-model)
-- [Recommended Decision Model](#recommended-decision-model)
-- [Practical Recommendations](#practical-recommendations)
-  - [Entry-Level](#entry-level)
-  - [Mid-Level](#mid-level)
-  - [Top-End](#top-end)
-- [Limits Of This Document](#limits-of-this-document)
+- [Three Practical Layouts](#three-practical-layouts)
+  - [1. Entry-Level Block Volume](#1-entry-level-block-volume)
+  - [2. Single UHP Volume](#2-single-uhp-volume)
+  - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
+- [Measured Comparison](#measured-comparison)
+- [What To Choose](#what-to-choose)
+- [RMAN and FRA During Production](#rman-and-fra-during-production)
+- [FIO Testing Model Used By This Project](#fio-testing-model-used-by-this-project)
 - [Official Oracle References](#official-oracle-references)
 
 ## Introduction
 
-This document summarizes the work completed so far in the OCI Block Volume for Database Architecture project and turns it into practical guidance for Oracle Database storage design on OCI Block Volumes. It is intentionally theoretical: it does not introduce new benchmark runs, live infrastructure, or new automation. Instead, it uses the already completed sprints as evidence for how to think about Oracle storage domains and how to scale them.
+This document is the practical outcome of the work completed so far in this project. It intentionally reduces the discussion to the three OCI block volume layouts that were actually tested and are useful for Oracle Database decisions:
 
-The main conclusion from the project so far is simple: Oracle storage should be treated as three different domains with different performance behavior and different scaling paths.
+1. entry-level block volume
+2. single UHP volume
+3. multiple volumes with Oracle-style storage-domain separation
 
-- `DATA` is the dominant throughput and IOPS domain.
-- `REDO` is the lowest-latency and most serialization-sensitive domain.
-- `FRA` is the recovery and background I/O domain, usually capacity-led but still able to interfere with the rest of the database if placed badly.
+Everything else is secondary. The key project question is simple: when is one volume enough, when is one high-performance volume enough, and when do separate Oracle storage domains become worth it?
 
-The most important practical rule is therefore separation first, optimization second. A simple separated layout is usually more valuable than an advanced but mixed layout.
+Oracle storage still needs to be read through the three familiar domains:
 
-## What The Project Already Proved
-
-Sprint 1 established a basic single-volume baseline and showed that a minimal attached block volume is sufficient for functional database-style fio execution, but not a strong performance profile. Sprint 2 showed how a maximum-performance single-volume configuration improves the ceiling, but still represents only one storage class. Sprint 4 and Sprint 5 are the most useful for Oracle layout decisions because they exercised separate `DATA`, `REDO`, and `FRA` domains concurrently and demonstrated that workload isolation is visible in both fio and device-level metrics.
-
-The practical reading of those sprints is:
-
-- one generic block volume is enough to start, but it is not a good long-term Oracle layout
-- performance-oriented single-volume tuning helps, but does not replace storage-class separation
-- Oracle-style layouts become much more meaningful when `DATA`, `REDO`, and `FRA` are isolated
-- per-job reporting matters because aggregate numbers can hide whether the layout is actually behaving as intended
-
-## Storage Domains
-
-### DATA
-
-`DATA` usually carries the largest blended read/write load and is the first place where throughput and aggregate IOPS matter. This domain benefits most from striping or from moving to higher-performance block volume classes because many Oracle datafile operations parallelize well enough to use that extra bandwidth.
-
-### REDO
-
-`REDO` is different. It is much smaller in capacity terms, but much more sensitive to write latency and write consistency. Practical layouts should keep redo isolated from large random data workloads and recovery-area traffic. Redo rarely needs the largest capacity footprint, but it does need predictable write behavior.
+- `DATA`
+- `REDO`
+- `FRA`
 
 Oracle directly supports separating redo from datafiles to reduce contention and recommends placing multiplexed redo members on different disks:
 <a href="https://docs.oracle.com/html/E25494_01/onlineredo002.htm" target="_blank" rel="noopener noreferrer">Planning the Redo Log</a>.
 
-### FRA
-
-`FRA` is often dominated by archivelogs, backup-related activity, and recovery-oriented background traffic. It can become large before it becomes fast. In smaller environments it can live on a simpler layout, but in larger environments it should still remain isolated so that backup or recovery traffic does not distort foreground database behavior.
-
-Oracle recommends placing the recovery area on a separate disk from the active database area:
+Oracle also recommends placing the recovery area on a separate disk from the active database area:
 <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Configuring the RMAN Environment</a>.
 
-## Entry-Level Oracle Database
+## Three Practical Layouts
 
-An entry-level Oracle Database is the smallest serious deployment that still respects Oracle storage domains. It is meant for development, testing, small internal systems, and low-concurrency production cases where cost and simplicity matter more than extracting every last IOPS.
+### 1. Entry-Level Block Volume
 
-A single block volume is acceptable for a very small, non-critical database such as a disposable lab system, a proof of concept, or a lightweight development environment. In that case, simplicity can matter more than storage-domain separation. The tradeoff is that `DATA`, `REDO`, and `FRA` are no longer isolated, so diagnosis, growth, and operational discipline become weaker.
+This is the smallest practical starting point. It is represented by Sprint 1: a basic block volume attached to compute, with simple fio validation and no Oracle-style storage separation.
 
-This is also consistent with Oracle's broader I/O design guidance, which says a single striped volume can provide adequate performance in many situations when manageability is the priority:
+Practical reference:
+
+- analysis: [progress/sprint_1/fio_analysis.md](../sprint_1/fio_analysis.md)
+- runner: [tools/run_bv_fio.sh](../../tools/run_bv_fio.sh)
+
+What it is good for:
+
+- lab environments
+- development and proof of concept
+- very small non-critical databases
+- first functional validation of compute plus block volume
+
+What it is not good for:
+
+- predictable Oracle production behavior
+- isolation between `DATA`, `REDO`, and `FRA`
+- meaningful scaling
+
+Measured project conclusion:
+
+- it works
+- it is enough to start
+- it is not a strong performance layout
+
+This remains consistent with Oracle's broader I/O design guidance, which allows simpler volume layouts when manageability matters more than full isolation:
 <a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">I/O Configuration and Design</a>.
 
-Practical target characteristics:
+### 2. Single UHP Volume
 
-- small database size
-- limited concurrent users or sessions
-- moderate growth expectations
-- low operational complexity requirement
+This is the “one fast disk” option. The project tested it in two ways:
 
-Recommended layout:
-
-- one volume for `DATA`
-- one volume for `REDO`
-- one volume for `FRA`
-
-Why this is enough:
-
-- the biggest operational mistake at small scale is mixing everything together
-- even when performance demand is modest, isolation keeps behavior understandable
-- this layout is easy to operate, easy to reason about, and easy to grow later
-
-What not to do:
-
-- do not start with a single shared volume unless the environment is truly disposable
-- do not over-engineer with too many striped components if the database is small and the operator maturity is low
-
-Practical exception:
-
-- a single BV is acceptable for tiny non-critical databases
-- once the database is a real production system or expected to grow, separate `DATA`, `REDO`, and `FRA`
-
-Scalability path:
-
-- first raise performance on the `DATA` volume
-- keep `REDO` isolated rather than making it larger without reason
-- enlarge `FRA` primarily for retention and recovery needs
-
-## Mid-Level Oracle Database
-
-A mid-level Oracle Database is the point where storage design should become explicitly performance-aware. This is the common transactional production tier: meaningful concurrency, real growth, and visible contention if domains are mixed.
-
-Practical target characteristics:
-
-- sustained production workload
-- noticeable random I/O pressure
-- real redo generation rate
-- growing recovery footprint
-
-Recommended layout:
-
-- striped `DATA` built from multiple block volumes
-- isolated `REDO`, either on a dedicated single high-performing volume or a small dedicated stripe when justified
-- dedicated `FRA` volume or volume set sized for retention and recovery operations
-
-Why this layout is the practical middle ground:
-
-- data is the easiest domain to scale horizontally through striping
-- redo should be optimized for predictability, not just size
-- FRA should remain separate because backup and archive activity is operationally bursty
-
-Operational guidance:
-
-- grow `DATA` first when throughput or IOPS ceilings appear
-- tune `REDO` for latency stability rather than headline throughput
-- treat `FRA` as both a capacity and interference-control domain
-
-This is also the level where the Sprint 4 and Sprint 5 findings matter most. The project already showed that separate storage classes behave differently under concurrent load. That means a mid-level deployment should assume separation as a baseline architectural rule, not an optional refinement.
-
-## Top-End Oracle Database
-
-A top-end Oracle Database is a deployment where storage layout is driven by predictable performance engineering rather than by convenience. This includes very large OLTP systems, mixed high-throughput and high-recovery environments, and systems where storage bottlenecks directly translate into business risk.
-
-Practical target characteristics:
-
-- very high concurrency
-- sustained large data-domain pressure
-- strong sensitivity to write-latency spikes in redo
-- large and active recovery area
-- expectation of capacity and performance growth over time
-
-Recommended layout:
-
-- multi-volume striped `DATA` domain sized for the target throughput and IOPS envelope
-- dedicated high-performance `REDO` domain, isolated from all other activity
-- dedicated `FRA` domain sized independently for recovery policy, backup cadence, and archive generation
-- explicit attention to pathing, attachment model, and per-domain performance ceilings
-
-At this scale, the architecture should assume that each domain has an independent growth path:
-
-- `DATA` grows with database size, query complexity, and concurrency
-- `REDO` grows with transaction intensity and commit behavior
-- `FRA` grows with retention, backup design, and recovery objectives
-
-The top-end lesson from the project so far is not that one exact volume count has been proved optimal. The useful lesson is that domain isolation and per-domain observability are prerequisites before deeper tuning becomes meaningful.
-
-## Scalability Scenarios
-
-### Scenario 1: Capacity Growth Without Major Throughput Growth
-
-This is common in systems where the database becomes larger but user concurrency does not change much.
-
-Practical response:
-
-- add capacity primarily to `DATA` and `FRA`
-- preserve the same domain split
-- avoid redesign unless service levels are changing
-
-### Scenario 2: OLTP Growth With Commit Pressure
-
-This is the classic transactional scaling problem: more sessions, more random I/O, and more sensitivity to commit latency.
-
-Practical response:
-
-- scale `DATA` for aggregate IOPS and throughput
-- keep `REDO` isolated and watch latency before throughput
-- do not let `FRA` activity share the same hot path
-
-### Scenario 3: Recovery and Backup Growth
-
-Some systems stay operationally stable in foreground workload but grow heavily in backup and archive demands.
-
-Practical response:
-
-- scale `FRA` independently
-- keep backup-oriented load away from `DATA` and `REDO`
-- treat retention policy and archive rate as first-class sizing inputs
-
-### Scenario 4: Mixed Growth
-
-This is the most realistic enterprise path: data gets larger, concurrency rises, and recovery requirements become stricter at the same time.
-
-Practical response:
-
-- scale each domain independently
-- avoid any design that assumes one block volume profile is suitable for all three domains
-- increase observability before increasing complexity
-
-## RMAN Backup During Production Time
-
-Running RMAN backup while the database is open and serving production workload is normal practice. The important design question is not whether RMAN can run online, but how backup I/O interacts with foreground database I/O.
-
-Oracle explicitly states that if the database runs in `ARCHIVELOG` mode, then it can be backed up while open:
-<a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Getting Started with RMAN</a>.
-
-Practical effects of RMAN during production:
-
-- RMAN increases read pressure on `DATA`
-- RMAN increases write pressure on the backup target, often `FRA`
-- RMAN can increase archive-related activity and therefore raise indirect pressure around `REDO` handling
-
-This means backup traffic should be treated as a real sizing and isolation factor:
-
-- on a single-BV layout, RMAN may be acceptable for very small non-critical systems, but backup traffic can interfere directly with foreground workload
-- on a separated layout, `FRA` absorbs backup and recovery-oriented traffic much more cleanly
-- on mid-level and top-end systems, daytime backup activity is a strong reason to keep `FRA` isolated from active `DATA` and `REDO` paths
-
-Practical guidance:
-
-- if production backups run during business hours, do not treat `FRA` as an optional storage domain
-- if the database is small, one BV may still work, but backup windows will be less predictable
-- if backup activity is frequent or heavy, storage separation becomes operationally important even before the database reaches high-end scale
-
-Oracle also documents that archived redo logs can be directed into the Fast Recovery Area by using `USE_DB_RECOVERY_FILE_DEST`:
-<a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Managing Archived Redo Log Files</a>.
-
-## FIO Testing Model
-
-The project does not use one single fio workload for every storage question. It uses several benchmark models, with each model chosen to answer a different architectural question.
-
-### 1. Baseline Single-Volume Model
-
-Purpose:
-
-- prove that the compute plus block volume path works end to end
-- establish a functional and performance baseline
-- capture simple sequential and random behavior on a minimal layout
-
-Practical reference:
-
-- [progress/sprint_1/fio_analysis.md](../sprint_1/fio_analysis.md)
-- runner and embedded fio workload:
-  - [tools/run_bv_fio.sh](../../tools/run_bv_fio.sh)
-
-### 2. Maximum-Performance Single-Volume Model
-
-Purpose:
-
-- measure the best performance envelope that a single tuned block volume layout can provide
-- separate “platform ceiling” questions from “Oracle layout” questions
-
-Practical reference:
-
-- [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
-- runner and embedded fio workload:
-  - [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
-
-### 3. Mixed 8k Database-Oriented Model
-
-Purpose:
-
-- approximate a database-like mixed random workload
-- evaluate behavior under a read/write mix closer to transactional systems than pure sequential tests
-
-Practical reference:
-
-- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](../sprint_3/fio-analysis-mixed8k-smoke.md)
-- fio profile:
-  - [progress/sprint_3/mixed-8k.fio](../sprint_3/mixed-8k.fio)
-
-### 4. Oracle-Style Concurrent Storage-Class Model
-
-Purpose:
-
-- validate the three-domain model directly
-- run `DATA`, `REDO`, and `FRA` style loads concurrently
-- confirm that activity lands on the intended storage classes rather than only looking at aggregate performance
+- Sprint 2: maximum-performance single-volume benchmark
+- Sprint 8: same Oracle-style fio job and same guest-visible filesystem/LVM layout as Sprint 5, but all backed by one single UHP volume
 
 Practical references:
 
-- corrected Oracle-style rerun:
-  - [progress/sprint_5/fio-analysis-oracle-integration.md](../sprint_5/fio-analysis-oracle-integration.md)
-  - fio profile:
-    - [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
+- Sprint 2 analysis: [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
+- Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](../sprint_8/fio-analysis-oracle-integration.md)
+- runner: [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
+- Oracle-layout single-UHP execution: [tools/run_bv_fio_oracle.sh](../../tools/run_bv_fio_oracle.sh)
 
-### Why The Model Uses More Than One Benchmark
+What it is good for:
 
-This project treats fio as a validation tool, not as a single universal score generator.
+- small to lower-mid production systems
+- cases where operator simplicity matters
+- environments that need more ceiling than a generic entry-level volume
+- cases where one device is acceptable but the device should be fast
 
-- simple sequential/random tests answer baseline capability questions
-- tuned single-volume tests answer ceiling questions
-- mixed `8k` tests answer database-like contention questions
-- Oracle-style concurrent tests answer storage-domain isolation questions
+What it is not good for:
 
-The most important lesson is that aggregate numbers alone are not enough for Oracle storage decisions. The useful benchmark model is the one that matches the design question being asked.
+- true storage-domain isolation
+- keeping `DATA`, `REDO`, and `FRA` from competing with each other under load
+- scaling by domain
 
-## Recommended Decision Model
+Measured project conclusion:
 
-When deciding how to configure OCI block volumes for Oracle Database, the operator should make decisions in this order:
+- a single UHP volume is much better than an entry-level generic volume
+- it can sustain mixed Oracle-style load
+- but once all domains are active together, the single device becomes the contention point
 
-1. Separate `DATA`, `REDO`, and `FRA`.
-2. Decide which domain is the first real performance risk.
-3. Scale `DATA` horizontally before overcomplicating smaller domains.
-4. Keep `REDO` optimized for stable write behavior.
-5. Size `FRA` for recovery policy and isolation, not only for spare capacity.
-6. Add complexity only when a clear bottleneck justifies it.
+The strongest evidence is Sprint 8: the guest kept the same visible layout as the separated Oracle model, but because everything sat on one underlying UHP volume, `DATA` and `REDO` performance dropped materially versus the multi-volume design.
 
-This keeps the design practical. It prevents premature optimization at the low end and prevents false simplicity at the high end.
+### 3. Multiple Volumes With Storage-Domain Separation
 
-## Practical Recommendations
+This is the practical Oracle layout. The validated project version is Sprint 5:
 
-### Entry-Level
+- striped `DATA`
+- separate `REDO`
+- separate `FRA`
+- valid per-job fio reporting
 
-- use three domains even when each domain is only one volume
-- optimize for clarity and clean separation
-- grow `DATA` first if pressure appears
+Practical references:
 
-### Mid-Level
+- analysis: [progress/sprint_5/fio-analysis-oracle-integration.md](../sprint_5/fio-analysis-oracle-integration.md)
+- fio job: [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
+- runner: [tools/run_bv_fio_oracle_sprint5.sh](../../tools/run_bv_fio_oracle_sprint5.sh)
 
-- stripe `DATA`
-- keep `REDO` isolated and performance-aware
-- give `FRA` its own independent sizing path
+What it is good for:
 
-### Top-End
+- serious production systems
+- systems with daytime backup and archive activity
+- systems where commit-path stability matters
+- systems expected to grow in different ways across `DATA`, `REDO`, and `FRA`
 
-- assume each domain needs its own performance model
-- scale domains independently
-- insist on per-domain observability before trusting aggregate benchmark numbers
+What it is not:
 
-## Limits Of This Document
+- the simplest layout
+- the cheapest layout
+- necessarily the final top-end architecture for every Oracle system
 
-This guide is intentionally practical but theoretical. It does not claim that one exact Oracle volume count, one exact VPU setting, or one exact shape is universally correct. It also does not replace workload-specific measurement. What it does provide is a grounded design model based on the results already collected in this project.
+Measured project conclusion:
 
-The next value from this document is not more prose. The next value is turning the identified scaling paths and lifecycle questions into follow-on backlog items and future sprints.
+- this is the first layout in the project that behaves like an Oracle storage architecture rather than a single-disk benchmark
+- it preserves domain separation under concurrent load
+- it gives the clearest path for scaling and troubleshooting
+
+## Measured Comparison
+
+The project now supports a direct three-step reading.
+
+### Entry-Level Block Volume
+
+- baseline only
+- valid for simple environments
+- weakest performance profile
+- no domain isolation
+
+### Single UHP Volume
+
+- stronger single-device performance
+- simple operational model
+- still one contention domain underneath
+- better than entry-level, but not a replacement for storage separation
+
+### Multiple Volumes With Storage-Domain Separation
+
+- strongest Oracle-style result
+- `DATA`, `REDO`, and `FRA` remain independently visible
+- best operational clarity
+- best foundation for growth by domain
+
+### Direct Sprint 5 vs Sprint 8 comparison
+
+This is the most useful comparison in the repository because the fio job, compute shape, filesystem layout, and LVM structure were kept the same. Only the underlying block volume topology changed.
+
+Sprint 5, separated volumes:
+
+- `data-8k` worker: about `99 MB/s` read and `43 MB/s` write per worker
+- `redo`: about `1532 IOPS`
+- `fra-1m`: about `24 MB/s` read and `23 MB/s` write on the balanced FRA volume
+
+Sprint 8, single UHP volume:
+
+- `data-8k` worker: about `37 MB/s` read and `16 MB/s` write per worker
+- `redo`: about `292 IOPS`
+- `fra-1m`: about `120 MB/s` read and `120 MB/s` write
+
+Interpretation:
+
+- Sprint 8 lets FRA run much faster because FRA moved from a balanced volume to a UHP-backed partition
+- but that gain is paid for by sharing the same UHP device with `DATA` and `REDO`
+- Sprint 5 keeps FRA slower, but it protects `DATA` and `REDO` from FRA traffic
+
+That is the central lesson of the project so far.
+
+## What To Choose
+
+Use entry-level block volume when:
+
+- the database is tiny
+- the environment is non-critical
+- simplicity is more important than tuning discipline
+
+Use a single UHP volume when:
+
+- the database is still relatively small
+- more headroom is needed than the entry-level layout can provide
+- operator simplicity is still a strong requirement
+- some cross-domain interference is acceptable
+
+Use multiple volumes with storage-domain separation when:
+
+- the database is real production
+- RMAN and archive activity can run during active hours
+- commit-path behavior matters
+- the system is expected to scale
+- you want a layout that behaves like Oracle rather than like one fast shared disk
+
+## RMAN and FRA During Production
+
+Running RMAN backup while the database is open is normal Oracle practice:
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Getting Started with RMAN</a>.
+
+The practical storage question is where the backup traffic goes.
+
+- entry-level block volume: backup traffic competes with everything else immediately
+- single UHP volume: backup traffic has more raw capacity available, but still shares one contention domain
+- multiple separated volumes: `FRA` can absorb backup and archive activity without directly becoming the same device as `DATA` and `REDO`
+
+Oracle also documents that archived redo logs can be directed into the Fast Recovery Area:
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Managing Archived Redo Log Files</a>.
+
+That is why `FRA` matters even when the conversation starts as “just storage for backups”.
+
+## FIO Testing Model Used By This Project
+
+The project used three practical fio model families that map directly to the three layouts above.
+
+### Entry-level baseline
+
+- analysis: [progress/sprint_1/fio_analysis.md](../sprint_1/fio_analysis.md)
+- runner: [tools/run_bv_fio.sh](../../tools/run_bv_fio.sh)
+
+### Single-volume performance
+
+- analysis: [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
+- runner: [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
+
+### Oracle-style concurrent workload
+
+- separated-volume result: [progress/sprint_5/fio-analysis-oracle-integration.md](../sprint_5/fio-analysis-oracle-integration.md)
+- single-UHP result: [progress/sprint_8/fio-analysis-oracle-integration.md](../sprint_8/fio-analysis-oracle-integration.md)
+- fio job: [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
+
+This is enough to support the current practical recommendation set. More benchmark variety is possible, but it is not required to explain the main storage decision.
 
 ## Official Oracle References
 
-The practical guidance in this document is supported by Oracle Database documentation in the following areas:
-
-- General Oracle I/O and storage layout design:
-  - <a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">Oracle Database Performance Tuning Guide: I/O Configuration and Design</a>
-- Redo log management and placement:
-  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-the-redo-log.html" target="_blank" rel="noopener noreferrer">Oracle Database 23ai: Managing the Redo Log</a>
-- Redo planning, sizing, and placing redo on different disks from datafiles:
-  - <a href="https://docs.oracle.com/html/E25494_01/onlineredo002.htm" target="_blank" rel="noopener noreferrer">Oracle Database Administrator's Guide: Planning the Redo Log</a>
-- Fast Recovery Area overview and sizing:
-  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html" target="_blank" rel="noopener noreferrer">Oracle Database 19c: About the Fast Recovery Area and Fast Recovery Area Disk Group</a>
-- RMAN configuration guidance, including the recommendation to keep the recovery area separate from active database files:
-  - <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Oracle Database Backup and Recovery User's Guide: Configuring the RMAN Environment</a>
-- Archived redo log behavior when Fast Recovery Area is configured:
-  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Oracle Database 23ai: Managing Archived Redo Log Files</a>
-- RMAN guidance for backing up an open database:
-  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Oracle Database 21c: Getting Started with RMAN</a>
+- <a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">Oracle Database Performance Tuning Guide: I/O Configuration and Design</a>
+- <a href="https://docs.oracle.com/html/E25494_01/onlineredo002.htm" target="_blank" rel="noopener noreferrer">Oracle Database Administrator's Guide: Planning the Redo Log</a>
+- <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-the-redo-log.html" target="_blank" rel="noopener noreferrer">Oracle Database: Managing the Redo Log</a>
+- <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Oracle Database Backup and Recovery User's Guide: Configuring the RMAN Environment</a>
+- <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Oracle Database Backup and Recovery User's Guide: Getting Started with RMAN</a>
+- <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Oracle Database: Managing Archived Redo Log Files</a>
