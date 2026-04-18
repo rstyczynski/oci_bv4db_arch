@@ -82,6 +82,7 @@ Practical references:
 
 - Sprint 2 analysis: [progress/sprint_2/fio_analysis.md](progress/sprint_2/fio_analysis.md)
 - Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
+- fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
 - runner: [tools/run_bv_fio_perf.sh](tools/run_bv_fio_perf.sh)
 
 ### 3. Multiple Volumes With Storage-Domain Separation

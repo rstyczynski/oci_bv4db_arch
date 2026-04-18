@@ -79,6 +79,7 @@ Practical references:
 
 - Sprint 2 analysis: [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
 - Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](../sprint_8/fio-analysis-oracle-integration.md)
+- fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
 - runner: [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
 - Oracle-layout single-UHP execution: [tools/run_bv_fio_oracle.sh](../../tools/run_bv_fio_oracle.sh)
 
