@@ -133,3 +133,9 @@ rate=120M
 ```
 
 Test: the corrected fio profile produces distinct per-job results for `data-8k`, `redo`, and `fra-1m`, and the rerun confirms the intended Oracle-style storage-class isolation with valid raw JSON artifacts and updated analysis.
+
+### BV4DB-11. Sync oci_scaffold branch with upstream main and smoke-validate block volume ensure
+
+The project branch `oci_scaffold/oci_bv4db_arch` must be synchronized with `oci_scaffold/main` because the block volume resource work has been adopted upstream. The sync is performed by merging `main` into the project branch in the submodule, then executing a trivial smoke validation against the merged branch state to confirm that `ensure-blockvolume.sh` still works in this project after the upstream update. After the sync, further scaffold changes for this project continue on the `oci_bv4db_arch` branch.
+
+Test: after merging `oci_scaffold/main` into `oci_scaffold/oci_bv4db_arch`, a smoke run provisions ephemeral compute, successfully runs `ensure-blockvolume.sh`, records an attached block volume in state, and tears the resources down cleanly.

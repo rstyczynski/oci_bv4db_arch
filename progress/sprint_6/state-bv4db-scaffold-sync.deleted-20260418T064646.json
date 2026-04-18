@@ -1,0 +1,50 @@
+{
+  "summary": {
+    "created": 6,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "93727-18457-1776494589",
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-18T06:46:46Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-scaffold-sync",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E4.Flex",
+    "compute_ocpus": 1,
+    "compute_memory_gb": 8,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "bv_size_gb": 50,
+    "bv_attach_type": "iscsi"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyictheyzknojvys5o6rqunqqw3ivgooyne5lbahgyaeae6a",
+    "created": true,
+    "name": "bv4db-scaffold-sync-instance",
+    "public_ip": "144.24.244.84",
+    "private_ip": "10.0.0.67",
+    "deleted": true
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgda2pifgtm3jxcua6tnooalmas7t6jyk527iria7seycq4wg7ksa",
+    "attachment_ocid": "",
+    "device_path": "",
+    "vpus_per_gb": 10,
+    "iqn": "iqn.2015-12.com.oracleiaas:b9455b18-5f36-46cc-a13d-40de5aef85c1",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "deleted": true
+  }
+}

@@ -75,3 +75,16 @@ Sprint 5 reexecutes the Sprint 4 Oracle-style storage layout with a corrected fi
 Backlog Items:
 
 * BV4DB-10. Reexecute Oracle-style layout with corrected fio job reporting
+
+## Sprint 6 - Sync oci_scaffold branch and validate block volume ensure
+
+Status: Done
+Mode: YOLO
+Test: smoke
+Regression: none
+
+Sprint 6 merges `oci_scaffold/main` into the `oci_scaffold/oci_bv4db_arch` branch and runs a minimal smoke validation to confirm that `ensure-blockvolume.sh` still works from the merged scaffold branch state. The smoke is intentionally trivial and validates only ephemeral compute plus block volume ensure/attach/teardown behavior.
+
+Backlog Items:
+
+* BV4DB-11. Sync oci_scaffold branch with upstream main and smoke-validate block volume ensure
