@@ -128,15 +128,24 @@ PROGRESS_BOARD.md       execution status board
 
 `REDO` is different. It is much smaller in capacity terms, but much more sensitive to write latency and write consistency. Practical layouts should keep redo isolated from large random data workloads and recovery-area traffic. Redo rarely needs the largest capacity footprint, but it does need predictable write behavior.
 
+Oracle directly supports separating redo from datafiles to reduce contention and recommends placing multiplexed redo members on different disks:
+<a href="https://docs.oracle.com/html/E25494_01/onlineredo002.htm" target="_blank" rel="noopener noreferrer">Planning the Redo Log</a>.
+
 ### FRA
 
 `FRA` is often dominated by archivelogs, backup-related activity, and recovery-oriented background traffic. It can become large before it becomes fast. In smaller environments it can live on a simpler layout, but in larger environments it should still remain isolated so that backup or recovery traffic does not distort foreground database behavior.
+
+Oracle recommends placing the recovery area on a separate disk from the active database area:
+<a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Configuring the RMAN Environment</a>.
 
 ## Entry-Level Oracle Database
 
 An entry-level Oracle Database is the smallest serious deployment that still respects Oracle storage domains. It is meant for development, testing, small internal systems, and low-concurrency production cases where cost and simplicity matter more than extracting every last IOPS.
 
 A single block volume is acceptable for a very small, non-critical database such as a disposable lab system, a proof of concept, or a lightweight development environment. In that case, simplicity can matter more than storage-domain separation. The tradeoff is that `DATA`, `REDO`, and `FRA` are no longer isolated, so diagnosis, growth, and operational discipline become weaker.
+
+This is also consistent with Oracle's broader I/O design guidance, which says a single striped volume can provide adequate performance in many situations when manageability is the priority:
+<a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">I/O Configuration and Design</a>.
 
 Practical target characteristics:
 
@@ -279,6 +288,9 @@ Practical response:
 
 Running RMAN backup while the database is open and serving production workload is normal practice. The important design question is not whether RMAN can run online, but how backup I/O interacts with foreground database I/O.
 
+Oracle explicitly states that if the database runs in `ARCHIVELOG` mode, then it can be backed up while open:
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Getting Started with RMAN</a>.
+
 Practical effects of RMAN during production:
 
 - RMAN increases read pressure on `DATA`
@@ -296,6 +308,9 @@ Practical guidance:
 - if production backups run during business hours, do not treat `FRA` as an optional storage domain
 - if the database is small, one BV may still work, but backup windows will be less predictable
 - if backup activity is frequent or heavy, storage separation becomes operationally important even before the database reaches high-end scale
+
+Oracle also documents that archived redo logs can be directed into the Fast Recovery Area by using `USE_DB_RECOVERY_FILE_DEST`:
+<a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Managing Archived Redo Log Files</a>.
 
 ## Recommended Decision Model
 
