@@ -366,10 +366,6 @@ Purpose:
 
 Practical references:
 
-- failed first attempt with invalid grouped reporting:
-  - [progress/sprint_4/sprint_4_tests.md](progress/sprint_4/sprint_4_tests.md)
-  - fio profile:
-    - [progress/sprint_4/oracle-layout.fio](progress/sprint_4/oracle-layout.fio)
 - corrected Oracle-style rerun:
   - [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
   - fio profile:
