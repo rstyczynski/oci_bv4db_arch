@@ -283,10 +283,10 @@ The next value from this document is not more prose. The next value is turning t
 The practical guidance in this document is supported by Oracle Database documentation in the following areas:
 
 - Fast Recovery Area overview and sizing:
-  - https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html
+  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html" target="_blank" rel="noopener noreferrer">Oracle Database 19c: About the Fast Recovery Area and Fast Recovery Area Disk Group</a>
 - RMAN configuration guidance, including the recommendation to keep the recovery area separate from active database files:
-  - https://docs.oracle.com/html/E10642_06/rcmconfb.htm
+  - <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Oracle Database Backup and Recovery User's Guide: Configuring the RMAN Environment</a>
 - Archived redo log behavior when Fast Recovery Area is configured:
-  - https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html
+  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Oracle Database 23ai: Managing Archived Redo Log Files</a>
 - RMAN guidance for backing up an open database:
-  - https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html
+  - <a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html" target="_blank" rel="noopener noreferrer">Oracle Database 21c: Getting Started with RMAN</a>
