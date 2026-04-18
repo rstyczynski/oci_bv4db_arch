@@ -24,6 +24,7 @@
   - [Mid-Level](#mid-level)
   - [Top-End](#top-end)
 - [Limits Of This Document](#limits-of-this-document)
+- [Official Oracle References](#official-oracle-references)
 
 ## Introduction
 
@@ -276,3 +277,16 @@ This does not mean the command model is already decided. It means the Oracle sto
 This guide is intentionally practical but theoretical. It does not claim that one exact Oracle volume count, one exact VPU setting, or one exact shape is universally correct. It also does not replace workload-specific measurement. What it does provide is a grounded design model based on the results already collected in this project.
 
 The next value from this document is not more prose. The next value is turning the identified scaling paths and lifecycle questions into follow-on backlog items and future sprints.
+
+## Official Oracle References
+
+The practical guidance in this document is supported by Oracle Database documentation in the following areas:
+
+- Fast Recovery Area overview and sizing:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html
+- RMAN configuration guidance, including the recommendation to keep the recovery area separate from active database files:
+  - https://docs.oracle.com/html/E10642_06/rcmconfb.htm
+- Archived redo log behavior when Fast Recovery Area is configured:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html
+- RMAN guidance for backing up an open database:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html

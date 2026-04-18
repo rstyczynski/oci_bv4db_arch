@@ -33,6 +33,7 @@ This repository started as a benchmarking project and has grown into two things:
   - [Mid-Level](#mid-level)
   - [Top-End](#top-end)
 - [Limits](#limits)
+- [Official Oracle References](#official-oracle-references)
 
 ## Project Scope
 
@@ -345,3 +346,16 @@ The most important constraint is resource ownership. Update-style operations are
 This README is practical but not normative. It does not claim that one exact Oracle volume count, one exact VPU setting, or one exact OCI shape is universally correct. It also does not replace workload-specific measurement. It summarizes the project’s current evidence and turns it into design guidance.
 
 The next useful step after this README is to continue turning the scaling paths and lifecycle questions into new backlog items and follow-on sprints.
+
+## Official Oracle References
+
+The design guidance in this repository aligns with Oracle documentation in the following areas:
+
+- Fast Recovery Area overview and sizing:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/19/ntdbi/about-fast-recovery-area-and-fast-recovery-area-disk-group.html
+- RMAN environment guidance, including keeping the recovery area separate from active database files:
+  - https://docs.oracle.com/html/E10642_06/rcmconfb.htm
+- Archived redo log behavior with Fast Recovery Area:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html
+- RMAN online backup of an open database:
+  - https://docs.oracle.com/en/database/oracle/oracle-database/21/bradv/getting-started-rman.html
