@@ -52,34 +52,34 @@ Those domains do not behave the same way, do not scale the same way, and should 
 The project already completed a sequence of practical sprints:
 
 - Sprint 1: baseline compute and block volume benchmark, plus foundational OCI networking, vault, SSH, and scaffold work
-  - design: [progress/sprint_1/sprint_1_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/sprint_1_design.md)
-  - tests: [progress/sprint_1/sprint_1_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/sprint_1_tests.md)
-  - analysis: [progress/sprint_1/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/fio_analysis.md)
+  - design: [progress/sprint_1/sprint_1_design.md](progress/sprint_1/sprint_1_design.md)
+  - tests: [progress/sprint_1/sprint_1_tests.md](progress/sprint_1/sprint_1_tests.md)
+  - analysis: [progress/sprint_1/fio_analysis.md](progress/sprint_1/fio_analysis.md)
 - Sprint 2: maximum-performance single-volume benchmark
-  - design: [progress/sprint_2/sprint_2_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/sprint_2_design.md)
-  - tests: [progress/sprint_2/sprint_2_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/sprint_2_tests.md)
-  - analysis: [progress/sprint_2/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/fio_analysis.md)
+  - design: [progress/sprint_2/sprint_2_design.md](progress/sprint_2/sprint_2_design.md)
+  - tests: [progress/sprint_2/sprint_2_tests.md](progress/sprint_2/sprint_2_tests.md)
+  - analysis: [progress/sprint_2/fio_analysis.md](progress/sprint_2/fio_analysis.md)
 - Sprint 3: mixed `8k` database-oriented fio profile
-  - design: [progress/sprint_3/sprint_3_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/sprint_3_design.md)
-  - tests: [progress/sprint_3/sprint_3_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/sprint_3_tests.md)
+  - design: [progress/sprint_3/sprint_3_design.md](progress/sprint_3/sprint_3_design.md)
+  - tests: [progress/sprint_3/sprint_3_tests.md](progress/sprint_3/sprint_3_tests.md)
 - Sprint 4: first Oracle-style multi-domain layout, later marked failed because fio grouped reporting hid per-job behavior
-  - design: [progress/sprint_4/sprint_4_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/sprint_4_design.md)
-  - tests: [progress/sprint_4/sprint_4_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/sprint_4_tests.md)
+  - design: [progress/sprint_4/sprint_4_design.md](progress/sprint_4/sprint_4_design.md)
+  - tests: [progress/sprint_4/sprint_4_tests.md](progress/sprint_4/sprint_4_tests.md)
 - Sprint 5: corrected Oracle-style rerun with valid per-job reporting for `DATA`, `REDO`, and `FRA`
-  - design: [progress/sprint_5/sprint_5_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/sprint_5_design.md)
-  - tests: [progress/sprint_5/sprint_5_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/sprint_5_tests.md)
-  - integration analysis: [progress/sprint_5/fio-analysis-oracle-integration.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/fio-analysis-oracle-integration.md)
+  - design: [progress/sprint_5/sprint_5_design.md](progress/sprint_5/sprint_5_design.md)
+  - tests: [progress/sprint_5/sprint_5_tests.md](progress/sprint_5/sprint_5_tests.md)
+  - integration analysis: [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
 - Sprint 6: `oci_scaffold` branch sync with upstream `main` and smoke validation of block volume ensure behavior
-  - design: [progress/sprint_6/sprint_6_design.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_6/sprint_6_design.md)
-  - tests: [progress/sprint_6/sprint_6_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_6/sprint_6_tests.md)
+  - design: [progress/sprint_6/sprint_6_design.md](progress/sprint_6/sprint_6_design.md)
+  - tests: [progress/sprint_6/sprint_6_tests.md](progress/sprint_6/sprint_6_tests.md)
 - Sprint 7: documentation-only Oracle sizing and scalability guide
-  - guide: [progress/sprint_7/oracle_block_volume_sizing_guide.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_7/oracle_block_volume_sizing_guide.md)
+  - guide: [progress/sprint_7/oracle_block_volume_sizing_guide.md](progress/sprint_7/oracle_block_volume_sizing_guide.md)
 
 Status tracking lives in:
 
-- [PLAN.md](/Users/rstyczynski/projects/oci_bv4db_arch/PLAN.md)
-- [PROGRESS_BOARD.md](/Users/rstyczynski/projects/oci_bv4db_arch/PROGRESS_BOARD.md)
-- [BACKLOG.md](/Users/rstyczynski/projects/oci_bv4db_arch/BACKLOG.md)
+- [PLAN.md](PLAN.md)
+- [PROGRESS_BOARD.md](PROGRESS_BOARD.md)
+- [BACKLOG.md](BACKLOG.md)
 
 ## Current Automation Scope
 
@@ -95,12 +95,12 @@ Main scope:
 
 Primary scripts:
 
-- [tools/setup_infra.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/setup_infra.sh)
-- [tools/run_bv_fio.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio.sh)
-- [tools/run_bv_fio_perf.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_perf.sh)
-- [tools/run_bv_fio_mixed8k.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_mixed8k.sh)
-- [tools/run_bv_fio_oracle.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_oracle.sh)
-- [tools/run_bv_fio_oracle_sprint5.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_oracle_sprint5.sh)
+- [tools/setup_infra.sh](tools/setup_infra.sh)
+- [tools/run_bv_fio.sh](tools/run_bv_fio.sh)
+- [tools/run_bv_fio_perf.sh](tools/run_bv_fio_perf.sh)
+- [tools/run_bv_fio_mixed8k.sh](tools/run_bv_fio_mixed8k.sh)
+- [tools/run_bv_fio_oracle.sh](tools/run_bv_fio_oracle.sh)
+- [tools/run_bv_fio_oracle_sprint5.sh](tools/run_bv_fio_oracle_sprint5.sh)
 
 This README does not try to preserve outdated quick-start examples from the earliest project state. The repository evolved significantly beyond Sprint 1, including a move away from the original region example and toward richer Oracle-style storage layouts.
 
@@ -213,7 +213,7 @@ Operational guidance:
 
 Sprint 5 is the most useful practical reference here because it produced valid per-job Oracle-style results with separate `DATA`, `REDO`, and `FRA` workloads:
 
-- [progress/sprint_5/fio-analysis-oracle-integration.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/fio-analysis-oracle-integration.md)
+- [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
 
 ## Top-End Oracle Database
 
@@ -326,9 +326,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_1/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/fio_analysis.md)
+- [progress/sprint_1/fio_analysis.md](progress/sprint_1/fio_analysis.md)
 - runner and embedded fio workload:
-  - [tools/run_bv_fio.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio.sh)
+  - [tools/run_bv_fio.sh](tools/run_bv_fio.sh)
 
 ### 2. Maximum-Performance Single-Volume Model
 
@@ -339,9 +339,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_2/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/fio_analysis.md)
+- [progress/sprint_2/fio_analysis.md](progress/sprint_2/fio_analysis.md)
 - runner and embedded fio workload:
-  - [tools/run_bv_fio_perf.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_perf.sh)
+  - [tools/run_bv_fio_perf.sh](tools/run_bv_fio_perf.sh)
 
 ### 3. Mixed 8k Database-Oriented Model
 
@@ -352,9 +352,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/fio-analysis-mixed8k-smoke.md)
+- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](progress/sprint_3/fio-analysis-mixed8k-smoke.md)
 - fio profile:
-  - [progress/sprint_3/mixed-8k.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/mixed-8k.fio)
+  - [progress/sprint_3/mixed-8k.fio](progress/sprint_3/mixed-8k.fio)
 
 ### 4. Oracle-Style Concurrent Storage-Class Model
 
@@ -367,13 +367,13 @@ Purpose:
 Practical references:
 
 - failed first attempt with invalid grouped reporting:
-  - [progress/sprint_4/sprint_4_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/sprint_4_tests.md)
+  - [progress/sprint_4/sprint_4_tests.md](progress/sprint_4/sprint_4_tests.md)
   - fio profile:
-    - [progress/sprint_4/oracle-layout.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/oracle-layout.fio)
+    - [progress/sprint_4/oracle-layout.fio](progress/sprint_4/oracle-layout.fio)
 - corrected Oracle-style rerun:
-  - [progress/sprint_5/fio-analysis-oracle-integration.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/fio-analysis-oracle-integration.md)
+  - [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
   - fio profile:
-    - [progress/sprint_5/oracle-layout.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/oracle-layout.fio)
+    - [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
 
 ### Why The Model Uses More Than One Benchmark
 

@@ -255,9 +255,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_1/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/fio_analysis.md)
+- [progress/sprint_1/fio_analysis.md](../sprint_1/fio_analysis.md)
 - runner and embedded fio workload:
-  - [tools/run_bv_fio.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio.sh)
+  - [tools/run_bv_fio.sh](../../tools/run_bv_fio.sh)
 
 ### 2. Maximum-Performance Single-Volume Model
 
@@ -268,9 +268,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_2/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/fio_analysis.md)
+- [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
 - runner and embedded fio workload:
-  - [tools/run_bv_fio_perf.sh](/Users/rstyczynski/projects/oci_bv4db_arch/tools/run_bv_fio_perf.sh)
+  - [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
 
 ### 3. Mixed 8k Database-Oriented Model
 
@@ -281,9 +281,9 @@ Purpose:
 
 Practical reference:
 
-- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/fio-analysis-mixed8k-smoke.md)
+- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](../sprint_3/fio-analysis-mixed8k-smoke.md)
 - fio profile:
-  - [progress/sprint_3/mixed-8k.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/mixed-8k.fio)
+  - [progress/sprint_3/mixed-8k.fio](../sprint_3/mixed-8k.fio)
 
 ### 4. Oracle-Style Concurrent Storage-Class Model
 
@@ -296,13 +296,13 @@ Purpose:
 Practical references:
 
 - failed first attempt with invalid grouped reporting:
-  - [progress/sprint_4/sprint_4_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/sprint_4_tests.md)
+  - [progress/sprint_4/sprint_4_tests.md](../sprint_4/sprint_4_tests.md)
   - fio profile:
-    - [progress/sprint_4/oracle-layout.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/oracle-layout.fio)
+    - [progress/sprint_4/oracle-layout.fio](../sprint_4/oracle-layout.fio)
 - corrected Oracle-style rerun:
-  - [progress/sprint_5/fio-analysis-oracle-integration.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/fio-analysis-oracle-integration.md)
+  - [progress/sprint_5/fio-analysis-oracle-integration.md](../sprint_5/fio-analysis-oracle-integration.md)
   - fio profile:
-    - [progress/sprint_5/oracle-layout.fio](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/oracle-layout.fio)
+    - [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
 
 ### Why The Model Uses More Than One Benchmark
 
