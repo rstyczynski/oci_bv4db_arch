@@ -139,3 +139,21 @@ Test: the corrected fio profile produces distinct per-job results for `data-8k`,
 The project branch `oci_scaffold/oci_bv4db_arch` must be synchronized with `oci_scaffold/main` because the block volume resource work has been adopted upstream. The sync is performed by merging `main` into the project branch in the submodule, then executing a trivial smoke validation against the merged branch state to confirm that `ensure-blockvolume.sh` still works in this project after the upstream update. After the sync, further scaffold changes for this project continue on the `oci_bv4db_arch` branch.
 
 Test: after merging `oci_scaffold/main` into `oci_scaffold/oci_bv4db_arch`, a smoke run provisions ephemeral compute, successfully runs `ensure-blockvolume.sh`, records an attached block volume in state, and tears the resources down cleanly.
+
+### BV4DB-12. Theoretical Oracle block volume sizing and scalability guide
+
+A documentation-only analysis is needed that explains how OCI block volumes should be configured for Oracle Database at entry-level, mid-level, and top-end deployments. The document is purely theoretical and uses no benchmark runs or live resource execution; its value is to organize the work done so far into practical configuration guidance and explain how sizing and layout change across different scalability scenarios. The outcome is a reference document for planning future implementation work.
+
+Test: a written analysis exists that covers entry-level, mid-level, and top-end Oracle storage layouts and explains scalability tradeoffs for multiple deployment scenarios without requiring any live execution.
+
+### BV4DB-13. Follow-on backlog derived from Oracle storage analysis
+
+The theoretical Oracle storage guide must produce a concrete next-step roadmap rather than remain a standalone document. New backlog items are needed to capture the implementation, validation, and benchmarking work implied by the analysis so that the project can move from guidance into executable follow-up sprints. This backlog expansion is derived from the analysis and ordered as actionable future work.
+
+Test: the Oracle storage analysis results in a series of new backlog items that cover the main follow-on work areas identified by the document.
+
+### BV4DB-14. Analysis of oci_scaffold lifecycle command extensions for managed resources
+
+The project needs a design-level analysis of whether oci_scaffold should grow lifecycle command families beyond `ensure*` and `teardown*`, especially an `operate*` class and possibly `update*` commands for existing resources. The analysis must consider how such commands would behave for resources that are project-created versus adopted, with specific attention to whether update-style behavior should target explicitly created resources more readily than adopted ones. This is still exploratory work and should frame options, constraints, and resulting backlog implications rather than implementation.
+
+Test: a written analysis exists that evaluates `operate*` and `update*` lifecycle command directions for oci_scaffold and distinguishes expectations for created versus adopted resources.

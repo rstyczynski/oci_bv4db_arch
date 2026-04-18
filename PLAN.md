@@ -88,3 +88,16 @@ Sprint 6 merges `oci_scaffold/main` into the `oci_scaffold/oci_bv4db_arch` branc
 Backlog Items:
 
 * BV4DB-11. Sync oci_scaffold branch with upstream main and smoke-validate block volume ensure
+
+## Sprint 7 - Oracle block volume sizing and scalability guide
+
+Status: Done
+Mode: YOLO
+Test: none
+Regression: none
+
+Sprint 7 is documentation-only work. It consolidates the practical outcomes of earlier sprints into an operator-oriented guide for configuring OCI block volumes for Oracle Database at entry-level, mid-level, and top-end scales, without running any live infrastructure or benchmarks.
+
+Backlog Items:
+
+* BV4DB-12. Theoretical Oracle block volume sizing and scalability guide
