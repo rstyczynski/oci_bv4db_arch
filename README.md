@@ -26,8 +26,8 @@ This repository started as a benchmarking project and has grown into two things:
   - [Scenario 3: Recovery and Backup Growth](#scenario-3-recovery-and-backup-growth)
   - [Scenario 4: Mixed Growth](#scenario-4-mixed-growth)
 - [RMAN Backup During Production Time](#rman-backup-during-production-time)
+- [FIO Testing Model](#fio-testing-model)
 - [Recommended Decision Model](#recommended-decision-model)
-- [What This Means For oci_scaffold](#what-this-means-for-oci_scaffold)
 - [Practical Recommendations](#practical-recommendations)
   - [Entry-Level](#entry-level)
   - [Mid-Level](#mid-level)
@@ -312,6 +312,70 @@ Practical guidance:
 Oracle also documents that archived redo logs can be directed into the Fast Recovery Area by using `USE_DB_RECOVERY_FILE_DEST`:
 <a href="https://docs.oracle.com/en/database/oracle/oracle-database/23/admin/managing-archived-redo-log-files.html" target="_blank" rel="noopener noreferrer">Managing Archived Redo Log Files</a>.
 
+## FIO Testing Model
+
+The repository does not use one single fio pattern for every question. It uses several benchmark models, each chosen to answer a different storage-design question.
+
+### 1. Baseline Single-Volume Model
+
+Purpose:
+
+- prove that the compute plus block volume path works end to end
+- establish a functional and performance baseline
+- capture simple sequential and random behavior on a minimal layout
+
+Practical reference:
+
+- [progress/sprint_1/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/fio_analysis.md)
+
+### 2. Maximum-Performance Single-Volume Model
+
+Purpose:
+
+- measure the best performance envelope that a single tuned block volume layout can provide
+- separate “platform ceiling” questions from “Oracle layout” questions
+
+Practical reference:
+
+- [progress/sprint_2/fio_analysis.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_2/fio_analysis.md)
+
+### 3. Mixed 8k Database-Oriented Model
+
+Purpose:
+
+- approximate a database-like mixed random workload
+- evaluate behavior under a read/write mix closer to transactional systems than pure sequential tests
+
+Practical reference:
+
+- [progress/sprint_3/fio-analysis-mixed8k-smoke.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_3/fio-analysis-mixed8k-smoke.md)
+
+### 4. Oracle-Style Concurrent Storage-Class Model
+
+Purpose:
+
+- validate the three-domain model directly
+- run `DATA`, `REDO`, and `FRA` style loads concurrently
+- confirm that activity lands on the intended storage classes rather than only looking at aggregate performance
+
+Practical references:
+
+- failed first attempt with invalid grouped reporting:
+  - [progress/sprint_4/sprint_4_tests.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_4/sprint_4_tests.md)
+- corrected Oracle-style rerun:
+  - [progress/sprint_5/fio-analysis-oracle-integration.md](/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_5/fio-analysis-oracle-integration.md)
+
+### Why The Model Uses More Than One Benchmark
+
+This project treats fio as a validation tool, not as a single universal score generator.
+
+- simple sequential/random tests answer baseline capability questions
+- tuned single-volume tests answer ceiling questions
+- mixed `8k` tests answer database-like contention questions
+- Oracle-style concurrent tests answer storage-domain isolation questions
+
+The most important lesson is that aggregate numbers alone are not enough for Oracle storage decisions. The useful benchmark model is the one that matches the design question being asked.
+
 ## Recommended Decision Model
 
 When deciding how to configure OCI block volumes for Oracle Database, the operator should make decisions in this order:
@@ -324,17 +388,6 @@ When deciding how to configure OCI block volumes for Oracle Database, the operat
 6. Add complexity only when a clear bottleneck justifies it.
 
 This keeps the design practical. It prevents premature optimization at the low end and prevents false simplicity at the high end.
-
-## What This Means For oci_scaffold
-
-The current project automation is strongest at the `ensure*` and `teardown*` level. That is enough for provisioning benchmark layouts, but not yet enough for broader operational lifecycle management of richer Oracle storage environments.
-
-This work suggests two possible future directions:
-
-- an `operate*` class for operational actions on already managed resources
-- an `update*` class for controlled mutation of existing resources
-
-The most important constraint is resource ownership. Update-style operations are easier to justify for resources that were explicitly created by the project than for resources merely adopted into state. Created resources imply stronger ownership and lower ambiguity. Adopted resources imply higher risk because the project may not be the only controller of their desired state.
 
 ## Practical Recommendations
 
