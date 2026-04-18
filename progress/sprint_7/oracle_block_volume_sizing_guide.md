@@ -1,5 +1,30 @@
 # Oracle Database on OCI Block Volumes: Practical Sizing and Scalability Guide
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [What The Project Already Proved](#what-the-project-already-proved)
+- [Storage Domains](#storage-domains)
+  - [DATA](#data)
+  - [REDO](#redo)
+  - [FRA](#fra)
+- [Entry-Level Oracle Database](#entry-level-oracle-database)
+- [Mid-Level Oracle Database](#mid-level-oracle-database)
+- [Top-End Oracle Database](#top-end-oracle-database)
+- [Scalability Scenarios](#scalability-scenarios)
+  - [Scenario 1: Capacity Growth Without Major Throughput Growth](#scenario-1-capacity-growth-without-major-throughput-growth)
+  - [Scenario 2: OLTP Growth With Commit Pressure](#scenario-2-oltp-growth-with-commit-pressure)
+  - [Scenario 3: Recovery and Backup Growth](#scenario-3-recovery-and-backup-growth)
+  - [Scenario 4: Mixed Growth](#scenario-4-mixed-growth)
+- [RMAN Backup During Production Time](#rman-backup-during-production-time)
+- [Recommended Decision Model](#recommended-decision-model)
+- [What This Means For oci_scaffold](#what-this-means-for-oci_scaffold)
+- [Practical Recommendations](#practical-recommendations)
+  - [Entry-Level](#entry-level)
+  - [Mid-Level](#mid-level)
+  - [Top-End](#top-end)
+- [Limits Of This Document](#limits-of-this-document)
+
 ## Introduction
 
 This document summarizes the work completed so far in the OCI Block Volume for Database Architecture project and turns it into practical guidance for Oracle Database storage design on OCI Block Volumes. It is intentionally theoretical: it does not introduce new benchmark runs, live infrastructure, or new automation. Instead, it uses the already completed sprints as evidence for how to think about Oracle storage domains and how to scale them.
@@ -41,6 +66,8 @@ The practical reading of those sprints is:
 
 An entry-level Oracle Database is the smallest serious deployment that still respects Oracle storage domains. It is meant for development, testing, small internal systems, and low-concurrency production cases where cost and simplicity matter more than extracting every last IOPS.
 
+A single block volume is acceptable for a very small, non-critical database such as a disposable lab system, a proof of concept, or a lightweight development environment. In that case, simplicity can matter more than storage-domain separation. The tradeoff is that `DATA`, `REDO`, and `FRA` are no longer isolated, so diagnosis, growth, and operational discipline become weaker.
+
 Practical target characteristics:
 
 - small database size
@@ -64,6 +91,11 @@ What not to do:
 
 - do not start with a single shared volume unless the environment is truly disposable
 - do not over-engineer with too many striped components if the database is small and the operator maturity is low
+
+Practical exception:
+
+- a single BV is acceptable for tiny non-critical databases
+- once the database is a real production system or expected to grow, separate `DATA`, `REDO`, and `FRA`
 
 Scalability path:
 
@@ -170,6 +202,28 @@ Practical response:
 - scale each domain independently
 - avoid any design that assumes one block volume profile is suitable for all three domains
 - increase observability before increasing complexity
+
+## RMAN Backup During Production Time
+
+Running RMAN backup while the database is open and serving production workload is normal practice. The important design question is not whether RMAN can run online, but how backup I/O interacts with foreground database I/O.
+
+Practical effects of RMAN during production:
+
+- RMAN increases read pressure on `DATA`
+- RMAN increases write pressure on the backup target, often `FRA`
+- RMAN can increase archive-related activity and therefore raise indirect pressure around `REDO` handling
+
+This means backup traffic should be treated as a real sizing and isolation factor:
+
+- on a single-BV layout, RMAN may be acceptable for very small non-critical systems, but backup traffic can interfere directly with foreground workload
+- on a separated layout, `FRA` absorbs backup and recovery-oriented traffic much more cleanly
+- on mid-level and top-end systems, daytime backup activity is a strong reason to keep `FRA` isolated from active `DATA` and `REDO` paths
+
+Practical guidance:
+
+- if production backups run during business hours, do not treat `FRA` as an optional storage domain
+- if the database is small, one BV may still work, but backup windows will be less predictable
+- if backup activity is frequent or heavy, storage separation becomes operationally important even before the database reaches high-end scale
 
 ## Recommended Decision Model
 
