@@ -101,3 +101,16 @@ Sprint 7 is documentation-only work. It consolidates the practical outcomes of e
 Backlog Items:
 
 * BV4DB-12. Theoretical Oracle block volume sizing and scalability guide
+
+## Sprint 8 - Sprint 5 fio job on a single UHP block volume
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 8 reuses the Sprint 5 Oracle fio workload definition, but executes it on a simplified topology built on a single UHP block volume. The goal is to compare a one-volume high-performance layout against the split-domain Oracle-style layout from Sprint 5 using the same workload intent.
+
+Backlog Items:
+
+* BV4DB-15. Run the Sprint 5 Oracle fio job on a single UHP block volume

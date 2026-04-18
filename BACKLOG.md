@@ -157,3 +157,9 @@ Test: the Oracle storage analysis results in a series of new backlog items that 
 The project needs a design-level analysis of whether oci_scaffold should grow lifecycle command families beyond `ensure*` and `teardown*`, especially an `operate*` class and possibly `update*` commands for existing resources. The analysis must consider how such commands would behave for resources that are project-created versus adopted, with specific attention to whether update-style behavior should target explicitly created resources more readily than adopted ones. This is still exploratory work and should frame options, constraints, and resulting backlog implications rather than implementation.
 
 Test: a written analysis exists that evaluates `operate*` and `update*` lifecycle command directions for oci_scaffold and distinguishes expectations for created versus adopted resources.
+
+### BV4DB-15. Run the Sprint 5 Oracle fio job on a single UHP block volume
+
+The project needs a direct comparison between the Sprint 5 Oracle fio workload and a simpler layout that uses a single Ultra High Performance block volume instead of separate `DATA`, `REDO`, and `FRA` domains. This benchmark is needed to show what is gained and lost when the Oracle-style fio job is forced onto one high-performance volume, using the same practical workload shape as Sprint 5. The outcome is a benchmark and analysis set that can be compared directly against the Sprint 5 Oracle-style split-volume results.
+
+Test: the Sprint 5 fio job is executed successfully against a single UHP block volume, writes raw result artifacts, and produces an analysis that compares the single-volume result with the Sprint 5 split-domain layout.

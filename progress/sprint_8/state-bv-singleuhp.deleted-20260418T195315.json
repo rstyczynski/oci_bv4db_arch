@@ -1,0 +1,38 @@
+{
+  "inputs": {
+    "name_prefix": "bv-singleuhp",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_size_gb": 600,
+    "bv_vpus_per_gb": 120,
+    "bv_attach_type": "iscsi",
+    "bv_device_path": "/dev/oracleoci/oraclevdb"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyictq2it7upj7yurkm74gbzvd77u4mva532u7rf52kmx4ma"
+  },
+  "summary": {
+    "created": 2,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "49542-21151-1776541974",
+    "creation_order": [
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-18T19:53:15Z"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrqzsx5dzqytgqlrmdhtphjpqtjrtylhgfatxawdbegehoud4ud4ka",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdb",
+    "vpus_per_gb": 120,
+    "iqn": "iqn.2015-12.com.oracleiaas:ba2603a8-4a48-47ad-8550-5892106c7303",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "is_multipath": true,
+    "deleted": true
+  }
+}

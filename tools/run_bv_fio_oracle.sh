@@ -18,6 +18,7 @@ export OCI_REGION="${OCI_REGION:-}"
 export OCI_CLI_REGION="${OCI_CLI_REGION:-${OCI_REGION:-}}"
 RUN_LEVEL="${RUN_LEVEL:-smoke}"
 FIO_RUNTIME_SEC="${FIO_RUNTIME_SEC:-60}"
+STORAGE_LAYOUT_MODE="${STORAGE_LAYOUT_MODE:-multi_volume}"
 
 _on_err() {
   local ec=$? line=${BASH_LINENO[0]:-?} cmd=${BASH_COMMAND:-?}
@@ -57,11 +58,15 @@ PUBKEY_FILE="$SPRINT1_DIR/bv4db-key.pub"
 
 # Volume configuration: name, device_path, vpu_per_gb, size_gb
 declare -A VOLUMES
-VOLUMES[data1]="/dev/oracleoci/oraclevdb:120:200"
-VOLUMES[data2]="/dev/oracleoci/oraclevdc:120:200"
-VOLUMES[redo1]="/dev/oracleoci/oraclevdd:20:50"
-VOLUMES[redo2]="/dev/oracleoci/oraclevde:20:50"
-VOLUMES[fra]="/dev/oracleoci/oraclevdf:10:100"
+if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
+  VOLUMES[singleuhp]="/dev/oracleoci/oraclevdb:120:600"
+else
+  VOLUMES[data1]="/dev/oracleoci/oraclevdb:120:200"
+  VOLUMES[data2]="/dev/oracleoci/oraclevdc:120:200"
+  VOLUMES[redo1]="/dev/oracleoci/oraclevdd:20:50"
+  VOLUMES[redo2]="/dev/oracleoci/oraclevde:20:50"
+  VOLUMES[fra]="/dev/oracleoci/oraclevdf:10:100"
+fi
 
 enable_block_volume_plugin() {
   local instance_id="$1"
@@ -197,6 +202,91 @@ df -h /u02/oradata /u03/redo /u04/fra
 EOF
 }
 
+configure_guest_single_uhp_layout() {
+  local base_dev="$1"
+  local tmp_script remote_script="/tmp/configure-single-uhp-layout.sh"
+
+  echo "  [INFO] Configuring guest LVM from single UHP volume ..."
+  tmp_script=$(mktemp)
+  cat > "$tmp_script" <<'EOF'
+set -euo pipefail
+BASE="$1"
+
+dnf install -y lvm2 >/dev/null 2>&1 || true
+
+if ! mountpoint -q /u02/oradata && ! mountpoint -q /u03/redo && ! mountpoint -q /u04/fra && ! vgs vg_data >/dev/null 2>&1 && ! vgs vg_redo >/dev/null 2>&1; then
+  wipefs -af "$BASE" >/dev/null 2>&1 || true
+  if command -v sfdisk >/dev/null 2>&1; then
+    cat <<PARTS | sfdisk --force --no-reread --wipe always --label gpt "$BASE" >/dev/null
+,200G,L
+,200G,L
+,50G,L
+,50G,L
+,,L
+PARTS
+  else
+    parted -s "$BASE" mklabel gpt \
+      mkpart primary 1MiB 200GiB \
+      mkpart primary 200GiB 400GiB \
+      mkpart primary 400GiB 450GiB \
+      mkpart primary 450GiB 500GiB \
+      mkpart primary 500GiB 100% >/dev/null
+  fi
+
+  partprobe "$BASE" >/dev/null 2>&1 || true
+  udevadm settle
+
+  for _ in $(seq 1 20); do
+    mapfile -t PARTS < <(lsblk -lnpo NAME,TYPE "$BASE" | awk '$2=="part"{print $1}')
+    if [ "${#PARTS[@]}" -ge 5 ]; then
+      break
+    fi
+    kpartx -av "$BASE" >/dev/null 2>&1 || true
+    sleep 3
+    udevadm settle
+  done
+
+  [ "${#PARTS[@]}" -ge 5 ] || { echo "Expected 5 partitions on $BASE"; exit 1; }
+  DATA1="${PARTS[0]}"
+  DATA2="${PARTS[1]}"
+  REDO1="${PARTS[2]}"
+  REDO2="${PARTS[3]}"
+  FRA="${PARTS[4]}"
+
+  pvcreate -ff -y "$DATA1" "$DATA2" "$REDO1" "$REDO2"
+  vgcreate vg_data "$DATA1" "$DATA2"
+  lvcreate -l 100%FREE -n lv_oradata -i 2 -I 256K vg_data
+  mkfs.ext4 -F /dev/vg_data/lv_oradata
+
+  vgcreate vg_redo "$REDO1" "$REDO2"
+  lvcreate -l 100%FREE -n lv_redo -i 2 -I 256K vg_redo
+  mkfs.ext4 -F /dev/vg_redo/lv_redo
+
+  mkfs.ext4 -F "$FRA"
+fi
+
+mkdir -p /u02/oradata /u03/redo /u04/fra
+mountpoint -q /u02/oradata || mount /dev/vg_data/lv_oradata /u02/oradata
+mountpoint -q /u03/redo || mount /dev/vg_redo/lv_redo /u03/redo
+
+FRA_PART=$(lsblk -lnpo NAME,MOUNTPOINT "$BASE" | awk '$2=="/u04/fra"{print $1; exit}')
+if [ -z "${FRA_PART:-}" ]; then
+  mapfile -t PARTS < <(lsblk -lnpo NAME,TYPE "$BASE" | awk '$2=="part"{print $1}')
+  [ "${#PARTS[@]}" -ge 5 ] || { echo "Expected 5 partitions on $BASE"; exit 1; }
+  FRA_PART="${PARTS[4]}"
+fi
+mountpoint -q /u04/fra || mount "$FRA_PART" /u04/fra
+
+chown opc:opc /u02/oradata /u03/redo /u04/fra
+echo "Single-UHP layout configuration complete"
+lsblk
+df -h /u02/oradata /u03/redo /u04/fra
+EOF
+  _scp_to_remote "$tmp_script" "$remote_script"
+  rm -f "$tmp_script"
+  _ssh "chmod +x '$remote_script' && sudo bash '$remote_script' '$base_dev' && rm -f '$remote_script'"
+}
+
 run_remote_fio_with_iostat() {
   local runtime_sec="$1"
   local remote_profile="/tmp/oracle-layout.fio"
@@ -303,6 +393,7 @@ _state_set '.inputs.subnet_prohibit_public_ip'        'false'
 _state_set '.inputs.compute_ssh_authorized_keys_file' "$PUBKEY_FILE"
 _state_set '.inputs.run_level'                        "$RUN_LEVEL"
 _state_set '.inputs.fio_runtime_sec'                  "$FIO_RUNTIME_SEC"
+_state_set '.inputs.storage_layout_mode'              "$STORAGE_LAYOUT_MODE"
 
 # Provision compute
 echo "  [INFO] Provisioning compute instance ..."
@@ -355,12 +446,18 @@ while ! _ssh true 2>/dev/null; do
 done
 echo ""
 
-# Provision and attach all block volumes
+# Provision and attach block volume(s)
 declare -A ATTACH_OCIDS
 declare -A MPATH_DEVICES
 MAIN_NAME_PREFIX="$NAME_PREFIX"
 
-for vol_name in data1 data2 redo1 redo2 fra; do
+if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
+  vol_names=(singleuhp)
+else
+  vol_names=(data1 data2 redo1 redo2 fra)
+fi
+
+for vol_name in "${vol_names[@]}"; do
   IFS=':' read -r dev_path vpu size_gb <<< "${VOLUMES[$vol_name]}"
   echo "  [INFO] Provisioning block volume: $vol_name ($size_gb GB, $vpu VPU/GB) ..."
 
@@ -393,11 +490,15 @@ done
 export NAME_PREFIX="$MAIN_NAME_PREFIX"
 export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
 
-# Configure LVM
-configure_guest_lvm \
-  "${MPATH_DEVICES[data1]}" "${MPATH_DEVICES[data2]}" \
-  "${MPATH_DEVICES[redo1]}" "${MPATH_DEVICES[redo2]}" \
-  "${MPATH_DEVICES[fra]}"
+# Configure filesystem/LVM
+if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
+  configure_guest_single_uhp_layout "${MPATH_DEVICES[singleuhp]}"
+else
+  configure_guest_lvm \
+    "${MPATH_DEVICES[data1]}" "${MPATH_DEVICES[data2]}" \
+    "${MPATH_DEVICES[redo1]}" "${MPATH_DEVICES[redo2]}" \
+    "${MPATH_DEVICES[fra]}"
+fi
 
 # Install fio
 echo "  [INFO] Installing fio and sysstat ..."
@@ -418,11 +519,15 @@ ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-oracle-${RUN_LEVEL}.md"
   echo "- Runtime: \`${FIO_RUNTIME_SEC} seconds\`"
   echo "- Region: \`${OCI_REGION}\`"
   echo "- Compute shape: \`VM.Standard.E5.Flex\` (40 OCPUs)"
-  echo "- Block volumes: 5 (2x UHP 120 VPU, 2x HP 20 VPU, 1x Balanced 10 VPU)"
+  if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
+    echo "- Block volumes: 1 (1x UHP 120 VPU, 600 GB total, guest-partitioned into data/redo/fra slices)"
+  else
+    echo "- Block volumes: 5 (2x UHP 120 VPU, 2x HP 20 VPU, 1x Balanced 10 VPU)"
+  fi
   echo ""
   echo "## Measured Results"
   echo ""
-  python3 - "$RESULT_JSON" "$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json" <<'PY'
+  python3 - "$RESULT_JSON" "$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json" "$STORAGE_LAYOUT_MODE" <<'PY'
 import json
 import sys
 
@@ -447,6 +552,7 @@ else:
 
 with open(sys.argv[2]) as f:
     iostat = json.load(f)
+mode = sys.argv[3]
 
 stats = iostat["sysstat"]["hosts"][0]["statistics"]
 totals = {}
@@ -471,16 +577,36 @@ def render(label, devices):
         print(f"- `{device}` avg read `{rmb:.2f} MB/s`, avg write `{wmb:.2f} MB/s`, avg util `{util:.2f}%`")
     print("")
 
-render("Data stripe", ["dm-2", "dm-3", "dm-4", "sdb", "sdg"])
-render("Redo stripe", ["dm-5", "sdl", "sdm"])
-render("FRA", ["sdn"])
+if mode == "single_uhp":
+    print("### Most active devices")
+    ranked = []
+    for name, entry in totals.items():
+        if entry["count"] == 0:
+            continue
+        rmb = entry["rMB/s"] / entry["count"]
+        wmb = entry["wMB/s"] / entry["count"]
+        util = entry["util"] / entry["count"]
+        ranked.append((util, rmb, wmb, name))
+    for util, rmb, wmb, name in sorted(ranked, reverse=True)[:10]:
+        print(f"- `{name}` avg read `{rmb:.2f} MB/s`, avg write `{wmb:.2f} MB/s`, avg util `{util:.2f}%`")
+    print("")
+else:
+    render("Data stripe", ["dm-2", "dm-3", "dm-4", "sdb", "sdg"])
+    render("Redo stripe", ["dm-5", "sdl", "sdm"])
+    render("FRA", ["sdn"])
 PY
   echo ""
   echo "## Interpretation"
   echo ""
-  echo "This run validates the Oracle-style multi-volume layout with concurrent fio workloads."
-  echo "Device-level iostat is used to confirm separation between data, redo, and FRA traffic."
-  echo "For valid per-job fio output, the fio result must contain distinct entries for each concurrent workload."
+  if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
+    echo "This run validates the Sprint 5 Oracle-style fio workload on a single UHP block volume."
+    echo "The guest keeps the same visible filesystem and LVM structure, but all activity ultimately shares one underlying block volume."
+    echo "The comparison with Sprint 5 therefore shows what is lost when storage-domain isolation is removed while keeping the workload and guest layout the same."
+  else
+    echo "This run validates the Oracle-style multi-volume layout with concurrent fio workloads."
+    echo "Device-level iostat is used to confirm separation between data, redo, and FRA traffic."
+    echo "For valid per-job fio output, the fio result must contain distinct entries for each concurrent workload."
+  fi
 } > "$ANALYSIS_MD"
 _state_set '.artifacts.analysis_md' "$ANALYSIS_MD"
 echo "  [INFO] Analysis saved: $ANALYSIS_MD"
@@ -492,7 +618,7 @@ echo ""
 echo "  [INFO] Tearing down compute and block volumes ..."
 
 # Teardown each volume
-for vol_name in data1 data2 redo1 redo2 fra; do
+for vol_name in "${vol_names[@]}"; do
   vol_state="$PROGRESS_DIR/state-bv-${vol_name}.json"
   if [ -f "$vol_state" ]; then
     export NAME_PREFIX="bv-${vol_name}"
