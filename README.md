@@ -63,12 +63,7 @@ Practical references:
 
 ### 2. Single UHP Volume
 
-This is the “one fast disk” choice.
-
-The repository proves it in two useful ways:
-
-- Sprint 2: maximum-performance single-volume benchmark
-- Sprint 8: same Oracle fio job and same guest-visible layout as Sprint 5, but all backed by one single UHP volume
+This is the “one fast disk” choice. In the Oracle-specific comparison in this repository, it is represented by Sprint 8: the same Oracle fio job and the same guest-visible layout as Sprint 5, but all backed by one single UHP volume.
 
 Use it for:
 
@@ -80,10 +75,8 @@ Its limit is simple: all Oracle activity still converges on one device.
 
 Practical references:
 
-- Sprint 2 analysis: [progress/sprint_2/fio_analysis.md](progress/sprint_2/fio_analysis.md)
 - Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
 - fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
-- runner: [tools/run_bv_fio_perf.sh](tools/run_bv_fio_perf.sh)
 
 ### 3. Multiple Volumes With Storage-Domain Separation
 

@@ -70,17 +70,12 @@ This remains consistent with Oracle's broader I/O design guidance, which allows 
 
 ### 2. Single UHP Volume
 
-This is the “one fast disk” option. The project tested it in two ways:
-
-- Sprint 2: maximum-performance single-volume benchmark
-- Sprint 8: same Oracle-style fio job and same guest-visible filesystem/LVM layout as Sprint 5, but all backed by one single UHP volume
+This is the “one fast disk” option. In the Oracle-specific project comparison, it is represented by Sprint 8: the same Oracle-style fio job and the same guest-visible filesystem/LVM layout as Sprint 5, but all backed by one single UHP volume.
 
 Practical references:
 
-- Sprint 2 analysis: [progress/sprint_2/fio_analysis.md](../sprint_2/fio_analysis.md)
 - Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](../sprint_8/fio-analysis-oracle-integration.md)
 - fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
-- runner: [tools/run_bv_fio_perf.sh](../../tools/run_bv_fio_perf.sh)
 - Oracle-layout single-UHP execution: [tools/run_bv_fio_oracle.sh](../../tools/run_bv_fio_oracle.sh)
 
 What it is good for:
