@@ -43,6 +43,8 @@ test_IT46_markdown_report_sections_present() {
   echo "=== IT-46: Sprint 12 markdown report keeps summary sections ==="
   require_file "$SPRINT_DIR/oci-metrics-report.md" || return 1
   grep -q '^## Table of Contents$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing markdown table of contents"; return 1; }
+  grep -q '^- \[Blockvolume\](#blockvolume)$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing markdown toc hyperlink for blockvolume"; return 1; }
+  grep -q '^  - \[data1\](#data1)$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing markdown toc hyperlink for resource"; return 1; }
   grep -q '^## Compute$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing compute markdown section"; return 1; }
   grep -q '^## Blockvolume$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing blockvolume markdown section"; return 1; }
   grep -q '^## Network$' "$SPRINT_DIR/oci-metrics-report.md" || { _fail "missing network markdown section"; return 1; }
