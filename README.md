@@ -69,6 +69,11 @@ Practical references:
 - analysis: [progress/sprint_1/fio_analysis.md](progress/sprint_1/fio_analysis.md)
 - runner: [tools/run_bv_fio.sh](tools/run_bv_fio.sh)
 
+Current measured result on the Sprint 1 entry-level baseline:
+
+- sequential `1M`: about `11 MB/s` read and `12 MB/s` write
+- random `4k`: about `1520` read IOPS / `6 MB/s` read and `1520` write IOPS / `6 MB/s` write
+
 Relevant OCI reference:
 
 - <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
@@ -156,11 +161,11 @@ Only one thing changed:
 
 Measured result:
 
-| Domain | Single UHP | Multi-volume |
-| ------ | ---------- | ------------ |
-| `DATA` | `18606` read IOPS / `145 MB/s` read; `7969` write IOPS / `62 MB/s` write | `55137` read IOPS / `431 MB/s` read; `23622` write IOPS / `185 MB/s` write |
-| `REDO` | `131` write IOPS / `1 MiB/s` | `791` write IOPS / `3 MiB/s` |
-| `FRA` | `120` read IOPS / `120 MB/s` read; `120` write IOPS / `120 MB/s` write | `24` read IOPS / `24 MB/s` read; `23` write IOPS / `23 MB/s` write |
+| Layout | DATA | REDO | FRA |
+| ------ | ---- | ---- | --- |
+| Entry-level BV | baseline only: sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
+| Single UHP | `18606` read IOPS / `145 MB/s` read; `7969` write IOPS / `62 MB/s` write | `131` write IOPS / `1 MiB/s` | `120` read IOPS / `120 MB/s` read; `120` write IOPS / `120 MB/s` write |
+| Multi-volume | `55137` read IOPS / `431 MB/s` read; `23622` write IOPS / `185 MB/s` write | `791` write IOPS / `3 MiB/s` | `24` read IOPS / `24 MB/s` read; `23` write IOPS / `23 MB/s` write |
 
 Interpretation:
 
