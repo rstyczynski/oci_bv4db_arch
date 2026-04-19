@@ -8,6 +8,15 @@ This repository now focuses on one practical baseline:
 2. single UHP volume
 3. multiple volumes with Oracle-style storage-domain separation
 
+Current Sprint 9 baseline snapshot:
+
+- single UHP `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
+- multi-volume `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
+- single UHP `REDO`: about `131` write IOPS / `1 MiB/s`
+- multi-volume `REDO`: about `791` write IOPS / `3 MiB/s`
+- single UHP `FRA`: about `120/120 MB/s`
+- multi-volume `FRA`: about `24/23 MB/s`
+
 ## Table of Contents
 
 - [What This Repository Proves](#what-this-repository-proves)
