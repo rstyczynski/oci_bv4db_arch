@@ -1,0 +1,68 @@
+{
+  "summary": {
+    "created": 0,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "41670-24721-1776613242",
+    "creation_order": [
+      "compute"
+    ],
+    "torn_down_at": "2026-04-19T15:16:35Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle11-metrics-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 8,
+    "compute_memory_gb": 32,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "run_level": "integration",
+    "fio_runtime_sec": 300,
+    "storage_layout_mode": "single_uhp",
+    "artifact_prefix": "oracle-balanced-single-metrics-300s"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+    "created": true,
+    "name": "bv4db-oracle11-metrics-run-instance",
+    "public_ip": "132.226.218.92",
+    "private_ip": "10.0.0.193",
+    "vnic_ocid": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq",
+    "deleted": true
+  },
+  "volumes": {
+    "singleuhp": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb4s7xgxqyvzsrsvfovwolmwbxmuzaapmdz7vtxtnlamq",
+      "device_path": "/dev/oracleoci/oraclevdb",
+      "vpus_per_gb": 10
+    }
+  },
+  "test_window": {
+    "start_time": "2026-04-19T15:05:14Z",
+    "end_time": "2026-04-19T15:14:54Z"
+  },
+  "artifacts": {
+    "result_json": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_11/fio-results-oracle-balanced-single-metrics-300s.json",
+    "analysis_md": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_11/fio-analysis-oracle-balanced-single-metrics-300s.md"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdb",
+    "vpus_per_gb": 10,
+    "iqn": "iqn.2015-12.com.oracleiaas:fae6c16d-446a-4784-8b9a-4ebd1b0c3607",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "deleted": true
+  }
+}

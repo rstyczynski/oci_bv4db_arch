@@ -1,0 +1,822 @@
+[
+  {
+    "class": "blockvolume",
+    "resource_name": "singleuhp",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 69178368.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 8192.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 8086904832.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 9768574976.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 9623969792.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 9861513216.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 9815228416.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb4s7xgxqyvzsrsvfovwolmwbxmuzaapmdz7vtxtnlamq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "singleuhp",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 8500548608.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 17699348480.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 17670324224.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 16797941760.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 9459994624.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 7945191424.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 8055853056.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 7799480320.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 7853920256.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb4s7xgxqyvzsrsvfovwolmwbxmuzaapmdz7vtxtnlamq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "singleuhp",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 2419.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 2.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 351911.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 379520.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 381301.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 415753.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 416713.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb4s7xgxqyvzsrsvfovwolmwbxmuzaapmdz7vtxtnlamq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "singleuhp",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 30224.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 65656.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 68295.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 21279.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 163993.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 172976.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 174290.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 188945.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 188625.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb4s7xgxqyvzsrsvfovwolmwbxmuzaapmdz7vtxtnlamq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljre5rt4gpng3kqjesovhvef4s4mjrrfiesmckqi7k4wjmvzetyyvya"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+    "namespace": "oci_computeagent",
+    "metric_name": "CpuUtilization",
+    "statistic": "mean",
+    "query_text": "CpuUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 5.429035062610418
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 1.952902706026894
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 3.2858668003066085
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 2.4510509436166465
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 1.7275963405747732
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 1.8749571185026188
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 1.7385249937244927
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 1.783827777416221
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 1.796620392778008
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-1",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaavpkl3k3esmzkvghidmc7qix6ajg3dxbn6jvfdgvfopu6qls6wiuq",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle11-metrics-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "CPU Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "CpuUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+    "namespace": "oci_computeagent",
+    "metric_name": "MemoryUtilization",
+    "statistic": "mean",
+    "query_text": "MemoryUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 5.794691362802193
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 6.962161980653984
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 6.997372851736576
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 7.421680535413267
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 7.127589806967769
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 7.16443867868222
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 7.144418215959328
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 7.145411253842391
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 7.14089446710004
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-1",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaavpkl3k3esmzkvghidmc7qix6ajg3dxbn6jvfdgvfopu6qls6wiuq",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle11-metrics-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Memory Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "MemoryUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesRead",
+    "statistic": "rate",
+    "query_text": "DiskBytesRead[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq\"}.rate()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 2629785.6
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 3405004.8
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 24784008.533333335
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 157993096.53333333
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 163234542.93333334
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 160053111.46666667
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 165258854.4
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 162943522.13333333
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-1",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaavpkl3k3esmzkvghidmc7qix6ajg3dxbn6jvfdgvfopu6qls6wiuq",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle11-metrics-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Read Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesRead",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesWritten",
+    "statistic": "rate",
+    "query_text": "DiskBytesWritten[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq\"}.rate()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 234958395.73333332
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 294990310.4
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 287315584.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 268219042.13333333
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 136405939.2
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 136368290.13333333
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 134203946.66666667
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 129385736.53333333
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 132143138.13333334
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-1",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaavpkl3k3esmzkvghidmc7qix6ajg3dxbn6jvfdgvfopu6qls6wiuq",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle11-metrics-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicjxl3jb7uaexv6g73we4vq4pnv3v2mdpy6rq3g5ivqlqq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Write Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesWritten",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicFromNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicFromNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 251842992.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 35070517.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 35455203.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 48585752.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 5526174777.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 10083952436.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 9505781194.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 10047417905.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 10058319524.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq"
+          },
+          "metadata": {
+            "displayName": "Bytes from Network",
+            "unit": "bytes"
+          },
+          "name": "VnicFromNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicToNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicToNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 3183251976.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 18532647278.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 18067420762.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 16512050096.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 12402913493.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 8132176103.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 7998026753.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 8053805708.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 8053552778.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq"
+          },
+          "metadata": {
+            "displayName": "Bytes to Network",
+            "unit": "bytes"
+          },
+          "name": "VnicToNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicEgressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicEgressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq"
+          },
+          "metadata": {
+            "displayName": "Egress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicEgressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicIngressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicIngressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq\"}.mean()",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-19T15:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:08:00+00:00",
+              "value": 1.0
+            },
+            {
+              "timestamp": "2026-04-19T15:09:00+00:00",
+              "value": 1.0
+            },
+            {
+              "timestamp": "2026-04-19T15:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:12:00+00:00",
+              "value": 1.0
+            },
+            {
+              "timestamp": "2026-04-19T15:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-19T15:14:00+00:00",
+              "value": 1.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljritby67vt37scasqbk35bwu45kdavu6lglsd6njatlk7g6mdsv5jq"
+          },
+          "metadata": {
+            "displayName": "Ingress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicIngressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  }
+]

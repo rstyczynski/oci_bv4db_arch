@@ -414,6 +414,11 @@ ensure-compute.sh
 enable_block_volume_plugin "$(_state_get '.compute.ocid')"
 PUBLIC_IP=$(_state_get '.compute.public_ip')
 INSTANCE_OCID=$(_state_get '.compute.ocid')
+COMPUTE_VNIC_OCID=$(oci compute instance list-vnics \
+  --instance-id "$INSTANCE_OCID" \
+  --compartment-id "$COMPARTMENT_OCID" 2>/dev/null \
+  | jq -r '.data[0]."vnic-id" // .data[0].id // empty') || true
+[ -n "${COMPUTE_VNIC_OCID:-}" ] && [ "$COMPUTE_VNIC_OCID" != "null" ] && _state_set '.compute.vnic_ocid' "$COMPUTE_VNIC_OCID"
 
 # Get SSH key
 TMPKEY=$(mktemp)
@@ -491,12 +496,21 @@ for vol_name in "${vol_names[@]}"; do
   ensure-blockvolume.sh
 
   ATTACH_OCIDS[$vol_name]=$(_state_get '.blockvolume.attachment_ocid')
+  VOL_OCID=$(_state_get '.blockvolume.ocid')
+  VOL_VPUS=$(_state_get '.blockvolume.vpus_per_gb')
 
   echo "  [INFO] Preparing iSCSI for $vol_name ..."
   prepare_guest_block_device "${ATTACH_OCIDS[$vol_name]}" "$dev_path"
 
   MPATH_DEVICES[$vol_name]=$(resolve_mpath_device "$dev_path")
   echo "  [INFO] $vol_name mpath device: ${MPATH_DEVICES[$vol_name]}"
+
+  export NAME_PREFIX="$MAIN_NAME_PREFIX"
+  export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
+  _state_set ".volumes.${vol_name}.ocid" "$VOL_OCID"
+  _state_set ".volumes.${vol_name}.attachment_ocid" "${ATTACH_OCIDS[$vol_name]}"
+  _state_set ".volumes.${vol_name}.device_path" "$dev_path"
+  [ -n "${VOL_VPUS:-}" ] && [ "$VOL_VPUS" != "null" ] && _state_set ".volumes.${vol_name}.vpus_per_gb" "$VOL_VPUS"
 done
 
 # Reset STATE_FILE to main state
@@ -518,7 +532,11 @@ echo "  [INFO] Installing fio and sysstat ..."
 _ssh "sudo dnf install -y fio sysstat jq >/dev/null"
 
 # Run fio with iostat capture
+TEST_WINDOW_START=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+_state_set '.test_window.start_time' "$TEST_WINDOW_START"
 RESULT_JSON=$(run_remote_fio_with_iostat "$FIO_RUNTIME_SEC")
+TEST_WINDOW_END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+_state_set '.test_window.end_time' "$TEST_WINDOW_END"
 _state_set '.artifacts.result_json' "$RESULT_JSON"
 echo "  [INFO] Results saved: $RESULT_JSON"
 

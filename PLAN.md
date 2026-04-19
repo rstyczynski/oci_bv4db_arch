@@ -148,3 +148,18 @@ Backlog Items:
 * BV4DB-22. Multi-volume Oracle-style test on Balanced block volumes
 * BV4DB-23. Single-volume and multi-volume Oracle-style tests on Higher Performance block volumes
 * BV4DB-24. OCI performance-tier comparison analysis for Oracle layouts
+
+## Sprint 11 - OCI metrics operate command and report
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 11 introduces an `operate-*` command path in `oci_scaffold` and uses it to collect OCI metrics for compute, block volume, and network resources after a benchmark run over a defined time window. The sprint executes a `5`-minute Oracle-style load to produce real metrics and renders the collected data into a report artifact.
+
+Backlog Items:
+
+* BV4DB-29. Configurable OCI metrics collection and post-test report generation
+* BV4DB-30. Introduce operate-* lifecycle commands in oci_scaffold
+* BV4DB-31. Refactor operate-metrics into generic shared logic and resource-specific adapters

@@ -223,3 +223,51 @@ Test: a written comparison exists that explains the observed differences between
 The project needs the current single-volume Oracle baseline rerun on OCI Lower Cost block volume performance level. This closes the OCI tier coverage from the Oracle point of view by providing a directly comparable Oracle-style result at the lowest documented OCI performance level. The fio workload shape should stay aligned with the current Oracle baseline, while the storage tier changes from UHP to Lower Cost.
 
 Test: the single-volume Oracle-style fio run completes on the Lower Cost performance tier, writes raw result artifacts, and produces analysis comparable with the UHP, Higher Performance, and Balanced single-volume runs.
+
+### BV4DB-26. Moderate OLTP Oracle-style fio profile
+
+The project needs a lighter Oracle-style fio profile that represents a more moderate OLTP operating point than the current high-stress baseline. This profile should keep the same Oracle storage-domain model (`DATA`, `REDO`, `FRA`) but reduce the `DATA` pressure so the benchmark better represents a system that is busy yet not intentionally overdriven. The outcome is a second reusable Oracle comparison profile for operational sizing and not only for topology stress.
+
+Test: a moderate OLTP Oracle-style fio profile exists, runs successfully on the established single-volume and multi-volume topologies, and produces artifacts that can be compared with the current stress baseline.
+
+### BV4DB-27. Backup-window Oracle-style fio profile
+
+The project needs a benchmark profile that represents a database under active backup or archive load rather than maximal foreground database pressure. This profile should retain Oracle-style concurrency but shift the emphasis toward `FRA` activity so the repository can show how backup-window traffic interacts with `DATA` and `REDO` in single-volume and separated-volume layouts. The outcome is a practical benchmark profile for RMAN/FRA-heavy operating windows.
+
+Test: a backup-window Oracle-style fio profile exists, runs successfully on the established topologies, and produces artifacts that show how `FRA`-heavy load affects `DATA` and `REDO`.
+
+### BV4DB-28. Commit-sensitive Oracle-style fio profile
+
+The project needs a benchmark profile that focuses more explicitly on commit-path sensitivity by keeping `REDO` as the dominant concern while reducing surrounding `DATA` and `FRA` pressure. This profile should help distinguish layouts that are acceptable for commit-sensitive workloads from layouts that collapse mainly under combined background pressure. The outcome is a reusable Oracle-style benchmark profile centered on synchronous redo behavior and commit-path stability.
+
+Test: a commit-sensitive Oracle-style fio profile exists, runs successfully on the established topologies, and produces artifacts that highlight synchronous `REDO` behavior under lighter background load.
+
+### BV4DB-29. Configurable OCI metrics collection and post-test report generation
+
+The project needs a reusable OCI metrics collection capability that runs after benchmark execution for a defined test window and gathers metrics for compute, block volume, and network resources. The collected metrics must be configurable by resource class through a collection definition file so different metric sets can be requested for compute instances, block volumes, and network-facing resources without hardcoding the selection in scripts. The outcome is a generated report in Markdown or HTML, with HTML allowed to be dynamic when built from a normal library stack; Redwood CSS styling aligned with the OCI Console would add extra value if practical.
+
+Test: a configurable metrics collection definition can drive post-test collection for compute, block volume, and network resources over a requested time window, and the collected data is rendered into a Markdown or HTML report artifact.
+
+### BV4DB-30. Introduce operate-* lifecycle commands in oci_scaffold
+
+The project needs an `operate-*` class of commands in `oci_scaffold` for safe runtime actions on existing resources that are neither creation/adoption (`ensure-*`) nor deletion (`teardown-*`). The first target is operational inspection and report generation for metrics, but the command family should be defined cleanly enough to support future read-only or low-risk runtime operations on compute, block volume, and network resources. The outcome is an explicit lifecycle class in `oci_scaffold` with at least one implemented `operate-*` command and usage patterns that fit the existing state-file model.
+
+Test: `oci_scaffold` exposes a working `operate-*` command path for an implemented operational action, and that action can run successfully against resources described in scaffold state without requiring resource creation or teardown.
+
+### BV4DB-31. Refactor operate-metrics into generic shared logic and resource-specific adapters
+
+The current `operate-metrics.sh` proves the `operate-*` model, but it still contains resource-specific knowledge about compute, block volume, and network resources. The project needs that implementation refactored so generic metrics collection, query execution, and report assembly live in shared code, while resource-specific resolution and resource-class behavior are kept in resource-level adapter files. The outcome is a cleaner `operate-*` design that can grow beyond the first metrics implementation without turning one script into a hardcoded dispatcher.
+
+Test: metrics collection still works after the refactor, but resource-specific logic is moved out of the main generic operator into resource-level files or adapters.
+
+### BV4DB-32. Generate charted HTML metrics report with OCI-style presentation
+
+The project needs the metrics reporting capability completed to the originally intended level: a real report, not only a Markdown table dump. The next step is an HTML report with charts for compute, block volume, and network metrics over the selected test window, optionally using a normal client-side charting library and Redwood-style presentation aligned with the OCI Console when practical. The outcome is a visually useful post-test report artifact that lets the operator inspect metric trends rather than only summary tables.
+
+Test: post-test metrics collection produces an HTML report with charts for the selected metrics and resources, and the report renders the collected monitoring data over the requested time window.
+
+### BV4DB-33. Reconcile OCI Monitoring metrics with fio and guest iostat
+
+The current metrics collection proves that OCI Monitoring data can be collected and rendered after a benchmark window, but it does not yet prove that those provider-side metrics quantitatively align with the benchmark-side observations. The project needs an explicit analysis and validation pass that compares OCI Monitoring throughput and operation metrics with fio logical-volume totals and guest `iostat` observations, explains the expected deltas caused by aggregation windows and semantic differences, and defines what level of mismatch is still acceptable. The outcome is a documented reconciliation method that makes the metrics report analytically trustworthy rather than only operationally useful.
+
+Test: a written reconciliation exists for at least one executed benchmark window, comparing OCI Monitoring, fio, and guest `iostat` data and explaining the observed differences with stated acceptance criteria.
