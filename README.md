@@ -144,8 +144,8 @@ Only one thing changed:
 
 Measured result:
 
-- Sprint 9 multi-volume `data-8k` worker: about `13780` read IOPS / `108 MB/s` read and `5905` write IOPS / `46 MB/s` write per worker
-- Sprint 9 single-UHP `data-8k` worker: about `4650` read IOPS / `36 MB/s` read and `1992` write IOPS / `16 MB/s` write per worker
+- Sprint 9 multi-volume `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
+- Sprint 9 single-UHP `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
 - Sprint 9 multi-volume `redo`: about `791` write IOPS / `3 MiB/s`
 - Sprint 9 single-UHP `redo`: about `131` write IOPS / `1 MiB/s`
 - Sprint 9 multi-volume `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write

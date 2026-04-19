@@ -9,6 +9,19 @@
 
 ## Measured Results
 
+### Logical volume results
+#### DATA logical volume (`/u02/oradata`)
+- Read: `55137 IOPS`, `431 MB/s`, mean latency `1 ms`
+- Write: `23622 IOPS`, `185 MB/s`, mean latency `1 ms`
+
+#### REDO logical volume (`/u03/redo`)
+- Read: `0 IOPS`, `0 MB/s`, mean latency `0 ms`
+- Write: `791 IOPS`, `3 MB/s`, mean latency `0 ms`
+
+#### FRA logical volume (`/u04/fra`)
+- Read: `24 IOPS`, `24 MB/s`, mean latency `171 ms`
+- Write: `23 IOPS`, `23 MB/s`, mean latency `170 ms`
+
 ### fio per-job results
 #### data-8k
 - Read: `13786 IOPS`, `108 MB/s`, mean latency `1 ms`
@@ -55,5 +68,5 @@
 This run validates the Oracle-style multi-volume layout with the `4k` redo workload.
 Device-level iostat confirms that data, redo, and FRA traffic still follow separate devices and the fio JSON preserves distinct per-job results.
 
-Compared with Sprint 5, the `4k` redo variant improves the separated redo path materially: redo reached about `791 IOPS` and about `3 MiB/s`, while the `data-8k` workers also improved to about `108/46 MB/s` each.
+Compared with Sprint 5, the `4k` redo variant improves the separated redo path materially: redo reached about `791 IOPS` and about `3 MiB/s`, while the DATA logical volume reached about `431/185 MB/s`.
 The multi-volume layout therefore remains the stronger Oracle design point in this project: the domains stay separated, and the `4k` redo change can improve redo behavior without forcing FRA and data to share the same hot path.

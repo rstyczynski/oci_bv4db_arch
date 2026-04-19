@@ -9,6 +9,19 @@
 
 ## Measured Results
 
+### Logical volume results
+#### DATA logical volume (`/u02/oradata`)
+- Read: `18606 IOPS`, `145 MB/s`, mean latency `2 ms`
+- Write: `7969 IOPS`, `62 MB/s`, mean latency `3 ms`
+
+#### REDO logical volume (`/u03/redo`)
+- Read: `0 IOPS`, `0 MB/s`, mean latency `0 ms`
+- Write: `131 IOPS`, `1 MB/s`, mean latency `3 ms`
+
+#### FRA logical volume (`/u04/fra`)
+- Read: `120 IOPS`, `120 MB/s`, mean latency `5 ms`
+- Write: `120 IOPS`, `120 MB/s`, mean latency `10 ms`
+
 ### fio per-job results
 #### data-8k
 - Read: `4650 IOPS`, `36 MB/s`, mean latency `2 ms`
@@ -53,5 +66,5 @@ This run validates the `4k` redo Oracle-style fio workload on a single UHP block
 The guest keeps the same visible filesystem and LVM structure as the separated Oracle model, but all activity ultimately shares one underlying block volume.
 The result is consistent with Sprint 8: once `DATA`, `REDO`, and `FRA` all share one UHP device, the single device becomes the contention point.
 
-The `4k` redo change did not improve the single-volume result. `REDO` reached about `131 IOPS` and about `1 MiB/s`, while the `data-8k` workers stayed around `36/16 MB/s` each and FRA still consumed about `120/120 MB/s`.
+The `4k` redo change did not improve the single-volume result. `REDO` reached about `131 IOPS` and about `1 MiB/s`, while the DATA logical volume reached about `145/62 MB/s` and FRA still consumed about `120/120 MB/s`.
 So on the single-UHP topology, moving redo from `512B` to `4k` did not remove the fundamental bottleneck: all three domains still compete on the same underlying device.

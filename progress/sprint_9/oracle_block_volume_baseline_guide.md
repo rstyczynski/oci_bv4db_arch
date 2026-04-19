@@ -92,13 +92,13 @@ The strongest direct comparison in the repository is now Sprint 9 single-UHP ver
 
 ### Single UHP
 
-- `data-8k` worker: about `4650` read IOPS / `36 MB/s` read and `1992` write IOPS / `16 MB/s` write
+- `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
 - `redo`: about `131` write IOPS / `1 MiB/s`
 - `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
 
 ### Multiple volumes
 
-- `data-8k` worker: about `13780` read IOPS / `108 MB/s` read and `5905` write IOPS / `46 MB/s` write
+- `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
 - `redo`: about `791` write IOPS / `3 MiB/s`
 - `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write
 
