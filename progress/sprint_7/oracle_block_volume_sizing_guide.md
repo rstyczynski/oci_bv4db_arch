@@ -11,6 +11,7 @@
 - [What To Choose](#what-to-choose)
 - [RMAN and FRA During Production](#rman-and-fra-during-production)
 - [FIO Testing Model Used By This Project](#fio-testing-model-used-by-this-project)
+- [Official OCI References](#official-oci-references)
 - [Official Oracle References](#official-oracle-references)
 
 ## Introduction
@@ -34,6 +35,8 @@ Oracle directly supports separating redo from datafiles to reduce contention and
 
 Oracle also recommends placing the recovery area on a separate disk from the active database area:
 <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Configuring the RMAN Environment</a>.
+
+Because this project is specifically about OCI, the storage conclusions here also depend on OCI block volume behavior such as VPU-based performance levels, UHP multipath requirements, and instance-side block volume limits. Those OCI-specific references are listed at the end of this document.
 
 ## Three Practical Layouts
 
@@ -68,6 +71,9 @@ Measured project conclusion:
 This remains consistent with Oracle's broader I/O design guidance, which allows simpler volume layouts when manageability matters more than full isolation:
 <a href="https://docs.oracle.com/database/121/TGDBA/pfgrf_iodesign.htm" target="_blank" rel="noopener noreferrer">I/O Configuration and Design</a>.
 
+On the OCI side, this layout corresponds to the lower operational end of the Block Volume performance model:
+<a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">Block Volume Performance</a>.
+
 ### 2. Single UHP Volume
 
 This is the “one fast disk” option. In the Oracle-specific project comparison, it is represented by Sprint 8: the same Oracle-style fio job and the same guest-visible filesystem/LVM layout as Sprint 5, but all backed by one single UHP volume.
@@ -98,6 +104,15 @@ Measured project conclusion:
 - but once all domains are active together, the single device becomes the contention point
 
 The strongest evidence is Sprint 8: the guest kept the same visible layout as the separated Oracle model, but because everything sat on one underlying UHP volume, `DATA` and `REDO` performance dropped materially versus the multi-volume design.
+
+For OCI, this is the layout where UHP-specific documentation matters most:
+
+- UHP performance characteristics:
+  <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">Ultra High Performance</a>
+- multipath-enabled UHP attachments:
+  <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">Configuring Attachments to Ultra High Performance Volumes</a>
+- working with multipath-enabled iSCSI volumes:
+  <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">Working with Multipath-Enabled iSCSI-Attached Volumes</a>
 
 ### 3. Multiple Volumes With Storage-Domain Separation
 
@@ -132,6 +147,10 @@ Measured project conclusion:
 - this is the first layout in the project that behaves like an Oracle storage architecture rather than a single-disk benchmark
 - it preserves domain separation under concurrent load
 - it gives the clearest path for scaling and troubleshooting
+
+For OCI, this layout also depends on instance-side block volume limits and attachment behavior, not just volume sizing:
+<a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">Block Volume Performance</a>,
+<a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">Attaching a Block Volume to an Instance</a>.
 
 ## Measured Comparison
 
@@ -242,6 +261,18 @@ The project used three practical fio model families that map directly to the thr
 - fio job: [progress/sprint_5/oracle-layout.fio](../sprint_5/oracle-layout.fio)
 
 This is enough to support the current practical recommendation set. More benchmark variety is possible, but it is not required to explain the main storage decision.
+
+## Official OCI References
+
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">OCI Configuring Attachments to Ultra High Performance Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/changingvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Changing the Performance of a Volume</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/autotunevolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Dynamic Performance Scaling</a>
 
 ## Official Oracle References
 

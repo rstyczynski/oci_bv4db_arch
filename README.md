@@ -19,6 +19,7 @@ This repository now focuses on one practical comparison only:
 - [What To Use In Practice](#what-to-use-in-practice)
 - [RMAN and FRA During Production](#rman-and-fra-during-production)
 - [Relevant Project Artifacts](#relevant-project-artifacts)
+- [Official OCI References](#official-oci-references)
 - [Official Oracle References](#official-oracle-references)
 
 ## What This Repository Proves
@@ -41,6 +42,8 @@ Oracle directly supports separating redo from datafiles to reduce contention:
 Oracle also recommends placing the Fast Recovery Area on separate storage from the active database area:
 <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Configuring the RMAN Environment</a>.
 
+Because this repository is specifically about OCI, the practical conclusions also depend on OCI block volume performance levels, UHP attachment behavior, multipath, and instance-side block volume limits.
+
 ## The Three Layouts
 
 ### 1. Entry-Level Block Volume
@@ -61,6 +64,10 @@ Practical references:
 - analysis: [progress/sprint_1/fio_analysis.md](progress/sprint_1/fio_analysis.md)
 - runner: [tools/run_bv_fio.sh](tools/run_bv_fio.sh)
 
+Relevant OCI reference:
+
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+
 ### 2. Single UHP Volume
 
 This is the “one fast disk” choice. In the Oracle-specific comparison in this repository, it is represented by Sprint 8: the same Oracle fio job and the same guest-visible layout as Sprint 5, but all backed by one single UHP volume.
@@ -77,6 +84,13 @@ Practical references:
 
 - Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
 - fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
+
+Relevant OCI references:
+
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">OCI Configuring Attachments to Ultra High Performance Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
 
 ### 3. Multiple Volumes With Storage-Domain Separation
 
@@ -99,6 +113,12 @@ Practical references:
 - analysis: [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
 - fio job: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
 - runner: [tools/run_bv_fio_oracle_sprint5.sh](tools/run_bv_fio_oracle_sprint5.sh)
+
+Relevant OCI references:
+
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
 
 ## Direct Comparison
 
@@ -181,6 +201,18 @@ Oracle also documents archived redo handling inside FRA:
 - backlog: [BACKLOG.md](BACKLOG.md)
 - detailed sizing guide: [progress/sprint_7/oracle_block_volume_sizing_guide.md](progress/sprint_7/oracle_block_volume_sizing_guide.md)
 - Sprint 8 single-UHP comparison: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
+
+## Official OCI References
+
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">OCI Configuring Attachments to Ultra High Performance Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/changingvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Changing the Performance of a Volume</a>
+- <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/autotunevolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Dynamic Performance Scaling</a>
 
 ## Official Oracle References
 
