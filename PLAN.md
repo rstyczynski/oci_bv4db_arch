@@ -163,3 +163,16 @@ Backlog Items:
 * BV4DB-29. Configurable OCI metrics collection and post-test report generation
 * BV4DB-30. Introduce operate-* lifecycle commands in oci_scaffold
 * BV4DB-31. Refactor operate-metrics into generic shared logic and resource-specific adapters
+
+## Sprint 12 - HTML metrics report on multi-volume benchmark
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 12 extends the working `operate-*` metrics path from Sprint 11 to generate a real HTML dashboard with charts in addition to the Markdown report. The sprint executes a short Oracle-style multi-volume run so the report is driven by fresh compute, block volume, and network metrics over a benchmark window that includes more than one block volume resource.
+
+Backlog Items:
+
+* BV4DB-32. Generate charted HTML metrics report with OCI-style presentation

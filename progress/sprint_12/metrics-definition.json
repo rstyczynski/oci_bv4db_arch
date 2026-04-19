@@ -1,0 +1,41 @@
+{
+  "title": "Sprint 12 OCI Metrics Dashboard",
+  "resource_classes": {
+    "compute": {
+      "namespace": "oci_computeagent",
+      "resource_source": "compute_ocid",
+      "compartment_source": "inputs_compartment",
+      "interval": "1m",
+      "metrics": [
+        { "name": "CpuUtilization", "stat": "mean", "unit": "percent", "scale": 1, "suffix": "%", "decimals": 2 },
+        { "name": "MemoryUtilization", "stat": "mean", "unit": "percent", "scale": 1, "suffix": "%", "decimals": 2 },
+        { "name": "DiskBytesRead", "stat": "rate", "unit": "bytes/s", "scale": 1048576, "suffix": " MiB/s", "decimals": 2 },
+        { "name": "DiskBytesWritten", "stat": "rate", "unit": "bytes/s", "scale": 1048576, "suffix": " MiB/s", "decimals": 2 }
+      ]
+    },
+    "blockvolume": {
+      "namespace": "oci_blockstore",
+      "resource_source": "volume_ocids",
+      "compartment_source": "inputs_compartment",
+      "interval": "1m",
+      "metrics": [
+        { "name": "VolumeReadThroughput", "stat": "mean", "unit": "bytes/interval", "scale": 1048576, "suffix": " MiB", "decimals": 2 },
+        { "name": "VolumeWriteThroughput", "stat": "mean", "unit": "bytes/interval", "scale": 1048576, "suffix": " MiB", "decimals": 2 },
+        { "name": "VolumeReadOps", "stat": "mean", "unit": "ops", "scale": 1, "suffix": "", "decimals": 2 },
+        { "name": "VolumeWriteOps", "stat": "mean", "unit": "ops", "scale": 1, "suffix": "", "decimals": 2 }
+      ]
+    },
+    "network": {
+      "namespace": "oci_vcn",
+      "resource_source": "primary_vnic",
+      "compartment_source": "subnet_compartment",
+      "interval": "1m",
+      "metrics": [
+        { "name": "VnicFromNetworkBytes", "stat": "mean", "unit": "bytes/interval", "scale": 1048576, "suffix": " MiB", "decimals": 2 },
+        { "name": "VnicToNetworkBytes", "stat": "mean", "unit": "bytes/interval", "scale": 1048576, "suffix": " MiB", "decimals": 2 },
+        { "name": "VnicEgressDropsSecurityList", "stat": "mean", "unit": "packets", "scale": 1, "suffix": "", "decimals": 2 },
+        { "name": "VnicIngressDropsSecurityList", "stat": "mean", "unit": "packets", "scale": 1, "suffix": "", "decimals": 2 }
+      ]
+    }
+  }
+}

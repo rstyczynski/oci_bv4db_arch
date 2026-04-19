@@ -1,0 +1,81 @@
+{
+  "summary": {
+    "created": 2,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "51807-19895-1776617531",
+    "creation_order": [
+      "compute"
+    ],
+    "torn_down_at": "2026-04-19T17:18:04Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle12-metrics-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 8,
+    "compute_memory_gb": 32,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "run_level": "integration",
+    "fio_runtime_sec": 300,
+    "storage_layout_mode": "multi_volume",
+    "artifact_prefix": "oracle-balanced-multi-metrics-300s"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicclrozsvukwd76kgy7zr6z3oc2sx2znizhrk4re5x3kyq",
+    "created": true,
+    "name": "bv4db-oracle12-metrics-run-instance",
+    "public_ip": "152.67.92.251",
+    "private_ip": "10.0.0.54",
+    "vnic_ocid": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrpdbiowg6mepd4sl4dzsn5dimflvlyhyovicqwt3zgnmmfqknn5wa",
+    "deleted": true
+  },
+  "volumes": {
+    "data1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr23j33dtjth65bonsrm5t7ym7ikdr3o3ngg375ulpw57qz2ihy2ya",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicvsssyesam5h2amjcx2wuiiq6dubhkoy5zhoibiiwe4sa",
+      "device_path": "/dev/oracleoci/oraclevdb",
+      "vpus_per_gb": 10
+    },
+    "data2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrvzc5i7gzqyezkrbysi3fwaqgngdy3e5ifnd537w5gffagpevaosq",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicitrrsvvznellnrd7gphwsrb52uj4bmvqg3wcu6plw4tq",
+      "device_path": "/dev/oracleoci/oraclevdc",
+      "vpus_per_gb": 10
+    },
+    "redo1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4y2qipfl3rlmuh4rykxzpg2d6ijdxepgn5vsitru3umssun22jwq",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyics45u55swdo2p3aciybteepdowvqg22dgddmzhvxvniia",
+      "device_path": "/dev/oracleoci/oraclevdd",
+      "vpus_per_gb": 10
+    },
+    "redo2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljriq6bnlbn7dlsdb5x76kli4wn7yldv6lov3xtzkv7clvy7phej6zq",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyica33ygybboc5psw3qfsgjf3hdduf5ijxojfu2ptxx4ymq",
+      "device_path": "/dev/oracleoci/oraclevde",
+      "vpus_per_gb": 10
+    },
+    "fra": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr47btrdtcqtcr4nrv7s4jtw24be5uogvqydudf7g3et6tb2rae3ia",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicbytf4legze2duefxbhk37cfh54qwvcyehbk4mxi3rluq",
+      "device_path": "/dev/oracleoci/oraclevdf",
+      "vpus_per_gb": 10
+    }
+  },
+  "test_window": {
+    "start_time": "2026-04-19T16:58:57Z",
+    "end_time": "2026-04-19T17:14:27Z"
+  },
+  "artifacts": {
+    "result_json": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_12/fio-results-oracle-balanced-multi-metrics-300s.json",
+    "analysis_md": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_12/fio-analysis-oracle-balanced-multi-metrics-300s.md"
+  }
+}
