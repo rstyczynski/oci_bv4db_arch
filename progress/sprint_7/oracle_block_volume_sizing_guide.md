@@ -183,15 +183,15 @@ This is the most useful comparison in the repository because the fio job, comput
 
 Sprint 5, separated volumes:
 
-- `data-8k` worker: about `99 MB/s` read and `43 MB/s` write per worker
-- `redo`: about `1532 IOPS`
-- `fra-1m`: about `24 MB/s` read and `23 MB/s` write on the balanced FRA volume
+- `data-8k` worker: about `12730` read IOPS / `99 MB/s` read and `5454` write IOPS / `43 MB/s` write per worker
+- `redo`: about `1532` write IOPS / `1 MB/s`
+- `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write on the balanced FRA volume
 
 Sprint 8, single UHP volume:
 
-- `data-8k` worker: about `37 MB/s` read and `16 MB/s` write per worker
-- `redo`: about `292 IOPS`
-- `fra-1m`: about `120 MB/s` read and `120 MB/s` write
+- `data-8k` worker: about `4770` read IOPS / `37 MB/s` read and `2044` write IOPS / `16 MB/s` write per worker
+- `redo`: about `292` write IOPS / `0 MB/s` rounded throughput
+- `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
 
 Interpretation:
 

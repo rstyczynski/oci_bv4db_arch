@@ -138,12 +138,12 @@ Only one thing changed:
 
 Measured result:
 
-- Sprint 5 `data-8k` worker: about `99 MB/s` read and `43 MB/s` write per worker
-- Sprint 8 `data-8k` worker: about `37 MB/s` read and `16 MB/s` write per worker
-- Sprint 5 `redo`: about `1532 IOPS`
-- Sprint 8 `redo`: about `292 IOPS`
-- Sprint 5 `fra-1m`: about `24/23 MB/s`
-- Sprint 8 `fra-1m`: about `120/120 MB/s`
+- Sprint 5 `data-8k` worker: about `12730` read IOPS / `99 MB/s` read and `5454` write IOPS / `43 MB/s` write per worker
+- Sprint 8 `data-8k` worker: about `4770` read IOPS / `37 MB/s` read and `2044` write IOPS / `16 MB/s` write per worker
+- Sprint 5 `redo`: about `1532` write IOPS / `1 MB/s`
+- Sprint 8 `redo`: about `292` write IOPS / `0 MB/s` rounded throughput
+- Sprint 5 `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write
+- Sprint 8 `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
 
 Interpretation:
 
