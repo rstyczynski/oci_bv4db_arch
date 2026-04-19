@@ -198,6 +198,7 @@ Interpretation:
 - Sprint 8 lets FRA run much faster because FRA moved from a balanced volume to a UHP-backed partition
 - but that gain is paid for by sharing the same UHP device with `DATA` and `REDO`
 - Sprint 5 keeps FRA slower, but it protects `DATA` and `REDO` from FRA traffic
+- the `REDO` job here is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `512`-byte writes), so low throughput in MiB/s is expected; the meaningful comparison signal for redo is synchronous write rate and latency stability, not headline throughput
 
 That is the central lesson of the project so far.
 

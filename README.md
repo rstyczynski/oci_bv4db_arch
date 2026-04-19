@@ -150,6 +150,7 @@ Interpretation:
 - the single UHP volume lets FRA run much faster than the balanced FRA volume used in Sprint 5
 - but that happens because FRA is consuming the same underlying UHP device that must also serve `DATA` and `REDO`
 - once all Oracle domains share one UHP volume, the device becomes the contention point
+- the `REDO` job is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `512`-byte writes), so low MiB/s is expected; the meaningful redo comparison is synchronous write rate and latency behavior, not throughput headlines
 
 That is the central result of this repository.
 
