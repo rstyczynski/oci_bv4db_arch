@@ -1,0 +1,37 @@
+{
+  "inputs": {
+    "name_prefix": "bv-redo1",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_size_gb": 50,
+    "bv_vpus_per_gb": 10,
+    "bv_attach_type": "iscsi",
+    "bv_device_path": "/dev/oracleoci/oraclevdd"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicowpb7obmmeniomz3h6scdojoqgceyvsfopakti7vvipa"
+  },
+  "summary": {
+    "created": 4,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "91226-11905-1776590569",
+    "creation_order": [
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-19T09:52:21Z"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxqt4wkvdgqsq6gs56s7etkjs7asyhj4sxpeubyd5wfu5wb5owyda",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdd",
+    "vpus_per_gb": 10,
+    "iqn": "iqn.2015-12.com.oracleiaas:92322fa2-729a-4f86-8ff0-ad9e65b6ea0c",
+    "ipv4": "169.254.2.4",
+    "port": 3260,
+    "deleted": true
+  }
+}

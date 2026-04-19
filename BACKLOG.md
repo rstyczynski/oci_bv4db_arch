@@ -187,3 +187,39 @@ Test: the multi-volume Oracle-style run completes with the `4k` redo fio profile
 The repository needs a current practical guide that uses Sprint 9 as the active Oracle baseline instead of the earlier documentation sprint. This document should summarize only the OCI layouts that matter operationally now: entry-level block volume, single UHP volume, and multiple volumes with storage-domain separation, using the Sprint 9 `4k` redo findings as the primary Oracle comparison point. The outcome is a current-sprint guidance document aligned with the latest validated benchmark baseline.
 
 Test: a Sprint 9 documentation artifact exists that describes the three practical OCI Oracle layouts and compares them using the Sprint 9 single-UHP and separated-volume `4k` redo results.
+
+### BV4DB-20. Size compute CPU to the required block volume performance level
+
+The project needs an explicit analysis and execution rule for sizing compute shape and OCPU count according to the targeted OCI block volume performance level. Current Oracle fio runs use a fixed high-end compute shape, which is useful for isolating storage behavior, but it does not yet show the minimum or appropriate CPU sizing needed to realize the intended performance of Lower Cost, Balanced, Higher Performance, and Ultra High Performance block volume configurations. The outcome is backlog-driven work that treats compute sizing as part of the OCI performance design, not as a constant.
+
+Test: the backlog and future sprint design can state which compute shape and OCPU range is required for a given OCI block volume performance level, rather than assuming one fixed compute profile for all volume tiers.
+
+### BV4DB-21. Single-volume Oracle-style test on Balanced block volume
+
+The project needs the current single-volume Oracle baseline rerun on OCI Balanced block volume performance level. The workload shape should stay aligned with the current Oracle baseline, while the storage tier changes from UHP to Balanced. The outcome is a directly comparable single-volume result for the Balanced tier.
+
+Test: the single-volume Oracle-style fio run completes on the Balanced performance tier, writes raw result artifacts, and produces analysis comparable with the UHP baseline.
+
+### BV4DB-22. Multi-volume Oracle-style test on Balanced block volumes
+
+The project needs the current separated-volume Oracle baseline rerun on OCI Balanced block volume performance level. The workload shape should stay aligned with the current Oracle baseline, while the block volume tier changes from UHP/HP mix to Balanced where applicable for the comparison objective. The outcome is a directly comparable separated-volume result for the Balanced tier.
+
+Test: the multi-volume Oracle-style fio run completes on the Balanced performance tier, writes raw result artifacts, and produces analysis comparable with the current multi-volume baseline.
+
+### BV4DB-23. Single-volume and multi-volume Oracle-style tests on Higher Performance block volumes
+
+The project needs the current Oracle baseline executed on OCI Higher Performance block volume tier in both topologies: single volume and separated volumes. This fills the gap between Balanced and UHP and allows the repository to compare OCI performance levels using the same Oracle workload model.
+
+Test: single-volume and separated-volume Oracle-style fio runs complete on the Higher Performance tier, write raw result artifacts, and produce analysis comparable with the current UHP baseline.
+
+### BV4DB-24. OCI performance-tier comparison analysis for Oracle layouts
+
+The project needs an analysis artifact that compares OCI Lower Cost baseline evidence, Balanced, Higher Performance, and Ultra High Performance runs across both single-volume and separated-volume Oracle layouts. This analysis should explicitly relate observed storage behavior to the OCI performance-tier model and call out when compute shape or OCPU count becomes part of the limiting factor.
+
+Test: a written comparison exists that explains the observed differences between OCI performance tiers for Oracle-style layouts and ties those results to the compute-sizing guidance.
+
+### BV4DB-25. Single-volume Oracle-style test on Lower Cost block volume
+
+The project needs the current single-volume Oracle baseline rerun on OCI Lower Cost block volume performance level. This closes the OCI tier coverage from the Oracle point of view by providing a directly comparable Oracle-style result at the lowest documented OCI performance level. The fio workload shape should stay aligned with the current Oracle baseline, while the storage tier changes from UHP to Lower Cost.
+
+Test: the single-volume Oracle-style fio run completes on the Lower Cost performance tier, writes raw result artifacts, and produces analysis comparable with the UHP, Higher Performance, and Balanced single-volume runs.

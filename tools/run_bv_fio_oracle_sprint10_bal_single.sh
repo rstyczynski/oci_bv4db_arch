@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+export PROGRESS_DIR="$REPO_DIR/progress/sprint_10"
+export PROFILE_FILE="$REPO_DIR/progress/sprint_10/oracle-layout-4k-redo.fio"
+export SPRINT_LABEL="Sprint 10 Balanced Single"
+export NAME_PREFIX="bv4db-oracle10-balanced-single-run"
+export RUN_LEVEL="integration"
+export FIO_RUNTIME_SEC="${FIO_RUNTIME_SEC:-600}"
+export STORAGE_LAYOUT_MODE="single_uhp"
+export ARTIFACT_PREFIX="oracle-balanced-single-4k-redo-integration"
+export VPU_SINGLE="10"
+export COMPUTE_OCPUS="${COMPUTE_OCPUS:-8}"
+export COMPUTE_MEMORY_GB="${COMPUTE_MEMORY_GB:-32}"
+exec "$REPO_DIR/tools/run_bv_fio_oracle.sh"

@@ -130,3 +130,21 @@ Backlog Items:
 * BV4DB-17. Single-volume Oracle-style test with 4 KB redo
 * BV4DB-18. Multi-volume Oracle-style test with 4 KB redo
 * BV4DB-19. Practical Oracle block volume baseline guide from Sprint 9
+
+## Sprint 10 - OCI performance-tier Oracle comparison
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 10 extends the current Oracle baseline from UHP into OCI performance-tier comparison work. It covers Balanced and Higher Performance tiers in both single-volume and separated-volume Oracle layouts, and adds explicit compute sizing analysis so CPU shape and OCPU count are matched to the targeted volume performance level.
+
+Backlog Items:
+
+* BV4DB-20. Size compute CPU to the required block volume performance level
+* BV4DB-25. Single-volume Oracle-style test on Lower Cost block volume
+* BV4DB-21. Single-volume Oracle-style test on Balanced block volume
+* BV4DB-22. Multi-volume Oracle-style test on Balanced block volumes
+* BV4DB-23. Single-volume and multi-volume Oracle-style tests on Higher Performance block volumes
+* BV4DB-24. OCI performance-tier comparison analysis for Oracle layouts

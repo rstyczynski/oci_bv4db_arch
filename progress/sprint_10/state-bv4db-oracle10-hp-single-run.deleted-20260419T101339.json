@@ -1,0 +1,44 @@
+{
+  "summary": {
+    "created": 2,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "97088-17649-1776592473",
+    "creation_order": [
+      "compute"
+    ],
+    "torn_down_at": "2026-04-19T10:13:39Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle10-hp-single-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 8,
+    "compute_memory_gb": 32,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "run_level": "integration",
+    "fio_runtime_sec": 600,
+    "storage_layout_mode": "single_uhp",
+    "artifact_prefix": "oracle-hp-single-4k-redo-integration"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicswx4gkvucwm6iloliptmmbsns7s2jfui67et2j5mjk3a",
+    "created": true,
+    "name": "bv4db-oracle10-hp-single-run-instance",
+    "public_ip": "140.86.215.144",
+    "private_ip": "10.0.0.53",
+    "deleted": true
+  },
+  "artifacts": {
+    "result_json": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_10/fio-results-oracle-hp-single-4k-redo-integration.json",
+    "analysis_md": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_10/fio-analysis-oracle-hp-single-4k-redo-integration.md"
+  }
+}

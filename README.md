@@ -2,18 +2,18 @@
 
 Practical OCI block volume guidance for Oracle Database, backed by executed sprint results in this repository.
 
-This repository now focuses on one practical baseline:
+This repository now focuses on practical OCI Oracle layouts across OCI block volume performance tiers:
 
-1. entry-level block volume
-2. single UHP volume
-3. multiple volumes with Oracle-style storage-domain separation
+1. entry-level / Lower Cost single volume
+2. single-volume OCI tiers from Balanced to UHP
+3. multi-volume OCI tiers with Oracle-style storage-domain separation
 
 ## Table of Contents
 
 - [What This Repository Proves](#what-this-repository-proves)
 - [The Three Layouts](#the-three-layouts)
   - [1. Entry-Level Block Volume](#1-entry-level-block-volume)
-  - [2. Single UHP Volume](#2-single-uhp-volume)
+  - [2. Single-Volume OCI Tiers](#2-single-volume-oci-tiers)
   - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
 - [Direct Comparison](#direct-comparison)
 - [What To Use In Practice](#what-to-use-in-practice)
@@ -27,13 +27,21 @@ This repository now focuses on one practical baseline:
 The project has already executed enough work to support a simple practical conclusion:
 
 - one ordinary block volume is enough to start
-- one UHP volume is enough to go faster, but it is still one shared contention domain
+- one faster OCI block volume tier goes further, but it is still one shared contention domain
 - multiple volumes mapped to Oracle storage domains are the strongest practical layout for real production behavior
 
-The active Oracle baseline in this repository is now Sprint 9, which uses the `4k` redo profile on both:
+The active Oracle tier comparison in this repository is now Sprint 10, which keeps the Sprint 9 `4k` redo Oracle workload and extends it across OCI tiers:
 
-- single UHP topology
-- separated-volume topology
+- Lower Cost single-volume
+- Balanced single-volume
+- Balanced multi-volume
+- Higher Performance single-volume
+- Higher Performance multi-volume
+
+Sprint 9 remains the UHP reference for:
+
+- single-volume UHP
+- multi-volume UHP
 
 The Oracle domains that matter are still:
 
@@ -76,11 +84,16 @@ Current measured result on the Sprint 1 entry-level baseline:
 
 Relevant OCI reference:
 
-- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
 
-### 2. Single UHP Volume
+### 2. Single-Volume OCI Tiers
 
-This is the “one fast disk” choice. In the current Oracle baseline in this repository, it is represented by Sprint 9 single-UHP: the same Oracle-style guest-visible layout, but all backed by one single UHP volume.
+This is the “one fast disk” choice. In the current repository evidence, the same Oracle-style guest-visible layout was exercised on:
+
+- Lower Cost single-volume in Sprint 10
+- Balanced single-volume in Sprint 10
+- Higher Performance single-volume in Sprint 10
+- UHP single-volume in Sprint 9
 
 Use it for:
 
@@ -95,15 +108,19 @@ Practical references:
 - Sprint 9 single-UHP analysis: [progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md)
 - fio job reused for the current Oracle baseline: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
 
-Current measured result on the Sprint 9 single-UHP baseline:
+Measured result:
 
-- `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
-- `REDO`: about `131` write IOPS / `1 MiB/s`
-- `FRA`: about `120 MB/s` read and `120 MB/s` write
+| OCI tier | DATA | REDO | FRA |
+| ------ | ------ | ------ | ------ |
+| Lower Cost single-volume | `754` read IOPS / `5.89 MiB/s` read; `324` write IOPS / `2.53 MiB/s` write | `4` write IOPS / `0.02 MiB/s` | `13` read IOPS / `12.88 MiB/s` read; `12` write IOPS / `12.39 MiB/s` write |
+| Balanced single-volume | `6395` read IOPS / `49.96 MiB/s` read; `2742` write IOPS / `21.43 MiB/s` write | `36` write IOPS / `0.14 MiB/s` | `105` read IOPS / `104.77 MiB/s` read; `104` write IOPS / `104.30 MiB/s` write |
+| Higher Performance single-volume | `9893` read IOPS / `77.29 MiB/s` read; `4241` write IOPS / `33.13 MiB/s` write | `60` write IOPS / `0.23 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
+| UHP single-volume reference | `18606` read IOPS / `145.36 MiB/s` read; `7969` write IOPS / `62.26 MiB/s` write | `131` write IOPS / `0.51 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
 
 Relevant OCI references:
 
 - <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">OCI Configuring Attachments to Ultra High Performance Volumes</a>
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
@@ -131,50 +148,52 @@ Practical references:
 - fio job: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
 - runner: [tools/run_bv_fio_oracle_sprint9_multi.sh](tools/run_bv_fio_oracle_sprint9_multi.sh)
 
-Current measured result on the Sprint 9 multi-volume baseline:
+Measured result:
 
-- `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
-- `REDO`: about `791` write IOPS / `3 MiB/s`
-- `FRA`: about `24 MB/s` read and `23 MB/s` write
+| OCI tier | DATA | REDO | FRA |
+| ------ | ------ | ------ | ------ |
+| Balanced multi-volume | `16780` read IOPS / `131.09 MiB/s` read; `7187` write IOPS / `56.15 MiB/s` write | `827` write IOPS / `3.23 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
+| Higher Performance multi-volume | `20979` read IOPS / `163.90 MiB/s` read; `8984` write IOPS / `70.19 MiB/s` write | `769` write IOPS / `3.00 MiB/s` | `29` read IOPS / `29.37 MiB/s` read; `29` write IOPS / `29.22 MiB/s` write |
+| UHP multi-volume reference | `55137` read IOPS / `430.76 MiB/s` read; `23622` write IOPS / `184.55 MiB/s` write | `791` write IOPS / `3.09 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
 
 Relevant OCI references:
 
-- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
 
 ## Direct Comparison
 
-The most important comparison in the repository is now Sprint 9 single-UHP versus Sprint 9 multi-volume.
+The most important comparison in the repository is now the OCI tier matrix from Sprint 10, with Sprint 9 retained as the UHP reference.
 
-Those two runs kept the same:
+Those runs keep the same Oracle fio workload and guest-visible Oracle layout model. The variables are:
 
-- compute shape
-- fio job
-- filesystem layout
-- LVM layout
-
-Only one thing changed:
-
-- Sprint 9 multi-volume used multiple volumes with Oracle-style separation
-- Sprint 9 single-UHP used one single UHP volume underneath the same guest-visible layout
+- OCI block volume performance tier
+- single-volume versus multi-volume topology
+- compute sizing used to realize the target OCI tier
 
 Measured result:
 
-| Layout | DATA | REDO | FRA |
-| ------ | ---- | ---- | --- |
-| Entry-level BV | baseline only: sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
-| Single UHP | `18606` read IOPS / `145 MB/s` read; `7969` write IOPS / `62 MB/s` write | `131` write IOPS / `1 MiB/s` | `120` read IOPS / `120 MB/s` read; `120` write IOPS / `120 MB/s` write |
-| Multi-volume | `55137` read IOPS / `431 MB/s` read; `23622` write IOPS / `185 MB/s` write | `791` write IOPS / `3 MiB/s` | `24` read IOPS / `24 MB/s` read; `23` write IOPS / `23 MB/s` write |
+| Tier | Topology | DATA | REDO | FRA |
+| ------ | ------ | ---- | ---- | --- |
+| Entry-level BV | baseline only | sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
+| Lower Cost | single-volume | `754` read IOPS / `5.89 MiB/s` read; `324` write IOPS / `2.53 MiB/s` write | `4` write IOPS / `0.02 MiB/s` | `13` read IOPS / `12.88 MiB/s` read; `12` write IOPS / `12.39 MiB/s` write |
+| Balanced | single-volume | `6395` read IOPS / `49.96 MiB/s` read; `2742` write IOPS / `21.43 MiB/s` write | `36` write IOPS / `0.14 MiB/s` | `105` read IOPS / `104.77 MiB/s` read; `104` write IOPS / `104.30 MiB/s` write |
+| Balanced | multi-volume | `16780` read IOPS / `131.09 MiB/s` read; `7187` write IOPS / `56.15 MiB/s` write | `827` write IOPS / `3.23 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
+| Higher Performance | single-volume | `9893` read IOPS / `77.29 MiB/s` read; `4241` write IOPS / `33.13 MiB/s` write | `60` write IOPS / `0.23 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
+| Higher Performance | multi-volume | `20979` read IOPS / `163.90 MiB/s` read; `8984` write IOPS / `70.19 MiB/s` write | `769` write IOPS / `3.00 MiB/s` | `29` read IOPS / `29.37 MiB/s` read; `29` write IOPS / `29.22 MiB/s` write |
+| UHP | single-volume reference | `18606` read IOPS / `145.36 MiB/s` read; `7969` write IOPS / `62.26 MiB/s` write | `131` write IOPS / `0.51 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
+| UHP | multi-volume reference | `55137` read IOPS / `430.76 MiB/s` read; `23622` write IOPS / `184.55 MiB/s` write | `791` write IOPS / `3.09 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
 
 Interpretation:
 
-- the single UHP volume lets FRA run much faster in raw throughput terms
-- but that happens because FRA is consuming the same underlying UHP device that must also serve `DATA` and `REDO`
-- the separated-volume topology remains much stronger for Oracle behavior because the storage domains stay isolated
+- single-volume tiers improve smoothly from Lower Cost to UHP, but they always remain one contention domain
+- multi-volume Balanced already keeps `REDO` far stronger than Balanced single-volume because `REDO` is no longer competing with the `FRA` stream on the same device
+- Higher Performance multi-volume is the strongest Sprint 10 layout and the best non-UHP Oracle layout proven in this repository
+- the UHP multi-volume reference remains the top-end result in the repository
 - the `REDO` job is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `4k` writes), so the meaningful redo comparison is synchronous write rate and latency behavior, not throughput headlines
 
-That is the central result of this repository.
+That is the central OCI Oracle result of this repository.
 
 ## What To Use In Practice
 
@@ -222,13 +241,17 @@ Oracle also documents archived redo handling inside FRA:
 - plan: [PLAN.md](PLAN.md)
 - progress board: [PROGRESS_BOARD.md](PROGRESS_BOARD.md)
 - backlog: [BACKLOG.md](BACKLOG.md)
-- current baseline guide: [progress/sprint_9/oracle_block_volume_baseline_guide.md](progress/sprint_9/oracle_block_volume_baseline_guide.md)
-- Sprint 9 single-UHP comparison: [progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md)
-- Sprint 9 multi-volume comparison: [progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md)
+- OCI tier comparison: [progress/sprint_10/oci_performance_tier_comparison.md](progress/sprint_10/oci_performance_tier_comparison.md)
+- Sprint 10 lower-cost single analysis: [progress/sprint_10/fio-analysis-oracle-lower-single-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-lower-single-4k-redo-integration.md)
+- Sprint 10 balanced single analysis: [progress/sprint_10/fio-analysis-oracle-balanced-single-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-balanced-single-4k-redo-integration.md)
+- Sprint 10 balanced multi analysis: [progress/sprint_10/fio-analysis-oracle-balanced-multi-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-balanced-multi-4k-redo-integration.md)
+- Sprint 10 higher-performance single analysis: [progress/sprint_10/fio-analysis-oracle-hp-single-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-hp-single-4k-redo-integration.md)
+- Sprint 10 higher-performance multi analysis: [progress/sprint_10/fio-analysis-oracle-hp-multi-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-hp-multi-4k-redo-integration.md)
+- Sprint 9 UHP baseline guide: [progress/sprint_9/oracle_block_volume_baseline_guide.md](progress/sprint_9/oracle_block_volume_baseline_guide.md)
 
 ## Official OCI References
 
-- <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
+- <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm" target="_blank" rel="noopener noreferrer">OCI Configuring Attachments to Ultra High Performance Volumes</a>
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>

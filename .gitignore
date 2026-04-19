@@ -1,3 +1,5 @@
 model/*.dtmp
 model/*.bkp
 
+progress/.DS_Store
+.DS_Store

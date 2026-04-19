@@ -20,6 +20,17 @@ RUN_LEVEL="${RUN_LEVEL:-smoke}"
 FIO_RUNTIME_SEC="${FIO_RUNTIME_SEC:-60}"
 STORAGE_LAYOUT_MODE="${STORAGE_LAYOUT_MODE:-multi_volume}"
 ARTIFACT_PREFIX="${ARTIFACT_PREFIX:-oracle-${RUN_LEVEL}}"
+COMPUTE_SHAPE="${COMPUTE_SHAPE:-VM.Standard.E5.Flex}"
+COMPUTE_OCPUS="${COMPUTE_OCPUS:-40}"
+COMPUTE_MEMORY_GB="${COMPUTE_MEMORY_GB:-64}"
+VPU_SINGLE="${VPU_SINGLE:-120}"
+VPU_DATA="${VPU_DATA:-120}"
+VPU_REDO="${VPU_REDO:-20}"
+VPU_FRA="${VPU_FRA:-10}"
+SIZE_SINGLE_GB="${SIZE_SINGLE_GB:-600}"
+SIZE_DATA_GB="${SIZE_DATA_GB:-200}"
+SIZE_REDO_GB="${SIZE_REDO_GB:-50}"
+SIZE_FRA_GB="${SIZE_FRA_GB:-100}"
 
 _on_err() {
   local ec=$? line=${BASH_LINENO[0]:-?} cmd=${BASH_COMMAND:-?}
@@ -60,13 +71,13 @@ PUBKEY_FILE="$SPRINT1_DIR/bv4db-key.pub"
 # Volume configuration: name, device_path, vpu_per_gb, size_gb
 declare -A VOLUMES
 if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
-  VOLUMES[singleuhp]="/dev/oracleoci/oraclevdb:120:600"
+  VOLUMES[singleuhp]="/dev/oracleoci/oraclevdb:${VPU_SINGLE}:${SIZE_SINGLE_GB}"
 else
-  VOLUMES[data1]="/dev/oracleoci/oraclevdb:120:200"
-  VOLUMES[data2]="/dev/oracleoci/oraclevdc:120:200"
-  VOLUMES[redo1]="/dev/oracleoci/oraclevdd:20:50"
-  VOLUMES[redo2]="/dev/oracleoci/oraclevde:20:50"
-  VOLUMES[fra]="/dev/oracleoci/oraclevdf:10:100"
+  VOLUMES[data1]="/dev/oracleoci/oraclevdb:${VPU_DATA}:${SIZE_DATA_GB}"
+  VOLUMES[data2]="/dev/oracleoci/oraclevdc:${VPU_DATA}:${SIZE_DATA_GB}"
+  VOLUMES[redo1]="/dev/oracleoci/oraclevdd:${VPU_REDO}:${SIZE_REDO_GB}"
+  VOLUMES[redo2]="/dev/oracleoci/oraclevde:${VPU_REDO}:${SIZE_REDO_GB}"
+  VOLUMES[fra]="/dev/oracleoci/oraclevdf:${VPU_FRA}:${SIZE_FRA_GB}"
 fi
 
 enable_block_volume_plugin() {
@@ -172,7 +183,7 @@ if ! vgs vg_data >/dev/null 2>&1; then
   pvcreate -ff -y "$DATA1" "$DATA2"
   vgcreate vg_data "$DATA1" "$DATA2"
   lvcreate -l 100%FREE -n lv_oradata -i 2 -I 256K vg_data
-  mkfs.ext4 -F /dev/vg_data/lv_oradata
+  mkfs.ext4 -F -E nodiscard /dev/vg_data/lv_oradata
 fi
 mkdir -p /u02/oradata
 mountpoint -q /u02/oradata || mount /dev/vg_data/lv_oradata /u02/oradata
@@ -183,7 +194,7 @@ if ! vgs vg_redo >/dev/null 2>&1; then
   pvcreate -ff -y "$REDO1" "$REDO2"
   vgcreate vg_redo "$REDO1" "$REDO2"
   lvcreate -l 100%FREE -n lv_redo -i 2 -I 256K vg_redo
-  mkfs.ext4 -F /dev/vg_redo/lv_redo
+  mkfs.ext4 -F -E nodiscard /dev/vg_redo/lv_redo
 fi
 mkdir -p /u03/redo
 mountpoint -q /u03/redo || mount /dev/vg_redo/lv_redo /u03/redo
@@ -191,7 +202,7 @@ chown opc:opc /u03/redo
 
 # FRA — direct mount (no striping)
 if ! blkid "$FRA" >/dev/null 2>&1; then
-  mkfs.ext4 -F "$FRA"
+  mkfs.ext4 -F -E nodiscard "$FRA"
 fi
 mkdir -p /u04/fra
 mountpoint -q /u04/fra || mount "$FRA" /u04/fra
@@ -257,13 +268,13 @@ PARTS
   pvcreate -ff -y "$DATA1" "$DATA2" "$REDO1" "$REDO2"
   vgcreate vg_data "$DATA1" "$DATA2"
   lvcreate -l 100%FREE -n lv_oradata -i 2 -I 256K vg_data
-  mkfs.ext4 -F /dev/vg_data/lv_oradata
+  mkfs.ext4 -F -E nodiscard /dev/vg_data/lv_oradata
 
   vgcreate vg_redo "$REDO1" "$REDO2"
   lvcreate -l 100%FREE -n lv_redo -i 2 -I 256K vg_redo
-  mkfs.ext4 -F /dev/vg_redo/lv_redo
+  mkfs.ext4 -F -E nodiscard /dev/vg_redo/lv_redo
 
-  mkfs.ext4 -F "$FRA"
+  mkfs.ext4 -F -E nodiscard "$FRA"
 fi
 
 mkdir -p /u02/oradata /u03/redo /u04/fra
@@ -387,9 +398,9 @@ EOF
 _state_set '.inputs.name_prefix'                      "$NAME_PREFIX"
 _state_set '.inputs.oci_compartment'                  "$COMPARTMENT_OCID"
 _state_set '.subnet.ocid'                             "$SUBNET_OCID"
-_state_set '.inputs.compute_shape'                    'VM.Standard.E5.Flex'
-_state_set '.inputs.compute_ocpus'                    '40'
-_state_set '.inputs.compute_memory_gb'                '64'
+_state_set '.inputs.compute_shape'                    "$COMPUTE_SHAPE"
+_state_set '.inputs.compute_ocpus'                    "$COMPUTE_OCPUS"
+_state_set '.inputs.compute_memory_gb'                "$COMPUTE_MEMORY_GB"
 _state_set '.inputs.subnet_prohibit_public_ip'        'false'
 _state_set '.inputs.compute_ssh_authorized_keys_file' "$PUBKEY_FILE"
 _state_set '.inputs.run_level'                        "$RUN_LEVEL"
@@ -520,11 +531,14 @@ ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-${ARTIFACT_PREFIX}.md"
   echo ""
   echo "- Runtime: \`${FIO_RUNTIME_SEC} seconds\`"
   echo "- Region: \`${OCI_REGION}\`"
-  echo "- Compute shape: \`VM.Standard.E5.Flex\` (40 OCPUs)"
+  echo "- Compute shape: \`${COMPUTE_SHAPE}\`"
+  echo "- Compute resources: \`${COMPUTE_OCPUS} OCPUs\`, \`${COMPUTE_MEMORY_GB} GB\`"
   if [ "$STORAGE_LAYOUT_MODE" = "single_uhp" ]; then
-    echo "- Block volumes: 1 (1x UHP 120 VPU, 600 GB total, guest-partitioned into data/redo/fra slices)"
+    echo "- Block volumes: 1"
+    echo "- Volume detail: \`${SIZE_SINGLE_GB} GB\` at \`${VPU_SINGLE} VPU/GB\`, guest-partitioned into data/redo/fra slices"
   else
-    echo "- Block volumes: 5 (2x UHP 120 VPU, 2x HP 20 VPU, 1x Balanced 10 VPU)"
+    echo "- Block volumes: 5"
+    echo "- Volume detail: 2x DATA \`${SIZE_DATA_GB} GB\` at \`${VPU_DATA} VPU/GB\`, 2x REDO \`${SIZE_REDO_GB} GB\` at \`${VPU_REDO} VPU/GB\`, 1x FRA \`${SIZE_FRA_GB} GB\` at \`${VPU_FRA} VPU/GB\`"
   fi
   echo ""
   echo "## Measured Results"
