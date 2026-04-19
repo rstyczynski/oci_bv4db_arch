@@ -2,7 +2,7 @@
 
 Practical OCI block volume guidance for Oracle Database, backed by executed sprint results in this repository.
 
-This repository now focuses on one practical comparison only:
+This repository now focuses on one practical baseline:
 
 1. entry-level block volume
 2. single UHP volume
@@ -29,6 +29,11 @@ The project has already executed enough work to support a simple practical concl
 - one ordinary block volume is enough to start
 - one UHP volume is enough to go faster, but it is still one shared contention domain
 - multiple volumes mapped to Oracle storage domains are the strongest practical layout for real production behavior
+
+The active Oracle baseline in this repository is now Sprint 9, which uses the `4k` redo profile on both:
+
+- single UHP topology
+- separated-volume topology
 
 The Oracle domains that matter are still:
 
@@ -70,7 +75,7 @@ Relevant OCI reference:
 
 ### 2. Single UHP Volume
 
-This is the “one fast disk” choice. In the Oracle-specific comparison in this repository, it is represented by Sprint 8: the same Oracle fio job and the same guest-visible layout as Sprint 5, but all backed by one single UHP volume.
+This is the “one fast disk” choice. In the current Oracle baseline in this repository, it is represented by Sprint 9 single-UHP: the same Oracle-style guest-visible layout, but all backed by one single UHP volume.
 
 Use it for:
 
@@ -82,8 +87,8 @@ Its limit is simple: all Oracle activity still converges on one device.
 
 Practical references:
 
-- Sprint 8 analysis: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
-- fio job reused for the Oracle-style single-UHP comparison: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
+- Sprint 9 single-UHP analysis: [progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md)
+- fio job reused for the current Oracle baseline: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
 
 Relevant OCI references:
 
@@ -94,12 +99,13 @@ Relevant OCI references:
 
 ### 3. Multiple Volumes With Storage-Domain Separation
 
-This is the practical Oracle layout proved by Sprint 5:
+This is the practical Oracle layout used by the current repository baseline:
 
 - separated `DATA`
 - separated `REDO`
 - separated `FRA`
 - valid per-job fio reporting under concurrent load
+- `4k` synchronous redo writes in Sprint 9
 
 Use it for:
 
@@ -110,9 +116,9 @@ Use it for:
 
 Practical references:
 
-- analysis: [progress/sprint_5/fio-analysis-oracle-integration.md](progress/sprint_5/fio-analysis-oracle-integration.md)
-- fio job: [progress/sprint_5/oracle-layout.fio](progress/sprint_5/oracle-layout.fio)
-- runner: [tools/run_bv_fio_oracle_sprint5.sh](tools/run_bv_fio_oracle_sprint5.sh)
+- analysis: [progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md)
+- fio job: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
+- runner: [tools/run_bv_fio_oracle_sprint9_multi.sh](tools/run_bv_fio_oracle_sprint9_multi.sh)
 
 Relevant OCI references:
 
@@ -122,7 +128,7 @@ Relevant OCI references:
 
 ## Direct Comparison
 
-The most important comparison in the repository is Sprint 5 versus Sprint 8.
+The most important comparison in the repository is now Sprint 9 single-UHP versus Sprint 9 multi-volume.
 
 Those two runs kept the same:
 
@@ -133,24 +139,24 @@ Those two runs kept the same:
 
 Only one thing changed:
 
-- Sprint 5 used multiple volumes with Oracle-style separation
-- Sprint 8 used one single UHP volume underneath the same guest-visible layout
+- Sprint 9 multi-volume used multiple volumes with Oracle-style separation
+- Sprint 9 single-UHP used one single UHP volume underneath the same guest-visible layout
 
 Measured result:
 
-- Sprint 5 `data-8k` worker: about `12730` read IOPS / `99 MB/s` read and `5454` write IOPS / `43 MB/s` write per worker
-- Sprint 8 `data-8k` worker: about `4770` read IOPS / `37 MB/s` read and `2044` write IOPS / `16 MB/s` write per worker
-- Sprint 5 `redo`: about `1532` write IOPS / `0.75 MiB/s`
-- Sprint 8 `redo`: about `292` write IOPS / `0.14 MiB/s`
-- Sprint 5 `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write
-- Sprint 8 `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
+- Sprint 9 multi-volume `data-8k` worker: about `13780` read IOPS / `108 MB/s` read and `5905` write IOPS / `46 MB/s` write per worker
+- Sprint 9 single-UHP `data-8k` worker: about `4650` read IOPS / `36 MB/s` read and `1992` write IOPS / `16 MB/s` write per worker
+- Sprint 9 multi-volume `redo`: about `791` write IOPS / `3 MiB/s`
+- Sprint 9 single-UHP `redo`: about `131` write IOPS / `1 MiB/s`
+- Sprint 9 multi-volume `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write
+- Sprint 9 single-UHP `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
 
 Interpretation:
 
-- the single UHP volume lets FRA run much faster than the balanced FRA volume used in Sprint 5
+- the single UHP volume lets FRA run much faster in raw throughput terms
 - but that happens because FRA is consuming the same underlying UHP device that must also serve `DATA` and `REDO`
-- once all Oracle domains share one UHP volume, the device becomes the contention point
-- the `REDO` job is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `512`-byte writes), so low MiB/s is expected; the meaningful redo comparison is synchronous write rate and latency behavior, not throughput headlines
+- the separated-volume topology remains much stronger for Oracle behavior because the storage domains stay isolated
+- the `REDO` job is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `4k` writes), so the meaningful redo comparison is synchronous write rate and latency behavior, not throughput headlines
 
 That is the central result of this repository.
 
@@ -200,8 +206,9 @@ Oracle also documents archived redo handling inside FRA:
 - plan: [PLAN.md](PLAN.md)
 - progress board: [PROGRESS_BOARD.md](PROGRESS_BOARD.md)
 - backlog: [BACKLOG.md](BACKLOG.md)
-- detailed sizing guide: [progress/sprint_7/oracle_block_volume_sizing_guide.md](progress/sprint_7/oracle_block_volume_sizing_guide.md)
-- Sprint 8 single-UHP comparison: [progress/sprint_8/fio-analysis-oracle-integration.md](progress/sprint_8/fio-analysis-oracle-integration.md)
+- current baseline guide: [progress/sprint_9/oracle_block_volume_baseline_guide.md](progress/sprint_9/oracle_block_volume_baseline_guide.md)
+- Sprint 9 single-UHP comparison: [progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md)
+- Sprint 9 multi-volume comparison: [progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-multi-4k-redo-integration.md)
 
 ## Official OCI References
 

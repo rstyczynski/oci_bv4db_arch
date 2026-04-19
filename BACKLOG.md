@@ -163,3 +163,27 @@ Test: a written analysis exists that evaluates `operate*` and `update*` lifecycl
 The project needs a direct comparison between the Sprint 5 Oracle fio workload and a simpler layout that uses a single Ultra High Performance block volume instead of separate `DATA`, `REDO`, and `FRA` domains. This benchmark is needed to show what is gained and lost when the Oracle-style fio job is forced onto one high-performance volume, using the same practical workload shape as Sprint 5. The outcome is a benchmark and analysis set that can be compared directly against the Sprint 5 Oracle-style split-volume results.
 
 Test: the Sprint 5 fio job is executed successfully against a single UHP block volume, writes raw result artifacts, and produces an analysis that compares the single-volume result with the Sprint 5 split-domain layout.
+
+### BV4DB-16. Unify and polish Oracle fio testing scripts
+
+The Oracle fio execution path has evolved over multiple sprints and now needs consolidation. The runner and wrapper scripts should absorb the learnings from the executed sprints so that single-volume and multi-volume Oracle-style tests reuse the same stable logic for UHP attachment handling, guest layout creation, fio execution, artifact collection, and teardown. The outcome is a cleaner script set that reduces sprint-specific duplication and makes the next Oracle fio variants easier to execute and compare.
+
+Test: the Oracle fio runner path supports both the separated-volume and single-UHP variants through the same stable execution flow, and the new sprint wrappers use that shared flow successfully.
+
+### BV4DB-17. Single-volume Oracle-style test with 4 KB redo
+
+The project needs the Sprint 8 single-UHP comparison rerun with only one workload change: the redo job uses `4k` block size instead of `512` bytes. Everything else stays the same as Sprint 8: same compute shape, same single UHP volume, same guest filesystem layout, same LVM structure, and the same non-redo fio jobs. The outcome is a direct single-volume Oracle-style result set with a more modern redo block-size proxy.
+
+Test: the single-UHP Oracle-style run completes with the `4k` redo fio profile, writes raw result artifacts, and produces analysis that can be compared with Sprint 8.
+
+### BV4DB-18. Multi-volume Oracle-style test with 4 KB redo
+
+The project needs the Sprint 5 separated-volume Oracle-style test rerun with only one workload change: the redo job uses `4k` block size instead of `512` bytes. Everything else stays the same as Sprint 5: same compute shape, same multi-volume topology, same guest filesystem layout, same LVM structure, and the same non-redo fio jobs. The outcome is a direct separated-volume Oracle-style result set with a `4k` redo profile that can be compared with Sprint 5 and with the single-UHP `4k` redo variant.
+
+Test: the multi-volume Oracle-style run completes with the `4k` redo fio profile, writes raw result artifacts, and produces analysis that can be compared with Sprint 5 and the single-UHP `4k` redo run.
+
+### BV4DB-19. Practical Oracle block volume baseline guide from Sprint 9
+
+The repository needs a current practical guide that uses Sprint 9 as the active Oracle baseline instead of the earlier documentation sprint. This document should summarize only the OCI layouts that matter operationally now: entry-level block volume, single UHP volume, and multiple volumes with storage-domain separation, using the Sprint 9 `4k` redo findings as the primary Oracle comparison point. The outcome is a current-sprint guidance document aligned with the latest validated benchmark baseline.
+
+Test: a Sprint 9 documentation artifact exists that describes the three practical OCI Oracle layouts and compares them using the Sprint 9 single-UHP and separated-volume `4k` redo results.

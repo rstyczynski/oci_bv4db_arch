@@ -114,3 +114,19 @@ Sprint 8 reuses the Sprint 5 Oracle fio workload definition, but executes it on 
 Backlog Items:
 
 * BV4DB-15. Run the Sprint 5 Oracle fio job on a single UHP block volume
+
+## Sprint 9 - Oracle fio runner cleanup and 4 KB redo variants
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 9 consolidates the Oracle fio execution path and then reexecutes the validated Oracle-style workload with one focused workload change: the redo job uses `4k` block size instead of `512` bytes. The sprint runs both topologies already established by the project: the single-UHP variant from Sprint 8 and the separated-volume variant from Sprint 5.
+
+Backlog Items:
+
+* BV4DB-16. Unify and polish Oracle fio testing scripts
+* BV4DB-17. Single-volume Oracle-style test with 4 KB redo
+* BV4DB-18. Multi-volume Oracle-style test with 4 KB redo
+* BV4DB-19. Practical Oracle block volume baseline guide from Sprint 9

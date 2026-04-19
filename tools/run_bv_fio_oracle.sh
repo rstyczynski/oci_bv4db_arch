@@ -19,6 +19,7 @@ export OCI_CLI_REGION="${OCI_CLI_REGION:-${OCI_REGION:-}}"
 RUN_LEVEL="${RUN_LEVEL:-smoke}"
 FIO_RUNTIME_SEC="${FIO_RUNTIME_SEC:-60}"
 STORAGE_LAYOUT_MODE="${STORAGE_LAYOUT_MODE:-multi_volume}"
+ARTIFACT_PREFIX="${ARTIFACT_PREFIX:-oracle-${RUN_LEVEL}}"
 
 _on_err() {
   local ec=$? line=${BASH_LINENO[0]:-?} cmd=${BASH_COMMAND:-?}
@@ -290,14 +291,14 @@ EOF
 run_remote_fio_with_iostat() {
   local runtime_sec="$1"
   local remote_profile="/tmp/oracle-layout.fio"
-  local remote_json="/tmp/fio-oracle-${RUN_LEVEL}.json"
-  local remote_iostat="/tmp/iostat-oracle-${RUN_LEVEL}.json"
-  local remote_log="/tmp/fio-oracle-${RUN_LEVEL}.log"
+  local remote_json="/tmp/fio-${ARTIFACT_PREFIX}.json"
+  local remote_iostat="/tmp/iostat-${ARTIFACT_PREFIX}.json"
+  local remote_log="/tmp/fio-${ARTIFACT_PREFIX}.log"
   local exit_file="${remote_json}.exit"
   local pid_file="${remote_json}.pid"
-  local remote_runner="/tmp/run-oracle-${RUN_LEVEL}.sh"
-  local local_json="$PROGRESS_DIR/fio-results-oracle-${RUN_LEVEL}.json"
-  local local_iostat="$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json"
+  local remote_runner="/tmp/run-${ARTIFACT_PREFIX}.sh"
+  local local_json="$PROGRESS_DIR/fio-results-${ARTIFACT_PREFIX}.json"
+  local local_iostat="$PROGRESS_DIR/iostat-${ARTIFACT_PREFIX}.json"
   local max_wait_sec
   local elapsed=0
   local tmp_profile
@@ -394,6 +395,7 @@ _state_set '.inputs.compute_ssh_authorized_keys_file' "$PUBKEY_FILE"
 _state_set '.inputs.run_level'                        "$RUN_LEVEL"
 _state_set '.inputs.fio_runtime_sec'                  "$FIO_RUNTIME_SEC"
 _state_set '.inputs.storage_layout_mode'              "$STORAGE_LAYOUT_MODE"
+_state_set '.inputs.artifact_prefix'                  "$ARTIFACT_PREFIX"
 
 # Provision compute
 echo "  [INFO] Provisioning compute instance ..."
@@ -510,7 +512,7 @@ _state_set '.artifacts.result_json' "$RESULT_JSON"
 echo "  [INFO] Results saved: $RESULT_JSON"
 
 # Generate analysis
-ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-oracle-${RUN_LEVEL}.md"
+ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-${ARTIFACT_PREFIX}.md"
 {
   echo "# ${SPRINT_LABEL} — Oracle Layout fio Analysis (${RUN_LEVEL})"
   echo ""
@@ -527,7 +529,7 @@ ANALYSIS_MD="$PROGRESS_DIR/fio-analysis-oracle-${RUN_LEVEL}.md"
   echo ""
   echo "## Measured Results"
   echo ""
-  python3 - "$RESULT_JSON" "$PROGRESS_DIR/iostat-oracle-${RUN_LEVEL}.json" "$STORAGE_LAYOUT_MODE" <<'PY'
+  python3 - "$RESULT_JSON" "$PROGRESS_DIR/iostat-${ARTIFACT_PREFIX}.json" "$STORAGE_LAYOUT_MODE" <<'PY'
 import json
 import sys
 
