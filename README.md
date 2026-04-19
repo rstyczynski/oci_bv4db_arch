@@ -176,7 +176,6 @@ Single-volume comparison:
 
 | Tier | DATA | REDO | FRA |
 | ------ | ---- | ---- | --- |
-| Entry-level BV baseline | sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
 | Lower Cost | `754` read IOPS / `5.89 MiB/s` read; `324` write IOPS / `2.53 MiB/s` write | `4` write IOPS / `0.02 MiB/s` | `13` read IOPS / `12.88 MiB/s` read; `12` write IOPS / `12.39 MiB/s` write |
 | Balanced | `6395` read IOPS / `49.96 MiB/s` read; `2742` write IOPS / `21.43 MiB/s` write | `36` write IOPS / `0.14 MiB/s` | `105` read IOPS / `104.77 MiB/s` read; `104` write IOPS / `104.30 MiB/s` write |
 | Higher Performance | `9893` read IOPS / `77.29 MiB/s` read; `4241` write IOPS / `33.13 MiB/s` write | `60` write IOPS / `0.23 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
