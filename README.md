@@ -197,6 +197,13 @@ Interpretation:
 - the UHP multi-volume reference remains the top-end result in the repository
 - the `REDO` job is intentionally synchronous (`iodepth=1` with `fdatasync=1` and `4k` writes), so the meaningful redo comparison is synchronous write rate and latency behavior, not throughput headlines
 
+Single-volume safety clarification:
+
+- a single block volume can still be logically safe for Oracle if redo keeps its synchronous durability path
+- commit durability depends on redo reaching disk; Oracle does not need to flush `DATA` and `FRA` at the same moment
+- this is why a single-volume layout can be crash-safe enough while still being weaker operationally than separated volumes
+- the multi-volume recommendation in this repository is about workload isolation and commit-path stability, not about Oracle requiring multiple volumes to function correctly
+
 That is the central OCI Oracle result of this repository.
 
 ## What To Use In Practice
