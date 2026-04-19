@@ -172,18 +172,23 @@ Those runs keep the same Oracle fio workload and guest-visible Oracle layout mod
 - single-volume versus multi-volume topology
 - compute sizing used to realize the target OCI tier
 
-Measured result:
+Single-volume comparison:
 
-| Tier | Topology | DATA | REDO | FRA |
-| ------ | ------ | ---- | ---- | --- |
-| Entry-level BV | baseline only | sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
-| Lower Cost | single-volume | `754` read IOPS / `5.89 MiB/s` read; `324` write IOPS / `2.53 MiB/s` write | `4` write IOPS / `0.02 MiB/s` | `13` read IOPS / `12.88 MiB/s` read; `12` write IOPS / `12.39 MiB/s` write |
-| Balanced | single-volume | `6395` read IOPS / `49.96 MiB/s` read; `2742` write IOPS / `21.43 MiB/s` write | `36` write IOPS / `0.14 MiB/s` | `105` read IOPS / `104.77 MiB/s` read; `104` write IOPS / `104.30 MiB/s` write |
-| Balanced | multi-volume | `16780` read IOPS / `131.09 MiB/s` read; `7187` write IOPS / `56.15 MiB/s` write | `827` write IOPS / `3.23 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
-| Higher Performance | single-volume | `9893` read IOPS / `77.29 MiB/s` read; `4241` write IOPS / `33.13 MiB/s` write | `60` write IOPS / `0.23 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
-| Higher Performance | multi-volume | `20979` read IOPS / `163.90 MiB/s` read; `8984` write IOPS / `70.19 MiB/s` write | `769` write IOPS / `3.00 MiB/s` | `29` read IOPS / `29.37 MiB/s` read; `29` write IOPS / `29.22 MiB/s` write |
-| UHP | single-volume reference | `18606` read IOPS / `145.36 MiB/s` read; `7969` write IOPS / `62.26 MiB/s` write | `131` write IOPS / `0.51 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
-| UHP | multi-volume reference | `55137` read IOPS / `430.76 MiB/s` read; `23622` write IOPS / `184.55 MiB/s` write | `791` write IOPS / `3.09 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
+| Tier | DATA | REDO | FRA |
+| ------ | ---- | ---- | --- |
+| Entry-level BV baseline | sequential `1M` about `11/12 MB/s`; random `4k` about `1520/1520 IOPS` and `6/6 MB/s` | not separated in Sprint 1 | not separated in Sprint 1 |
+| Lower Cost | `754` read IOPS / `5.89 MiB/s` read; `324` write IOPS / `2.53 MiB/s` write | `4` write IOPS / `0.02 MiB/s` | `13` read IOPS / `12.88 MiB/s` read; `12` write IOPS / `12.39 MiB/s` write |
+| Balanced | `6395` read IOPS / `49.96 MiB/s` read; `2742` write IOPS / `21.43 MiB/s` write | `36` write IOPS / `0.14 MiB/s` | `105` read IOPS / `104.77 MiB/s` read; `104` write IOPS / `104.30 MiB/s` write |
+| Higher Performance | `9893` read IOPS / `77.29 MiB/s` read; `4241` write IOPS / `33.13 MiB/s` write | `60` write IOPS / `0.23 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
+| UHP reference | `18606` read IOPS / `145.36 MiB/s` read; `7969` write IOPS / `62.26 MiB/s` write | `131` write IOPS / `0.51 MiB/s` | `120` read IOPS / `120.00 MiB/s` read; `120` write IOPS / `120.00 MiB/s` write |
+
+Multi-volume comparison:
+
+| Tier | DATA | REDO | FRA |
+| ------ | ---- | ---- | --- |
+| Balanced | `16780` read IOPS / `131.09 MiB/s` read; `7187` write IOPS / `56.15 MiB/s` write | `827` write IOPS / `3.23 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
+| Higher Performance | `20979` read IOPS / `163.90 MiB/s` read; `8984` write IOPS / `70.19 MiB/s` write | `769` write IOPS / `3.00 MiB/s` | `29` read IOPS / `29.37 MiB/s` read; `29` write IOPS / `29.22 MiB/s` write |
+| UHP reference | `55137` read IOPS / `430.76 MiB/s` read; `23622` write IOPS / `184.55 MiB/s` write | `791` write IOPS / `3.09 MiB/s` | `24` read IOPS / `23.57 MiB/s` read; `23` write IOPS / `23.31 MiB/s` write |
 
 Interpretation:
 
