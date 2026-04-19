@@ -8,15 +8,6 @@ This repository now focuses on one practical baseline:
 2. single UHP volume
 3. multiple volumes with Oracle-style storage-domain separation
 
-Current Sprint 9 baseline snapshot:
-
-- single UHP `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
-- multi-volume `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
-- single UHP `REDO`: about `131` write IOPS / `1 MiB/s`
-- multi-volume `REDO`: about `791` write IOPS / `3 MiB/s`
-- single UHP `FRA`: about `120/120 MB/s`
-- multi-volume `FRA`: about `24/23 MB/s`
-
 ## Table of Contents
 
 - [What This Repository Proves](#what-this-repository-proves)
@@ -99,6 +90,12 @@ Practical references:
 - Sprint 9 single-UHP analysis: [progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md](progress/sprint_9/fio-analysis-oracle-single-4k-redo-integration.md)
 - fio job reused for the current Oracle baseline: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
 
+Current measured result on the Sprint 9 single-UHP baseline:
+
+- `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
+- `REDO`: about `131` write IOPS / `1 MiB/s`
+- `FRA`: about `120 MB/s` read and `120 MB/s` write
+
 Relevant OCI references:
 
 - <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeultrahighperformance.htm" target="_blank" rel="noopener noreferrer">OCI Ultra High Performance Block Volumes</a>
@@ -129,6 +126,12 @@ Practical references:
 - fio job: [progress/sprint_9/oracle-layout-4k-redo.fio](progress/sprint_9/oracle-layout-4k-redo.fio)
 - runner: [tools/run_bv_fio_oracle_sprint9_multi.sh](tools/run_bv_fio_oracle_sprint9_multi.sh)
 
+Current measured result on the Sprint 9 multi-volume baseline:
+
+- `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
+- `REDO`: about `791` write IOPS / `3 MiB/s`
+- `FRA`: about `24 MB/s` read and `23 MB/s` write
+
 Relevant OCI references:
 
 - <a href="https://docs.oracle.com/iaas/Content/Block/Concepts/blockvolumeelasticperformance.htm" target="_blank" rel="noopener noreferrer">OCI Block Volume Performance</a>
@@ -153,12 +156,11 @@ Only one thing changed:
 
 Measured result:
 
-- Sprint 9 multi-volume `DATA`: about `55137` read IOPS / `431 MB/s` read and `23622` write IOPS / `185 MB/s` write
-- Sprint 9 single-UHP `DATA`: about `18606` read IOPS / `145 MB/s` read and `7969` write IOPS / `62 MB/s` write
-- Sprint 9 multi-volume `redo`: about `791` write IOPS / `3 MiB/s`
-- Sprint 9 single-UHP `redo`: about `131` write IOPS / `1 MiB/s`
-- Sprint 9 multi-volume `fra-1m`: about `24` read IOPS / `24 MB/s` read and `23` write IOPS / `23 MB/s` write
-- Sprint 9 single-UHP `fra-1m`: about `120` read IOPS / `120 MB/s` read and `120` write IOPS / `120 MB/s` write
+| Domain | Single UHP | Multi-volume |
+| ------ | ---------- | ------------ |
+| `DATA` | `18606` read IOPS / `145 MB/s` read; `7969` write IOPS / `62 MB/s` write | `55137` read IOPS / `431 MB/s` read; `23622` write IOPS / `185 MB/s` write |
+| `REDO` | `131` write IOPS / `1 MiB/s` | `791` write IOPS / `3 MiB/s` |
+| `FRA` | `120` read IOPS / `120 MB/s` read; `120` write IOPS / `120 MB/s` write | `24` read IOPS / `24 MB/s` read; `23` write IOPS / `23 MB/s` write |
 
 Interpretation:
 
