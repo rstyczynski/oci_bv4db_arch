@@ -271,3 +271,51 @@ Test: post-test metrics collection produces an HTML report with charts for the s
 The current metrics collection proves that OCI Monitoring data can be collected and rendered after a benchmark window, but it does not yet prove that those provider-side metrics quantitatively align with the benchmark-side observations. The project needs an explicit analysis and validation pass that compares OCI Monitoring throughput and operation metrics with fio logical-volume totals and guest `iostat` observations, explains the expected deltas caused by aggregation windows and semantic differences, and defines what level of mismatch is still acceptable. The outcome is a documented reconciliation method that makes the metrics report analytically trustworthy rather than only operationally useful.
 
 Test: a written reconciliation exists for at least one executed benchmark window, comparing OCI Monitoring, fio, and guest `iostat` data and explaining the observed differences with stated acceptance criteria.
+
+### BV4DB-34. Fully automated Oracle Database Free installation on benchmark host
+
+The project needs a repeatable way to prepare a benchmark compute host with Oracle Database Free on the same Oracle Linux platform already used for the storage tests. Manual installation would make database-oriented benchmarking slow to rerun and hard to compare across sprints. The outcome is a host that can be prepared from scratch without interactive steps and then reused for automated database benchmark execution.
+
+Test: a fresh benchmark host can be prepared with Oracle Database Free without interactive prompts, and the database starts successfully after the automated setup completes.
+
+### BV4DB-35. Automated Oracle Database Free storage layout for OCI block volume tests
+
+The project needs the Oracle Database Free environment to place database storage in a controlled layout that matches the OCI block-volume topologies being studied. Without an explicit automated layout, database benchmark results would not be comparable with the single-volume and separated-volume storage experiments already in the repository. The outcome is a repeatable database storage placement that can be recreated for benchmark runs and compared across layouts.
+
+Test: an automated database setup creates a valid Oracle Database Free storage layout on the intended block-volume-backed filesystems, and the database can open and use that layout successfully.
+
+### BV4DB-36. Automated Oracle Database Free performance workload execution
+
+The project needs a database-level benchmark flow that runs automatically against Oracle Database Free and produces durable result artifacts. This is needed to move from synthetic storage-only evidence toward workload evidence that is closer to real database behavior while still remaining repeatable in CI-like execution. The outcome is an automated benchmark run that can be executed repeatedly and compared with existing storage-oriented results.
+
+Test: an Oracle Database Free workload can be started automatically, runs to completion without manual intervention, and produces benchmark artifacts suitable for comparison between OCI storage layouts.
+
+### BV4DB-37. Compare Oracle Database Free benchmark evidence with fio baselines
+
+The repository needs an analysis that explains how Oracle Database Free benchmark observations relate to the existing fio-based OCI storage baselines. Without that comparison, the project would accumulate two independent result streams without a clear statement of what database-level evidence adds beyond storage-level measurements. The outcome is a written comparison that links Oracle Database Free findings to the current fio baselines and explains where they align or diverge.
+
+Test: a written analysis exists that compares Oracle Database Free benchmark results with the current fio baselines and explains the main similarities, differences, and limits of each method.
+
+### BV4DB-38. Automated AWR snapshot window capture for database benchmarks
+
+The project needs an automated way to bracket each Oracle Database Free benchmark run with a defined database diagnostics window. Without explicit snapshot capture around the workload, later performance analysis would rely on approximate timing and would be harder to compare across repeated runs. The outcome is a repeatable benchmark procedure that records the intended diagnostic interval for each database test.
+
+Test: an Oracle Database Free benchmark run records a begin and end diagnostics window automatically, and the captured window is saved as part of the benchmark artifacts.
+
+### BV4DB-39. Automated AWR report export and archival for benchmark runs
+
+The project needs each Oracle Database Free benchmark to produce a durable database-side performance report that can be reviewed after the host is torn down. Without archived AWR evidence, the project would keep workload timing but lose the main database diagnostic artifact needed for later tuning and comparison work. The outcome is a benchmark artifact set that includes an exported AWR report for each captured run.
+
+Test: a completed Oracle Database Free benchmark run produces an archived AWR report artifact that can be opened and reviewed after the benchmark environment is removed.
+
+### BV4DB-40. Correlate AWR evidence with OCI and guest benchmark metrics
+
+The project needs an analysis layer that connects Oracle Database diagnostics with the OCI metrics and guest-level measurements already collected in this repository. Without that correlation, AWR would remain an isolated artifact instead of helping explain storage waits, throughput ceilings, and database-visible bottlenecks. The outcome is a written comparison that ties AWR findings to workload timing, guest measurements, and OCI monitoring evidence for the same run window.
+
+Test: a written analysis exists for at least one database benchmark run that compares AWR findings with OCI metrics and guest-level observations from the same test window.
+
+### BV4DB-41. Swingbench as the standard Oracle Database Free load generator
+
+The project needs one explicit database load tool so Oracle Database Free benchmarks are repeatable across runs and sprints. Swingbench is the primary tool because it is Oracle-focused and better aligned with database-visible performance analysis, while HammerDB remains an acceptable fallback if Swingbench proves unsuitable in the target environment. The outcome is a standard benchmark harness choice that keeps future database tests comparable.
+
+Test: Oracle Database Free benchmark execution uses Swingbench as the standard load generator, or documents and uses HammerDB only when Swingbench is shown unsuitable for the required benchmark scenario.
