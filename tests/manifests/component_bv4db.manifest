@@ -2,3 +2,8 @@ integration:test_bv4db.sh
 integration:test_bv4db_perf.sh
 integration:test_bv4db_mixed8k.sh
 integration:test_bv4db_oracle.sh
+integration:test_oracle_db_sprint13.sh
+integration:test_oracle_db_sprint14.sh
+integration:test_oracle_db_sprint15.sh
+integration:test_oracle_db_sprint16.sh
+integration:test_oracle_db_sprint17.sh

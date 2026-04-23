@@ -1,0 +1,17 @@
+[2026-04-23 16:21:53] === Swingbench Oracle Load Generation ===
+[2026-04-23 16:21:53] Connect string: //localhost:1521/FREEPDB1
+[2026-04-23 16:21:53] Schema: soe
+[2026-04-23 16:21:53] Users: 4
+[2026-04-23 16:21:53] Scale: 1
+[2026-04-23 16:21:53] Runtime: 60 seconds (0:01)
+[2026-04-23 16:21:53] Config file: /tmp/SOE_Server_Side_V2.xml
+[2026-04-23 16:21:53] Dropping existing Swingbench schema if present
+[2026-04-23 16:21:53] Creating Swingbench SOE schema
+[2026-04-23 16:24:33] Running charbench workload
+[2026-04-23 16:25:37] Exporting latest BENCHMARK_RESULTS row from database
+[2026-04-23 16:25:37] Swingbench workload completed
+[2026-04-23 16:25:37] Artifacts:
+[2026-04-23 16:25:37]   Log: /tmp/swingbench/charbench.log
+[2026-04-23 16:25:37]   XML: /tmp/swingbench/results.xml
+[2026-04-23 16:25:37]   TXT: /tmp/swingbench/results.txt
+[2026-04-23 16:25:37]   DB JSON: /tmp/swingbench/results_db.json

@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "created": 0,
+    "existing": 1,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "83510-15991-1776947801",
+    "creation_order": [
+      "compute"
+    ]
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle-sb",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 2,
+    "compute_memory_gb": 16,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "storage_layout_mode": "single_uhp",
+    "workload_duration": 300
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "load_generator": {
+    "name": "swingbench"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyichak62wkopplp6xvcicdtwxtasysv75kkuuobxvyafpiq",
+    "created": true,
+    "name": "bv4db-oracle-sb-instance",
+    "public_ip": "140.238.208.13",
+    "private_ip": "10.0.0.8"
+  },
+  "volumes": {
+    "singleuhp": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr37zikbuk2dwg6wmdhej3xg5cutnporfpt4wxbe3clqd2lw63yhoa",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjraikwqfhgo5jfgg6kmz3jjh2v2rmb4iddzap6mvhhbq",
+      "device_path": "/dev/oracleoci/oraclevdb"
+    }
+  },
+  "benchmark": {
+    "start_time": "2026-04-23T12:37:16Z",
+    "end_time": "2026-04-23T12:44:58Z"
+  },
+  "awr": {
+    "begin_snap_id": 5,
+    "end_snap_id": 6
+  }
+}

@@ -1,0 +1,13 @@
+
+=== BV4DB Integration Tests — Sprint 17 ===
+
+=== IT-65: Sprint 17 documentation exists ===
+  [PASS] IT-65: sprint 17 documentation exists
+=== IT-66: Sprint 17 scripts exist and are executable ===
+  [PASS] IT-66: sprint 17 scripts exist and are executable
+=== IT-67: Sprint 17 runner wires both phases and metrics ===
+  [PASS] IT-67: sprint 17 runner wires both phases and metrics
+=== IT-68: Sprint 17 report artifacts exist ===
+  [PASS] IT-68: sprint 17 report artifacts exist
+
+Results: 4 passed, 0 failed

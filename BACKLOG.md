@@ -319,3 +319,48 @@ Test: a written analysis exists for at least one database benchmark run that com
 The project needs one explicit database load tool so Oracle Database Free benchmarks are repeatable across runs and sprints. Swingbench is the primary tool because it is Oracle-focused and better aligned with database-visible performance analysis, while HammerDB remains an acceptable fallback if Swingbench proves unsuitable in the target environment. The outcome is a standard benchmark harness choice that keeps future database tests comparable.
 
 Test: Oracle Database Free benchmark execution uses Swingbench as the standard load generator, or documents and uses HammerDB only when Swingbench is shown unsuitable for the required benchmark scenario.
+
+### BV4DB-42. HTML presentation for Swingbench benchmark results
+
+The project needs a durable human-readable HTML report for Swingbench benchmark runs so the result can be reviewed quickly without reading raw XML, log output, or JSON exports. Without this presentation layer, Sprint 15 still produces technically complete artifacts but leaves the operator with low-level files instead of an immediately usable benchmark dashboard. The outcome is a standalone HTML artifact that summarizes benchmark outcome, transaction mix, and runtime behavior from the archived Swingbench result set.
+
+Test: a completed Swingbench benchmark run produces an HTML report artifact that summarizes the benchmark and can be opened locally after the benchmark environment is removed.
+
+### BV4DB-43. Project-level Swingbench workload configuration file
+
+The project needs the active Swingbench workload configuration to live in the repository instead of relying on the packaged default file inside the installed Swingbench distribution. Without a project-owned configuration file, the benchmark definition can drift with upstream Swingbench releases and the exact load shape is harder to review, version, and test as part of the project itself. The outcome is a committed Swingbench configuration artifact that is uploaded and used during benchmark execution.
+
+Test: the Sprint 15 benchmark runner uses a Swingbench configuration XML file stored in the project repository and archives that same file with the benchmark artifacts.
+
+### BV4DB-44. Consolidated Oracle multi-volume UHP benchmark with FIO and Swingbench evidence
+
+The project needs one backlog item that deliberately consolidates the major technical achievements reached so far into a single Oracle-oriented benchmark flow on a higher-end topology: Oracle Database Free running on a UHP-sized compute instance with multiple OCI block volumes arranged in the established Oracle storage layout. This is not only another benchmark variant. It is the first summary benchmark that is meant to exercise the storage-only path, the database path, the guest-observability path, and the OCI-observability path together on one repeatable topology so the repository can present a coherent end-to-end evidence set instead of isolated sprint results.
+
+The benchmark must reuse the multi-volume Oracle layout principles already proven in the fio sprints, the Oracle Database Free automation already established in Sprint 13 onward, the AWR-capable database benchmarking path from Sprint 14 and Sprint 15, and the OCI metrics collection and reporting pipeline already built for Markdown and HTML reporting. The topology should use a UHP-oriented compute profile sized so that the storage path is not artificially capped by an undersized instance, and it should use multiple block volumes so `DATA`, `REDO`, and `FRA` style domains remain observable separately rather than being collapsed into one shared device.
+
+This backlog item has two explicit benchmark phases on the same general environment and both phases must collect their own full evidence set:
+
+1. `FIO` phase on the multi-volume Oracle-style layout:
+   The project must run the established Oracle-style fio workload on the UHP multi-volume topology and collect:
+   - fio result artifacts
+   - guest `iostat` evidence for the fio phase
+   - OCI Monitoring metrics for the fio phase
+
+2. `Swingbench` phase on Oracle Database Free on the same multi-volume UHP topology:
+   The project must run the standardized Oracle Database Free Swingbench workload on that topology and collect:
+   - Swingbench result artifacts
+   - guest `iostat` evidence for the Swingbench phase
+   - OCI Monitoring metrics for the Swingbench phase
+   - the existing AWR begin/end snapshot and report artifacts already established for database-level runs
+
+This backlog item must explicitly reuse existing project assets rather than creating parallel one-off tooling. In particular, it should reuse the established Oracle storage-layout scripting, the standardized Swingbench runner and config handling, the OCI metrics collection path, and the existing Markdown plus HTML reporting approach so the new benchmark produces a summary result set instead of another disconnected implementation branch. The expected outcome is a single sprint-scale benchmark package that can be used as the repository's strongest integrated demonstration so far: storage stress, database stress, guest evidence, provider metrics, and human-readable reporting all aligned on the same benchmark story.
+
+Test: a consolidated benchmark run completes on a multi-volume UHP Oracle topology and produces two correlated evidence packages, one for the fio phase and one for the Swingbench phase, each with benchmark artifacts, guest `iostat`, OCI metrics, and Markdown/HTML reports, while the Swingbench phase also archives AWR artifacts for the same run window.
+
+### BV4DB-45. Integrated benchmark summary report for the project baseline
+
+The project needs one top-level summary artifact that explains, in one place, what the consolidated benchmark sprint proved and how it relates to the repository's journey so far. The raw benchmark artifacts, OCI metrics reports, Swingbench dashboard, and AWR report are all valuable individually, but by this stage the repository also needs an operator-facing summary that ties those outputs together into one benchmark narrative: storage-only stress versus database-level stress, guest-level observations versus provider-side OCI Monitoring, and the practical meaning of the Oracle-style multi-volume UHP topology in the context of the work already completed in earlier sprints.
+
+This summary artifact should not replace the detailed reports. It should sit above them and reference them. The expected content is a concise integrated explanation of the benchmark topology, the two benchmark phases, the key observations from each phase, the location of the detailed HTML reports, and the practical conclusions the operator should take away from the project at this point. The aim is to make the repository understandable as a complete benchmark story rather than only as a sequence of individual sprint artifacts.
+
+Test: the consolidated benchmark sprint produces a top-level summary artifact that links the FIO HTML report, the Swingbench HTML report, the AWR report, and the OCI metrics outputs, and explains the main benchmark conclusions in operator-facing form.

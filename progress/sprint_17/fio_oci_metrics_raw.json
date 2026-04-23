@@ -1,0 +1,1990 @@
+[
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 1932902.4
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 2116653875.2
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgtqq4ine3vhokvxspmh4vzjxrit2xbc44tdneonankca",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 136992051.2
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 3556850892.8
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 102351667.2
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 74690560.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 345447628.8
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 909926400.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgtqq4ine3vhokvxspmh4vzjxrit2xbc44tdneonankca",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 126.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 258380.2
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgtqq4ine3vhokvxspmh4vzjxrit2xbc44tdneonankca",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 431.4
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 3905.8
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 489.4
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 361.4
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 1650.4
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 111074.6
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgtqq4ine3vhokvxspmh4vzjxrit2xbc44tdneonankca",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd3unpu2tbo5k7orhawt7ff76jcp7bx4dmi7bgjsxhwzwcz6qyzvq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1644339.2
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 1111490560.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjqqsmjreodcrem5a2h2xtgbu5up3ecexxbnealvrpeuq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 2213550899.2
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 1553398169.6
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 73415884.8
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 301368115.2
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 73414246.4
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 477784473.6
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjqqsmjreodcrem5a2h2xtgbu5up3ecexxbnealvrpeuq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 56.6
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 135678.2
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjqqsmjreodcrem5a2h2xtgbu5up3ecexxbnealvrpeuq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 2637.2
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 1796.6
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 282.2
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 1150.4
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 281.2
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 58323.4
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjqqsmjreodcrem5a2h2xtgbu5up3ecexxbnealvrpeuq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsdxqfuwf3nqattyly2hmd7ofqnoon2hb7ey3eojlljvopkchumnq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 9090048.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 4096.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjixgafakxuuriqe3jrcwxfdvklyw2yu6tuujluwlyvwa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 586766848.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 263561216.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 261124096.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 48508928.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 427159552.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjixgafakxuuriqe3jrcwxfdvklyw2yu6tuujluwlyvwa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 428.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjixgafakxuuriqe3jrcwxfdvklyw2yu6tuujluwlyvwa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 2570.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1277.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 1251.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 7255.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 63451.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjixgafakxuuriqe3jrcwxfdvklyw2yu6tuujluwlyvwa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrp2fc4jenavoxzyeksiltfpe7xs3mmtzqaceyshej6v7fqrxkwyoa"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 8261632.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdb55oc66wamsiwod4psxt4kdyrs23r5zcvu3dtiaytra",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 591890944.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 367144960.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 151076864.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 191082496.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdb55oc66wamsiwod4psxt4kdyrs23r5zcvu3dtiaytra",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 246.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdb55oc66wamsiwod4psxt4kdyrs23r5zcvu3dtiaytra",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 2221.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 1414.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 588.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 28573.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdb55oc66wamsiwod4psxt4kdyrs23r5zcvu3dtiaytra",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgvtkwxocwtsjvowdc2l3oibzfzcqwjtyq7rjfbuq5l4eo7iwboyq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 4506624.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 4096.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 261095424.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 1492123648.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicw7rsc76cugzlr564qqa52qtz6bhdv3z5yumyh7vc7pyq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 1152638976.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1103335424.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 2949894144.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 2948853760.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 2948792320.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 2949824512.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 2948792320.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 2634199040.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 1457672192.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicw7rsc76cugzlr564qqa52qtz6bhdv3z5yumyh7vc7pyq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 242.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 249.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 1423.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicw7rsc76cugzlr564qqa52qtz6bhdv3z5yumyh7vc7pyq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 1187.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 1110.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 2838.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 2839.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 2836.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 2839.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 2840.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 2537.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 1415.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicw7rsc76cugzlr564qqa52qtz6bhdv3z5yumyh7vc7pyq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrf35vpmrz65gukujilvqftw22kcdhndgasl3fmpcooqxeqradaoq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+    "namespace": "oci_computeagent",
+    "metric_name": "CpuUtilization",
+    "statistic": "mean",
+    "query_text": "CpuUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq\"}.mean()",
+    "scale": 1,
+    "suffix": "%",
+    "decimals": 2,
+    "unit": "percent",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 3.000833850546839
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 2.059049488609792
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.16566897887040985
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.15194063840759525
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.1560086095314968
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.13507902385667284
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.15299337636689947
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 1.333544228446535
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 5.9824006523493765
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle17-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "CPU Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "CpuUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+    "namespace": "oci_computeagent",
+    "metric_name": "MemoryUtilization",
+    "statistic": "mean",
+    "query_text": "MemoryUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq\"}.mean()",
+    "scale": 1,
+    "suffix": "%",
+    "decimals": 2,
+    "unit": "percent",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 3.0676429142839634
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 4.286100923383883
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 4.262729138408211
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 4.277294031134628
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 4.286121269675322
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 4.285683824409389
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 4.2863125248148455
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 4.245843751143208
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 4.181393821067307
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle17-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Memory Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "MemoryUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesRead",
+    "statistic": "rate",
+    "query_text": "DiskBytesRead[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq\"}.rate()",
+    "scale": 1048576,
+    "suffix": " MiB/s",
+    "decimals": 2,
+    "unit": "bytes/s",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 1560797.8666666667
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 133529.6
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 89560951.46666667
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 452414190.93333334
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle17-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Read Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesRead",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesWritten",
+    "statistic": "rate",
+    "query_text": "DiskBytesWritten[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq\"}.rate()",
+    "scale": 1048576,
+    "suffix": " MiB/s",
+    "decimals": 2,
+    "unit": "bytes/s",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 234981316.26666668
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 466994858.6666667
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 69141580.8
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 83467195.73333333
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 80373085.86666666
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 49173521.06666667
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 49174903.46666667
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 81289634.13333334
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 224495368.53333333
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle17-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxczo2rf3n3ydy5rtijgofvxgit75xypgfn5vsznvqkvq",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Write Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesWritten",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicFromNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicFromNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 399925866.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 88944182.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 38666431.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 6423435.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 10173576.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 5907497.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 4730203.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 4856858.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 11803864737.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq"
+          },
+          "metadata": {
+            "displayName": "Bytes from Network",
+            "unit": "bytes"
+          },
+          "name": "VnicFromNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicToNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicToNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 741082.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 23194192041.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 19956986602.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 4017141157.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 5990733804.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 3740259807.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 2976109177.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 2969860020.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 7502304276.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq"
+          },
+          "metadata": {
+            "displayName": "Bytes to Network",
+            "unit": "bytes"
+          },
+          "name": "VnicToNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicEgressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicEgressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "packets",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq"
+          },
+          "metadata": {
+            "displayName": "Egress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicEgressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicIngressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicIngressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "packets",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T16:06:00+00:00",
+              "value": 44.0
+            },
+            {
+              "timestamp": "2026-04-23T16:07:00+00:00",
+              "value": 48.0
+            },
+            {
+              "timestamp": "2026-04-23T16:08:00+00:00",
+              "value": 55.0
+            },
+            {
+              "timestamp": "2026-04-23T16:09:00+00:00",
+              "value": 26.0
+            },
+            {
+              "timestamp": "2026-04-23T16:10:00+00:00",
+              "value": 37.0
+            },
+            {
+              "timestamp": "2026-04-23T16:11:00+00:00",
+              "value": 45.0
+            },
+            {
+              "timestamp": "2026-04-23T16:12:00+00:00",
+              "value": 45.0
+            },
+            {
+              "timestamp": "2026-04-23T16:13:00+00:00",
+              "value": 48.0
+            },
+            {
+              "timestamp": "2026-04-23T16:14:00+00:00",
+              "value": 47.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljrdyez5boqtskkyv3objrbsxuksfgsn6pn6lxueppdqeatrr45z2wq"
+          },
+          "metadata": {
+            "displayName": "Ingress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicIngressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  }
+]

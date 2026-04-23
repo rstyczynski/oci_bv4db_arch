@@ -1,0 +1,358 @@
+[2026-04-23 14:48:10] Starting Oracle Database Free 23ai installation
+[2026-04-23 14:48:10] Detected OS version: 8
+[2026-04-23 14:48:10] Storage mount points verified
+[2026-04-23 14:48:10] Installing Oracle Database preinstall package...
+[2026-04-23 14:48:19] Preinstall package installed
+[2026-04-23 14:48:19] Installing Oracle Database Free 23ai...
+[2026-04-23 14:48:19] Downloading Oracle Database Free 23ai from Oracle...
+[2026-04-23 14:48:25] Installing downloaded RPM...
+[2026-04-23 14:50:26] Oracle Database Free 23ai installed
+[2026-04-23 14:50:26] Oracle Home verified: /opt/oracle/product/23ai/dbhomeFree
+[2026-04-23 14:50:26] Setting directory ownership...
+[2026-04-23 14:50:26] Creating Oracle environment file...
+[2026-04-23 14:50:26] Creating database response file...
+[2026-04-23 14:50:26] Creating database (this may take several minutes)...
+[2026-04-23 14:50:26] Using oracle-free-23ai configure script...
+[2026-04-23 14:55:09] Database creation completed
+[2026-04-23 14:55:09] Configuring listener...
+[2026-04-23 14:55:09] Verifying database status...
+[2026-04-23 14:55:09] SUCCESS: Database instance FREE is OPEN
+[2026-04-23 14:55:09] Verifying PDB status...
+[2026-04-23 14:55:09] SUCCESS: PDB FREEPDB1 is open READ WRITE
+[2026-04-23 14:55:09] === Oracle Database Free 23ai Installation Summary ===
+[2026-04-23 14:55:09] ORACLE_HOME: /opt/oracle/product/23ai/dbhomeFree
+[2026-04-23 14:55:09] ORACLE_SID: FREE
+[2026-04-23 14:55:09] ORACLE_PDB: FREEPDB1
+[2026-04-23 14:55:09] DATA_DIR: /u02/oradata
+[2026-04-23 14:55:09] REDO_DIR: /u03/redo
+[2026-04-23 14:55:09] FRA_DIR: /u04/fra
+
+=== Instance Status ===
+
+INSTANCE_NAME	 STATUS       DATABASE_STATUS
+---------------- ------------ -----------------
+FREE		 OPEN	      ACTIVE
+
+
+=== PDB Status ===
+
+NAME		     OPEN_MODE
+-------------------- ---------------
+PDB$SEED	     READ ONLY
+FREEPDB1	     READ WRITE
+
+
+=== Datafile Locations ===
+
+NAME
+--------------------
+/opt/oracle/oradata/
+FREE/system01.dbf
+
+/opt/oracle/oradata/
+FREE/pdbseed/system0
+1.dbf
+
+/opt/oracle/oradata/
+FREE/sysaux01.dbf
+
+/opt/oracle/oradata/
+
+NAME
+--------------------
+FREE/pdbseed/sysaux0
+1.dbf
+
+/opt/oracle/oradata/
+FREE/users01.dbf
+
+
+
+=== Redo Log Locations ===
+
+MEMBER
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/opt/oracle/oradata/FREE/redo03.log
+/opt/oracle/oradata/FREE/redo02.log
+/opt/oracle/oradata/FREE/redo01.log
+
+[2026-04-23 14:55:10] Installation complete
+0 M
+Downloading Packages:
+(1/19): libICE-1.0.9-15.el8.x86_64.rpm          1.7 MB/s |  74 kB     00:00    
+(2/19): libSM-1.2.3-1.el8.x86_64.rpm            1.0 MB/s |  47 kB     00:00    
+(3/19): ksh-20120801-270.0.1.el8_10.x86_64.rpm   16 MB/s | 922 kB     00:00    
+(4/19): libXcomposite-0.4.4-14.el8.x86_64.rpm   1.2 MB/s |  28 kB     00:00    
+(5/19): libXi-1.7.10-1.el8.x86_64.rpm           1.8 MB/s |  49 kB     00:00    
+(6/19): libX11-xcb-1.6.8-9.el8_10.x86_64.rpm    329 kB/s |  14 kB     00:00    
+(7/19): libXinerama-1.1.4-1.el8.x86_64.rpm      461 kB/s |  15 kB     00:00    
+(8/19): libXrandr-1.5.2-1.el8.x86_64.rpm        1.4 MB/s |  34 kB     00:00    
+(9/19): libXmu-1.1.3-1.el8.x86_64.rpm           1.5 MB/s |  75 kB     00:00    
+(10/19): libXtst-1.2.3-7.el8.x86_64.rpm         881 kB/s |  22 kB     00:00    
+(11/19): libXv-1.0.11-7.el8.x86_64.rpm          426 kB/s |  20 kB     00:00    
+(12/19): libXxf86dga-1.1.5-1.el8.x86_64.rpm     454 kB/s |  26 kB     00:00    
+(13/19): libXt-1.1.5-12.el8.x86_64.rpm          1.7 MB/s | 185 kB     00:00    
+(14/19): libXxf86misc-1.0.4-1.el8.x86_64.rpm    569 kB/s |  23 kB     00:00    
+(15/19): libdmx-1.1.4-4.el8_10.x86_64.rpm       558 kB/s |  21 kB     00:00    
+(16/19): libXxf86vm-1.1.4-9.el8.x86_64.rpm      316 kB/s |  19 kB     00:00    
+(17/19): oracle-database-preinstall-23ai-1.0-4. 710 kB/s |  31 kB     00:00    
+(18/19): xorg-x11-utils-7.5-28.el8.x86_64.rpm   2.9 MB/s | 136 kB     00:00    
+(19/19): xorg-x11-xauth-1.0.9-12.el8.x86_64.rpm 562 kB/s |  39 kB     00:00    
+--------------------------------------------------------------------------------
+Total                                           5.4 MB/s | 1.7 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : libXi-1.7.10-1.el8.x86_64                             1/19 
+  Installing       : libICE-1.0.9-15.el8.x86_64                            2/19 
+  Installing       : libSM-1.2.3-1.el8.x86_64                              3/19 
+  Installing       : libXt-1.1.5-12.el8.x86_64                             4/19 
+  Installing       : libXmu-1.1.3-1.el8.x86_64                             5/19 
+  Installing       : xorg-x11-xauth-1:1.0.9-12.el8.x86_64                  6/19 
+  Installing       : libXtst-1.2.3-7.el8.x86_64                            7/19 
+  Installing       : libdmx-1.1.4-4.el8_10.x86_64                          8/19 
+  Installing       : libXxf86vm-1.1.4-9.el8.x86_64                         9/19 
+  Installing       : libXxf86misc-1.0.4-1.el8.x86_64                      10/19 
+  Installing       : libXxf86dga-1.1.5-1.el8.x86_64                       11/19 
+  Installing       : libXv-1.0.11-7.el8.x86_64                            12/19 
+  Installing       : libXrandr-1.5.2-1.el8.x86_64                         13/19 
+  Installing       : libXinerama-1.1.4-1.el8.x86_64                       14/19 
+  Installing       : libXcomposite-0.4.4-14.el8.x86_64                    15/19 
+  Installing       : libX11-xcb-1.6.8-9.el8_10.x86_64                     16/19 
+  Installing       : xorg-x11-utils-7.5-28.el8.x86_64                     17/19 
+  Installing       : ksh-20120801-270.0.1.el8_10.x86_64                   18/19 
+  Running scriptlet: ksh-20120801-270.0.1.el8_10.x86_64                   18/19 
+  Installing       : oracle-database-preinstall-23ai-1.0-4.el8.x86_64     19/19 
+  Running scriptlet: oracle-database-preinstall-23ai-1.0-4.el8.x86_64     19/19 
+  Verifying        : ksh-20120801-270.0.1.el8_10.x86_64                    1/19 
+  Verifying        : libICE-1.0.9-15.el8.x86_64                            2/19 
+  Verifying        : libSM-1.2.3-1.el8.x86_64                              3/19 
+  Verifying        : libX11-xcb-1.6.8-9.el8_10.x86_64                      4/19 
+  Verifying        : libXcomposite-0.4.4-14.el8.x86_64                     5/19 
+  Verifying        : libXi-1.7.10-1.el8.x86_64                             6/19 
+  Verifying        : libXinerama-1.1.4-1.el8.x86_64                        7/19 
+  Verifying        : libXmu-1.1.3-1.el8.x86_64                             8/19 
+  Verifying        : libXrandr-1.5.2-1.el8.x86_64                          9/19 
+  Verifying        : libXt-1.1.5-12.el8.x86_64                            10/19 
+  Verifying        : libXtst-1.2.3-7.el8.x86_64                           11/19 
+  Verifying        : libXv-1.0.11-7.el8.x86_64                            12/19 
+  Verifying        : libXxf86dga-1.1.5-1.el8.x86_64                       13/19 
+  Verifying        : libXxf86misc-1.0.4-1.el8.x86_64                      14/19 
+  Verifying        : libXxf86vm-1.1.4-9.el8.x86_64                        15/19 
+  Verifying        : libdmx-1.1.4-4.el8_10.x86_64                         16/19 
+  Verifying        : oracle-database-preinstall-23ai-1.0-4.el8.x86_64     17/19 
+  Verifying        : xorg-x11-utils-7.5-28.el8.x86_64                     18/19 
+  Verifying        : xorg-x11-xauth-1:1.0.9-12.el8.x86_64                 19/19 
+
+Installed:
+  ksh-20120801-270.0.1.el8_10.x86_64                                            
+  libICE-1.0.9-15.el8.x86_64                                                    
+  libSM-1.2.3-1.el8.x86_64                                                      
+  libX11-xcb-1.6.8-9.el8_10.x86_64                                              
+  libXcomposite-0.4.4-14.el8.x86_64                                             
+  libXi-1.7.10-1.el8.x86_64                                                     
+  libXinerama-1.1.4-1.el8.x86_64                                                
+  libXmu-1.1.3-1.el8.x86_64                                                     
+  libXrandr-1.5.2-1.el8.x86_64                                                  
+  libXt-1.1.5-12.el8.x86_64                                                     
+  libXtst-1.2.3-7.el8.x86_64                                                    
+  libXv-1.0.11-7.el8.x86_64                                                     
+  libXxf86dga-1.1.5-1.el8.x86_64                                                
+  libXxf86misc-1.0.4-1.el8.x86_64                                               
+  libXxf86vm-1.1.4-9.el8.x86_64                                                 
+  libdmx-1.1.4-4.el8_10.x86_64                                                  
+  oracle-database-preinstall-23ai-1.0-4.el8.x86_64                              
+  xorg-x11-utils-7.5-28.el8.x86_64                                              
+  xorg-x11-xauth-1:1.0.9-12.el8.x86_64                                          
+
+Complete!
+[2026-04-23 14:48:19] Preinstall package installed
+[2026-04-23 14:48:19] Installing Oracle Database Free 23ai...
+[2026-04-23 14:48:19] Downloading Oracle Database Free 23ai from Oracle...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100   511  100   511    0     0   1831      0 --:--:-- --:--:-- --:--:--  1831
+  0 1328M    0 16070    0     0  19790      0 19:32:51 --:--:-- 19:32:51 19790 15 1328M   15  204M    0     0   127M      0  0:00:10  0:00:01  0:00:09  257M 37 1328M   37  495M    0     0   190M      0  0:00:06  0:00:02  0:00:04  276M 54 1328M   54  725M    0     0   201M      0  0:00:06  0:00:03  0:00:03  260M 71 1328M   71  953M    0     0   206M      0  0:00:06  0:00:04  0:00:02  251M 88 1328M   88 1181M    0     0   210M      0  0:00:06  0:00:05  0:00:01  246M100 1328M  100 1328M    0     0   212M      0  0:00:06  0:00:06 --:--:--  242M
+[2026-04-23 14:48:25] Installing downloaded RPM...
+Last metadata expiration check: 0:01:02 ago on Thu 23 Apr 2026 02:47:24 PM GMT.
+Dependencies resolved.
+================================================================================
+ Package                        Arch        Version     Repository         Size
+================================================================================
+Installing:
+ oracle-database-free-23ai      x86_64      1.0-1       @commandline      1.3 G
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total size: 1.3 G
+Installed size: 3.5 G
+Downloading Packages:
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Running scriptlet: oracle-database-free-23ai-1.0-1.x86_64                 1/1 
+  Installing       : oracle-database-free-23ai-1.0-1.x86_64                 1/1 
+  Running scriptlet: oracle-database-free-23ai-1.0-1.x86_64                 1/1 
+[INFO] Executing post installation scripts...
+[INFO] Oracle home installed successfully and ready to be configured.
+To configure Oracle Database Free, optionally modify the parameters in '/etc/sysconfig/oracle-free-23ai.conf' and then run '/etc/init.d/oracle-free-23ai configure' as root.
+
+  Verifying        : oracle-database-free-23ai-1.0-1.x86_64                 1/1 
+
+Installed:
+  oracle-database-free-23ai-1.0-1.x86_64                                        
+
+Complete!
+[2026-04-23 14:50:26] Oracle Database Free 23ai installed
+[2026-04-23 14:50:26] Oracle Home verified: /opt/oracle/product/23ai/dbhomeFree
+[2026-04-23 14:50:26] Setting directory ownership...
+[2026-04-23 14:50:26] Creating Oracle environment file...
+[2026-04-23 14:50:26] Creating database response file...
+[2026-04-23 14:50:26] Creating database (this may take several minutes)...
+[2026-04-23 14:50:26] Using oracle-free-23ai configure script...
+Specify a password to be used for database accounts. Oracle recommends that the password entered should be at least 8 characters in length, contain at least 1 uppercase character, 1 lower case character and 1 digit [0-9]. Note that the same password will be used for SYS, SYSTEM and PDBADMIN accounts:
+Confirm the password:
+Configuring Oracle Listener.
+Listener configuration succeeded.
+Configuring Oracle Database FREE.
+Enter SYS user password: 
+*************** *
+Enter SYSTEM user password: 
+*************** **
+Enter PDBADMIN User Password: 
+*************** **
+Prepare for db operation
+7% complete
+Copying database files
+29% complete
+Creating and starting Oracle instance
+30% complete
+33% complete
+36% complete
+39% complete
+43% complete
+Completing Database Creation
+47% complete
+49% complete
+50% complete
+Creating Pluggable Databases
+54% complete
+71% complete
+Executing Post Configuration Actions
+93% complete
+Running Custom Scripts
+100% complete
+Database creation complete. For details check the logfiles at:
+ /opt/oracle/cfgtoollogs/dbca/FREE.
+Database Information:
+Global Database Name:FREE
+System Identifier(SID):FREE
+Look at the log file "/opt/oracle/cfgtoollogs/dbca/FREE/FREE.log" for further details.
+
+Connect to Oracle Database using one of the connect strings:
+     Pluggable database: bv4db-oracle-sb-instance/FREEPDB1
+     Multitenant container database: bv4db-oracle-sb-instance
+[2026-04-23 14:55:09] Database creation completed
+[2026-04-23 14:55:09] Configuring listener...
+
+LSNRCTL for Linux: Version 23.0.0.0.0 - Production on 23-APR-2026 14:55:09
+
+Copyright (c) 1991, 2025, Oracle.  All rights reserved.
+
+Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=bv4db-oracle-sb-instance)(PORT=1521)))
+STATUS of the LISTENER
+------------------------
+Alias                     LISTENER
+Version                   TNSLSNR for Linux: Version 23.0.0.0.0 - Production
+Start Date                23-APR-2026 14:50:27
+Uptime                    0 days 0 hr. 4 min. 41 sec
+Trace Level               off
+Security                  ON: Local OS Authentication
+SNMP                      OFF
+Default Service           FREE
+Listener Parameter File   /opt/oracle/product/23ai/dbhomeFree/network/admin/listener.ora
+Listener Log File         /opt/oracle/diag/tnslsnr/bv4db-oracle-sb-instance/listener/alert/log.xml
+Listening Endpoints Summary...
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=bv4db-oracle-sb-instance)(PORT=1521)))
+  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))
+Services Summary...
+Service "5022d4559487e10fe065000017008a55" has 1 instance(s).
+  Instance "FREE", status READY, has 1 handler(s) for this service...
+Service "FREE" has 1 instance(s).
+  Instance "FREE", status READY, has 1 handler(s) for this service...
+Service "FREEXDB" has 1 instance(s).
+  Instance "FREE", status READY, has 1 handler(s) for this service...
+Service "freepdb1" has 1 instance(s).
+  Instance "FREE", status READY, has 1 handler(s) for this service...
+The command completed successfully
+[2026-04-23 14:55:09] Verifying database status...
+[2026-04-23 14:55:09] SUCCESS: Database instance FREE is OPEN
+[2026-04-23 14:55:09] Verifying PDB status...
+[2026-04-23 14:55:09] SUCCESS: PDB FREEPDB1 is open READ WRITE
+[2026-04-23 14:55:09] === Oracle Database Free 23ai Installation Summary ===
+[2026-04-23 14:55:09] ORACLE_HOME: /opt/oracle/product/23ai/dbhomeFree
+[2026-04-23 14:55:09] ORACLE_SID: FREE
+[2026-04-23 14:55:09] ORACLE_PDB: FREEPDB1
+[2026-04-23 14:55:09] DATA_DIR: /u02/oradata
+[2026-04-23 14:55:09] REDO_DIR: /u03/redo
+[2026-04-23 14:55:09] FRA_DIR: /u04/fra
+
+=== Instance Status ===
+
+INSTANCE_NAME	 STATUS       DATABASE_STATUS
+---------------- ------------ -----------------
+FREE		 OPEN	      ACTIVE
+
+
+=== PDB Status ===
+
+NAME		     OPEN_MODE
+-------------------- ---------------
+PDB$SEED	     READ ONLY
+FREEPDB1	     READ WRITE
+
+
+=== Datafile Locations ===
+
+NAME
+--------------------
+/opt/oracle/oradata/
+FREE/system01.dbf
+
+/opt/oracle/oradata/
+FREE/pdbseed/system0
+1.dbf
+
+/opt/oracle/oradata/
+FREE/sysaux01.dbf
+
+/opt/oracle/oradata/
+
+NAME
+--------------------
+FREE/pdbseed/sysaux0
+1.dbf
+
+/opt/oracle/oradata/
+FREE/users01.dbf
+
+
+
+=== Redo Log Locations ===
+
+MEMBER
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/opt/oracle/oradata/FREE/redo03.log
+/opt/oracle/oradata/FREE/redo02.log
+/opt/oracle/oradata/FREE/redo01.log
+
+[2026-04-23 14:55:10] Installation complete

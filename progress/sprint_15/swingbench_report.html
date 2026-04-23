@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 15 Swingbench Report</title>
+  <style>
+    :root {
+      --bg: #f6efe3;
+      --panel: #fffaf2;
+      --ink: #201911;
+      --muted: #6f604f;
+      --line: #dccdb8;
+      --accent: #9c4f21;
+      --accent-2: #1e6f68;
+      --accent-3: #7a1f36;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fff7ea 0, #fff7ea 18%, transparent 19%) 0 0/180px 180px,
+        linear-gradient(180deg, #f8f1e7 0%, #f1e7d8 100%);
+    }
+    main { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+    .hero {
+      background: linear-gradient(135deg, rgba(156,79,33,.94), rgba(59,33,13,.96));
+      color: #fff7ec;
+      border-radius: 28px;
+      padding: 28px 30px;
+      box-shadow: 0 18px 50px rgba(67, 34, 11, 0.18);
+    }
+    .eyebrow { margin: 0; letter-spacing: .18em; text-transform: uppercase; font-size: 12px; opacity: .84; }
+    h1 { margin: 10px 0 8px; font-size: clamp(34px, 5vw, 58px); line-height: 1; }
+    .hero p:last-child { max-width: 760px; color: rgba(255,247,236,.88); }
+    .toc, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: 0 10px 30px rgba(70, 46, 22, 0.08);
+    }
+    .toc ul { margin: 8px 0 0; padding-left: 18px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fffdf8;
+      padding: 16px 18px;
+    }
+    .stat-card h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .stat-card p { margin: 0; font-size: 24px; font-weight: 700; }
+    h2 { margin: 0 0 14px; font-size: 28px; }
+    .section-kicker { margin: 0 0 18px; color: var(--muted); }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .metric-chart { width: 100%; height: auto; display: block; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .artifact-list li { margin: 8px 0; }
+    code, pre { font-family: "SFMono-Regular", Menlo, Consolas, monospace; }
+    pre {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #201911;
+      color: #f7f2e8;
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    details.class-section {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: #fffdf8;
+    }
+    details.class-section summary { cursor: pointer; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Swingbench Results</p>
+      <h1>Sprint 15 Swingbench Benchmark Dashboard</h1>
+      <p>Standalone HTML presentation for the archived Sprint 15 Swingbench result set. This report summarizes benchmark outcome, transaction mix, and runtime behavior from the saved XML, CLI log, and exported database JSON.</p>
+    </section>
+
+    <section class="toc">
+      <h2>Table of Contents</h2>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#runtime">Runtime Charts</a></li>
+        <li><a href="#transactions">Transaction Mix</a></li>
+        <li><a href="#artifacts">Artifacts</a></li>
+        <li><a href="#json">Benchmark JSON</a></li>
+      </ul>
+    </section>
+
+    <section id="overview" class="panel">
+      <h2>Overview</h2>
+      <p class="section-kicker">High-level benchmark outcome extracted from the archived Swingbench XML result file.</p>
+      <div class="stats"><article class="stat-card"><h3>Benchmark Name</h3><p>&quot;Order Entry (PLSQL) V2&quot;</p></article><article class="stat-card"><h3>Time Of Run</h3><p>Apr 23, 2026, 2:18:01 PM</p></article><article class="stat-card"><h3>Run Time</h3><p>0:05:00</p></article><article class="stat-card"><h3>Users</h3><p>4</p></article><article class="stat-card"><h3>Completed Transactions</h3><p>449863</p></article><article class="stat-card"><h3>Failed Transactions</h3><p>0</p></article><article class="stat-card"><h3>Average TPS</h3><p>1499.54</p></article><article class="stat-card"><h3>Maximum Transaction Rate</h3><p>93291</p></article></div>
+    </section>
+
+    <section id="runtime" class="panel">
+      <h2>Runtime Charts</h2>
+      <p class="section-kicker">Per-sample throughput captured from the `charbench` console stream.</p>
+      <div class="chart-grid">
+        <article>
+          <h3>TPS Over Time</h3>
+          <svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="TPS over time"><rect x="0" y="0" width="720" height="220" rx="18" fill="#fffaf2"/><line x1="52" y1="188.00" x2="696" y2="188.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="192.00" text-anchor="end" font-size="11" fill="#7a6a55">0</text><line x1="52" y1="146.00" x2="696" y2="146.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="150.00" text-anchor="end" font-size="11" fill="#7a6a55">519</text><line x1="52" y1="104.00" x2="696" y2="104.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="108.00" text-anchor="end" font-size="11" fill="#7a6a55">1038</text><line x1="52" y1="62.00" x2="696" y2="62.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="66.00" text-anchor="end" font-size="11" fill="#7a6a55">1557</text><line x1="52" y1="20.00" x2="696" y2="20.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="24.00" text-anchor="end" font-size="11" fill="#7a6a55">2076</text><polyline fill="none" stroke="#9c4f21" stroke-width="3" points="52.00,188.00 54.14,143.65 56.28,59.98 58.42,58.68 60.56,39.50 62.70,47.35 64.84,40.96 66.98,31.17 69.12,25.50 71.26,20.00 73.40,27.61 75.53,89.84 77.67,40.72 79.81,63.13 81.95,80.77 84.09,71.55 86.23,65.08 88.37,33.68 90.51,77.54 92.65,78.99 94.79,73.25 96.93,51.24 99.07,47.60 101.21,72.20 103.35,75.11 105.49,79.64 107.63,41.93 109.77,62.81 111.91,80.13 114.05,81.50 116.19,62.57 118.33,34.73 120.47,73.73 122.60,82.07 124.74,75.84 126.88,50.67 129.02,60.06 131.16,67.10 133.30,74.79 135.44,76.40 137.58,45.73 139.72,56.74 141.86,75.60 144.00,94.94 146.14,74.14 148.28,31.82 150.42,74.06 152.56,77.13 154.70,76.32 156.84,55.61 158.98,36.83 161.12,85.39 163.26,76.73 165.40,74.71 167.53,48.89 169.67,58.28 171.81,75.92 173.95,80.69 176.09,73.01 178.23,38.61 180.37,74.22 182.51,69.69 184.65,62.16 186.79,65.16 188.93,33.03 191.07,77.46 193.21,79.64 195.35,77.86 197.49,50.27 199.63,51.56 201.77,73.57 203.91,84.82 206.05,81.10 208.19,42.25 210.33,73.82 212.47,38.86 214.60,82.23 216.74,79.16 218.88,35.62 221.02,73.25 223.16,80.45 225.30,77.05 227.44,58.68 229.58,46.79 231.72,73.73 233.86,77.62 236.00,77.38 238.14,39.83 240.28,59.09 242.42,78.67 244.56,78.83 246.70,74.71 248.84,29.71 250.98,76.40 253.12,77.78 255.26,70.98 257.40,62.73 259.53,45.98 261.67,75.60 263.81,75.60 265.95,64.59 268.09,52.53 270.23,56.17 272.37,96.88 274.51,77.78 276.65,71.39 278.79,37.08 280.93,70.66 283.07,91.62 285.21,83.77 287.35,61.03 289.49,48.73 291.63,80.13 293.77,63.46 295.91,78.51 298.05,52.94 300.19,59.33 302.33,80.61 304.47,73.98 306.60,74.06 308.74,35.54 310.88,71.79 313.02,78.59 315.16,78.35 317.30,59.98 319.44,53.10 321.58,99.79 323.72,35.54 325.86,77.54 328.00,53.50 330.14,50.59 332.28,77.78 334.42,111.53 336.56,92.91 338.70,45.73 340.84,62.16 342.98,74.30 345.12,78.99 347.26,62.16 349.40,36.75 351.53,76.81 353.67,73.09 355.81,73.98 357.95,58.84 360.09,41.36 362.23,96.39 364.37,63.05 366.51,76.73 368.65,43.79 370.79,62.89 372.93,80.69 375.07,65.24 377.21,78.75 379.35,33.43 381.49,68.88 383.63,77.29 385.77,75.19 387.91,62.97 390.05,59.82 392.19,60.62 394.33,73.41 396.47,77.46 398.60,49.94 400.74,58.60 402.88,66.05 405.02,82.39 407.16,75.43 409.30,40.72 411.44,64.83 413.58,76.81 415.72,77.94 417.86,65.64 420.00,45.09 422.14,89.68 424.28,66.86 426.42,79.88 428.56,45.25 430.70,43.71 432.84,75.19 434.98,80.05 437.12,76.24 439.26,48.81 441.40,64.75 443.53,75.11 445.67,81.10 447.81,67.99 449.95,49.13 452.09,67.18 454.23,71.31 456.37,72.20 458.51,64.91 460.65,44.84 462.79,76.89 464.93,80.86 467.07,78.10 469.21,39.18 471.35,68.47 473.49,78.43 475.63,79.40 477.77,71.63 479.91,52.61 482.05,66.45 484.19,69.61 486.33,72.36 488.47,62.89 490.60,43.23 492.74,77.94 494.88,79.97 497.02,79.72 499.16,46.95 501.30,67.75 503.44,71.47 505.58,74.46 507.72,73.82 509.86,33.92 512.00,85.14 514.14,50.10 516.28,74.71 518.42,64.67 520.56,36.51 522.70,72.52 524.84,73.98 526.98,73.01 529.12,55.20 531.26,58.60 533.40,73.33 535.53,88.46 537.67,73.73 539.81,41.36 541.95,65.97 544.09,91.21 546.23,62.16 548.37,68.80 550.51,34.97 552.65,78.02 554.79,73.57 556.93,76.08 559.07,58.52 561.21,52.61 563.35,77.29 565.49,69.69 567.63,81.99 569.77,54.55 571.91,57.55 574.05,76.32 576.19,73.90 578.33,72.20 580.47,39.18 582.60,77.62 584.74,80.61 586.88,77.46 589.02,64.18 591.16,58.92 593.30,65.80 595.44,102.71 597.58,52.13 599.72,50.67 601.86,56.74 604.00,80.21 606.14,77.78 608.28,84.34 610.42,38.77 612.56,76.57 614.70,75.19 616.84,91.70 618.98,50.02 621.12,39.10 623.26,85.63 625.40,79.56 627.53,78.75 629.67,58.12 631.81,58.68 633.95,81.99 636.09,80.53 638.23,78.67 640.37,62.49 642.51,52.37 644.65,79.32 646.79,69.28 648.93,77.94 651.07,35.94 653.21,83.69 655.35,85.63 657.49,79.72 659.63,62.40 661.77,55.36 663.91,120.51 666.05,54.55 668.19,80.69 670.33,41.12 672.47,74.22 674.60,72.20 676.74,79.97 678.88,83.04 681.02,61.84 683.16,60.62 685.30,80.13 687.44,76.16 689.58,64.75 691.72,47.92 693.86,79.97 696.00,128.28"/><circle cx="52.00" cy="188.00" r="2.8" fill="#9c4f21"/><circle cx="86.23" cy="65.08" r="2.8" fill="#9c4f21"/><circle cx="120.47" cy="73.73" r="2.8" fill="#9c4f21"/><circle cx="154.70" cy="76.32" r="2.8" fill="#9c4f21"/><circle cx="188.93" cy="33.03" r="2.8" fill="#9c4f21"/><circle cx="223.16" cy="80.45" r="2.8" fill="#9c4f21"/><circle cx="257.40" cy="62.73" r="2.8" fill="#9c4f21"/><circle cx="291.63" cy="80.13" r="2.8" fill="#9c4f21"/><circle cx="325.86" cy="77.54" r="2.8" fill="#9c4f21"/><circle cx="360.09" cy="41.36" r="2.8" fill="#9c4f21"/><circle cx="394.33" cy="73.41" r="2.8" fill="#9c4f21"/><circle cx="428.56" cy="45.25" r="2.8" fill="#9c4f21"/><circle cx="462.79" cy="76.89" r="2.8" fill="#9c4f21"/><circle cx="497.02" cy="79.72" r="2.8" fill="#9c4f21"/><circle cx="531.26" cy="58.60" r="2.8" fill="#9c4f21"/><circle cx="565.49" cy="69.69" r="2.8" fill="#9c4f21"/><circle cx="599.72" cy="50.67" r="2.8" fill="#9c4f21"/><circle cx="633.95" cy="81.99" r="2.8" fill="#9c4f21"/><circle cx="668.19" cy="80.69" r="2.8" fill="#9c4f21"/><text x="52.00" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:18:01</text><text x="158.98" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:18:51</text><text x="265.95" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:19:41</text><text x="372.93" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:20:31</text><text x="479.91" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:21:21</text><text x="586.88" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:22:11</text><text x="693.86" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:23:01</text><text x="696.00" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:23:02</text></svg>
+        </article>
+        <article>
+          <h3>TPM Over Time</h3>
+          <svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="TPM over time"><rect x="0" y="0" width="720" height="220" rx="18" fill="#fffaf2"/><line x1="52" y1="188.00" x2="696" y2="188.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="192.00" text-anchor="end" font-size="11" fill="#7a6a55">0</text><line x1="52" y1="146.00" x2="696" y2="146.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="150.00" text-anchor="end" font-size="11" fill="#7a6a55">23322</text><line x1="52" y1="104.00" x2="696" y2="104.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="108.00" text-anchor="end" font-size="11" fill="#7a6a55">46645</text><line x1="52" y1="62.00" x2="696" y2="62.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="66.00" text-anchor="end" font-size="11" fill="#7a6a55">69968</text><line x1="52" y1="20.00" x2="696" y2="20.00" stroke="#eadfcd" stroke-width="1"/><text x="44" y="24.00" text-anchor="end" font-size="11" fill="#7a6a55">93291</text><polyline fill="none" stroke="#1e6f68" stroke-width="3" points="52.00,188.00 54.14,187.01 56.28,184.16 58.42,181.29 60.56,177.98 62.70,174.85 64.84,171.58 66.98,168.09 69.12,164.47 71.26,160.74 73.40,157.17 75.53,154.98 77.67,151.70 79.81,148.93 81.95,146.54 84.09,143.95 86.23,141.21 88.37,137.78 90.51,135.32 92.65,132.90 94.79,130.34 96.93,127.30 99.07,124.17 101.21,121.60 103.35,119.08 105.49,116.67 107.63,113.42 109.77,110.64 111.91,108.24 114.05,105.87 116.19,103.08 118.33,99.66 120.47,97.12 122.60,94.76 124.74,92.27 126.88,89.21 129.02,86.37 131.16,83.68 133.30,81.16 135.44,78.67 137.58,75.51 139.72,72.59 141.86,70.08 144.00,68.01 146.14,65.48 148.28,62.00 150.42,59.47 152.56,57.00 154.70,54.52 156.84,51.57 158.98,48.21 161.12,45.92 163.26,43.45 165.40,40.93 167.53,37.83 169.67,34.94 171.81,32.45 173.95,30.06 176.09,27.50 178.23,24.18 180.37,21.65 182.51,20.00 184.65,20.05 186.79,20.19 188.93,20.05 191.07,20.72 193.21,21.58 195.35,22.62 197.49,23.17 199.63,23.87 201.77,24.89 203.91,24.78 206.05,25.68 208.19,25.22 210.33,25.06 212.47,24.33 214.60,24.72 216.74,25.73 218.88,24.80 221.02,24.67 223.16,24.83 225.30,25.40 227.44,25.65 229.58,25.08 231.72,25.05 233.86,25.01 236.00,25.80 238.14,25.29 240.28,24.82 242.42,24.75 244.56,25.12 246.70,26.01 248.84,25.03 250.98,24.90 253.12,24.94 255.26,25.40 257.40,25.45 259.53,24.98 261.67,25.00 263.81,24.98 265.95,25.40 268.09,25.31 270.23,24.88 272.37,24.92 274.51,25.00 276.65,25.88 278.79,25.06 280.93,24.92 283.07,25.26 285.21,25.88 287.35,26.42 289.49,25.61 291.63,25.68 293.77,25.43 295.91,26.09 298.05,25.97 300.19,25.60 302.33,25.60 304.47,25.62 306.60,26.41 308.74,25.55 310.88,25.60 313.02,25.96 315.16,26.26 317.30,26.86 319.44,26.31 321.58,26.76 323.72,25.82 325.86,26.43 328.00,26.47 330.14,25.96 332.28,25.80 334.42,26.48 336.56,27.61 338.70,26.98 340.84,27.50 342.98,27.32 345.12,27.32 347.26,27.91 349.40,27.10 351.53,27.02 353.67,26.93 355.81,27.27 357.95,27.54 360.09,26.82 362.23,27.24 364.37,26.92 366.51,27.74 368.65,27.40 370.79,27.05 372.93,27.09 375.07,26.88 377.21,27.97 379.35,27.01 381.49,26.81 383.63,26.95 385.77,27.23 387.91,27.61 390.05,27.26 392.19,26.93 394.33,27.12 396.47,27.68 398.60,27.54 400.74,26.69 402.88,26.43 405.02,26.67 407.16,27.52 409.30,26.86 411.44,26.26 413.58,26.11 415.72,26.48 417.86,26.86 420.00,26.08 422.14,26.66 424.28,26.40 426.42,27.00 428.56,26.69 430.70,25.87 432.84,25.90 434.98,26.03 437.12,26.93 439.26,26.42 441.40,26.12 443.53,26.04 445.67,26.51 447.81,26.84 449.95,25.72 452.09,26.42 454.23,26.28 456.37,26.70 458.51,27.02 460.65,26.28 462.79,25.51 464.93,25.25 467.07,25.97 469.21,25.45 471.35,25.33 473.49,25.31 475.63,25.70 477.77,26.47 479.91,25.93 482.05,25.79 484.19,25.69 486.33,25.99 488.47,26.47 490.60,25.29 492.74,25.62 494.88,25.69 497.02,26.49 499.16,26.13 501.30,25.85 503.44,25.98 505.58,25.89 507.72,26.79 509.86,26.01 512.00,26.18 514.14,25.63 516.28,25.89 518.42,25.99 520.56,25.46 522.70,25.44 524.84,25.36 526.98,25.87 529.12,25.80 531.26,25.63 533.40,25.43 535.53,25.72 537.67,26.46 539.81,25.93 541.95,25.69 544.09,25.99 546.23,25.91 548.37,26.44 550.51,25.22 552.65,25.47 554.79,25.33 556.93,26.01 559.07,26.34 561.21,25.84 563.35,25.78 565.49,25.63 567.63,26.37 569.77,26.15 571.91,25.76 574.05,25.65 576.19,25.78 578.33,26.29 580.47,25.67 582.60,25.81 584.74,26.00 586.88,26.28 589.02,26.71 591.16,26.31 593.30,25.97 595.44,26.52 597.58,26.81 599.72,26.41 601.86,25.93 604.00,25.95 606.14,26.08 608.28,26.79 610.42,26.18 612.56,26.33 614.70,26.39 616.84,27.03 618.98,27.19 621.12,26.32 623.26,26.45 625.40,26.44 627.53,27.15 629.67,26.94 631.81,26.65 633.95,26.82 636.09,26.97 638.23,27.97 640.37,27.46 642.51,27.51 644.65,27.61 646.79,27.72 648.93,28.64 651.07,27.82 653.21,28.04 655.35,28.32 657.49,28.87 659.63,28.95 661.77,28.55 663.91,29.27 666.05,28.84 668.19,29.71 670.33,29.16 672.47,28.78 674.60,29.01 676.74,29.25 678.88,30.32 681.02,29.96 683.16,29.68 685.30,29.77 687.44,30.16 689.58,30.43 691.72,29.77 693.86,30.00 696.00,31.03"/><circle cx="52.00" cy="188.00" r="2.8" fill="#1e6f68"/><circle cx="86.23" cy="141.21" r="2.8" fill="#1e6f68"/><circle cx="120.47" cy="97.12" r="2.8" fill="#1e6f68"/><circle cx="154.70" cy="54.52" r="2.8" fill="#1e6f68"/><circle cx="188.93" cy="20.05" r="2.8" fill="#1e6f68"/><circle cx="223.16" cy="24.83" r="2.8" fill="#1e6f68"/><circle cx="257.40" cy="25.45" r="2.8" fill="#1e6f68"/><circle cx="291.63" cy="25.68" r="2.8" fill="#1e6f68"/><circle cx="325.86" cy="26.43" r="2.8" fill="#1e6f68"/><circle cx="360.09" cy="26.82" r="2.8" fill="#1e6f68"/><circle cx="394.33" cy="27.12" r="2.8" fill="#1e6f68"/><circle cx="428.56" cy="26.69" r="2.8" fill="#1e6f68"/><circle cx="462.79" cy="25.51" r="2.8" fill="#1e6f68"/><circle cx="497.02" cy="26.49" r="2.8" fill="#1e6f68"/><circle cx="531.26" cy="25.63" r="2.8" fill="#1e6f68"/><circle cx="565.49" cy="25.63" r="2.8" fill="#1e6f68"/><circle cx="599.72" cy="26.41" r="2.8" fill="#1e6f68"/><circle cx="633.95" cy="26.82" r="2.8" fill="#1e6f68"/><circle cx="668.19" cy="29.71" r="2.8" fill="#1e6f68"/><text x="52.00" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:18:01</text><text x="158.98" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:18:51</text><text x="265.95" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:19:41</text><text x="372.93" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:20:31</text><text x="479.91" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:21:21</text><text x="586.88" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:22:11</text><text x="693.86" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:23:01</text><text x="696.00" y="210" text-anchor="middle" font-size="11" fill="#7a6a55">14:23:02</text></svg>
+        </article>
+      </div>
+    </section>
+
+    <section id="transactions" class="panel">
+      <h2>Transaction Mix</h2>
+      <p class="section-kicker">Per-transaction totals and response times from the Swingbench XML result set.</p>
+      <details class="class-section" open>
+        <summary>Per-Transaction Breakdown</summary>
+        <table>
+          <thead>
+            <tr>
+              <th>Transaction</th>
+              <th>Count</th>
+              <th>Failed</th>
+              <th>Avg Response</th>
+              <th>P90</th>
+              <th>Max Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Customer Registration</td><td>54036</td><td>0</td><td>2.1662040121400548</td><td>1</td><td>428</td></tr><tr><td>Update Customer Details</td><td>36159</td><td>0</td><td>1.1927044442600736</td><td>1</td><td>333</td></tr><tr><td>Browse Products</td><td>179660</td><td>0</td><td>1.8163364132249806</td><td>1</td><td>423</td></tr><tr><td>Order Products</td><td>144201</td><td>0</td><td>4.790375933592694</td><td>4</td><td>569</td></tr><tr><td>Process Orders</td><td>17939</td><td>0</td><td>1.823345782931044</td><td>1</td><td>326</td></tr><tr><td>Browse Orders</td><td>17868</td><td>0</td><td>1.6516677859861204</td><td>1</td><td>333</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </section>
+
+    <section id="artifacts" class="panel">
+      <h2>Artifacts</h2>
+      <ul class="artifact-list">
+        <li><code>swingbench_results.xml</code> — raw Swingbench XML results</li>
+        <li><code>swingbench_charbench.log</code> — `charbench` execution log with runtime samples</li>
+        <li><code>swingbench_results_db.json</code> — latest `BENCHMARK_RESULTS` export from the database</li>
+      </ul>
+    </section>
+
+    <section id="json" class="panel">
+      <h2>Benchmark JSON</h2>
+      <p class="section-kicker">Preview of the exported `BENCHMARK_RESULTS` JSON payload.</p>
+      <pre>{
+  &quot;Results&quot;: {
+    &quot;xmlns&quot;: &quot;http://www.dominicgiles.com/swingbench/results&quot;,
+    &quot;TransactionResults&quot;: {
+      &quot;Result&quot;: [
+        {
+          &quot;AverageResponse&quot;: &quot;2.1662040121400548&quot;,
+          &quot;MaximumResponse&quot;: &quot;428&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;1&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;1&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;1&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;1&quot;,
+          &quot;TenthPrecentile&quot;: &quot;1&quot;,
+          &quot;EightiethPercentile&quot;: &quot;1&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;1&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;1&quot;,
+          &quot;SixtiethPercentile&quot;: &quot;1&quot;,
+          &quot;TransactionCount&quot;: &quot;54036&quot;,
+          &quot;id&quot;: &quot;Customer Registration&quot;,
+          &quot;GeometricMean&quot;: &quot;1.5386377265714994&quot;
+        },
+        {
+          &quot;AverageResponse&quot;: &quot;1.1927044442600736&quot;,
+          &quot;MaximumResponse&quot;: &quot;333&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;1&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;1&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;1&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;1&quot;,
+          &quot;TenthPrecentile&quot;: &quot;1&quot;,
+          &quot;EightiethPercentile&quot;: &quot;1&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;1&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;1&quot;,
+          &quot;SixtiethPercentile&quot;: &quot;1&quot;,
+          &quot;TransactionCount&quot;: &quot;36159&quot;,
+          &quot;id&quot;: &quot;Update Customer Details&quot;,
+          &quot;GeometricMean&quot;: &quot;1.0494586585619319&quot;
+        },
+        {
+          &quot;AverageResponse&quot;: &quot;1.8163364132249806&quot;,
+          &quot;MaximumResponse&quot;: &quot;423&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;1&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;1&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;1&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;1&quot;,
+          &quot;TenthPrecentile&quot;: &quot;1&quot;,
+          &quot;EightiethPercentile&quot;: &quot;1&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;1&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;1&quot;,
+          &quot;SixtiethPercentile&quot;: &quot;1&quot;,
+          &quot;TransactionCount&quot;: &quot;179660&quot;,
+          &quot;id&quot;: &quot;Browse Products&quot;,
+          &quot;GeometricMean&quot;: &quot;1.3253002582577518&quot;
+        },
+        {
+          &quot;AverageResponse&quot;: &quot;4.790375933592694&quot;,
+          &quot;MaximumResponse&quot;: &quot;569&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;3&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;4&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;3&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;3&quot;,
+          &quot;TenthPrecentile&quot;: &quot;3&quot;,
+          &quot;EightiethPercentile&quot;: &quot;3&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;3&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;3&quot;,
+          &quot;SixtiethPercentile&quot;: &quot;3&quot;,
+          &quot;TransactionCount&quot;: &quot;144201&quot;,
+          &quot;id&quot;: &quot;Order Products&quot;,
+          &quot;GeometricMean&quot;: &quot;3.523550654827519&quot;
+        },
+        {
+          &quot;AverageResponse&quot;: &quot;1.823345782931044&quot;,
+          &quot;MaximumResponse&quot;: &quot;326&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;1&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;1&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;1&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;1&quot;,
+          &quot;TenthPrecentile&quot;: &quot;1&quot;,
+          &quot;EightiethPercentile&quot;: &quot;1&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;1&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;1&quot;,
+          &quot;SixtiethPercentile&quot;: &quot;1&quot;,
+          &quot;TransactionCount&quot;: &quot;17939&quot;,
+          &quot;id&quot;: &quot;Process Orders&quot;,
+          &quot;GeometricMean&quot;: &quot;1.2885644936814469&quot;
+        },
+        {
+          &quot;AverageResponse&quot;: &quot;1.6516677859861204&quot;,
+          &quot;MaximumResponse&quot;: &quot;333&quot;,
+          &quot;MinimumResponse&quot;: &quot;1&quot;,
+          &quot;FortiethPrecentile&quot;: &quot;1&quot;,
+          &quot;RollbackCount&quot;: &quot;0&quot;,
+          &quot;NinetiethPercentile&quot;: &quot;1&quot;,
+          &quot;TwentiethPercentile&quot;: &quot;1&quot;,
+          &quot;FailedTransactionCount&quot;: &quot;0&quot;,
+          &quot;FiftythPercentile&quot;: &quot;1&quot;,
+          &quot;TenthPrecentile&quot;: &quot;1&quot;,
+          &quot;EightiethPercentile&quot;: &quot;1&quot;,
+          &quot;ThirtiethPercentile&quot;: &quot;1&quot;,
+          &quot;SeventiethPercentile&quot;: &quot;1&quot;,
+ </pre>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+[2026-04-23 14:06:22] Starting Oracle Database storage layout configuration
+[2026-04-23 14:06:22] Mode: single_uhp
+[2026-04-23 14:06:22] Installing required packages...
+[2026-04-23 14:08:00] Configuring single-volume layout on /dev/oracleoci/oraclevdb
+[2026-04-23 14:08:00] Partitioning device /dev/oracleoci/oraclevdb...
+[2026-04-23 14:08:04] Waiting for partitions...
+[2026-04-23 14:08:04] Partitions: DATA1=/dev/sdb1, DATA2=/dev/sdb2, REDO1=/dev/sdb3, REDO2=/dev/sdb4, FRA=/dev/sdb5
+[2026-04-23 14:08:04] Creating DATA volume group...
+[2026-04-23 14:08:08] Creating REDO volume group...
+[2026-04-23 14:08:11] Creating FRA filesystem...
+[2026-04-23 14:08:13] Creating mount points and mounting...
+[2026-04-23 14:08:13] Single-volume layout configuration complete
+[2026-04-23 14:08:13] === Storage Layout Summary ===
+[2026-04-23 14:08:13] Mount points:
+Filesystem                      Size  Used Avail Use% Mounted on
+/dev/mapper/vg_data-lv_oradata  393G   28K  373G   1% /u02/oradata
+/dev/mapper/vg_redo-lv_redo      98G   24K   93G   1% /u03/redo
+/dev/sdb5                        98G   24K   93G   1% /u04/fra
+[2026-04-23 14:08:13] 
+[2026-04-23 14:08:13] Block device layout:
+NAME                   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda                      8:0    0 46.6G  0 disk 
+├─sda1                   8:1    0  100M  0 part /boot/efi
+├─sda2                   8:2    0    1G  0 part /boot
+└─sda3                   8:3    0 45.5G  0 part 
+  ├─ocivolume-root     252:0    0 35.5G  0 lvm  /
+  └─ocivolume-oled     252:1    0   10G  0 lvm  /var/oled
+sdb                      8:16   0  600G  0 disk 
+├─sdb1                   8:17   0  200G  0 part 
+│ └─vg_data-lv_oradata 252:2    0  400G  0 lvm  /u02/oradata
+├─sdb2                   8:18   0  200G  0 part 
+│ └─vg_data-lv_oradata 252:2    0  400G  0 lvm  /u02/oradata
+├─sdb3                   8:19   0   50G  0 part 
+│ └─vg_redo-lv_redo    252:3    0  100G  0 lvm  /u03/redo
+├─sdb4                   8:20   0   50G  0 part 
+│ └─vg_redo-lv_redo    252:3    0  100G  0 lvm  /u03/redo
+└─sdb5                   8:21   0  100G  0 part /u04/fra
+[2026-04-23 14:08:13] 
+[2026-04-23 14:08:13] LVM status:
+  VG        #PV #LV #SN Attr   VSize   VFree
+  ocivolume   1   2   0 wz--n-  45.50g    0 
+  vg_data     2   1   0 wz--n- 399.99g    0 
+  vg_redo     2   1   0 wz--n-  99.99g    0 
+  LV         VG        Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  oled       ocivolume -wi-ao----  10.00g                                                    
+  root       ocivolume -wi-ao----  35.50g                                                    
+  lv_oradata vg_data   -wi-ao---- 399.99g                                                    
+  lv_redo    vg_redo   -wi-ao----  99.99g                                                    
+[2026-04-23 14:08:13] Storage layout configuration complete

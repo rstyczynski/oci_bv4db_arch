@@ -1,0 +1,47 @@
+
+=== BV4DB Integration Tests — Sprint 13 ===
+
+=== IT-47: Sprint 13 design documentation exists ===
+  [PASS] IT-47: sprint 13 design documentation exists
+=== IT-48: Sprint 13 summary report exists ===
+  [PASS] IT-48: sprint 13 summary report exists
+=== IT-49: Sprint 13 installation logs exist ===
+  [PASS] IT-49: sprint 13 installation logs exist
+=== IT-50: Sprint 13 database status shows OPEN ===
+  [PASS] IT-50: database status shows OPEN
+=== IT-51: Sprint 13 state files exist ===
+  [PASS] IT-51: sprint 13 state files exist
+=== IT-52: Sprint 13 scripts are executable ===
+  [PASS] IT-52: sprint 13 scripts are executable
+
+Results: 6 passed, 0 failed
+
+=== BV4DB Integration Tests — Sprint 14 ===
+
+=== IT-53: Sprint 14 design documentation exists ===
+  [PASS] IT-53: sprint 14 design documentation exists
+=== IT-54: Sprint 14 workload results exist ===
+  [PASS] IT-54: workload results exist
+=== IT-55: Sprint 14 AWR snapshots captured ===
+  [PASS] IT-55: AWR snapshots captured (begin=2, end=3)
+=== IT-56: Sprint 14 AWR report generated ===
+  [PASS] IT-56: AWR report generated
+=== IT-57: Sprint 14 summary report exists ===
+  [PASS] IT-57: sprint 14 summary report exists
+=== IT-58: Sprint 14 scripts are executable ===
+  [PASS] IT-58: sprint 14 scripts are executable
+
+Results: 6 passed, 0 failed
+
+=== BV4DB Integration Tests — Sprint 15 ===
+
+=== IT-59: Sprint 15 documentation exists ===
+  [PASS] IT-59: sprint 15 documentation exists
+=== IT-60: Sprint 15 scripts exist and are executable ===
+  [PASS] IT-60: sprint 15 scripts exist and are executable
+=== IT-61: Sprint 15 scripts pass bash syntax check ===
+  [PASS] IT-61: sprint 15 scripts pass bash syntax check
+=== IT-62: Sprint 15 runner wires Swingbench and AWR ===
+  [PASS] IT-62: sprint 15 runner wires Swingbench and AWR
+
+Results: 4 passed, 0 failed

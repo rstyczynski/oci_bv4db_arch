@@ -208,7 +208,7 @@ Backlog Items:
 
 ## Sprint 15 - Standardize Oracle Database Free load generator
 
-Status: Planned
+Status: Done
 Mode: managed
 Test: integration
 Regression: integration
@@ -218,11 +218,13 @@ Sprint 15 fixes the standard workload tool choice for future Oracle Database Fre
 Backlog Items:
 
 * BV4DB-41. Swingbench as the standard Oracle Database Free load generator
+* BV4DB-42. HTML presentation for Swingbench benchmark results
+* BV4DB-43. Project-level Swingbench workload configuration file
 
 ## Sprint 16 - Oracle Database benchmark correlation and comparative reporting
 
-Status: Planned
-Mode: managed
+Status: Done
+Mode: yolo
 Test: integration
 Regression: integration
 
@@ -232,3 +234,25 @@ Backlog Items:
 
 * BV4DB-37. Compare Oracle Database Free benchmark evidence with fio baselines
 * BV4DB-40. Correlate AWR evidence with OCI and guest benchmark metrics
+
+## Sprint 17 - Consolidated Oracle multi-volume UHP benchmark baseline
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 17 is the first fully automated summary sprint that consolidates the project benchmark path on one stronger end-to-end topology: a UHP-sized compute instance with multiple OCI block volumes arranged in the established Oracle-style layout. The sprint runs two benchmark phases on that topology. Phase 1 executes the Oracle-style `fio` workload and collects `fio`, guest `iostat`, and OCI Monitoring evidence for the storage-stress window. Phase 2 executes the standardized Oracle Database Free `Swingbench` workload and collects Swingbench artifacts, guest `iostat`, OCI Monitoring evidence, and AWR artifacts for the database-stress window. The sprint must reuse the reporting assets already established by the project, including OCI metrics collection plus Markdown and HTML reporting, and it must finish with operator-consumable summary outputs rather than only low-level artifacts.
+
+Expected completion outputs:
+
+* HTML report for the `fio` phase
+* HTML report for the `Swingbench` phase
+* HTML AWR report for the Swingbench phase
+* Markdown/HTML OCI metrics reporting for both phases
+* Integrated summary artifact that explains what this consolidated benchmark proves in the context of the project so far
+
+Backlog Items:
+
+* BV4DB-44. Consolidated Oracle multi-volume UHP benchmark with FIO and Swingbench evidence
+* BV4DB-45. Integrated benchmark summary report for the project baseline
