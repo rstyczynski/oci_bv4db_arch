@@ -1,0 +1,48 @@
+{
+  "summary": {
+    "created": 1,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "75613-6719-1776943765",
+    "creation_order": [
+      "compute"
+    ],
+    "torn_down_at": "2026-04-23T11:30:28Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle-wkld",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 2,
+    "compute_memory_gb": 16,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "storage_layout_mode": "single_uhp",
+    "workload_duration": 300
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicm2x6jgxzui5lv5wlthq44ctkcxli7ra5nnn4y4eod7ma",
+    "created": true,
+    "name": "bv4db-oracle-wkld-instance",
+    "public_ip": "152.67.88.172",
+    "private_ip": "10.0.0.20",
+    "deleted": true
+  },
+  "volumes": {
+    "singleuhp": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgw7avcjpjdvvauobc4hikoshywsw7vokdmfcjgfswcagu4fqxw3q",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicp7spxzr2rkp56qim2ctbga3nnh5andk5q5up5shbasra",
+      "device_path": "/dev/oracleoci/oraclevdb"
+    }
+  },
+  "benchmark": {
+    "start_time": "2026-04-23T11:24:57Z"
+  }
+}

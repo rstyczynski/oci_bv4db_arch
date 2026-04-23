@@ -179,12 +179,12 @@ Backlog Items:
 
 ## Sprint 13 - Oracle Database Free benchmark harness foundation
 
-Status: Planned
-Mode: managed
+Status: Done
+Mode: YOLO
 Test: integration
 Regression: integration
 
-Sprint 13 establishes the database-level benchmark harness on top of the existing Oracle Linux and OCI block volume environment. The sprint automates Oracle Database Free installation and prepares a repeatable database storage layout aligned with the project storage topologies, without yet standardizing the long-term workload tool choice.
+Sprint 13 establishes the database-level benchmark harness on top of the existing Oracle Linux and OCI block volume environment. The sprint automates Oracle Database Free installation and prepares a repeatable database storage layout aligned with the project storage topologies, without yet standardizing the long-term workload tool choice. At this stage use minimal required shape with single block volume.
 
 Backlog Items:
 
@@ -193,8 +193,8 @@ Backlog Items:
   
 ## Sprint 14 - Oracle Database Free workload execution with AWR capture
 
-Status: Planned
-Mode: managed
+Status: Done
+Mode: yolo
 Test: integration
 Regression: integration
 

@@ -280,7 +280,7 @@ Test: a fresh benchmark host can be prepared with Oracle Database Free without i
 
 ### BV4DB-35. Automated Oracle Database Free storage layout for OCI block volume tests
 
-The project needs the Oracle Database Free environment to place database storage in a controlled layout that matches the OCI block-volume topologies being studied. Without an explicit automated layout, database benchmark results would not be comparable with the single-volume and separated-volume storage experiments already in the repository. The outcome is a repeatable database storage placement that can be recreated for benchmark runs and compared across layouts.
+The project needs the Oracle Database Free environment to place database storage in a controlled layout that matches the OCI block-volume topologies being studied. Without an explicit automated layout, database benchmark results would not be comparable with the single-volume and separated-volume storage experiments already in the repository. The outcome is a repeatable database storage placement that can be recreated for benchmark runs and compared across layouts. Layout must be compatible with former sprints single / multiple block volumes approach.
 
 Test: an automated database setup creates a valid Oracle Database Free storage layout on the intended block-volume-backed filesystems, and the database can open and use that layout successfully.
 

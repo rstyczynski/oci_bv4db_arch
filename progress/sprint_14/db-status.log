@@ -1,0 +1,23 @@
+=== Instance Status ===
+
+INSTANCE_NAME	STATUS		DATABASE_STATUS
+--------------- --------------- -----------------
+FREE		OPEN		ACTIVE
+
+
+=== PDB Status ===
+
+NAME		     OPEN_MODE
+-------------------- ---------------
+PDB$SEED	     READ ONLY
+FREEPDB1	     READ WRITE
+
+
+=== AWR Snapshots for this run ===
+select snap_id, to_char(end_interval_time, "YYYY-MM-DD HH24:MI:SS") as snap_time
+                                           *
+ERROR at line 1:
+ORA-00904: "YYYY-MM-DD HH24:MI:SS": invalid identifier
+Help: https://docs.oracle.com/error-help/db/ora-00904/
+
+
