@@ -176,3 +176,59 @@ Sprint 12 extends the working `operate-*` metrics path from Sprint 11 to generat
 Backlog Items:
 
 * BV4DB-32. Generate charted HTML metrics report with OCI-style presentation
+
+## Sprint 13 - Oracle Database Free benchmark harness foundation
+
+Status: Planned
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 13 establishes the database-level benchmark harness on top of the existing Oracle Linux and OCI block volume environment. The sprint automates Oracle Database Free installation and prepares a repeatable database storage layout aligned with the project storage topologies, without yet standardizing the long-term workload tool choice.
+
+Backlog Items:
+
+* BV4DB-34. Fully automated Oracle Database Free installation on benchmark host
+* BV4DB-35. Automated Oracle Database Free storage layout for OCI block volume tests
+  
+## Sprint 14 - Oracle Database Free workload execution with AWR capture
+
+Status: Planned
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 14 turns the prepared Oracle Database Free host into a real benchmark target. The sprint automates the database workload run itself and captures the database diagnostics window and exported AWR artifacts needed for later performance analysis.
+
+Backlog Items:
+
+* BV4DB-36. Automated Oracle Database Free performance workload execution
+* BV4DB-38. Automated AWR snapshot window capture for database benchmarks
+* BV4DB-39. Automated AWR report export and archival for benchmark runs
+
+## Sprint 15 - Standardize Oracle Database Free load generator
+
+Status: Planned
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 15 fixes the standard workload tool choice for future Oracle Database Free benchmark runs after the AWR-capable execution path is already established. The sprint standardizes Swingbench as the primary load generator and keeps HammerDB as the fallback when Swingbench is unsuitable for the required benchmark scenario.
+
+Backlog Items:
+
+* BV4DB-41. Swingbench as the standard Oracle Database Free load generator
+
+## Sprint 16 - Oracle Database benchmark correlation and comparative reporting
+
+Status: Planned
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 16 closes the first database-benchmark loop by comparing Oracle Database Free evidence with the storage-oriented evidence already produced by the repository. The sprint correlates AWR, OCI metrics, guest observations, and the existing fio baselines so the project can explain what database-level benchmarking adds beyond synthetic storage tests.
+
+Backlog Items:
+
+* BV4DB-37. Compare Oracle Database Free benchmark evidence with fio baselines
+* BV4DB-40. Correlate AWR evidence with OCI and guest benchmark metrics
