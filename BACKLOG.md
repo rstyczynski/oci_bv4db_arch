@@ -436,3 +436,15 @@ Implementation has two tiers:
    - Mark synthetic signals explicitly in outputs/metadata so they are not confused with real measured per-interval fio telemetry.
 
 Test: for Sprint 17 and Sprint 18, the FIO phase Full Correlation Matrix includes `fio_*_mbps` topology variables and produces stable, interpretable correlations against `iostat_*_mbps` and `oci_*_mbps` under the same alignment methodology used for Swingbench.
+
+### BV4DB-50. UHP multipath diagnostics sandbox host
+
+Provision a dedicated compute instance with a single **Ultra High Performance** block volume attached via **iSCSI multipath** and expose a stable mapper device (`/dev/mapper/mpath*`). The goal is to evaluate and document multipath utilities and diagnostic evidence in a controlled environment, independent of database workloads.
+
+Test: the sandbox host can be created on demand, multipath is active with multiple paths, a stable `/dev/mapper/mpath*` device exists, and diagnostics artifacts are archived under the sprint progress folder.
+
+### BV4DB-51. FIO benchmark: multipath vs single-path iSCSI on UHP
+
+Run the same fio workload twice on the same UHP block volume tier to quantify the difference between a **multipath-enabled iSCSI** configuration and an intentionally limited **single-path iSCSI** configuration. Keep the workload identical across both runs and archive the resulting evidence and a short comparison summary.
+
+Test: both runs complete successfully, fio JSON outputs exist for both modes, and the sprint produces a comparison summary showing the observed throughput/IOPS/latency difference.

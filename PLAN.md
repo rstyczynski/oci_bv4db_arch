@@ -292,11 +292,34 @@ Regression: integration
 Sprint 19 implemented a data science correlation framework to validate benchmark evidence across observation layers (Guest I/O, OCI Block Volume metrics, Swingbench TPS). The framework applies Pearson/Spearman correlation and Quadrant Correlation Matrix analysis to detect cross-layer inconsistencies and score evidence quality.
 
 Results summary:
-- Sprint 17 FIO: 65/100 (C) INCONCLUSIVE - Low correlation due to short test duration
-- Sprint 17 Swingbench: 10/100 (F) INCONCLUSIVE - Critical anomaly: OCI metrics show 0 MB/s
-- Sprint 18 FIO: 100/100 (A) PASS - Excellent correlation (r=0.926)
-- Sprint 18 Swingbench: 75/100 (B) PASS - Acceptable quality despite low correlation
+
+* Sprint 17 FIO: 65/100 (C) INCONCLUSIVE - Low correlation due to short test duration
+* Sprint 17 Swingbench: 10/100 (F) INCONCLUSIVE - Critical anomaly: OCI metrics show 0 MB/s
+* Sprint 18 FIO: 100/100 (A) PASS - Excellent correlation (r=0.926)
+* Sprint 18 Swingbench: 75/100 (B) PASS - Acceptable quality despite low correlation
 
 Backlog Items:
 
 * BV4DB-48. Analyze benchmark and test outcomes for evidence quality, contradictions, and conclusions
+
+## Sprint 20 - UHP multipath diagnostics and performance A/B (multipath vs single-path)
+
+Status: Done
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 20 provisions a compute instance with a **single UHP block volume** and runs two controlled experiments:
+
+* multipath-enabled iSCSI attachment (baseline best practice)
+* single-path iSCSI attachment (intentional limitation)
+
+The sprint focuses on:
+
+* collecting multipath diagnostic evidence and recommended tooling
+* measuring performance differences (throughput/IOPS/latency) between the two modes
+
+Backlog Items:
+
+* BV4DB-50. UHP multipath diagnostics sandbox host
+* BV4DB-51. FIO benchmark: multipath vs single-path iSCSI on UHP

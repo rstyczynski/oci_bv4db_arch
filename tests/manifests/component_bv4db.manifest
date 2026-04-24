@@ -8,3 +8,4 @@ integration:test_oracle_db_sprint15.sh
 integration:test_oracle_db_sprint16.sh
 integration:test_oracle_db_sprint17.sh
 integration:test_oracle_db_sprint18.sh
+integration:test_sprint20_multipath_ab.sh

@@ -1,0 +1,20 @@
+
+=== BV4DB Integration Tests — Sprint 20 ===
+
+=== IT-1: Sprint 20 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: output artifacts exist (if live run executed) ===
+  [PASS] IT-2: no artifacts yet (expected before first live run)
+
+Results: 2 passed, 0 failed
+
+=== BV4DB Integration Tests — Sprint 20 ===
+
+=== IT-1: Sprint 20 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: Diagnostics artifacts exist (if run has been executed) ===
+  [PASS] IT-2: no diagnostics yet (expected before first live run)
+=== IT-3: fio results + comparison exist (if run has been executed) ===
+  [PASS] IT-3: no fio artifacts yet (expected before first live run)
+
+Results: 3 passed, 0 failed
