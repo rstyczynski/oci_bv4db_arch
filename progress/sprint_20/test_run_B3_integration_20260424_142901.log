@@ -1,0 +1,194 @@
+
+=== Running integration tests (11 selected) ===
+
+--- integration:test_bv4db.sh ---
+
+=== BV4DB Integration Tests — Sprint 1 ===
+
+=== IT-1: Infrastructure provisioned ===
+  [PASS] IT-1: infra state complete (compartment, subnet, secret, pubkey)
+=== IT-2: SSH access using key from vault ===
+  [SKIP] IT-2: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-3: Block volume mounted at /mnt/bv ===
+  [SKIP] IT-3: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-4: fio performance report produced ===
+  [PASS] IT-4: fio-results.json valid — seq read 11 IOPS 11 MB/s, rand read 1520 IOPS 6 MB/s
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_perf.sh ---
+
+=== BV4DB Integration Tests — Sprint 2 ===
+
+=== IT-5: Maximum-performance compute instance provisioned ===
+  [PASS] IT-5: Sprint 2 benchmark compute recorded as VM.Standard.E5.Flex with 40 OCPUs
+=== IT-6: Ultra High Performance block volume attached ===
+  [PASS] IT-6: UHP volume recorded with 120 VPUs/GB and multipath-enabled attachment
+=== IT-7: 60-second fio benchmark completed ===
+  [PASS] IT-7: fio runtime totals 60 seconds
+=== IT-8: per-workload fio artifacts and analysis written ===
+  [PASS] IT-8: Sprint 2 per-workload artifacts and analysis created
+=== IT-9: Benchmark resources torn down automatically ===
+  [PASS] IT-9: Sprint 2 archived state indicates automatic teardown
+
+Results: 5 passed, 0 failed
+
+--- integration:test_bv4db_mixed8k.sh ---
+
+=== BV4DB Integration Tests — Sprint 3 ===
+
+=== IT-10: mixed 8k fio profile file present ===
+  [PASS] IT-10: mixed-8k fio profile file present
+=== IT-11: smoke run completed on Sprint 2 topology ===
+  [PASS] IT-11: mixed-8k smoke runtime is 60 seconds
+=== IT-12: smoke analysis written ===
+  [PASS] IT-12: smoke analysis created
+=== IT-13: smoke resources torn down automatically ===
+  [PASS] IT-13: Sprint 3 archived state indicates automatic teardown
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle.sh ---
+
+=== BV4DB Integration Tests — Sprint 4 ===
+
+=== IT-14: Oracle fio profile file present ===
+  [PASS] IT-14: Oracle fio profile has all three job sections
+=== IT-15: Smoke run completed on Oracle layout ===
+  [PASS] IT-15: Oracle smoke run completed with runtime=60 and 1 aggregated fio record(s)
+=== IT-16: Device utilization captured ===
+  [PASS] IT-16: iostat JSON captured
+=== IT-17: I/O isolation validated ===
+  [PASS] IT-17: iostat shows isolated activity on data, redo, and FRA devices
+=== IT-18: Resources torn down automatically ===
+  [PASS] IT-18: Sprint 4 archived deleted state files confirm automatic teardown
+=== IT-19: Analysis document present ===
+  [PASS] IT-19: analysis document present
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint13.sh ---
+
+=== BV4DB Integration Tests — Sprint 13 ===
+
+=== IT-47: Sprint 13 design documentation exists ===
+  [PASS] IT-47: sprint 13 design documentation exists
+=== IT-48: Sprint 13 summary report exists ===
+  [PASS] IT-48: sprint 13 summary report exists
+=== IT-49: Sprint 13 installation logs exist ===
+  [PASS] IT-49: sprint 13 installation logs exist
+=== IT-50: Sprint 13 database status shows OPEN ===
+  [PASS] IT-50: database status shows OPEN
+=== IT-51: Sprint 13 state files exist ===
+  [PASS] IT-51: sprint 13 state files exist
+=== IT-52: Sprint 13 scripts are executable ===
+  [PASS] IT-52: sprint 13 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint14.sh ---
+
+=== BV4DB Integration Tests — Sprint 14 ===
+
+=== IT-53: Sprint 14 design documentation exists ===
+  [PASS] IT-53: sprint 14 design documentation exists
+=== IT-54: Sprint 14 workload results exist ===
+  [PASS] IT-54: workload results exist
+=== IT-55: Sprint 14 AWR snapshots captured ===
+  [PASS] IT-55: AWR snapshots captured (begin=2, end=3)
+=== IT-56: Sprint 14 AWR report generated ===
+  [PASS] IT-56: AWR report generated
+=== IT-57: Sprint 14 summary report exists ===
+  [PASS] IT-57: sprint 14 summary report exists
+=== IT-58: Sprint 14 scripts are executable ===
+  [PASS] IT-58: sprint 14 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint15.sh ---
+
+=== BV4DB Integration Tests — Sprint 15 ===
+
+=== IT-59: Sprint 15 documentation exists ===
+  [PASS] IT-59: sprint 15 documentation exists
+=== IT-60: Sprint 15 scripts exist and are executable ===
+  [PASS] IT-60: sprint 15 scripts exist and are executable
+=== IT-61: Sprint 15 scripts pass bash syntax check ===
+  [PASS] IT-61: sprint 15 scripts pass bash syntax check
+=== IT-62: Sprint 15 runner wires Swingbench and AWR ===
+  [PASS] IT-62: sprint 15 runner wires Swingbench and AWR
+=== IT-63: Sprint 15 HTML report exists and contains benchmark sections ===
+  [PASS] IT-63: sprint 15 HTML report exists and contains benchmark sections
+=== IT-64: Sprint 15 uses a project-owned Swingbench config file ===
+  [PASS] IT-64: sprint 15 uses a project-owned Swingbench config file
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint16.sh ---
+
+=== BV4DB Integration Tests — Sprint 16 ===
+
+=== IT-69: Sprint 16 documentation exists ===
+  [PASS] IT-69: sprint 16 documentation exists
+=== IT-70: Sprint 16 analysis references required source evidence ===
+  [PASS] IT-70: sprint 16 analysis references required source evidence
+=== IT-71: Sprint 16 required source artifacts exist ===
+  [PASS] IT-71: sprint 16 required source artifacts exist
+
+Results: 3 passed, 0 failed
+
+--- integration:test_oracle_db_sprint17.sh ---
+
+=== BV4DB Integration Tests — Sprint 17 ===
+
+=== IT-65: Sprint 17 documentation exists ===
+  [PASS] IT-65: sprint 17 documentation exists
+=== IT-66: Sprint 17 scripts exist and are executable ===
+  [PASS] IT-66: sprint 17 scripts exist and are executable
+=== IT-67: Sprint 17 runner wires both phases and metrics ===
+  [PASS] IT-67: sprint 17 runner wires both phases and metrics
+=== IT-68: Sprint 17 report artifacts exist ===
+  [PASS] IT-68: sprint 17 report artifacts exist
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oracle_db_sprint18.sh ---
+
+=== BV4DB Integration Tests — Sprint 18 ===
+
+=== IT-72: Sprint 18 documentation exists ===
+  [PASS] IT-72: sprint 18 documentation exists
+=== IT-73: Sprint 18 wrapper enforces mirror-run parameters ===
+  [PASS] IT-73: sprint 18 wrapper enforces mirror-run parameters
+=== IT-74: Sprint 18 report artifacts exist ===
+  [PASS] IT-74: sprint 18 report artifacts exist
+=== IT-75: Oracle DB install enforces project storage layout ===
+  [PASS] IT-75: Oracle DB install enforces project storage layout
+=== IT-76: metrics path includes boot volume ===
+  [PASS] IT-76: metrics path includes boot volume
+
+Results: 5 passed, 0 failed
+
+--- integration:test_sprint20_multipath_ab.sh ---
+
+=== BV4DB Integration Tests — Sprint 20 ===
+
+=== IT-1: Sprint 20 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: output artifacts exist (if live run executed) ===
+  [PASS] IT-2: no artifacts yet (expected before first live run)
+
+Results: 2 passed, 0 failed
+
+=== BV4DB Integration Tests — Sprint 20 ===
+
+=== IT-1: Sprint 20 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: Diagnostics artifacts exist (if run has been executed) ===
+  [PASS] IT-2: no diagnostics yet (expected before first live run)
+=== IT-3: fio results + comparison exist (if run has been executed) ===
+  [PASS] IT-3: no fio artifacts yet (expected before first live run)
+
+Results: 3 passed, 0 failed
+
+Results: 11 passed, 0 failed

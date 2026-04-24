@@ -33,10 +33,19 @@ scp_opts=(-B -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes)
 
 COMPARTMENT_OCID=$(jq -r '.compartment.ocid' "$INFRA_STATE")
 SUBNET_OCID=$(jq -r '.subnet.ocid' "$INFRA_STATE")
+SECRET_OCID=$(jq -r '.secret.ocid' "$INFRA_STATE")
 PUBKEY_FILE="$SPRINT1_DIR/bv4db-key.pub"
 
-_ssh() { ssh "${ssh_opts[@]}" "$@"; }
-_scp() { scp "${scp_opts[@]}" "$@"; }
+TMPKEY=""
+PUBLIC_IP=""
+
+_cleanup() {
+  [ -n "${TMPKEY:-}" ] && rm -f "$TMPKEY" || true
+}
+trap _cleanup EXIT
+
+_ssh() { ssh -i "$TMPKEY" "${ssh_opts[@]}" "opc@${PUBLIC_IP}" "$@"; }
+_scp() { scp -i "$TMPKEY" "${scp_opts[@]}" "opc@${PUBLIC_IP}:$1" "$2"; }
 
 enable_block_volume_plugin() {
   local instance_id="$1"
@@ -55,7 +64,7 @@ guest_login_targets() {
   shift 5
   local -a targets=("$@")
 
-  _ssh "$ssh_host" sudo bash -s -- "$mode" "$iqn" "$port" "$expected_path" "${targets[@]}" <<'EOF'
+  _ssh sudo bash -s -- "$mode" "$iqn" "$port" "$expected_path" "${targets[@]}" <<'EOF'
 set -euo pipefail
 MODE="$1"
 IQN="$2"
@@ -104,7 +113,7 @@ guest_prepare_fs() {
   local ssh_host="$1"
   local dev="$2"
   local mnt="$3"
-  _ssh "$ssh_host" sudo bash -s -- "$dev" "$mnt" <<'EOF'
+  _ssh sudo bash -s -- "$dev" "$mnt" <<'EOF'
 set -euo pipefail
 DEV="$1"
 MNT="$2"
@@ -120,7 +129,7 @@ EOF
 guest_collect_diag() {
   local ssh_host="$1"
   local out_file="$2"
-  _ssh "$ssh_host" sudo bash -s -- <<'EOF' >"$out_file"
+  _ssh sudo bash -s -- <<'EOF' >"$out_file"
 set -euo pipefail
 echo "=== date ==="; date -u; echo
 echo "=== iscsiadm -m session ==="; iscsiadm -m session || true; echo
@@ -137,7 +146,7 @@ guest_run_fio() {
   local mnt="$2"
   local out_json="$3"
   local runtime="${FIO_RUNTIME_SEC:-120}"
-  _ssh "$ssh_host" sudo bash -s -- "$mnt" "$runtime" "$out_json" <<'EOF'
+  _ssh sudo bash -s -- "$mnt" "$runtime" "$out_json" <<'EOF'
 set -euo pipefail
 MNT="$1"
 RUNTIME="$2"
@@ -170,7 +179,8 @@ guest_run_dd_fallback() {
   local jobs="${DD_JOBS:-4}"
   local size_gb="${DD_SIZE_GB:-16}"  # per worker
   local bs="${DD_BS:-16M}"
-  _ssh "$ssh_host" sudo bash -s -- "$mnt" "$jobs" "$size_gb" "$bs" "$out_json" "$out_txt" <<'EOF'
+  [ -n "$ssh_host" ] || true
+  _ssh sudo bash -s -- "$mnt" "$jobs" "$size_gb" "$bs" "$out_json" "$out_txt" <<'EOF'
 set -euo pipefail
 MNT="$1"
 JOBS="$2"
@@ -281,16 +291,36 @@ main() {
   export BLOCKVOLUME_VPUS_PER_GB="${BLOCKVOLUME_VPUS_PER_GB:-120}"
   export ATTACHMENT_TYPE="${ATTACHMENT_TYPE:-iscsi}"
 
-  ensure_compute.sh --compartment-ocid "$COMPARTMENT_OCID" --subnet-ocid "$SUBNET_OCID" --ssh-pubkey-file "$PUBKEY_FILE" --shape "$COMPUTE_SHAPE" --ocpus "$COMPUTE_OCPUS" --memory-gb "$COMPUTE_MEMORY_GB"
-  ensure_blockvolume.sh --compartment-ocid "$COMPARTMENT_OCID" --size-gb "$BLOCKVOLUME_SIZE_GB" --vpus-per-gb "$BLOCKVOLUME_VPUS_PER_GB"
-  ensure_blockvolume_attachment.sh --attachment-type "$ATTACHMENT_TYPE"
+  [ -n "$OCI_REGION" ] && _state_set '.inputs.oci_region' "$OCI_REGION"
+  _state_set '.inputs.name_prefix'                      "$NAME_PREFIX"
+  _state_set '.inputs.oci_compartment'                  "$COMPARTMENT_OCID"
+  _state_set '.subnet.ocid'                             "$SUBNET_OCID"
+  _state_set '.inputs.compute_shape'                    "$COMPUTE_SHAPE"
+  _state_set '.inputs.compute_ocpus'                    "$COMPUTE_OCPUS"
+  _state_set '.inputs.compute_memory_gb'                "$COMPUTE_MEMORY_GB"
+  _state_set '.inputs.subnet_prohibit_public_ip'        'false'
+  _state_set '.inputs.compute_ssh_authorized_keys_file' "$PUBKEY_FILE"
+  _state_set '.inputs.bv_size_gb'                       "$BLOCKVOLUME_SIZE_GB"
+  _state_set '.inputs.bv_vpus_per_gb'                   "$BLOCKVOLUME_VPUS_PER_GB"
+  _state_set '.inputs.bv_attach_type'                   "$ATTACHMENT_TYPE"
+  _state_set '.inputs.bv_device_path'                   '/dev/oracleoci/oraclevdb'
 
-  local instance_id volume_attach_id public_ip
-  instance_id=$(jq -r '.compute.ocid' state.json)
-  volume_attach_id=$(jq -r '.blockvolume_attachment.ocid' state.json)
-  public_ip=$(jq -r '.compute.public_ip' state.json)
+  ensure-compute.sh
+  enable_block_volume_plugin "$(_state_get '.compute.ocid')"
+  PUBLIC_IP=$(_state_get '.compute.public_ip')
 
-  enable_block_volume_plugin "$instance_id"
+  ensure-blockvolume.sh
+  local volume_attach_id expected_path
+  volume_attach_id=$(_state_get '.blockvolume.attachment_ocid')
+  expected_path=$(_state_get '.blockvolume.device_path')
+  expected_path="${expected_path:-/dev/oracleoci/oraclevdb}"
+
+  TMPKEY=$(mktemp)
+  chmod 600 "$TMPKEY"
+  oci secrets secret-bundle get \
+    --secret-id "$SECRET_OCID" \
+    --query 'data."secret-bundle-content".content' --raw-output \
+    | base64 --decode > "$TMPKEY"
 
   local attachment_json iqn port
   attachment_json=$(oci compute volume-attachment get --volume-attachment-id "$volume_attach_id")
@@ -298,49 +328,47 @@ main() {
   port=$(echo "$attachment_json" | jq -r '.data.port')
   mapfile -t target_ips < <(echo "$attachment_json" | jq -r '([.data.ipv4] + [.data."multipath-devices"[]?.ipv4]) | unique[]')
 
-  local ssh_host="opc@${public_ip}"
-  local expected_path="/dev/oracleoci/oraclevdb"
   local mnt="/mnt/sprint20"
   local generator="fio"
 
   echo "  [A] multipath mode"
-  guest_login_targets "$ssh_host" "multipath" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
-  guest_collect_diag "$ssh_host" "$diag_mpath"
-  guest_prepare_fs "$ssh_host" "$expected_path" "$mnt"
+  guest_login_targets "opc@${PUBLIC_IP}" "multipath" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
+  guest_collect_diag "opc@${PUBLIC_IP}" "$diag_mpath"
+  guest_prepare_fs "opc@${PUBLIC_IP}" "$expected_path" "$mnt"
   set +e
-  guest_run_fio "$ssh_host" "$mnt" "/tmp/fio_multipath.json"
+  guest_run_fio "opc@${PUBLIC_IP}" "$mnt" "/tmp/fio_multipath.json"
   ec=$?
   set -e
   if [ "$ec" -eq 0 ]; then
-    _scp "$ssh_host:/tmp/fio_multipath.json" "$result_mpath"
+    _scp "/tmp/fio_multipath.json" "$result_mpath"
   else
     generator="dd"
-    guest_run_dd_fallback "$ssh_host" "$mnt" "/tmp/dd_multipath.json" "/tmp/dd_multipath.txt"
-    _scp "$ssh_host:/tmp/dd_multipath.json" "$result_mpath"
-    _scp "$ssh_host:/tmp/dd_multipath.txt" "$dd_mpath_txt"
+    guest_run_dd_fallback "opc@${PUBLIC_IP}" "$mnt" "/tmp/dd_multipath.json" "/tmp/dd_multipath.txt"
+    _scp "/tmp/dd_multipath.json" "$result_mpath"
+    _scp "/tmp/dd_multipath.txt" "$dd_mpath_txt"
   fi
 
   echo "  [B] single-path mode"
-  guest_login_targets "$ssh_host" "single" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
-  guest_collect_diag "$ssh_host" "$diag_single"
-  guest_prepare_fs "$ssh_host" "$expected_path" "$mnt"
+  guest_login_targets "opc@${PUBLIC_IP}" "single" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
+  guest_collect_diag "opc@${PUBLIC_IP}" "$diag_single"
+  guest_prepare_fs "opc@${PUBLIC_IP}" "$expected_path" "$mnt"
   if [ "$generator" = "fio" ]; then
     set +e
-    guest_run_fio "$ssh_host" "$mnt" "/tmp/fio_singlepath.json"
+    guest_run_fio "opc@${PUBLIC_IP}" "$mnt" "/tmp/fio_singlepath.json"
     ec=$?
     set -e
     if [ "$ec" -eq 0 ]; then
-      _scp "$ssh_host:/tmp/fio_singlepath.json" "$result_single"
+      _scp "/tmp/fio_singlepath.json" "$result_single"
     else
       generator="dd"
-      guest_run_dd_fallback "$ssh_host" "$mnt" "/tmp/dd_singlepath.json" "/tmp/dd_singlepath.txt"
-      _scp "$ssh_host:/tmp/dd_singlepath.json" "$result_single"
-      _scp "$ssh_host:/tmp/dd_singlepath.txt" "$dd_single_txt"
+      guest_run_dd_fallback "opc@${PUBLIC_IP}" "$mnt" "/tmp/dd_singlepath.json" "/tmp/dd_singlepath.txt"
+      _scp "/tmp/dd_singlepath.json" "$result_single"
+      _scp "/tmp/dd_singlepath.txt" "$dd_single_txt"
     fi
   else
-    guest_run_dd_fallback "$ssh_host" "$mnt" "/tmp/dd_singlepath.json" "/tmp/dd_singlepath.txt"
-    _scp "$ssh_host:/tmp/dd_singlepath.json" "$result_single"
-    _scp "$ssh_host:/tmp/dd_singlepath.txt" "$dd_single_txt"
+    guest_run_dd_fallback "opc@${PUBLIC_IP}" "$mnt" "/tmp/dd_singlepath.json" "/tmp/dd_singlepath.txt"
+    _scp "/tmp/dd_singlepath.json" "$result_single"
+    _scp "/tmp/dd_singlepath.txt" "$dd_single_txt"
   fi
 
   local bw_mpath bw_single
@@ -371,12 +399,18 @@ main() {
 * result single-path: $(basename "$result_single")
 EOF
 
-  cp -f state.json "$state_json"
+  cp -f "$STATE_FILE" "$state_json"
+  ln -sf "$(basename "$state_json")" "$PROGRESS_DIR/state-bv4db-s20-latest.json"
 
-  echo "  [INFO] Teardown ..."
-  teardown_compute.sh || true
-  teardown_blockvolume_attachment.sh || true
-  teardown_blockvolume.sh || true
+  if [ "${KEEP_INFRA:-false}" = "true" ]; then
+    echo "  [INFO] KEEP_INFRA=true — skipping teardown"
+    echo "  [INFO] State: $state_json"
+    echo "  [INFO] Public IP: $PUBLIC_IP"
+  else
+    echo "  [INFO] Teardown ..."
+    teardown-blockvolume.sh || true
+    teardown-compute.sh || true
+  fi
 
   echo "  [DONE] Summary: $summary_md"
 }

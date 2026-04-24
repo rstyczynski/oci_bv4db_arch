@@ -32,12 +32,20 @@ ssh_opts=(-n -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes)
 
 COMPARTMENT_OCID=$(jq -r '.compartment.ocid' "$INFRA_STATE")
 SUBNET_OCID=$(jq -r '.subnet.ocid' "$INFRA_STATE")
+SECRET_OCID=$(jq -r '.secret.ocid' "$INFRA_STATE")
 PUBKEY_FILE="$SPRINT1_DIR/bv4db-key.pub"
 
 [ -n "$COMPARTMENT_OCID" ] || { echo "  [ERROR] No compartment OCID in Sprint 1 infra state" >&2; exit 1; }
 [ -f "$PUBKEY_FILE" ] || { echo "  [ERROR] SSH public key not found: $PUBKEY_FILE" >&2; exit 1; }
 
-_ssh() { ssh "${ssh_opts[@]}" "$@"; }
+TMPKEY=""
+
+_cleanup() {
+  [ -n "${TMPKEY:-}" ] && rm -f "$TMPKEY" || true
+}
+trap _cleanup EXIT
+
+_ssh() { ssh -i "$TMPKEY" "${ssh_opts[@]}" "opc@${PUBLIC_IP}" "$@"; }
 
 enable_block_volume_plugin() {
   local instance_id="$1"
@@ -55,7 +63,8 @@ guest_configure_multipath() {
   shift 4
   local -a targets=("$@")
 
-  _ssh "$ssh_host" sudo bash -s -- "$iqn" "$port" "$expected_path" "${targets[@]}" <<'EOF'
+  [ -n "$ssh_host" ] || true
+  _ssh sudo bash -s -- "$iqn" "$port" "$expected_path" "${targets[@]}" <<'EOF'
 set -euo pipefail
 IQN="$1"
 PORT="$2"
@@ -91,9 +100,8 @@ EOF
 }
 
 guest_collect_diagnostics() {
-  local ssh_host="$1"
-  local out_file="$2"
-  _ssh "$ssh_host" sudo bash -s -- <<'EOF' >"$out_file"
+  local out_file="$1"
+  _ssh sudo bash -s -- <<'EOF' >"$out_file"
 set -euo pipefail
 echo "=== date ==="; date -u; echo
 echo "=== uname ==="; uname -a || true; echo
@@ -130,18 +138,38 @@ main() {
 
   export BLOCKVOLUME_SIZE_GB="${BLOCKVOLUME_SIZE_GB:-1500}"
   export BLOCKVOLUME_VPUS_PER_GB="${BLOCKVOLUME_VPUS_PER_GB:-120}"
-  export ATTACHMENT_TYPE="${ATTACHMENT_TYPE:-iscsi}"
+  export ATTACHMENT_TYPE="iscsi"
 
-  ensure_compute.sh --compartment-ocid "$COMPARTMENT_OCID" --subnet-ocid "$SUBNET_OCID" --ssh-pubkey-file "$PUBKEY_FILE" --shape "$COMPUTE_SHAPE" --ocpus "$COMPUTE_OCPUS" --memory-gb "$COMPUTE_MEMORY_GB"
-  ensure_blockvolume.sh --compartment-ocid "$COMPARTMENT_OCID" --size-gb "$BLOCKVOLUME_SIZE_GB" --vpus-per-gb "$BLOCKVOLUME_VPUS_PER_GB"
-  ensure_blockvolume_attachment.sh --attachment-type "$ATTACHMENT_TYPE"
+  [ -n "$OCI_REGION" ] && _state_set '.inputs.oci_region' "$OCI_REGION"
+  _state_set '.inputs.name_prefix'                      "$NAME_PREFIX"
+  _state_set '.inputs.oci_compartment'                  "$COMPARTMENT_OCID"
+  _state_set '.subnet.ocid'                             "$SUBNET_OCID"
+  _state_set '.inputs.compute_shape'                    "$COMPUTE_SHAPE"
+  _state_set '.inputs.compute_ocpus'                    "$COMPUTE_OCPUS"
+  _state_set '.inputs.compute_memory_gb'                "$COMPUTE_MEMORY_GB"
+  _state_set '.inputs.subnet_prohibit_public_ip'        'false'
+  _state_set '.inputs.compute_ssh_authorized_keys_file' "$PUBKEY_FILE"
+  _state_set '.inputs.bv_size_gb'                       "$BLOCKVOLUME_SIZE_GB"
+  _state_set '.inputs.bv_vpus_per_gb'                   "$BLOCKVOLUME_VPUS_PER_GB"
+  _state_set '.inputs.bv_attach_type'                   "$ATTACHMENT_TYPE"
+  _state_set '.inputs.bv_device_path'                   '/dev/oracleoci/oraclevdb'
 
-  local instance_id volume_attach_id public_ip
-  instance_id=$(jq -r '.compute.ocid' state.json)
-  volume_attach_id=$(jq -r '.blockvolume_attachment.ocid' state.json)
-  public_ip=$(jq -r '.compute.public_ip' state.json)
+  ensure-compute.sh
+  enable_block_volume_plugin "$(_state_get '.compute.ocid')"
+  PUBLIC_IP=$(_state_get '.compute.public_ip')
 
-  enable_block_volume_plugin "$instance_id"
+  ensure-blockvolume.sh
+  local volume_attach_id expected_path
+  volume_attach_id=$(_state_get '.blockvolume.attachment_ocid')
+  expected_path=$(_state_get '.blockvolume.device_path')
+  expected_path="${expected_path:-/dev/oracleoci/oraclevdb}"
+
+  TMPKEY=$(mktemp)
+  chmod 600 "$TMPKEY"
+  oci secrets secret-bundle get \
+    --secret-id "$SECRET_OCID" \
+    --query 'data."secret-bundle-content".content' --raw-output \
+    | base64 --decode > "$TMPKEY"
 
   local attachment_json iqn port
   attachment_json=$(oci compute volume-attachment get --volume-attachment-id "$volume_attach_id")
@@ -149,17 +177,20 @@ main() {
   port=$(echo "$attachment_json" | jq -r '.data.port')
   mapfile -t target_ips < <(echo "$attachment_json" | jq -r '([.data.ipv4] + [.data."multipath-devices"[]?.ipv4]) | unique[]')
 
-  local ssh_host="opc@${public_ip}"
-  local expected_path="/dev/oracleoci/oraclevdb"
+  guest_configure_multipath "opc@${PUBLIC_IP}" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
+  guest_collect_diagnostics "$diag_out"
+  cp -f "$STATE_FILE" "$state_out"
+  ln -sf "$(basename "$state_out")" "$PROGRESS_DIR/state-bv4db-s20-latest.json"
 
-  guest_configure_multipath "$ssh_host" "$iqn" "$port" "$expected_path" "${target_ips[@]}"
-  guest_collect_diagnostics "$ssh_host" "$diag_out"
-  cp -f state.json "$state_out"
-
-  echo "  [INFO] Teardown ..."
-  teardown_compute.sh || true
-  teardown_blockvolume_attachment.sh || true
-  teardown_blockvolume.sh || true
+  if [ "${KEEP_INFRA:-false}" = "true" ]; then
+    echo "  [INFO] KEEP_INFRA=true — skipping teardown"
+    echo "  [INFO] State: $state_out"
+    echo "  [INFO] Public IP: $PUBLIC_IP"
+  else
+    echo "  [INFO] Teardown ..."
+    teardown-blockvolume.sh || true
+    teardown-compute.sh || true
+  fi
 
   echo "  [DONE] Diagnostics: $diag_out"
 }

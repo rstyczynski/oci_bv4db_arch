@@ -7,11 +7,17 @@
 
 ## Operator - SSH access to the instance
 
-- The Sprint 20 scripts write state files to `progress/sprint_20/` (look for `state-bv4db-s20-*.json`).
-- Extract the public IP from the newest state file and connect:
+- Run the Sprint 20 script with `KEEP_INFRA=true` so the instance is not torn down immediately.
+- Extract the public IP from the newest Sprint 20 state file and connect.
 
 ```bash
-STATE="$(ls -1t progress/sprint_20/state-bv4db-s20-*.json | head -n 1)"
+STATE="$(ls -1t progress/sprint_20/state-bv4db-s20-mpath-*.json 2>/dev/null | head -n 1)"
+if [ -z "$STATE" ]; then
+  echo "No Sprint 20 state file found. Run with KEEP_INFRA=true first, e.g."
+  echo "  KEEP_INFRA=true ./tools/run_bv4db_multipath_diag_sprint20.sh"
+  echo "  KEEP_INFRA=true ./tools/run_bv4db_fio_multipath_ab_sprint20.sh"
+  exit 1
+fi
 IP="$(jq -r '.compute.public_ip' "$STATE")"
 
 SECRET_OCID="$(jq -r '.secret.ocid' progress/sprint_1/state-bv4db.json)"
@@ -28,13 +34,13 @@ ssh -i "$TMPKEY" -o StrictHostKeyChecking=no opc@"$IP"
 ## Step 1 - Diagnose multipath (sandbox)
 
 ```bash
-./tools/run_bv4db_multipath_diag_sprint20.sh
+KEEP_INFRA=true ./tools/run_bv4db_multipath_diag_sprint20.sh
 ```
 
 ## Step 2 - Run A/B performance test (fio)
 
 ```bash
-./tools/run_bv4db_fio_multipath_ab_sprint20.sh
+KEEP_INFRA=true ./tools/run_bv4db_fio_multipath_ab_sprint20.sh
 ```
 
 ## Step 3 - Teardown

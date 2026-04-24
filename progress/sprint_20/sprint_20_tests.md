@@ -13,5 +13,5 @@ Sprint Test Configuration:
 
 ## Artifacts
 
-- A3 log: `progress/sprint_20/test_run_A3_integration_20260424_141558.log`
-- B3 log: `progress/sprint_20/test_run_B3_integration_20260424_141558.log`
+- A3 log: `progress/sprint_20/test_run_A3_integration_20260424_142821.log`
+- B3 log: `progress/sprint_20/test_run_B3_integration_20260424_142901.log`
