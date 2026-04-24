@@ -10,8 +10,12 @@ PROGRESS_DIR="${PROGRESS_DIR:-$REPO_DIR/progress/sprint_17}"
 SPRINT1_DIR="$REPO_DIR/progress/sprint_1"
 INFRA_STATE="$SPRINT1_DIR/state-bv4db.json"
 SPRINT_LABEL="${SPRINT_LABEL:-Sprint 17}"
+SPRINT_NUMBER="${SPRINT_NUMBER:-17}"
 PROFILE_FILE="${PROFILE_FILE:-$REPO_DIR/progress/sprint_10/oracle-layout-4k-redo.fio}"
 SWINGBENCH_CONFIG_LOCAL="${SWINGBENCH_CONFIG_LOCAL:-$REPO_DIR/config/swingbench/SOE_Server_Side_V2.xml}"
+METRICS_STATE_PREFIX="${METRICS_STATE_PREFIX:-metrics-sprint17}"
+SUMMARY_BASENAME="${SUMMARY_BASENAME:-sprint_17_summary.md}"
+OUTPUT_INDEX_BASENAME="${OUTPUT_INDEX_BASENAME:-sprint_17_outputs.md}"
 
 export PATH="$SCAFFOLD_DIR/do:$SCAFFOLD_DIR/resource:$PATH"
 export NAME_PREFIX="${NAME_PREFIX:-bv4db-oracle17-run}"
@@ -36,6 +40,9 @@ SWINGBENCH_USERS="${SWINGBENCH_USERS:-4}"
 SWINGBENCH_SCALE="${SWINGBENCH_SCALE:-1}"
 SWINGBENCH_BUILD_THREADS="${SWINGBENCH_BUILD_THREADS:-4}"
 KEEP_INFRA="${KEEP_INFRA:-false}"
+REUSE_EXISTING_INFRA="${REUSE_EXISTING_INFRA:-false}"
+SKIP_FIO_PHASE="${SKIP_FIO_PHASE:-false}"
+SKIP_DB_INSTALL="${SKIP_DB_INSTALL:-false}"
 
 FIO_ARTIFACT_PREFIX="${FIO_ARTIFACT_PREFIX:-oracle17-fio-uhp-multi}"
 SWINGBENCH_ARTIFACT_PREFIX="${SWINGBENCH_ARTIFACT_PREFIX:-oracle17-swingbench-uhp-multi}"
@@ -63,6 +70,27 @@ archive_stale_state_file() {
     archived="${path%.json}.pre-run-${ts}.json"
     mv "$path" "$archived"
     echo "  [INFO] Archived stale state file: $archived"
+}
+
+restore_reusable_state_file() {
+    local target="$1"
+    [ -f "$target" ] && return 0
+
+    local base dir candidate
+    dir=$(dirname "$target")
+    base=$(basename "$target" .json)
+
+    for candidate in \
+        "$dir/${base}-archived.json" \
+        $(ls -1t "$dir/${base}.deleted-"*.json 2>/dev/null) \
+        $(ls -1t "$dir/${base}.pre-run-"*.json 2>/dev/null); do
+        [ -n "${candidate:-}" ] || continue
+        [ -f "$candidate" ] || continue
+        cp "$candidate" "$target"
+        echo "  [INFO] Restored reusable state file: $target <- $(basename "$candidate")"
+        return 0
+    done
+    return 1
 }
 
 ssh_opts=(
@@ -108,12 +136,22 @@ VOLUMES[redo1]="/dev/oracleoci/oraclevdd:${VPU_REDO}:${SIZE_REDO_GB}"
 VOLUMES[redo2]="/dev/oracleoci/oraclevde:${VPU_REDO}:${SIZE_REDO_GB}"
 VOLUMES[fra]="/dev/oracleoci/oraclevdf:${VPU_FRA}:${SIZE_FRA_GB}"
 
-archive_stale_state_file "$PROGRESS_DIR/state-${NAME_PREFIX}.json"
-for vol_name in data1 data2 redo1 redo2 fra; do
-    archive_stale_state_file "$PROGRESS_DIR/state-bv-${vol_name}.json"
-done
-archive_stale_state_file "$PROGRESS_DIR/state-metrics-sprint17-fio.json"
-archive_stale_state_file "$PROGRESS_DIR/state-metrics-sprint17-swingbench.json"
+if [ "$REUSE_EXISTING_INFRA" = "true" ]; then
+    if [ ! -f "$PROGRESS_DIR/state-${NAME_PREFIX}.json" ] || [ "$(jq -r '.compute.public_ip // empty' "$PROGRESS_DIR/state-${NAME_PREFIX}.json" 2>/dev/null)" = "" ]; then
+        rm -f "$PROGRESS_DIR/state-${NAME_PREFIX}.json"
+        restore_reusable_state_file "$PROGRESS_DIR/state-${NAME_PREFIX}.json" || true
+    fi
+    for vol_name in data1 data2 redo1 redo2 fra; do
+        restore_reusable_state_file "$PROGRESS_DIR/state-bv-${vol_name}.json" || true
+    done
+else
+    archive_stale_state_file "$PROGRESS_DIR/state-${NAME_PREFIX}.json"
+    for vol_name in data1 data2 redo1 redo2 fra; do
+        archive_stale_state_file "$PROGRESS_DIR/state-bv-${vol_name}.json"
+    done
+    archive_stale_state_file "$PROGRESS_DIR/state-${METRICS_STATE_PREFIX}-fio.json"
+    archive_stale_state_file "$PROGRESS_DIR/state-${METRICS_STATE_PREFIX}-swingbench.json"
+fi
 
 enable_block_volume_plugin() {
     local instance_id="$1"
@@ -223,7 +261,7 @@ EOF
     _scp_to_remote "$local_script" "$remote_script"
     rm -f "$local_script"
 
-    _ssh "rm -f '$remote_pid' '$remote_status' '$remote_log'; chmod 755 '$remote_script'"
+    _ssh "sudo rm -f '$remote_pid' '$remote_status' '$remote_log'; chmod 755 '$remote_script'"
 
     if [ "$run_as" = "oracle" ]; then
         _ssh "nohup sudo su - oracle -c '$remote_script' </dev/null >/dev/null 2>&1 & echo \$! > '$remote_pid'"
@@ -430,19 +468,47 @@ write_metrics_definition() {
 EOF
 }
 
+ensure_boot_volume_state() {
+    local boot_ocid compute_ocid compartment_ocid availability_domain
+    boot_ocid=$(_state_get '.boot_volume.ocid')
+    if [ -n "${boot_ocid:-}" ] && [ "$boot_ocid" != "null" ]; then
+        return 0
+    fi
+
+    compute_ocid=$(_state_get '.compute.ocid')
+    compartment_ocid=$(_state_get '.inputs.oci_compartment')
+    [ -n "${compute_ocid:-}" ] && [ "$compute_ocid" != "null" ] || return 0
+    [ -n "${compartment_ocid:-}" ] && [ "$compartment_ocid" != "null" ] || return 0
+
+    availability_domain=$(oci compute instance get \
+        --instance-id "$compute_ocid" \
+        --query 'data."availability-domain"' --raw-output 2>/dev/null || true)
+    [ -n "${availability_domain:-}" ] || return 0
+
+    boot_ocid=$(oci compute boot-volume-attachment list \
+        --availability-domain "$availability_domain" \
+        --compartment-id "$compartment_ocid" \
+        --instance-id "$compute_ocid" \
+        --query 'data[0]."boot-volume-id"' --raw-output 2>/dev/null || true)
+    if [ -n "${boot_ocid:-}" ] && [ "$boot_ocid" != "null" ]; then
+        _state_set '.boot_volume.ocid' "$boot_ocid"
+    fi
+}
+
 run_metrics_phase() {
     local phase="$1"
     local title="$2"
     local start_time="$3"
     local end_time="$4"
 
-    local metrics_prefix="metrics-sprint17-${phase}"
+    local metrics_prefix="${METRICS_STATE_PREFIX}-${phase}"
     local metrics_state="$PROGRESS_DIR/state-${metrics_prefix}.json"
     local metrics_def="$PROGRESS_DIR/${phase}_metrics_definition.json"
     local report_md="$PROGRESS_DIR/${phase}_oci_metrics_report.md"
     local report_html="$PROGRESS_DIR/${phase}_oci_metrics_report.html"
     local raw_file="$PROGRESS_DIR/${phase}_oci_metrics_raw.json"
 
+    ensure_boot_volume_state
     write_metrics_definition "$metrics_def" "$title"
     jq \
       --arg start "$start_time" \
@@ -466,6 +532,59 @@ run_metrics_phase() {
         cd "$PROGRESS_DIR"
         NAME_PREFIX="$metrics_prefix" "$REPO_DIR/oci_scaffold/resource/operate-metrics.sh"
     )
+}
+
+collect_oci_agent_multipath_diagnostics() {
+    local remote_file="/tmp/oci_agent_multipath_diagnostics.txt"
+    local local_file="$PROGRESS_DIR/oci_agent_multipath_diagnostics.txt"
+    local plugin_log="/var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig.log"
+    local plugin_log_copy="/tmp/oci-blockautoconfig.log"
+    local plugin_log_local="$PROGRESS_DIR/oci-blockautoconfig.log"
+    local plugin_tail_local="$PROGRESS_DIR/oci-blockautoconfig-tail.log"
+
+    _ssh "sudo bash -lc '
+set -e
+{
+  echo \"# OCI Agent Multipath Diagnostics\"
+  echo
+  echo \"Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+  echo
+  echo \"## File ownership\"
+  ls -ld /etc /etc/multipath.conf 2>&1 || true
+  echo
+  echo \"## File stat\"
+  stat /etc/multipath.conf 2>&1 || true
+  echo
+  echo \"## SELinux context\"
+  ls -lZ /etc/multipath.conf 2>&1 || true
+  echo
+  echo \"## ACL\"
+  getfacl /etc/multipath.conf 2>&1 || true
+  echo
+  echo \"## Multipath service\"
+  systemctl status multipathd --no-pager -l 2>&1 || true
+  echo
+  echo \"## Multipath overview\"
+  multipath -ll 2>&1 || true
+  echo
+  echo \"## Process ownership\"
+  ps -ef | egrep \"oracle-cloud-agent|ocid|multipathd|iscsid\" | grep -v egrep 2>&1 || true
+  echo
+  echo \"## Oracle Cloud Agent service\"
+  systemctl status oracle-cloud-agent --no-pager -l 2>&1 || true
+} > \"$remote_file\"
+chmod a+r \"$remote_file\"
+
+if [ -f \"$plugin_log\" ]; then
+  cp \"$plugin_log\" \"$plugin_log_copy\"
+  chmod a+r \"$plugin_log_copy\"
+  tail -n 200 \"$plugin_log\" > /tmp/oci-blockautoconfig-tail.log
+  chmod a+r /tmp/oci-blockautoconfig-tail.log
+fi
+'"
+    _scp_from_remote "$remote_file" "$local_file"
+    _scp_from_remote "$plugin_log_copy" "$plugin_log_local" 2>/dev/null || true
+    _scp_from_remote "/tmp/oci-blockautoconfig-tail.log" "$plugin_tail_local" 2>/dev/null || true
 }
 
 run_remote_fio_phase() {
@@ -521,11 +640,11 @@ write_fio_analysis_md() {
     local fio_json="$1"
     local iostat_json="$2"
     local output_md="$3"
-    python3 - "$fio_json" "$iostat_json" "$output_md" <<'PY'
+    python3 - "$fio_json" "$iostat_json" "$output_md" "$SPRINT_LABEL" <<'PY'
 import json
 import sys
 
-fio_json, iostat_json, output_md = sys.argv[1:4]
+fio_json, iostat_json, output_md, sprint_label = sys.argv[1:5]
 with open(fio_json, "r", encoding="utf-8") as handle:
     fio = json.load(handle)
 with open(iostat_json, "r", encoding="utf-8") as handle:
@@ -544,7 +663,7 @@ for snap in stats:
         })
 
 lines = []
-lines.append("# Sprint 17 FIO Phase Analysis")
+lines.append(f"# {sprint_label} FIO Phase Analysis")
 lines.append("")
 lines.append("## fio Jobs")
 lines.append("")
@@ -593,12 +712,12 @@ write_sprint17_summary() {
     local begin_snap="$6"
     local end_snap="$7"
 
-    python3 - "$PROGRESS_DIR/fio_results.json" "$PROGRESS_DIR/swingbench_results.xml" "$output_md" "$fio_start" "$fio_end" "$swing_start" "$swing_end" "$begin_snap" "$end_snap" <<'PY'
+    python3 - "$PROGRESS_DIR/fio_results.json" "$PROGRESS_DIR/swingbench_results.xml" "$output_md" "$fio_start" "$fio_end" "$swing_start" "$swing_end" "$begin_snap" "$end_snap" "$SPRINT_LABEL" "$SPRINT_NUMBER" <<'PY'
 import json
 import sys
 import xml.etree.ElementTree as ET
 
-fio_json, swingbench_xml, output_md, fio_start, fio_end, swing_start, swing_end, begin_snap, end_snap = sys.argv[1:10]
+fio_json, swingbench_xml, output_md, fio_start, fio_end, swing_start, swing_end, begin_snap, end_snap, sprint_label, sprint_number = sys.argv[1:12]
 
 with open(fio_json, "r", encoding="utf-8") as handle:
     fio = json.load(handle)
@@ -611,7 +730,7 @@ def text(tag, default="n/a"):
     return node.text if node is not None and node.text is not None else default
 
 lines = []
-lines.append("# Sprint 17 Summary")
+lines.append(f"# {sprint_label} Summary")
 lines.append("")
 lines.append("## Scope")
 lines.append("")
@@ -650,7 +769,7 @@ lines.append("- `awr_report.html`")
 lines.append("")
 lines.append("## Consolidated Conclusion")
 lines.append("")
-lines.append("- Sprint 17 combines storage-only stress and database-level stress on one repeatable Oracle-style topology.")
+lines.append(f"- {sprint_label} combines storage-only stress and database-level stress on one repeatable Oracle-style topology.")
 lines.append("- The result set now aligns benchmark output, guest iostat, OCI metrics, and AWR into one end-to-end benchmark package.")
 
 with open(output_md, "w", encoding="utf-8") as handle:
@@ -674,14 +793,22 @@ _state_set '.inputs.fio_runtime_sec' "$FIO_RUNTIME_SEC"
 _state_set '.inputs.swingbench_workload_duration' "$SWINGBENCH_WORKLOAD_DURATION"
 _state_set '.load_generator.name' 'swingbench'
 
-echo "  [INFO] Provisioning compute instance ..."
-ensure_compute_with_fallback
-enable_block_volume_plugin "$(_state_get '.compute.ocid')"
-PUBLIC_IP=$(_state_get '.compute.public_ip')
-INSTANCE_OCID=$(_state_get '.compute.ocid')
-COMPUTE_VNIC_OCID=$(oci compute instance list-vnics --instance-id "$INSTANCE_OCID" --compartment-id "$COMPARTMENT_OCID" 2>/dev/null | jq -r '.data[0]."vnic-id" // .data[0].id // empty') || true
-[ -n "${COMPUTE_VNIC_OCID:-}" ] && [ "$COMPUTE_VNIC_OCID" != "null" ] && _state_set '.compute.vnic_ocid' "$COMPUTE_VNIC_OCID"
-echo "  [INFO] Compute instance ready: $PUBLIC_IP"
+if [ "$REUSE_EXISTING_INFRA" = "true" ]; then
+    PUBLIC_IP=$(_state_get '.compute.public_ip')
+    INSTANCE_OCID=$(_state_get '.compute.ocid')
+    [ -n "${PUBLIC_IP:-}" ] && [ "$PUBLIC_IP" != "null" ] || { echo "  [ERROR] Reuse requested but no compute public IP found in state" >&2; exit 1; }
+    [ -n "${INSTANCE_OCID:-}" ] && [ "$INSTANCE_OCID" != "null" ] || { echo "  [ERROR] Reuse requested but no compute OCID found in state" >&2; exit 1; }
+    echo "  [INFO] Reusing existing compute instance: $PUBLIC_IP"
+else
+    echo "  [INFO] Provisioning compute instance ..."
+    ensure_compute_with_fallback
+    enable_block_volume_plugin "$(_state_get '.compute.ocid')"
+    PUBLIC_IP=$(_state_get '.compute.public_ip')
+    INSTANCE_OCID=$(_state_get '.compute.ocid')
+    COMPUTE_VNIC_OCID=$(oci compute instance list-vnics --instance-id "$INSTANCE_OCID" --compartment-id "$COMPARTMENT_OCID" 2>/dev/null | jq -r '.data[0]."vnic-id" // .data[0].id // empty') || true
+    [ -n "${COMPUTE_VNIC_OCID:-}" ] && [ "$COMPUTE_VNIC_OCID" != "null" ] && _state_set '.compute.vnic_ocid' "$COMPUTE_VNIC_OCID"
+    echo "  [INFO] Compute instance ready: $PUBLIC_IP"
+fi
 
 TMPKEY=$(mktemp)
 chmod 600 "$TMPKEY"
@@ -709,41 +836,50 @@ declare -A ATTACH_OCIDS
 declare -A MPATH_DEVICES
 MAIN_NAME_PREFIX="$NAME_PREFIX"
 
-for vol_name in "${vol_names[@]}"; do
-    IFS=':' read -r dev_path vpu size_gb <<< "${VOLUMES[$vol_name]}"
-    echo "  [INFO] Provisioning block volume: $vol_name ($size_gb GB, $vpu VPU/GB) ..."
+if [ "$REUSE_EXISTING_INFRA" = "true" ]; then
+    for vol_name in "${vol_names[@]}"; do
+        IFS=':' read -r dev_path _ <<< "${VOLUMES[$vol_name]}"
+        ATTACH_OCIDS[$vol_name]=$(_state_get ".volumes.${vol_name}.attachment_ocid")
+        MPATH_DEVICES[$vol_name]=$(resolve_mpath_device "$dev_path")
+        echo "  [INFO] Reusing $vol_name mpath device: ${MPATH_DEVICES[$vol_name]}"
+    done
+else
+    for vol_name in "${vol_names[@]}"; do
+        IFS=':' read -r dev_path vpu size_gb <<< "${VOLUMES[$vol_name]}"
+        echo "  [INFO] Provisioning block volume: $vol_name ($size_gb GB, $vpu VPU/GB) ..."
 
-    vol_state="$PROGRESS_DIR/state-bv-${vol_name}.json"
-    export NAME_PREFIX="bv-${vol_name}"
-    export STATE_FILE="$vol_state"
+        vol_state="$PROGRESS_DIR/state-bv-${vol_name}.json"
+        export NAME_PREFIX="bv-${vol_name}"
+        export STATE_FILE="$vol_state"
 
-    _state_set '.inputs.name_prefix' "$NAME_PREFIX"
-    _state_set '.inputs.oci_compartment' "$COMPARTMENT_OCID"
-    _state_set '.inputs.bv_size_gb' "$size_gb"
-    _state_set '.inputs.bv_vpus_per_gb' "$vpu"
-    _state_set '.inputs.bv_attach_type' 'iscsi'
-    _state_set '.inputs.bv_device_path' "$dev_path"
-    _state_set '.compute.ocid' "$INSTANCE_OCID"
+        _state_set '.inputs.name_prefix' "$NAME_PREFIX"
+        _state_set '.inputs.oci_compartment' "$COMPARTMENT_OCID"
+        _state_set '.inputs.bv_size_gb' "$size_gb"
+        _state_set '.inputs.bv_vpus_per_gb' "$vpu"
+        _state_set '.inputs.bv_attach_type' 'iscsi'
+        _state_set '.inputs.bv_device_path' "$dev_path"
+        _state_set '.compute.ocid' "$INSTANCE_OCID"
 
-    ensure-blockvolume.sh
+        ensure-blockvolume.sh
 
-    ATTACH_OCIDS[$vol_name]=$(_state_get '.blockvolume.attachment_ocid')
-    VOL_OCID=$(_state_get '.blockvolume.ocid')
-    VOL_VPUS=$(_state_get '.blockvolume.vpus_per_gb')
+        ATTACH_OCIDS[$vol_name]=$(_state_get '.blockvolume.attachment_ocid')
+        VOL_OCID=$(_state_get '.blockvolume.ocid')
+        VOL_VPUS=$(_state_get '.blockvolume.vpus_per_gb')
 
-    echo "  [INFO] Preparing iSCSI for $vol_name ..."
-    prepare_guest_block_device "${ATTACH_OCIDS[$vol_name]}" "$dev_path"
-    wait_for_stable_ssh "iSCSI guest preparation for $vol_name" 180
-    MPATH_DEVICES[$vol_name]=$(resolve_mpath_device "$dev_path")
-    echo "  [INFO] $vol_name mpath device: ${MPATH_DEVICES[$vol_name]}"
+        echo "  [INFO] Preparing iSCSI for $vol_name ..."
+        prepare_guest_block_device "${ATTACH_OCIDS[$vol_name]}" "$dev_path"
+        wait_for_stable_ssh "iSCSI guest preparation for $vol_name" 180
+        MPATH_DEVICES[$vol_name]=$(resolve_mpath_device "$dev_path")
+        echo "  [INFO] $vol_name mpath device: ${MPATH_DEVICES[$vol_name]}"
 
-    export NAME_PREFIX="$MAIN_NAME_PREFIX"
-    export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
-    _state_set ".volumes.${vol_name}.ocid" "$VOL_OCID"
-    _state_set ".volumes.${vol_name}.attachment_ocid" "${ATTACH_OCIDS[$vol_name]}"
-    _state_set ".volumes.${vol_name}.device_path" "$dev_path"
-    [ -n "${VOL_VPUS:-}" ] && [ "$VOL_VPUS" != "null" ] && _state_set ".volumes.${vol_name}.vpus_per_gb" "$VOL_VPUS"
-done
+        export NAME_PREFIX="$MAIN_NAME_PREFIX"
+        export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
+        _state_set ".volumes.${vol_name}.ocid" "$VOL_OCID"
+        _state_set ".volumes.${vol_name}.attachment_ocid" "${ATTACH_OCIDS[$vol_name]}"
+        _state_set ".volumes.${vol_name}.device_path" "$dev_path"
+        [ -n "${VOL_VPUS:-}" ] && [ "$VOL_VPUS" != "null" ] && _state_set ".volumes.${vol_name}.vpus_per_gb" "$VOL_VPUS"
+    done
+fi
 
 export NAME_PREFIX="$MAIN_NAME_PREFIX"
 export STATE_FILE="$PROGRESS_DIR/state-${NAME_PREFIX}.json"
@@ -766,34 +902,49 @@ LOG_FILE=/tmp/oracle-storage-layout.log \
 /tmp/configure_oracle_db_layout.sh"
 _scp_from_remote "/tmp/oracle-storage-layout.log" "$PROGRESS_DIR/storage-layout.log" 2>/dev/null || true
 
+echo "  [INFO] Capturing OCI agent and multipath diagnostics ..."
+collect_oci_agent_multipath_diagnostics
+
 echo "  [INFO] Installing fio, sysstat, and jq ..."
 _ssh "sudo dnf install -y fio sysstat jq >/dev/null"
 
-FIO_START=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-_state_set '.fio_phase.start_time' "$FIO_START"
-echo "  [INFO] Running FIO phase ($FIO_RUNTIME_SEC seconds) ..."
-run_remote_fio_phase "$FIO_RUNTIME_SEC"
-FIO_END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-_state_set '.fio_phase.end_time' "$FIO_END"
-write_fio_analysis_md "$PROGRESS_DIR/fio_results.json" "$PROGRESS_DIR/fio_iostat.json" "$PROGRESS_DIR/fio_analysis.md"
-"$REPO_DIR/tools/render_fio_report_html.sh" \
-    "$PROGRESS_DIR/fio_results.json" \
-    "$PROGRESS_DIR/fio_iostat.json" \
-    "$PROGRESS_DIR/fio_report.html" \
-    "Sprint 17 FIO Dashboard"
-echo "  [INFO] Collecting OCI metrics for FIO phase ..."
-run_metrics_phase "fio" "Sprint 17 FIO OCI Metrics" "$FIO_START" "$FIO_END"
+if [ "$SKIP_FIO_PHASE" = "true" ]; then
+    FIO_START=$(_state_get '.fio_phase.start_time')
+    FIO_END=$(_state_get '.fio_phase.end_time')
+    [ -f "$PROGRESS_DIR/fio_results.json" ] || { echo "  [ERROR] SKIP_FIO_PHASE=true but fio_results.json is missing" >&2; exit 1; }
+    [ -f "$PROGRESS_DIR/fio_iostat.json" ] || { echo "  [ERROR] SKIP_FIO_PHASE=true but fio_iostat.json is missing" >&2; exit 1; }
+    echo "  [INFO] Reusing existing FIO artifacts and skipping FIO phase"
+else
+    FIO_START=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    _state_set '.fio_phase.start_time' "$FIO_START"
+    echo "  [INFO] Running FIO phase ($FIO_RUNTIME_SEC seconds) ..."
+    run_remote_fio_phase "$FIO_RUNTIME_SEC"
+    FIO_END=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    _state_set '.fio_phase.end_time' "$FIO_END"
+    write_fio_analysis_md "$PROGRESS_DIR/fio_results.json" "$PROGRESS_DIR/fio_iostat.json" "$PROGRESS_DIR/fio_analysis.md"
+    "$REPO_DIR/tools/render_fio_report_html.sh" \
+        "$PROGRESS_DIR/fio_results.json" \
+        "$PROGRESS_DIR/fio_iostat.json" \
+        "$PROGRESS_DIR/fio_report.html" \
+        "$SPRINT_LABEL FIO Dashboard"
+    echo "  [INFO] Collecting OCI metrics for FIO phase ..."
+    run_metrics_phase "fio" "$SPRINT_LABEL FIO OCI Metrics" "$FIO_START" "$FIO_END"
+fi
 
-echo "  [INFO] Installing Oracle Database Free 23ai ..."
-_scp_to_remote "$REPO_DIR/tools/install_oracle_db_free.sh" "/tmp/install_oracle_db_free.sh"
-_ssh "chmod +x /tmp/install_oracle_db_free.sh"
-_run_remote_step \
-    "Oracle Database install" \
-    root \
-    2400 \
-    /tmp/oracle-db-free-install.log \
-    "ORACLE_PWD='$ORACLE_PWD' LOG_FILE=/tmp/oracle-db-free-install.log /tmp/install_oracle_db_free.sh"
-_scp_from_remote "/tmp/oracle-db-free-install.log" "$PROGRESS_DIR/db-install.log" 2>/dev/null || true
+if [ "$SKIP_DB_INSTALL" = "true" ]; then
+    echo "  [INFO] Skipping Oracle Database install and reusing the existing database instance"
+else
+    echo "  [INFO] Installing Oracle Database Free 23ai ..."
+    _scp_to_remote "$REPO_DIR/tools/install_oracle_db_free.sh" "/tmp/install_oracle_db_free.sh"
+    _ssh "chmod +x /tmp/install_oracle_db_free.sh"
+    _run_remote_step \
+        "Oracle Database install" \
+        root \
+        2400 \
+        /tmp/oracle-db-free-install.log \
+        "ORACLE_PWD='$ORACLE_PWD' FORCE_DB_RECREATE_ON_MISPLACEMENT=true LOG_FILE=/tmp/oracle-db-free-install.log /tmp/install_oracle_db_free.sh"
+    _scp_from_remote "/tmp/oracle-db-free-install.log" "$PROGRESS_DIR/db-install.log" 2>/dev/null || true
+fi
 
 echo "  [INFO] Deploying Swingbench and AWR scripts ..."
 _scp_to_remote "$REPO_DIR/tools/install_swingbench.sh" "/tmp/install_swingbench.sh"
@@ -889,7 +1040,7 @@ echo "  [INFO] Rendering Swingbench HTML report ..."
     "$PROGRESS_DIR/swingbench_report.html"
 
 echo "  [INFO] Collecting OCI metrics for Swingbench phase ..."
-run_metrics_phase "swingbench" "Sprint 17 Swingbench OCI Metrics" "$SWINGBENCH_START" "$SWINGBENCH_END"
+run_metrics_phase "swingbench" "$SPRINT_LABEL Swingbench OCI Metrics" "$SWINGBENCH_START" "$SWINGBENCH_END"
 
 DB_STATUS_OUTPUT=$(_ssh "sudo su - oracle -c 'source ~/.oracle_env && sqlplus -S / as sysdba' <<'SQL'
 set linesize 200
@@ -914,16 +1065,16 @@ echo "$DB_STATUS_OUTPUT" > "$PROGRESS_DIR/db-status.log"
 _state_set '.database.oracle_home' '/opt/oracle/product/23ai/dbhomeFree'
 _state_set '.database.oracle_sid' 'FREE'
 _state_set '.database.oracle_pdb' 'FREEPDB1'
-_state_set '.sprint' '17'
+_state_set '.sprint' "$SPRINT_NUMBER"
 
 write_sprint17_summary \
-    "$PROGRESS_DIR/sprint_17_summary.md" \
+    "$PROGRESS_DIR/$SUMMARY_BASENAME" \
     "$FIO_START" "$FIO_END" \
     "$SWINGBENCH_START" "$SWINGBENCH_END" \
     "$BEGIN_SNAP_ID" "$END_SNAP_ID"
 
-cat > "$PROGRESS_DIR/sprint_17_outputs.md" <<EOF
-# Sprint 17 Output Index
+cat > "$PROGRESS_DIR/$OUTPUT_INDEX_BASENAME" <<EOF
+# $SPRINT_LABEL Output Index
 
 ## FIO Phase
 
@@ -943,10 +1094,13 @@ cat > "$PROGRESS_DIR/sprint_17_outputs.md" <<EOF
 - \`swingbench_oci_metrics_report.md\`
 - \`swingbench_oci_metrics_report.html\`
 - \`awr_report.html\`
+- \`oci_agent_multipath_diagnostics.txt\`
+- \`oci-blockautoconfig.log\`
+- \`oci-blockautoconfig-tail.log\`
 
 ## Summary
 
-- \`sprint_17_summary.md\`
+- \`$SUMMARY_BASENAME\`
 - \`db-status.log\`
 EOF
 

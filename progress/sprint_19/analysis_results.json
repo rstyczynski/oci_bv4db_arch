@@ -1,0 +1,739 @@
+{
+  "17": {
+    "sprint": 17,
+    "phases": {
+      "fio": {
+        "phase": "fio",
+        "sprint": 17,
+        "fio_summary": [
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "data-8k",
+            "read_bw_kbps": 105601,
+            "write_bw_kbps": 45313,
+            "read_iops": 13200.063332,
+            "write_iops": 5664.105598,
+            "read_lat_mean_us": 820.327305894,
+            "write_lat_mean_us": 910.685819914,
+            "read_lat_p99_us": 1744.896,
+            "write_lat_p99_us": 2072.576,
+            "runtime_s": 60.0
+          },
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "data-8k",
+            "read_bw_kbps": 105697,
+            "write_bw_kbps": 45178,
+            "read_iops": 13212.096465,
+            "write_iops": 5647.239213,
+            "read_lat_mean_us": 820.3593328410001,
+            "write_lat_mean_us": 911.5554635909999,
+            "read_lat_p99_us": 1744.896,
+            "write_lat_p99_us": 2072.576,
+            "runtime_s": 60.0
+          },
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "data-8k",
+            "read_bw_kbps": 105749,
+            "write_bw_kbps": 45239,
+            "read_iops": 13218.526049,
+            "write_iops": 5654.878171,
+            "read_lat_mean_us": 820.067654876,
+            "write_lat_mean_us": 910.091205673,
+            "read_lat_p99_us": 1744.896,
+            "write_lat_p99_us": 2072.576,
+            "runtime_s": 60.001
+          },
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "data-8k",
+            "read_bw_kbps": 105712,
+            "write_bw_kbps": 45181,
+            "read_iops": 13213.913101,
+            "write_iops": 5647.62254,
+            "read_lat_mean_us": 820.166363218,
+            "write_lat_mean_us": 911.669108845,
+            "read_lat_p99_us": 1744.896,
+            "write_lat_p99_us": 2072.576,
+            "runtime_s": 60.0
+          },
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "redo",
+            "read_bw_kbps": 0,
+            "write_bw_kbps": 2825,
+            "read_iops": 0.0,
+            "write_iops": 706.288229,
+            "read_lat_mean_us": 0.0,
+            "write_lat_mean_us": 461.28137106500003,
+            "read_lat_p99_us": 0.0,
+            "write_lat_p99_us": 708.608,
+            "runtime_s": 60.0
+          },
+          {
+            "sprint": 17,
+            "phase": "fio",
+            "job_name": "fra-1m",
+            "read_bw_kbps": 24312,
+            "write_bw_kbps": 23699,
+            "read_iops": 23.675722,
+            "write_iops": 23.093805,
+            "read_lat_mean_us": 177405.693170868,
+            "write_lat_mean_us": 164037.067788074,
+            "read_lat_p99_us": 278921.216,
+            "write_lat_p99_us": 283115.52,
+            "runtime_s": 60.145
+          }
+        ],
+        "iostat_samples": 200,
+        "oci_metrics_count": 252,
+        "compute_metrics": {
+          "CpuUtilization": "1.5%",
+          "MemoryUtilization": "4.1%",
+          "DiskBytesRead": "57.6 MB/s",
+          "DiskBytesWritten": "141.9 MB/s"
+        },
+        "aligned_samples": 12,
+        "correlation": {
+          "iostat_col": "iostat_write_mbps",
+          "oci_col": "data1_VolumeWriteThroughput",
+          "pearson_r": -0.8219098160957561,
+          "pearson_p": 0.0010375150750329993,
+          "spearman_r": -0.5793654595023211,
+          "spearman_p": 0.04835941176439409,
+          "quadrant_agreement_pct": 33.33333333333333,
+          "quadrant_chi2": 6.0,
+          "quadrant_p_value": 0.04978706836786395,
+          "n_observations": 12
+        },
+        "full_correlation": {
+          "matrix": "                  iostat_boot_mbps  ...  fio_fra_mbps\niostat_boot_mbps          1.000000  ...     -0.678381\niostat_data_mbps          0.266121  ...     -0.629442\niostat_redo_mbps          0.267721  ...     -0.627400\noci_data_mbps            -0.580154  ...      0.903461\noci_redo_mbps            -0.580154  ...      0.903461\noci_fra_mbps              0.580154  ...     -0.903461\nfio_data_mbps             0.265848  ...     -0.629119\nfio_redo_mbps             0.267424  ...     -0.627046\nfio_fra_mbps             -0.678381  ...      1.000000\n\n[9 rows x 9 columns]",
+          "counts": "                  iostat_boot_mbps  ...  fio_fra_mbps\niostat_boot_mbps                12  ...            12\niostat_data_mbps                12  ...            12\niostat_redo_mbps                12  ...            12\noci_data_mbps                   12  ...            12\noci_redo_mbps                   12  ...            12\noci_fra_mbps                    12  ...            12\nfio_data_mbps                   12  ...            12\nfio_redo_mbps                   12  ...            12\nfio_fra_mbps                    12  ...            12\n\n[9 rows x 9 columns]",
+          "significant_pairs": [
+            {
+              "var1": "oci_redo_mbps",
+              "var2": "oci_fra_mbps",
+              "r": -1.0,
+              "p": 0.0,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_data_mbps",
+              "var2": "oci_redo_mbps",
+              "r": 0.9999999999999999,
+              "p": 0.0,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_data_mbps",
+              "var2": "oci_fra_mbps",
+              "r": -0.9999999999999999,
+              "p": 0.0,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "fio_data_mbps",
+              "r": 0.9999999137958099,
+              "p": 3.7488009173436707e-35,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "fio_redo_mbps",
+              "r": 0.9999998969084156,
+              "p": 9.169941368603328e-35,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "fio_data_mbps",
+              "r": 0.9985168206486159,
+              "p": 5.638259383206406e-14,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "iostat_redo_mbps",
+              "r": 0.9985163147129904,
+              "p": 5.647877672355245e-14,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "fio_data_mbps",
+              "var2": "fio_redo_mbps",
+              "r": 0.9985151726545839,
+              "p": 5.6696374746774706e-14,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "fio_redo_mbps",
+              "r": 0.9985144783606728,
+              "p": 5.6828986925987866e-14,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_data_mbps",
+              "var2": "fio_fra_mbps",
+              "r": 0.9034611429375078,
+              "p": 5.604945679677388e-05,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_fra_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.9034611429375078,
+              "p": 5.604945679677388e-05,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_redo_mbps",
+              "var2": "fio_fra_mbps",
+              "r": 0.9034611429375077,
+              "p": 5.6049456796773237e-05,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "oci_data_mbps",
+              "r": -0.8309368535491772,
+              "p": 0.0008128888232203343,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "oci_fra_mbps",
+              "r": 0.8309368535491772,
+              "p": 0.0008128888232203343,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "oci_redo_mbps",
+              "r": -0.8309368535491771,
+              "p": 0.0008128888232203293,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_redo_mbps",
+              "var2": "fio_data_mbps",
+              "r": -0.8307334939020034,
+              "p": 0.000817493539339288,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_fra_mbps",
+              "var2": "fio_data_mbps",
+              "r": 0.8307334939020031,
+              "p": 0.0008174935393392981,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_data_mbps",
+              "var2": "fio_data_mbps",
+              "r": -0.830733493902003,
+              "p": 0.0008174935393392981,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "oci_data_mbps",
+              "r": -0.8191749994309072,
+              "p": 0.0011142012382289045,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "oci_redo_mbps",
+              "r": -0.8191749994309072,
+              "p": 0.0011142012382289045,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "oci_fra_mbps",
+              "r": 0.8191749994309072,
+              "p": 0.0011142012382289045,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_data_mbps",
+              "var2": "fio_redo_mbps",
+              "r": -0.8189477834073862,
+              "p": 0.0011207635098797342,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_redo_mbps",
+              "var2": "fio_redo_mbps",
+              "r": -0.818947783407386,
+              "p": 0.0011207635098797342,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "oci_fra_mbps",
+              "var2": "fio_redo_mbps",
+              "r": 0.818947783407386,
+              "p": 0.0011207635098797342,
+              "n": 12,
+              "strength": "strong"
+            },
+            {
+              "var1": "iostat_boot_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.6783809311608827,
+              "p": 0.015304944840324108,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "iostat_data_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.6294416812082744,
+              "p": 0.028296423267776108,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "fio_data_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.6291189805127259,
+              "p": 0.02840212116140952,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "iostat_redo_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.627399891919528,
+              "p": 0.028969999272712696,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "fio_redo_mbps",
+              "var2": "fio_fra_mbps",
+              "r": -0.6270462411073072,
+              "p": 0.029087830343335706,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "iostat_boot_mbps",
+              "var2": "oci_data_mbps",
+              "r": -0.5801537358057882,
+              "p": 0.04798259123428396,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "iostat_boot_mbps",
+              "var2": "oci_redo_mbps",
+              "r": -0.5801537358057882,
+              "p": 0.04798259123428396,
+              "n": 12,
+              "strength": "moderate"
+            },
+            {
+              "var1": "iostat_boot_mbps",
+              "var2": "oci_fra_mbps",
+              "r": 0.5801537358057882,
+              "p": 0.04798259123428396,
+              "n": 12,
+              "strength": "moderate"
+            }
+          ],
+          "variable_groups": {
+            "guest_iostat": [
+              "iostat_boot_mbps",
+              "iostat_data_mbps",
+              "iostat_redo_mbps"
+            ],
+            "oci_blockvolume": [
+              "oci_redo_mbps",
+              "oci_fra_mbps",
+              "fio_redo_mbps",
+              "fio_fra_mbps"
+            ],
+            "workload": [
+              "fio_data_mbps"
+            ],
+            "other": [
+              "oci_data_mbps"
+            ]
+          }
+        },
+        "cross_layer": {
+          "iostat_vs_volumes": [
+            {
+              "volume": "data1",
+              "column": "data1_VolumeWriteThroughput",
+              "r": -0.8219098160957561,
+              "p": 0.0010375150750329993,
+              "iostat_mean": 907.5841666666665,
+              "volume_mean": 1761.361572265625
+            },
+            {
+              "volume": "fra",
+              "column": "fra_VolumeWriteThroughput",
+              "r": 0.8219098160957561,
+              "p": 0.0010375150750329993,
+              "iostat_mean": 907.5841666666665,
+              "volume_mean": 1075.732421875
+            },
+            {
+              "volume": "redo1",
+              "column": "redo1_VolumeWriteThroughput",
+              "r": 0.8219098160957561,
+              "p": 0.0010375150750329993,
+              "iostat_mean": 907.5841666666665,
+              "volume_mean": 405.468017578125
+            },
+            {
+              "volume": "redo2",
+              "column": "redo2_VolumeWriteThroughput",
+              "r": -0.8219098160957561,
+              "p": 0.0010375150750329993,
+              "iostat_mean": 907.5841666666665,
+              "volume_mean": 282.235595703125
+            },
+            {
+              "volume": "data2",
+              "column": "data2_VolumeWriteThroughput",
+              "r": -0.821909816095756,
+              "p": 0.0010375150750329993,
+              "iostat_mean": 907.5841666666665,
+              "volume_mean": 1055.5033203125001
+            }
+          ],
+          "iostat_vs_compute": {
+            "r": -0.821909816095756,
+            "p": 0.0010375150750329993,
+            "iostat_mean": 907.5841666666665,
+            "compute_mean": 334.7283243815104
+          },
+          "best_volume_match": {
+            "volume": "data1",
+            "column": "data1_VolumeWriteThroughput",
+            "r": -0.8219098160957561,
+            "p": 0.0010375150750329993,
+            "iostat_mean": 907.5841666666665,
+            "volume_mean": 1761.361572265625
+          },
+          "boot_volume_correlation": null,
+          "per_volume_match": {
+            "data_vs_data1": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data1_VolumeWriteThroughput",
+              "r": -0.830915320572328,
+              "p": 0.0008133754481184088,
+              "iostat_mean": 716.9541666666668,
+              "oci_mean": 1761.361572265625
+            },
+            "data_vs_data2": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data2_VolumeWriteThroughput",
+              "r": -0.8309153205723279,
+              "p": 0.0008133754481184088,
+              "iostat_mean": 716.9541666666668,
+              "oci_mean": 1055.5033203125001
+            },
+            "redo_vs_redo1": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo1_VolumeWriteThroughput",
+              "r": 0.8191278940577096,
+              "p": 0.0011155592596613008,
+              "iostat_mean": 152.895,
+              "oci_mean": 405.468017578125
+            },
+            "redo_vs_redo2": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo2_VolumeWriteThroughput",
+              "r": -0.8191278940577096,
+              "p": 0.0011155592596613008,
+              "iostat_mean": 152.895,
+              "oci_mean": 282.235595703125
+            },
+            "fra_vs_fra": {
+              "iostat_col": "fra_write_mbps",
+              "oci_col": "fra_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 0.0,
+              "oci_mean": 1075.732421875
+            }
+          },
+          "lagged_per_volume_match": {
+            "data_vs_data1": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data1_VolumeWriteThroughput",
+              "best_lag_min": 1,
+              "pearson_r": -0.8486015840914525,
+              "pearson_p": 0.0009573255349413841,
+              "n_observations": 11,
+              "iostat_mean": 716.9541666666668,
+              "oci_mean": 1761.361572265625
+            },
+            "data_vs_data2": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data2_VolumeWriteThroughput",
+              "best_lag_min": 1,
+              "pearson_r": -0.8486015840914525,
+              "pearson_p": 0.0009573255349413841,
+              "n_observations": 11,
+              "iostat_mean": 716.9541666666668,
+              "oci_mean": 1055.5033203125001
+            },
+            "redo_vs_redo1": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo1_VolumeWriteThroughput",
+              "best_lag_min": 1,
+              "pearson_r": 0.8738386635337225,
+              "pearson_p": 0.0004377521192107036,
+              "n_observations": 11,
+              "iostat_mean": 152.895,
+              "oci_mean": 405.468017578125
+            },
+            "redo_vs_redo2": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo2_VolumeWriteThroughput",
+              "best_lag_min": 1,
+              "pearson_r": -0.8738386635337226,
+              "pearson_p": 0.00043775211921070014,
+              "n_observations": 11,
+              "iostat_mean": 152.895,
+              "oci_mean": 282.235595703125
+            }
+          }
+        },
+        "quadrant": {
+          "matrix": "data1_VolumeWriteThroughput  Low  Medium  All\niostat_write_mbps                            \nLow                            1       3    4\nMedium                         1       3    4\nHigh                           4       0    4\nAll                            6       6   12",
+          "chi2": 6.0,
+          "p_value": 0.04978706836786395,
+          "dof": 2,
+          "agreement_pct": 33.33333333333333,
+          "categories": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        "quadrant_summary": {
+          "agreement_pct": 33.33333333333333,
+          "chi2": 6.0,
+          "p_value": 0.04978706836786395
+        },
+        "anomalies": [],
+        "quality": {
+          "score": 75,
+          "grade": "B",
+          "pass_fail": "PASS"
+        }
+      },
+      "swingbench": {
+        "phase": "swingbench",
+        "sprint": 17,
+        "avg_tps": 2115.65,
+        "completed_tx": 126939,
+        "iostat_samples": 103,
+        "oci_metrics_count": 112,
+        "compute_metrics": {
+          "CpuUtilization": "2.7%",
+          "MemoryUtilization": "6.6%",
+          "DiskBytesRead": "0.0 MB/s",
+          "DiskBytesWritten": "32.0 MB/s"
+        },
+        "aligned_samples": 12,
+        "correlation": {
+          "iostat_col": "iostat_write_mbps",
+          "oci_col": "data1_VolumeWriteThroughput",
+          "pearson_r": NaN,
+          "pearson_p": NaN,
+          "spearman_r": NaN,
+          "spearman_p": NaN,
+          "quadrant_agreement_pct": 33.33333333333333,
+          "quadrant_chi2": 0.0,
+          "quadrant_p_value": 1.0,
+          "n_observations": 12,
+          "avg_tps": 2115.65
+        },
+        "full_correlation": {
+          "matrix": "                  iostat_boot_mbps  ...       tps\niostat_boot_mbps          1.000000  ... -0.801483\niostat_data_mbps         -0.823651  ...  1.000000\niostat_redo_mbps         -0.823651  ...  1.000000\ntps                      -0.801483  ...  1.000000\n\n[4 rows x 4 columns]",
+          "counts": "                  iostat_boot_mbps  iostat_data_mbps  iostat_redo_mbps  tps\niostat_boot_mbps                12                 6                 6    9\niostat_data_mbps                 6                 6                 6    5\niostat_redo_mbps                 6                 6                 6    5\ntps                              9                 5                 5    9",
+          "significant_pairs": [],
+          "variable_groups": {
+            "guest_iostat": [
+              "iostat_boot_mbps",
+              "iostat_data_mbps",
+              "iostat_redo_mbps"
+            ],
+            "workload": [
+              "tps"
+            ]
+          }
+        },
+        "cross_layer": {
+          "iostat_vs_volumes": [
+            {
+              "volume": "data1",
+              "column": "data1_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 87.57166666666666,
+              "volume_mean": 0.0
+            },
+            {
+              "volume": "data2",
+              "column": "data2_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 87.57166666666666,
+              "volume_mean": 0.0
+            },
+            {
+              "volume": "fra",
+              "column": "fra_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 87.57166666666666,
+              "volume_mean": 0.0
+            },
+            {
+              "volume": "redo1",
+              "column": "redo1_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 87.57166666666666,
+              "volume_mean": 0.0
+            },
+            {
+              "volume": "redo2",
+              "column": "redo2_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 87.57166666666666,
+              "volume_mean": 0.0
+            }
+          ],
+          "iostat_vs_compute": {
+            "r": 0.5634209931793619,
+            "p": 0.05643530311076832,
+            "iostat_mean": 87.57166666666666,
+            "compute_mean": 34.94600830078125
+          },
+          "best_volume_match": {
+            "volume": "data1",
+            "column": "data1_VolumeWriteThroughput",
+            "r": NaN,
+            "p": NaN,
+            "iostat_mean": 87.57166666666666,
+            "volume_mean": 0.0
+          },
+          "boot_volume_correlation": null,
+          "per_volume_match": {
+            "data_vs_data1": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data1_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 18.186666666666667,
+              "oci_mean": 0.0
+            },
+            "data_vs_data2": {
+              "iostat_col": "data_write_mbps",
+              "oci_col": "data2_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 18.186666666666667,
+              "oci_mean": 0.0
+            },
+            "redo_vs_redo1": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo1_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 4.083333333333333,
+              "oci_mean": 0.0
+            },
+            "redo_vs_redo2": {
+              "iostat_col": "redo_write_mbps",
+              "oci_col": "redo2_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 4.083333333333333,
+              "oci_mean": 0.0
+            },
+            "fra_vs_fra": {
+              "iostat_col": "fra_write_mbps",
+              "oci_col": "fra_VolumeWriteThroughput",
+              "r": NaN,
+              "p": NaN,
+              "iostat_mean": 0.0,
+              "oci_mean": 0.0
+            }
+          },
+          "lagged_per_volume_match": {}
+        },
+        "quadrant": {
+          "matrix": "col_0              Medium  All\niostat_write_mbps             \nLow                     4    4\nMedium                  4    4\nHigh                    4    4\nAll                    12   12",
+          "chi2": 0.0,
+          "p_value": 1.0,
+          "dof": 0,
+          "agreement_pct": 33.33333333333333,
+          "categories": [
+            "Low",
+            "Medium",
+            "High"
+          ]
+        },
+        "quadrant_summary": {
+          "agreement_pct": 33.33333333333333,
+          "chi2": 0.0,
+          "p_value": 1.0
+        },
+        "anomalies": [
+          {
+            "rule_id": "R6",
+            "severity": "critical",
+            "message": "Boot throughput dominates: boot=37.5 MB/s vs data+redo+fra=19.9 MB/s (ratio=1.89). Likely DB files on boot volume."
+          }
+        ],
+        "quality": {
+          "score": 35,
+          "grade": "D",
+          "pass_fail": "FAIL"
+        }
+      }
+    }
+  }
+}

@@ -69,3 +69,40 @@ Sprint 17 is substantially longer than Sprint 15 because it runs both a storage 
 - teardown of compute plus all five block volumes
 
 This is a long-running automated sprint, not a quick smoke task.
+
+## OCI Console plugin warning
+
+In OCI Console on the instance `Management` tab, the Oracle Cloud Agent plugin `Block Volume Management` may show a warning like:
+
+- `the plugin did not find any volume attachments for the instance`
+- `open /etc/multipath.conf: permission denied`
+
+For this project layout, that warning is expected and does not by itself indicate benchmark failure.
+
+Reason:
+
+- Sprint 17 uses custom `iscsi` plus `multipath` handling for the Oracle-style multi-volume layout
+- the benchmark logic validates the storage path directly with attached-volume state, guest-side device discovery, `multipath`, `fio`, and `Swingbench`
+- the OCI agent plugin message is not treated as the source of truth for this custom layout
+
+Treat the run as healthy when the benchmark artifacts and runner logs show:
+
+- block volumes attached successfully
+- guest devices resolved
+- `fio` and `Swingbench` completed
+- artifacts copied back successfully
+
+Additional diagnostic artifact:
+
+- `oci_agent_multipath_diagnostics.txt`
+- `oci-blockautoconfig.log`
+- `oci-blockautoconfig-tail.log`
+
+This artifact records the live host view of:
+
+- `/etc/multipath.conf` owner and mode
+- SELinux context and ACLs
+- `multipathd` state
+- current multipath mapping
+- Oracle Cloud Agent and related process ownership
+- Oracle Cloud Agent Block Volume Management plugin log output

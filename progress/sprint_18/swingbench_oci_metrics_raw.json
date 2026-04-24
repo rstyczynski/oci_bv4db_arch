@@ -1,0 +1,5598 @@
+[
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 104857.6
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 95027.2
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 239831449.6
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 285328998.4
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 85303296.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 84122828.8
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 105402368.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 94079385.6
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 141623296.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 182553804.8
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 158325964.8
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 118916710.4
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 147427328.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 119288627.2
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 151093248.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 129174732.8
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 143374745.6
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 133033984.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 126540185.6
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 176153395.2
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 180323123.2
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 63142297.6
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 88538316.8
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 100611686.4
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 94104780.8
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 120012800.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 142079590.4
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 152497356.8
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 136709734.4
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 136540160.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 135667712.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 157074227.2
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 144633036.8
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 158726553.6
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 132820992.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 194929664.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 0.8
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 8.4
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 5354.8
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 6619.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 3204.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 3542.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 4394.6
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 3583.4
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 5024.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 5483.6
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 5921.8
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 4661.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 5201.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 5129.2
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 5588.8
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 5492.2
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 5678.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 5597.4
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 7354.8
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 4024.6
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 3064.2
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 2746.6
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 4618.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 4823.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 4666.2
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 5872.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 6077.2
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 6312.8
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 5785.2
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 6328.2
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 6183.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 6627.2
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 6580.6
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 6940.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 6710.6
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 9117.25
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 52428.8
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 244121.6
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 201503539.2
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 289914880.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 95870156.8
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 90880409.6
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 105195929.6
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 96123289.6
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 128285900.8
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 186481049.6
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 167992524.8
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 127281561.6
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 148160512.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 120190566.4
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 154217676.8
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 132248371.2
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 140839321.6
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 138531635.2
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 121944473.6
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 175199846.4
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 175798681.6
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 79867904.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 88721817.6
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 103124172.8
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 92572057.6
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 108934758.4
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 149611315.2
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 156970188.8
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 141172736.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 137963110.4
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 138426777.6
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 158238310.4
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 148704460.8
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 137391308.8
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 157411737.6
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 191199232.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 0.4
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "data2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 3004.6
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 8134.6
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 3226.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 3313.4
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 4524.2
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 3692.6
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 4916.4
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 5529.8
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 5989.4
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 5051.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 5228.8
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 5156.4
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 5744.4
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 5608.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 5733.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 5732.6
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 6809.4
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 5594.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 2320.6
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 2875.8
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 4465.8
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 4912.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 4712.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 5330.2
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 6610.8
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 6417.2
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 5953.2
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 6390.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 6260.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 6729.4
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 6676.4
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 6862.6
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 6922.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 9008.25
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 524288.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyict3i5rqcytpbc3cb4xyp2blvv3eckiv4erl3w3ityiv2a",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 209936384.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 375828480.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 324567040.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 125014016.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 217354240.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 217882624.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 216449024.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 239792128.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 292958208.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 299638784.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 239947776.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 223309824.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 225878016.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 232030208.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 223744000.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 220917760.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 222601216.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 215715840.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 378880000.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 491032576.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 90456064.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 214323200.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 219779072.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 210763776.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 228032512.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 290570240.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 303276032.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 247549952.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 222892032.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 226107392.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 234844160.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 224747520.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 227901440.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 225103872.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 228511744.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyict3i5rqcytpbc3cb4xyp2blvv3eckiv4erl3w3ityiv2a",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 4.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyict3i5rqcytpbc3cb4xyp2blvv3eckiv4erl3w3ityiv2a",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo1",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 847.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 1794.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 1756.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 12543.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 21337.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 21361.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 21330.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 21281.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 20846.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 21505.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 21400.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 20807.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 21202.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 21168.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 21216.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 20915.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 21239.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 19938.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 11411.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 6390.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 9116.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 21098.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 21022.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 20832.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 20674.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 21151.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 20884.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 21398.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 20740.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 21302.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 21004.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 21205.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 21497.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 20977.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 21321.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyict3i5rqcytpbc3cb4xyp2blvv3eckiv4erl3w3ityiv2a",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 262144.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoxhgvnfgkuv4qpi2kjjj2nfac2gdeatuxblxohvh2qqa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 5513216.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 693043200.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 61218816.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 214925312.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 219738112.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 215695360.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 225411072.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 280006656.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 311812096.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 252346368.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 223039488.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 225468416.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 234156032.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 225861632.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 220639232.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 221638656.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 225648640.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 153210880.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 758206464.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 46936064.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 210821120.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 219922432.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 210804736.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 218836992.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 274075648.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 304623616.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 265531392.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 227930112.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 225484800.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 229920768.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 225796096.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 225714176.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 222855168.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 225812480.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 221802496.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoxhgvnfgkuv4qpi2kjjj2nfac2gdeatuxblxohvh2qqa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 2.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoxhgvnfgkuv4qpi2kjjj2nfac2gdeatuxblxohvh2qqa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "redo2",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 85.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 3301.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 6157.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 21218.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 21510.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 21460.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 21323.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 20858.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 21321.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 21617.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 20912.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 21382.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 21150.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 21444.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 21049.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 20915.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 21320.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 13777.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 9233.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 3975.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 20799.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 20969.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 20851.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 20839.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 20931.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 20912.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 21210.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 21137.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 20992.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 21051.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 20692.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 20913.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 20784.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 21019.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 19547.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoxhgvnfgkuv4qpi2kjjj2nfac2gdeatuxblxohvh2qqa",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 2039808.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 1417216.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 2338816.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 1380352.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 1605632.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 1347584.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 1257472.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 1503232.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 1814528.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 1351680.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 1159168.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 1191936.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 888832.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 1224704.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 802816.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 1187840.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 946176.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 942080.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 1286144.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 2318336.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 729088.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 925696.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 696320.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 860160.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 1056768.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 1122304.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 1056768.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 1122304.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 1105920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 1105920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 1105920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 954368.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 1069056.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 1097728.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 1085440.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "fra",
+    "resource_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 137.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 99.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 154.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 95.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 110.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 93.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 88.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 103.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 122.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 94.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 82.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 86.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 65.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 86.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 61.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 85.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 69.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 70.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 91.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 154.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 57.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 69.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 55.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 65.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 77.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 81.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 77.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 81.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 80.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 80.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 80.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 71.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 74.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 79.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 77.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+            "resourceId": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "boot_volume",
+    "resource_id": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeReadThroughput[1m]{resourceId = \"ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 147456.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 851968.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 65536.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 73728.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 73728.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 90112.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 73728.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 86016.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 86016.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 98304.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 94208.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 77824.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 90112.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 73728.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 98304.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 389120.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 94208.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 204800.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 77824.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 102400.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 90112.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 172032.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 86016.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 73728.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 69632.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 69632.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 61440.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 40960.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 81920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 73728.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "resourceId": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq"
+          },
+          "metadata": {
+            "displayName": "Read Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeReadThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "boot_volume",
+    "resource_id": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteThroughput",
+    "statistic": "mean",
+    "query_text": "VolumeWriteThroughput[1m]{resourceId = \"ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 1718784.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 87895552.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 2977280.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 1625088.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 2441216.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 2371072.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 2674688.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 1454080.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 2259456.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 2479616.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 1391104.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 2781696.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 2053632.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 2828800.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 1358336.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 2055680.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 2806784.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 1415680.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 8435200.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 2925568.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 2869760.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 1560576.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 2033664.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 2629632.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 1329152.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 2052096.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 2082816.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 2534912.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 1297920.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 1989120.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 2344448.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 1352704.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 1897984.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 1784320.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 2534912.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "resourceId": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq"
+          },
+          "metadata": {
+            "displayName": "Write Throughput",
+            "unit": "bytes"
+          },
+          "name": "VolumeWriteThroughput",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "boot_volume",
+    "resource_id": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeReadOps",
+    "statistic": "mean",
+    "query_text": "VolumeReadOps[1m]{resourceId = \"ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 36.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 84.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 16.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 18.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 18.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 22.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 18.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 21.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 21.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 24.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 23.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 19.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 22.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 18.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 24.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 68.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 23.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 25.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 19.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 25.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 22.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 42.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 21.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 18.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 17.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 17.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 15.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 10.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 20.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 18.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "resourceId": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq"
+          },
+          "metadata": {
+            "displayName": "Read Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeReadOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "blockvolume",
+    "resource_name": "boot_volume",
+    "resource_id": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq",
+    "namespace": "oci_blockstore",
+    "metric_name": "VolumeWriteOps",
+    "statistic": "mean",
+    "query_text": "VolumeWriteOps[1m]{resourceId = \"ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "ops",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 103.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 498.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 102.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 96.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 128.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 140.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 86.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 82.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 105.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 82.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 76.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 192.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 89.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 111.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 77.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 80.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 99.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 83.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 179.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 152.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 117.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 89.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 86.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 92.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 79.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 116.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 86.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 76.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 74.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 80.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 68.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 79.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 76.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 63.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 81.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "attachmentId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "resourceId": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq"
+          },
+          "metadata": {
+            "displayName": "Write Ops",
+            "unit": "operations"
+          },
+          "name": "VolumeWriteOps",
+          "namespace": "oci_blockstore",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+    "namespace": "oci_computeagent",
+    "metric_name": "CpuUtilization",
+    "statistic": "mean",
+    "query_text": "CpuUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a\"}.mean()",
+    "scale": 1,
+    "suffix": "%",
+    "decimals": 2,
+    "unit": "percent",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 1.4174598645483514
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 6.831982747209717
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 3.950023720323897
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 6.913530572509356
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 6.754553747362539
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 6.802734834750141
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 6.812251947391633
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 6.9001295165887555
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 6.864420010709996
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 6.815476517425485
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 6.879685191514046
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 6.858225773244521
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 6.8960549564647105
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 6.837045216554618
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 6.859789263012061
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 6.89843064368836
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 6.896498471812342
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 7.481240993039878
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 11.264188864838646
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 3.4537506856550593
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 6.815995936585168
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 6.830550461902507
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 6.871508015120174
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 6.858472946889358
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 6.9020412267225675
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 6.891427483856245
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 6.831236581957302
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 6.818846362289508
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 6.872529374278699
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 6.818172024241295
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 6.867865293035062
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 6.7846478980809835
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 6.851131897477194
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 6.876709037058531
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 6.222340637773569
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle18-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "CPU Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "CpuUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+    "namespace": "oci_computeagent",
+    "metric_name": "MemoryUtilization",
+    "statistic": "mean",
+    "query_text": "MemoryUtilization[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a\"}.mean()",
+    "scale": 1,
+    "suffix": "%",
+    "decimals": 2,
+    "unit": "percent",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 6.018303653789078
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 6.710197017551869
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 6.381580119877023
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 6.632918956586672
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 6.592451937009266
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 6.59566134468546
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 6.597988801028769
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 6.582172677241295
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 6.531645105550552
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 6.543122679816958
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 6.532430418617437
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 6.542064745115454
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 6.543969027578161
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 6.55800395553647
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 6.602842076471916
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 6.612388919908078
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 6.615450827073005
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 6.728277528498524
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 6.936040645200194
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 6.5844187539921775
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 6.631720642088239
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 6.687182868814552
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 6.6937227363106695
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 6.689807360670204
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 6.682803629497271
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 6.687717939634735
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 6.689700549955147
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 6.698081630729845
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 6.67668286690213
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 6.700453845848986
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 6.697261731336181
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 6.695076689279614
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 6.688686356784572
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 6.690478742307697
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 6.487752005132123
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle18-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Memory Utilization",
+            "maxRange": "100",
+            "minRange": "0",
+            "unit": "Percent"
+          },
+          "name": "MemoryUtilization",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesRead",
+    "statistic": "rate",
+    "query_text": "DiskBytesRead[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a\"}.rate()",
+    "scale": 1048576,
+    "suffix": " MiB/s",
+    "decimals": 2,
+    "unit": "bytes/s",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 35293.86666666667
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 4915.2
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 1843.2
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle18-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Read Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesRead",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "compute",
+    "resource_name": "compute",
+    "resource_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+    "namespace": "oci_computeagent",
+    "metric_name": "DiskBytesWritten",
+    "statistic": "rate",
+    "query_text": "DiskBytesWritten[1m]{resourceId = \"ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a\"}.rate()",
+    "scale": 1048576,
+    "suffix": " MiB/s",
+    "decimals": 2,
+    "unit": "bytes/s",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 6104917.333333333
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 71839052.8
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 40649292.8
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 22148096.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 21400072.533333335
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 24665156.266666666
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 24724573.866666667
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 39512379.733333334
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 39438421.333333336
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 31060053.333333332
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 30548292.266666666
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 28607923.2
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 32073659.733333334
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 29116680.533333335
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 28863607.466666665
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 34457617.06666667
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 27715549.866666667
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 29020509.866666667
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 53741636.266666666
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 26525124.266666666
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 19271355.733333334
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 21925307.733333334
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 24414600.533333335
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 23058867.2
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 32359850.666666668
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 34223121.06666667
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 32971767.466666665
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 30549828.266666666
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 32814728.533333335
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 30986598.4
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 32031419.733333334
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 31662105.6
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 34202060.8
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 32484812.8
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 29912951.466666665
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "availabilityDomain": "jJRq:EU-ZURICH-1-AD-1",
+            "dedicatedVmHostId": "DefaultVmHostId",
+            "faultDomain": "FAULT-DOMAIN-2",
+            "imageId": "ocid1.image.oc1.eu-zurich-1.aaaaaaaaylrgrohpqykmwu5b4flyroqcwgm6rx3kl3izrkgbuvwvgshniw7q",
+            "instancePoolId": "Default",
+            "region": "eu-zurich-1",
+            "resourceDisplayName": "bv4db-oracle18-run-instance",
+            "resourceId": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+            "shape": "VM.Standard.E5.Flex"
+          },
+          "metadata": {
+            "displayName": "Disk Write Bytes",
+            "unit": "Bytes"
+          },
+          "name": "DiskBytesWritten",
+          "namespace": "oci_computeagent",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicFromNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicFromNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 2535713.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 55220314.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 23195292.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 14304521.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 16341651.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 18001370.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 16704162.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 18134939.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 22315301.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 22848155.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 19826510.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 20065351.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 19996846.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 21181938.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 20590879.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 20531143.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 21675311.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 22134750.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 20086834.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 11160277.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 11616222.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 17463514.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 18441096.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 17791501.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 19665904.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 23759913.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 23287279.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 21663496.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 21740653.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 22013472.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 22825577.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 22840856.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 22998895.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 23619614.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 23550947.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha"
+          },
+          "metadata": {
+            "displayName": "Bytes from Network",
+            "unit": "bytes"
+          },
+          "name": "VnicFromNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicToNetworkBytes",
+    "statistic": "mean",
+    "query_text": "VnicToNetworkBytes[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha\"}.mean()",
+    "scale": 1048576,
+    "suffix": " MiB",
+    "decimals": 2,
+    "unit": "bytes/interval",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 428804919.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 2269764464.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 3410320607.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 1799035940.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 1397163341.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 1459587309.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 1425693771.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 1599462890.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 2556207038.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 2356865664.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 1768411319.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 1860116729.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 1758065856.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 1996686803.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 1786442658.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 1765365978.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 1952438569.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 1697862875.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 2418738116.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 2633904274.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 1299431347.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 1323123203.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 1399358833.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 1367898471.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 1539974738.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 2136238246.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 2206067165.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 1942152660.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 1806936491.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 1873743115.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 2000542408.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 1856584471.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 1945217310.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 2091980318.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 1997321689.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha"
+          },
+          "metadata": {
+            "displayName": "Bytes to Network",
+            "unit": "bytes"
+          },
+          "name": "VnicToNetworkBytes",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicEgressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicEgressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "packets",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 0.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 0.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha"
+          },
+          "metadata": {
+            "displayName": "Egress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicEgressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  },
+  {
+    "class": "network",
+    "resource_name": "primary_vnic",
+    "resource_id": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha",
+    "namespace": "oci_vcn",
+    "metric_name": "VnicIngressDropsSecurityList",
+    "statistic": "mean",
+    "query_text": "VnicIngressDropsSecurityList[1m]{resourceId = \"ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha\"}.mean()",
+    "scale": 1,
+    "suffix": "",
+    "decimals": 2,
+    "unit": "packets",
+    "payload": {
+      "data": [
+        {
+          "aggregated-datapoints": [
+            {
+              "timestamp": "2026-04-23T21:44:00+00:00",
+              "value": 281.0
+            },
+            {
+              "timestamp": "2026-04-23T21:45:00+00:00",
+              "value": 278.0
+            },
+            {
+              "timestamp": "2026-04-23T21:46:00+00:00",
+              "value": 285.0
+            },
+            {
+              "timestamp": "2026-04-23T21:47:00+00:00",
+              "value": 280.0
+            },
+            {
+              "timestamp": "2026-04-23T21:48:00+00:00",
+              "value": 279.0
+            },
+            {
+              "timestamp": "2026-04-23T21:49:00+00:00",
+              "value": 284.0
+            },
+            {
+              "timestamp": "2026-04-23T21:50:00+00:00",
+              "value": 276.0
+            },
+            {
+              "timestamp": "2026-04-23T21:51:00+00:00",
+              "value": 281.0
+            },
+            {
+              "timestamp": "2026-04-23T21:52:00+00:00",
+              "value": 285.0
+            },
+            {
+              "timestamp": "2026-04-23T21:53:00+00:00",
+              "value": 281.0
+            },
+            {
+              "timestamp": "2026-04-23T21:54:00+00:00",
+              "value": 274.0
+            },
+            {
+              "timestamp": "2026-04-23T21:55:00+00:00",
+              "value": 284.0
+            },
+            {
+              "timestamp": "2026-04-23T21:56:00+00:00",
+              "value": 280.0
+            },
+            {
+              "timestamp": "2026-04-23T21:57:00+00:00",
+              "value": 279.0
+            },
+            {
+              "timestamp": "2026-04-23T21:58:00+00:00",
+              "value": 279.0
+            },
+            {
+              "timestamp": "2026-04-23T21:59:00+00:00",
+              "value": 282.0
+            },
+            {
+              "timestamp": "2026-04-23T22:00:00+00:00",
+              "value": 280.0
+            },
+            {
+              "timestamp": "2026-04-23T22:01:00+00:00",
+              "value": 280.0
+            },
+            {
+              "timestamp": "2026-04-23T22:02:00+00:00",
+              "value": 278.0
+            },
+            {
+              "timestamp": "2026-04-23T22:03:00+00:00",
+              "value": 281.0
+            },
+            {
+              "timestamp": "2026-04-23T22:04:00+00:00",
+              "value": 278.0
+            },
+            {
+              "timestamp": "2026-04-23T22:05:00+00:00",
+              "value": 277.0
+            },
+            {
+              "timestamp": "2026-04-23T22:06:00+00:00",
+              "value": 282.0
+            },
+            {
+              "timestamp": "2026-04-23T22:07:00+00:00",
+              "value": 282.0
+            },
+            {
+              "timestamp": "2026-04-23T22:08:00+00:00",
+              "value": 278.0
+            },
+            {
+              "timestamp": "2026-04-23T22:09:00+00:00",
+              "value": 283.0
+            },
+            {
+              "timestamp": "2026-04-23T22:10:00+00:00",
+              "value": 281.0
+            },
+            {
+              "timestamp": "2026-04-23T22:11:00+00:00",
+              "value": 280.0
+            },
+            {
+              "timestamp": "2026-04-23T22:12:00+00:00",
+              "value": 277.0
+            },
+            {
+              "timestamp": "2026-04-23T22:13:00+00:00",
+              "value": 288.0
+            },
+            {
+              "timestamp": "2026-04-23T22:14:00+00:00",
+              "value": 275.0
+            },
+            {
+              "timestamp": "2026-04-23T22:15:00+00:00",
+              "value": 283.0
+            },
+            {
+              "timestamp": "2026-04-23T22:16:00+00:00",
+              "value": 279.0
+            },
+            {
+              "timestamp": "2026-04-23T22:17:00+00:00",
+              "value": 277.0
+            },
+            {
+              "timestamp": "2026-04-23T22:18:00+00:00",
+              "value": 281.0
+            }
+          ],
+          "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+          "dimensions": {
+            "resourceId": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha"
+          },
+          "metadata": {
+            "displayName": "Ingress Packets Dropped by Security List",
+            "unit": "packets"
+          },
+          "name": "VnicIngressDropsSecurityList",
+          "namespace": "oci_vcn",
+          "resolution": null,
+          "resource-group": null
+        }
+      ]
+    }
+  }
+]

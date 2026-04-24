@@ -1,0 +1,200 @@
+2026/04/23 21:41:04.052437 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.3 3260
+2026/04/23 21:41:04.052445 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.4 3260
+2026/04/23 21:41:04.052448 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.5 3260
+2026/04/23 21:41:04.052450 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.6 3260
+2026/04/23 21:41:04.052453 volume_attachments_metadata_client.go:153: Got volume attachment: 1 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a   iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.7 3260 
+2026/04/23 21:41:04.052456 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.8 3260
+2026/04/23 21:41:04.052458 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.9 3260
+2026/04/23 21:41:04.052461 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.10 3260
+2026/04/23 21:41:04.052463 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.11 3260
+2026/04/23 21:41:04.052467 executor.go:76: executing command: /usr/bin/sudo iscsiadm -m session (timeout: %!s(int=60))
+2026/04/23 21:41:04.141408 logout_.go:160: CombinedOutput：tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [10] 169.254.2.9:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [11] 169.254.2.12:3260,1 iqn.2015-12.com.oracleiaas:d998b9f8-2d8a-4219-945f-8c91394b1388 (non-flash)
+tcp: [12] 169.254.2.13:3260,1 iqn.2015-12.com.oracleiaas:5c954995-446a-4845-a84e-9a455f8a1e29 (non-flash)
+tcp: [13] 169.254.2.14:3260,1 iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [6] 169.254.2.10:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [7] 169.254.2.11:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [8] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [9] 169.254.2.8:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+
+2026/04/23 21:41:04.141433 iscsi_commands_helper.go:129: Checking if we need to logout stale iscsi sessions ...
+2026/04/23 21:41:04.141440 iscsi_commands_helper.go:136: Done handling reset and volume attachment logout changes.
+2026/04/23 21:41:04.141443 instance_metadata_helper.go:101: Checking whether there is multipath device
+2026/04/23 21:41:04.141455 pkg_commands_helper.go:114: The /etc/multipath.conf exists.
+2026/04/23 21:41:04.141460 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:41:05.144123 executor.go:308: retrying after error: exit status 2
+2026/04/23 21:41:05.144196 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:41:05.146695 pkg_commands_helper.go:117: Backing up /etc/multipath.conf to /etc/multipath.conf.bak
+2026/04/23 21:41:05.146707 executor.go:76: executing command: /usr/bin/sudo cp /etc/multipath.conf /etc/multipath.conf.bak (timeout: %!s(int=60))
+2026/04/23 21:41:05.165240 pkg_commands_helper.go:119: CombinedOutput：
+2026/04/23 21:41:05.165253 pkg_commands_helper.go:124: Appending the necessary configurations for ORACLE BlockVolume to /etc/multipath.conf
+2026/04/23 21:41:05.165264 instance_metadata_helper.go:117: open /etc/multipath.conf: permission denied
+2026/04/23 21:41:34.030655 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/04/23 21:41:34.030770 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:41:34.035334 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:41:34.035370 volume_attachments_metadata_client.go:138: fetched volumeAttachments from http://169.254.169.254/opc/v2/volumeAttachments/, status 200 OK
+2026/04/23 21:41:34.035444 volume_attachments_metadata_client.go:153: Got volume attachment: 0 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa   iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.2 3260 
+2026/04/23 21:41:34.035451 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.3 3260
+2026/04/23 21:41:34.035454 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.4 3260
+2026/04/23 21:41:34.035457 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.5 3260
+2026/04/23 21:41:34.035461 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.6 3260
+2026/04/23 21:41:34.035463 volume_attachments_metadata_client.go:153: Got volume attachment: 1 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a   iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.7 3260 
+2026/04/23 21:41:34.035466 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.8 3260
+2026/04/23 21:41:34.035469 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.9 3260
+2026/04/23 21:41:34.035472 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.10 3260
+2026/04/23 21:41:34.035474 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.11 3260
+2026/04/23 21:41:34.035478 executor.go:76: executing command: /usr/bin/sudo iscsiadm -m session (timeout: %!s(int=60))
+2026/04/23 21:41:34.124465 logout_.go:160: CombinedOutput：tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [10] 169.254.2.9:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [11] 169.254.2.12:3260,1 iqn.2015-12.com.oracleiaas:d998b9f8-2d8a-4219-945f-8c91394b1388 (non-flash)
+tcp: [12] 169.254.2.13:3260,1 iqn.2015-12.com.oracleiaas:5c954995-446a-4845-a84e-9a455f8a1e29 (non-flash)
+tcp: [13] 169.254.2.14:3260,1 iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [6] 169.254.2.10:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [7] 169.254.2.11:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [8] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [9] 169.254.2.8:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+
+2026/04/23 21:41:34.124501 iscsi_commands_helper.go:129: Checking if we need to logout stale iscsi sessions ...
+2026/04/23 21:41:34.124508 iscsi_commands_helper.go:136: Done handling reset and volume attachment logout changes.
+2026/04/23 21:41:34.124511 instance_metadata_helper.go:101: Checking whether there is multipath device
+2026/04/23 21:41:34.124521 pkg_commands_helper.go:114: The /etc/multipath.conf exists.
+2026/04/23 21:41:34.124529 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:41:35.127197 executor.go:308: retrying after error: exit status 2
+2026/04/23 21:41:35.127271 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:41:35.129744 pkg_commands_helper.go:117: Backing up /etc/multipath.conf to /etc/multipath.conf.bak
+2026/04/23 21:41:35.129756 executor.go:76: executing command: /usr/bin/sudo cp /etc/multipath.conf /etc/multipath.conf.bak (timeout: %!s(int=60))
+2026/04/23 21:41:35.149324 pkg_commands_helper.go:119: CombinedOutput：
+2026/04/23 21:41:35.149336 pkg_commands_helper.go:124: Appending the necessary configurations for ORACLE BlockVolume to /etc/multipath.conf
+2026/04/23 21:41:35.149346 instance_metadata_helper.go:117: open /etc/multipath.conf: permission denied
+2026/04/23 21:42:04.016654 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/04/23 21:42:04.016731 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:42:04.020010 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:42:04.020024 volume_attachments_metadata_client.go:138: fetched volumeAttachments from http://169.254.169.254/opc/v2/volumeAttachments/, status 200 OK
+2026/04/23 21:42:04.020098 volume_attachments_metadata_client.go:153: Got volume attachment: 0 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa   iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.2 3260 
+2026/04/23 21:42:04.020112 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.3 3260
+2026/04/23 21:42:04.020116 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.4 3260
+2026/04/23 21:42:04.020119 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.5 3260
+2026/04/23 21:42:04.020121 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.6 3260
+2026/04/23 21:42:04.020124 volume_attachments_metadata_client.go:153: Got volume attachment: 1 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a   iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.7 3260 
+2026/04/23 21:42:04.020131 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.8 3260
+2026/04/23 21:42:04.020134 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.9 3260
+2026/04/23 21:42:04.020137 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.10 3260
+2026/04/23 21:42:04.020139 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.11 3260
+2026/04/23 21:42:04.020143 executor.go:76: executing command: /usr/bin/sudo iscsiadm -m session (timeout: %!s(int=60))
+2026/04/23 21:42:04.104786 logout_.go:160: CombinedOutput：tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [10] 169.254.2.9:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [11] 169.254.2.12:3260,1 iqn.2015-12.com.oracleiaas:d998b9f8-2d8a-4219-945f-8c91394b1388 (non-flash)
+tcp: [12] 169.254.2.13:3260,1 iqn.2015-12.com.oracleiaas:5c954995-446a-4845-a84e-9a455f8a1e29 (non-flash)
+tcp: [13] 169.254.2.14:3260,1 iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [6] 169.254.2.10:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [7] 169.254.2.11:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [8] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [9] 169.254.2.8:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+
+2026/04/23 21:42:04.104815 iscsi_commands_helper.go:129: Checking if we need to logout stale iscsi sessions ...
+2026/04/23 21:42:04.104821 iscsi_commands_helper.go:136: Done handling reset and volume attachment logout changes.
+2026/04/23 21:42:04.104824 instance_metadata_helper.go:101: Checking whether there is multipath device
+2026/04/23 21:42:04.104833 pkg_commands_helper.go:114: The /etc/multipath.conf exists.
+2026/04/23 21:42:04.104839 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:42:05.107174 executor.go:308: retrying after error: exit status 2
+2026/04/23 21:42:05.107223 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:42:05.109793 pkg_commands_helper.go:117: Backing up /etc/multipath.conf to /etc/multipath.conf.bak
+2026/04/23 21:42:05.109805 executor.go:76: executing command: /usr/bin/sudo cp /etc/multipath.conf /etc/multipath.conf.bak (timeout: %!s(int=60))
+2026/04/23 21:42:05.128159 pkg_commands_helper.go:119: CombinedOutput：
+2026/04/23 21:42:05.128170 pkg_commands_helper.go:124: Appending the necessary configurations for ORACLE BlockVolume to /etc/multipath.conf
+2026/04/23 21:42:05.128180 instance_metadata_helper.go:117: open /etc/multipath.conf: permission denied
+2026/04/23 21:42:34.023200 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/04/23 21:42:34.023273 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:42:34.026985 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:42:34.027018 volume_attachments_metadata_client.go:138: fetched volumeAttachments from http://169.254.169.254/opc/v2/volumeAttachments/, status 200 OK
+2026/04/23 21:42:34.027114 volume_attachments_metadata_client.go:153: Got volume attachment: 0 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa   iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.2 3260 
+2026/04/23 21:42:34.027121 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.3 3260
+2026/04/23 21:42:34.027125 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.4 3260
+2026/04/23 21:42:34.027127 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.5 3260
+2026/04/23 21:42:34.027130 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.6 3260
+2026/04/23 21:42:34.027137 volume_attachments_metadata_client.go:153: Got volume attachment: 1 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a   iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.7 3260 
+2026/04/23 21:42:34.027140 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.8 3260
+2026/04/23 21:42:34.027143 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.9 3260
+2026/04/23 21:42:34.027145 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.10 3260
+2026/04/23 21:42:34.027148 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.11 3260
+2026/04/23 21:42:34.027152 executor.go:76: executing command: /usr/bin/sudo iscsiadm -m session (timeout: %!s(int=60))
+2026/04/23 21:42:34.115551 logout_.go:160: CombinedOutput：tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [10] 169.254.2.9:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [11] 169.254.2.12:3260,1 iqn.2015-12.com.oracleiaas:d998b9f8-2d8a-4219-945f-8c91394b1388 (non-flash)
+tcp: [12] 169.254.2.13:3260,1 iqn.2015-12.com.oracleiaas:5c954995-446a-4845-a84e-9a455f8a1e29 (non-flash)
+tcp: [13] 169.254.2.14:3260,1 iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [6] 169.254.2.10:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [7] 169.254.2.11:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [8] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [9] 169.254.2.8:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+
+2026/04/23 21:42:34.115587 iscsi_commands_helper.go:129: Checking if we need to logout stale iscsi sessions ...
+2026/04/23 21:42:34.115593 iscsi_commands_helper.go:136: Done handling reset and volume attachment logout changes.
+2026/04/23 21:42:34.115597 instance_metadata_helper.go:101: Checking whether there is multipath device
+2026/04/23 21:42:34.115665 pkg_commands_helper.go:114: The /etc/multipath.conf exists.
+2026/04/23 21:42:34.115672 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:42:35.117973 executor.go:308: retrying after error: exit status 2
+2026/04/23 21:42:35.118277 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:42:35.120935 pkg_commands_helper.go:117: Backing up /etc/multipath.conf to /etc/multipath.conf.bak
+2026/04/23 21:42:35.120950 executor.go:76: executing command: /usr/bin/sudo cp /etc/multipath.conf /etc/multipath.conf.bak (timeout: %!s(int=60))
+2026/04/23 21:42:35.139123 pkg_commands_helper.go:119: CombinedOutput：
+2026/04/23 21:42:35.139136 pkg_commands_helper.go:124: Appending the necessary configurations for ORACLE BlockVolume to /etc/multipath.conf
+2026/04/23 21:42:35.139149 instance_metadata_helper.go:117: open /etc/multipath.conf: permission denied
+2026/04/23 21:43:04.028052 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/04/23 21:43:04.028111 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:43:04.033773 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/04/23 21:43:04.033790 volume_attachments_metadata_client.go:138: fetched volumeAttachments from http://169.254.169.254/opc/v2/volumeAttachments/, status 200 OK
+2026/04/23 21:43:04.033859 volume_attachments_metadata_client.go:153: Got volume attachment: 0 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa   iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.2 3260 
+2026/04/23 21:43:04.033866 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.3 3260
+2026/04/23 21:43:04.033869 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.4 3260
+2026/04/23 21:43:04.033872 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.5 3260
+2026/04/23 21:43:04.033875 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 169.254.2.6 3260
+2026/04/23 21:43:04.033877 volume_attachments_metadata_client.go:153: Got volume attachment: 1 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a   iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.7 3260 
+2026/04/23 21:43:04.033880 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.8 3260
+2026/04/23 21:43:04.033883 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.9 3260
+2026/04/23 21:43:04.033897 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.10 3260
+2026/04/23 21:43:04.033899 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b 169.254.2.11 3260
+2026/04/23 21:43:04.033903 executor.go:76: executing command: /usr/bin/sudo iscsiadm -m session (timeout: %!s(int=60))
+2026/04/23 21:43:04.122515 logout_.go:160: CombinedOutput：tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [10] 169.254.2.9:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [11] 169.254.2.12:3260,1 iqn.2015-12.com.oracleiaas:d998b9f8-2d8a-4219-945f-8c91394b1388 (non-flash)
+tcp: [12] 169.254.2.13:3260,1 iqn.2015-12.com.oracleiaas:5c954995-446a-4845-a84e-9a455f8a1e29 (non-flash)
+tcp: [13] 169.254.2.14:3260,1 iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0c0700fb-3ec6-4432-9c37-0091e996bc74 (non-flash)
+tcp: [6] 169.254.2.10:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [7] 169.254.2.11:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [8] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+tcp: [9] 169.254.2.8:3260,1 iqn.2015-12.com.oracleiaas:477ee626-d268-477e-9140-28780fc3ec5b (non-flash)
+
+2026/04/23 21:43:04.122543 iscsi_commands_helper.go:129: Checking if we need to logout stale iscsi sessions ...
+2026/04/23 21:43:04.122550 iscsi_commands_helper.go:136: Done handling reset and volume attachment logout changes.
+2026/04/23 21:43:04.122553 instance_metadata_helper.go:101: Checking whether there is multipath device
+2026/04/23 21:43:04.122563 pkg_commands_helper.go:114: The /etc/multipath.conf exists.
+2026/04/23 21:43:04.122569 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:43:05.125320 executor.go:308: retrying after error: exit status 2
+2026/04/23 21:43:05.125394 executor.go:76: executing command: grep -q "Appended from /etc/multipath.conf.oracle" /etc/multipath.conf (timeout: %!s(int=60))
+2026/04/23 21:43:05.128144 pkg_commands_helper.go:117: Backing up /etc/multipath.conf to /etc/multipath.conf.bak
+2026/04/23 21:43:05.128155 executor.go:76: executing command: /usr/bin/sudo cp /etc/multipath.conf /etc/multipath.conf.bak (timeout: %!s(int=60))
+2026/04/23 21:43:05.147674 pkg_commands_helper.go:119: CombinedOutput：
+2026/04/23 21:43:05.147694 pkg_commands_helper.go:124: Appending the necessary configurations for ORACLE BlockVolume to /etc/multipath.conf
+2026/04/23 21:43:05.147705 instance_metadata_helper.go:117: open /etc/multipath.conf: permission denied

@@ -1,0 +1,16 @@
+[2026-04-23 21:43:33] Installing Swingbench into /opt/swingbench
+[2026-04-23 21:43:36] Swingbench installed successfully
+[2026-04-23 21:43:36] Swingbench home: /opt/swingbench
+ Thu 23 Apr 2026 08:00:36 PM GMT.
+Package curl-7.61.1-34.el8_10.11.x86_64 is already installed.
+Package unzip-6.0-48.0.1.el8_10.x86_64 is already installed.
+Package java-17-openjdk-headless-1:17.0.18.0.8-1.0.1.el8.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 45.0M  100 45.0M    0     0   131M      0 --:--:-- --:--:-- --:--:--  131M
+[2026-04-23 21:43:36] Swingbench installed successfully
+[2026-04-23 21:43:36] Swingbench home: /opt/swingbench

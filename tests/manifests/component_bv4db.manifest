@@ -7,3 +7,4 @@ integration:test_oracle_db_sprint14.sh
 integration:test_oracle_db_sprint15.sh
 integration:test_oracle_db_sprint16.sh
 integration:test_oracle_db_sprint17.sh
+integration:test_oracle_db_sprint18.sh

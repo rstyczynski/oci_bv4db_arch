@@ -39,7 +39,9 @@ Progress board is a table showing sprint, and backlog items state. It's the only
 | Sprint 15 | tested | BV4DB-41 | tested |
 | Sprint 15 | tested | BV4DB-42 | tested |
 | Sprint 15 | tested | BV4DB-43 | tested |
-| Sprint 16 | tested | BV4DB-37 | tested |
-| Sprint 16 | tested | BV4DB-40 | tested |
+| Sprint 16 | failed | BV4DB-37 | failed |
+| Sprint 16 | failed | BV4DB-40 | failed |
 | Sprint 17 | tested | BV4DB-44 | tested |
 | Sprint 17 | tested | BV4DB-45 | tested |
+| Sprint 18 | tested | BV4DB-46 | tested |
+| Sprint 19 | failed | BV4DB-48 | failed |

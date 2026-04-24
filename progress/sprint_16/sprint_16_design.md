@@ -1,6 +1,6 @@
 # Sprint 16 Design
 
-Status: tested
+Status: failed
 
 Mode:
 
@@ -24,6 +24,10 @@ YOLO decisions:
 2. use Sprint 17 as the primary correlation dataset because it is the only archived run that contains `fio`, `Swingbench`, guest `iostat`, OCI metrics, and AWR on one comparable topology
 3. use Sprint 15 as the standardized single-volume `Swingbench` reference because it is the longest validated database run in the repository and uses the project-owned Swingbench config
 4. use Sprint 10 Higher Performance and UHP `fio` baselines to explain how far storage-only evidence can go before database-level instrumentation becomes necessary
+
+Retrospective failure note:
+
+- Sprint 16 should have added a hard validation step that fails when Swingbench guest `iostat` and OCI metrics do not show sustained activity on the attached data block volumes
 
 Implementation approach:
 

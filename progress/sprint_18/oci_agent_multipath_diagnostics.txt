@@ -1,0 +1,119 @@
+# OCI Agent Multipath Diagnostics
+
+Generated: 2026-04-23T21:43:14Z
+
+## File ownership
+drwxr-xr-x. 119 root root 8192 Apr 23 21:25 /etc
+-rw-------.   1 root root  421 Apr 23 20:22 /etc/multipath.conf
+
+## File stat
+  File: /etc/multipath.conf
+  Size: 421       	Blocks: 8          IO Block: 4096   regular file
+Device: fc00h/64512d	Inode: 100663429   Links: 1
+Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)
+Context: unconfined_u:object_r:etc_t:s0
+Access: 2026-04-23 20:22:19.440723980 +0000
+Modify: 2026-04-23 20:22:19.411723053 +0000
+Change: 2026-04-23 20:22:19.411723053 +0000
+ Birth: 2026-04-23 19:37:36.169048154 +0000
+
+## SELinux context
+-rw-------. 1 root root unconfined_u:object_r:etc_t:s0 421 Apr 23 20:22 /etc/multipath.conf
+
+## ACL
+getfacl: Removing leading '/' from absolute path names
+# file: etc/multipath.conf
+# owner: root
+# group: root
+user::rw-
+group::---
+other::---
+
+
+## Multipath service
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2026-04-23 19:37:36 GMT; 2h 5min ago
+ Main PID: 11041 (multipathd)
+   Status: "up"
+    Tasks: 7
+   Memory: 12.3M
+   CGroup: /system.slice/multipathd.service
+           └─11041 /sbin/multipathd -d -s
+
+Apr 23 20:20:49 bv4db-oracle18-run-instance multipathd[11041]: Multipath configuration updated.
+Apr 23 20:20:49 bv4db-oracle18-run-instance multipathd[11041]: Reload multipathd for changes to take effect
+Apr 23 20:21:12 bv4db-oracle18-run-instance multipathd[11041]: Multipath configuration updated.
+Apr 23 20:21:12 bv4db-oracle18-run-instance multipathd[11041]: Reload multipathd for changes to take effect
+Apr 23 20:21:34 bv4db-oracle18-run-instance multipathd[11041]: Multipath configuration updated.
+Apr 23 20:21:34 bv4db-oracle18-run-instance multipathd[11041]: Reload multipathd for changes to take effect
+Apr 23 20:21:57 bv4db-oracle18-run-instance multipathd[11041]: Multipath configuration updated.
+Apr 23 20:21:57 bv4db-oracle18-run-instance multipathd[11041]: Reload multipathd for changes to take effect
+Apr 23 20:22:19 bv4db-oracle18-run-instance multipathd[11041]: Multipath configuration updated.
+Apr 23 20:22:19 bv4db-oracle18-run-instance multipathd[11041]: Reload multipathd for changes to take effect
+
+## Multipath overview
+mpatha (3609b1b9aee4f4466bf5e7543badc9d6d) dm-2 ORACLE,BlockVolume
+size=200G features='0' hwhandler='0' wp=rw
+|-+- policy='service-time 0' prio=1 status=active
+| `- 7:0:0:2  sdb 8:16  active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 8:0:0:2  sdc 8:32  active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 9:0:0:2  sdd 8:48  active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 10:0:0:2 sde 8:64  active ready running
+`-+- policy='service-time 0' prio=1 status=enabled
+  `- 11:0:0:2 sdf 8:80  active ready running
+mpathb (3606177490b03437a9a971dd343ebd70b) dm-3 ORACLE,BlockVolume
+size=200G features='0' hwhandler='0' wp=rw
+|-+- policy='service-time 0' prio=1 status=active
+| `- 12:0:0:3 sdg 8:96  active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 13:0:0:3 sdh 8:112 active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 14:0:0:3 sdi 8:128 active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 15:0:0:3 sdj 8:144 active ready running
+`-+- policy='service-time 0' prio=1 status=enabled
+  `- 16:0:0:3 sdk 8:160 active ready running
+
+## Process ownership
+root        2714       1  0 19:36 ?        00:00:00 /usr/sbin/iscsid -f -d2
+root       11041       1  0 19:37 ?        00:00:01 /sbin/multipathd -d -s
+oracle-+   71623       1  0 20:37 ?        00:00:01 /usr/libexec/oracle-cloud-agent/agent
+oracle-+   71670   71623  0 20:37 ?        00:00:02 /usr/libexec/oracle-cloud-agent/plugins/gomon/gomon
+oracle-+   71683       1  0 20:37 ?        00:00:00 /usr/libexec/oracle-cloud-agent/updater/updater
+oracle-+   71696   71623  0 20:37 ?        00:00:00 /usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig
+oracle-+   71712   71623  0 20:37 ?        00:00:00 /usr/libexec/oracle-cloud-agent/plugins/oci-wlp/oci-wlp
+root       71732   71623  0 20:37 ?        00:00:00 /usr/bin/sudo -u ocarun /usr/libexec/oracle-cloud-agent/plugins/runcommand/runcommand
+ocarun     71745   71732  0 20:37 ?        00:00:02 /usr/libexec/oracle-cloud-agent/plugins/runcommand/runcommand
+oracle-+   71764   71623  0 20:37 ?        00:00:01 /usr/libexec/oracle-cloud-agent/plugins/unifiedmonitoring/unifiedmonitoring
+root      131095  131056  0 21:43 ?        00:00:00 grep -E oracle-cloud-agent|ocid|multipathd|iscsid
+
+## Oracle Cloud Agent service
+● oracle-cloud-agent.service - Oracle Cloud Infrastructure agent for management and monitoring
+   Loaded: loaded (/etc/systemd/system/oracle-cloud-agent.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2026-04-23 20:37:34 GMT; 1h 5min ago
+     Docs: https://docs.cloud.oracle.com/iaas/
+ Main PID: 71623 (agent)
+    Tasks: 95 (limit: 408940)
+   Memory: 63.6M
+      CPU: 10.714s
+   CGroup: /oca.slice/oracle-cloud-agent.service
+           ├─71623 /usr/libexec/oracle-cloud-agent/agent
+           ├─71670 /usr/libexec/oracle-cloud-agent/plugins/gomon/gomon
+           ├─71696 /usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig
+           ├─71712 /usr/libexec/oracle-cloud-agent/plugins/oci-wlp/oci-wlp
+           └─71764 /usr/libexec/oracle-cloud-agent/plugins/unifiedmonitoring/unifiedmonitoring
+
+Apr 23 21:41:04 bv4db-oracle18-run-instance sudo[129563]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/sbin/iscsiadm -m session
+Apr 23 21:41:05 bv4db-oracle18-run-instance sudo[129581]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/cp /etc/multipath.conf /etc/multipath.conf.bak
+Apr 23 21:41:34 bv4db-oracle18-run-instance sudo[129775]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/sbin/iscsiadm -m session
+Apr 23 21:41:35 bv4db-oracle18-run-instance sudo[129792]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/cp /etc/multipath.conf /etc/multipath.conf.bak
+Apr 23 21:42:04 bv4db-oracle18-run-instance sudo[130058]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/sbin/iscsiadm -m session
+Apr 23 21:42:05 bv4db-oracle18-run-instance sudo[130076]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/cp /etc/multipath.conf /etc/multipath.conf.bak
+Apr 23 21:42:34 bv4db-oracle18-run-instance sudo[130216]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/sbin/iscsiadm -m session
+Apr 23 21:42:35 bv4db-oracle18-run-instance sudo[130233]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/cp /etc/multipath.conf /etc/multipath.conf.bak
+Apr 23 21:43:04 bv4db-oracle18-run-instance sudo[130875]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/sbin/iscsiadm -m session
+Apr 23 21:43:05 bv4db-oracle18-run-instance sudo[130933]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/cp /etc/multipath.conf /etc/multipath.conf.bak

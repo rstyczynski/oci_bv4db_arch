@@ -23,6 +23,7 @@ DATA_DIR="${DATA_DIR:-/u02/oradata}"
 REDO_DIR="${REDO_DIR:-/u03/redo}"
 FRA_DIR="${FRA_DIR:-/u04/fra}"
 LOG_FILE="${LOG_FILE:-/tmp/oracle-db-free-install.log}"
+FORCE_DB_RECREATE_ON_MISPLACEMENT="${FORCE_DB_RECREATE_ON_MISPLACEMENT:-true}"
 
 # Oracle Database Free download URLs
 DB_FREE_RPM_EL8="https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23ai-1.0-1.el8.x86_64.rpm"
@@ -56,6 +57,192 @@ for mp in "$DATA_DIR" "$REDO_DIR" "$FRA_DIR"; do
 done
 
 log "Storage mount points verified"
+
+ensure_oratab() {
+    touch /etc/oratab
+    chown root:oinstall /etc/oratab
+    chmod 664 /etc/oratab
+}
+
+ensure_oratab
+
+sqlplus_sysdba() {
+    local sql_text="$1"
+    su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba" <<SQL
+SET ECHO OFF
+SET FEEDBACK OFF
+SET HEADING OFF
+SET PAGESIZE 0
+SET LINESIZE 32767
+SET VERIFY OFF
+$sql_text
+SQL
+}
+
+database_exists() {
+    [ -f "$ORACLE_HOME/dbs/spfile${ORACLE_SID}.ora" ] || [ -f "$ORACLE_HOME/dbs/init${ORACLE_SID}.ora" ]
+}
+
+ensure_database_open() {
+    su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba <<SQL
+startup;
+alter pluggable database all open;
+alter pluggable database all save state;
+exit;
+SQL" >> "$LOG_FILE" 2>&1 || true
+}
+
+trim_sql() {
+    tr -d '[:space:]'
+}
+
+placement_query_count() {
+    local sql_text="$1"
+    sqlplus_sysdba "$sql_text" 2>/dev/null | trim_sql
+}
+
+db_placement_is_valid() {
+    db_core_placement_is_valid && redo_placement_is_valid
+}
+
+db_core_placement_is_valid() {
+    local misplaced_data misplaced_control
+    misplaced_data=$(placement_query_count "select count(*) from v\\\$datafile where name not like '${DATA_DIR}/%';")
+    misplaced_control=$(placement_query_count "select count(*) from v\\\$controlfile where name not like '${DATA_DIR}/%' and name not like '${FRA_DIR}/%';")
+
+    [ "${misplaced_data:-1}" = "0" ] &&
+    [ "${misplaced_control:-1}" = "0" ]
+}
+
+redo_placement_is_valid() {
+    local misplaced_redo
+    misplaced_redo=$(placement_query_count "select count(*) from v\\\$logfile where member not like '${REDO_DIR}/%';")
+    [ "${misplaced_redo:-1}" = "0" ]
+}
+
+delete_existing_database() {
+    log "Deleting existing database $ORACLE_SID before recreation"
+    su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba <<SQL
+shutdown immediate;
+exit;
+SQL" >> "$LOG_FILE" 2>&1 || true
+
+    su - oracle -c "source ~/.oracle_env && dbca -silent -deleteDatabase \
+        -sourceDB $ORACLE_SID \
+        -sysDBAUserName sys \
+        -sysDBAPassword $ORACLE_PWD" >> "$LOG_FILE" 2>&1 || true
+
+    rm -rf \
+        "$ORACLE_BASE/oradata/$ORACLE_SID" \
+        "$DATA_DIR/$ORACLE_SID" \
+        "$REDO_DIR/$ORACLE_SID" \
+        "$FRA_DIR/$ORACLE_SID"
+    rm -f \
+        "$ORACLE_HOME/dbs/spfile${ORACLE_SID}.ora" \
+        "$ORACLE_HOME/dbs/init${ORACLE_SID}.ora" \
+        "$ORACLE_HOME/dbs/orapw${ORACLE_SID}"
+
+    ensure_oratab
+}
+
+create_database_with_dbca() {
+    log "Creating database with DBCA on project storage layout"
+    su - oracle -c "source ~/.oracle_env && dbca -silent -createDatabase \
+        -templateName FREE_Database.dbc \
+        -gdbname $ORACLE_SID \
+        -sid $ORACLE_SID \
+        -responseFile NO_VALUE \
+        -characterSet $ORACLE_CHARACTERSET \
+        -sysPassword $ORACLE_PWD \
+        -systemPassword $ORACLE_PWD \
+        -createAsContainerDatabase true \
+        -numberOfPDBs 1 \
+        -pdbName $ORACLE_PDB \
+        -pdbAdminPassword $ORACLE_PWD \
+        -databaseType MULTIPURPOSE \
+        -memoryPercentage 30 \
+        -storageType FS \
+        -datafileDestination $DATA_DIR \
+        -recoveryAreaDestination $FRA_DIR \
+        -recoveryAreaSize 10240 \
+        -emConfiguration NONE" >> "$LOG_FILE" 2>&1
+}
+
+move_redo_logs_to_project_storage() {
+    local group target member
+    log "Moving redo log members onto $REDO_DIR"
+
+    cat <<SQL | su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba" >> "$LOG_FILE" 2>&1
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+ALTER SYSTEM SET db_create_file_dest='$DATA_DIR' SCOPE=BOTH;
+ALTER SYSTEM SET db_create_online_log_dest_1='$REDO_DIR' SCOPE=BOTH;
+ALTER SYSTEM SET db_recovery_file_dest='$FRA_DIR' SCOPE=BOTH;
+ALTER SYSTEM SET db_recovery_file_dest_size=10240M SCOPE=BOTH;
+ALTER SYSTEM SET log_archive_dest_1='LOCATION=$FRA_DIR' SCOPE=BOTH;
+ALTER PLUGGABLE DATABASE ALL OPEN;
+ALTER PLUGGABLE DATABASE ALL SAVE STATE;
+EXIT;
+SQL
+
+    mapfile -t groups < <(sqlplus_sysdba "select group# from v\\\$log order by group#;" 2>/dev/null | sed -n 's/^[[:space:]]*\\([0-9][0-9]*\\)[[:space:]]*$/\\1/p')
+    for group in "${groups[@]}"; do
+        target="$REDO_DIR/redo$(printf '%02d' "$group").log"
+        if [ "$(sqlplus_sysdba "select count(*) from v\\\$logfile where member = '$target';" 2>/dev/null | trim_sql)" != "0" ]; then
+            continue
+        fi
+        cat <<SQL | su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba" >> "$LOG_FILE" 2>&1
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+ALTER DATABASE ADD LOGFILE MEMBER '$target' TO GROUP $group;
+EXIT;
+SQL
+    done
+
+    cat <<SQL | su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba" >> "$LOG_FILE" 2>&1
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM CHECKPOINT;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM CHECKPOINT;
+ALTER SYSTEM SWITCH LOGFILE;
+ALTER SYSTEM CHECKPOINT;
+EXIT;
+SQL
+
+    mapfile -t old_members < <(sqlplus_sysdba "select member from v\\\$logfile where member not like '${REDO_DIR}/%';" 2>/dev/null | sed -n 's#^[[:space:]]*\\(/.*\\)$#\\1#p')
+    for member in "${old_members[@]}"; do
+        cat <<SQL | su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba" >> "$LOG_FILE" 2>&1
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+ALTER DATABASE DROP LOGFILE MEMBER '$member';
+EXIT;
+SQL
+    done
+}
+
+verify_database_placement() {
+    local misplaced_data misplaced_redo misplaced_control
+    misplaced_data=$(placement_query_count "select count(*) from v\\\$datafile where name not like '${DATA_DIR}/%';")
+    misplaced_redo=$(placement_query_count "select count(*) from v\\\$logfile where member not like '${REDO_DIR}/%';")
+    misplaced_control=$(placement_query_count "select count(*) from v\\\$controlfile where name not like '${DATA_DIR}/%' and name not like '${FRA_DIR}/%';")
+
+    if [ "${misplaced_data:-1}" = "0" ] && [ "${misplaced_redo:-1}" = "0" ] && [ "${misplaced_control:-1}" = "0" ]; then
+        log "SUCCESS: Database files are placed on project block-volume mount points"
+        return 0
+    fi
+
+    log "ERROR: Database files are not placed on project block-volume mount points"
+    sqlplus_sysdba "
+prompt === Datafile Locations ===
+select name from v\$datafile;
+prompt === Tempfile Locations ===
+select name from v\$tempfile;
+prompt === Redo Log Locations ===
+select member from v\$logfile;
+prompt === Controlfile Locations ===
+select name from v\$controlfile;
+exit;
+" 2>&1 | tee -a "$LOG_FILE"
+    return 1
+}
 
 # Install Oracle Database preinstall package
 log "Installing Oracle Database preinstall package..."
@@ -125,113 +312,40 @@ if ! grep -q '.oracle_env' /home/oracle/.bashrc 2>/dev/null; then
     echo 'source ~/.oracle_env' >> /home/oracle/.bashrc
 fi
 
+placement_action="repair"
+
 # Check if database already exists
-if [ -f "$ORACLE_HOME/dbs/spfile${ORACLE_SID}.ora" ] || [ -f "$ORACLE_HOME/dbs/init${ORACLE_SID}.ora" ]; then
+if database_exists; then
     log "Database instance $ORACLE_SID already exists"
-
-    # Try to start if not running
-    su - oracle -c "source ~/.oracle_env && sqlplus -S / as sysdba <<SQL
-startup;
-alter pluggable database all open;
-exit;
-SQL" >> "$LOG_FILE" 2>&1 || true
-
-    log "Existing database startup attempted"
-else
-    # Create response file for silent database creation
-    log "Creating database response file..."
-    RESPONSE_FILE="/tmp/dbca_free.rsp"
-
-    cat > "$RESPONSE_FILE" <<EOF
-responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v23.0.0
-gdbName=$ORACLE_SID
-sid=$ORACLE_SID
-databaseConfigType=SI
-createAsContainerDatabase=true
-numberOfPDBs=1
-pdbName=$ORACLE_PDB
-pdbAdminPassword=$ORACLE_PWD
-templateName=FREE_Database
-sysPassword=$ORACLE_PWD
-systemPassword=$ORACLE_PWD
-emConfiguration=NONE
-datafileDestination=$DATA_DIR
-recoveryAreaDestination=$FRA_DIR
-recoveryAreaSize=10240
-storageType=FS
-characterSet=$ORACLE_CHARACTERSET
-nationalCharacterSet=AL16UTF16
-listeners=LISTENER
-memoryPercentage=40
-automaticMemoryManagement=false
-totalMemory=1536
-databaseType=MULTIPURPOSE
-EOF
-
-    chown oracle:oinstall "$RESPONSE_FILE"
-
-    # Create the database using DBCA
-    log "Creating database (this may take several minutes)..."
-
-    # Configure and run database creation script
-    # Oracle Database Free uses /etc/init.d/oracle-free-23ai configure
-    # or direct DBCA invocation
-
-    # First, try the configure script which is the recommended approach
-    if [ -x "/etc/init.d/oracle-free-23ai" ]; then
-        log "Using oracle-free-23ai configure script..."
-
-        # Create a configure response for non-interactive setup
-        # The configure script reads from stdin for password
-        echo -e "${ORACLE_PWD}\n${ORACLE_PWD}" | /etc/init.d/oracle-free-23ai configure >> "$LOG_FILE" 2>&1 || {
-            log "Configure script failed, attempting manual DBCA..."
-
-            # Manual DBCA as fallback
-            su - oracle -c "source ~/.oracle_env && dbca -silent -createDatabase \
-                -templateName General_Purpose.dbc \
-                -gdbname $ORACLE_SID \
-                -sid $ORACLE_SID \
-                -responseFile NO_VALUE \
-                -characterSet $ORACLE_CHARACTERSET \
-                -sysPassword $ORACLE_PWD \
-                -systemPassword $ORACLE_PWD \
-                -createAsContainerDatabase true \
-                -numberOfPDBs 1 \
-                -pdbName $ORACLE_PDB \
-                -pdbAdminPassword $ORACLE_PWD \
-                -databaseType MULTIPURPOSE \
-                -memoryPercentage 30 \
-                -storageType FS \
-                -datafileDestination $DATA_DIR \
-                -recoveryAreaDestination $FRA_DIR \
-                -recoveryAreaSize 10240 \
-                -emConfiguration NONE" >> "$LOG_FILE" 2>&1
-        }
+    ensure_database_open
+    if db_placement_is_valid; then
+        log "Existing database already uses the project storage layout"
+        placement_action="verify_only"
+    elif db_core_placement_is_valid; then
+        log "Database core files are already on project storage; repairing redo placement only"
+        placement_action="repair"
     else
-        log "Configure script not found, using DBCA directly..."
-        su - oracle -c "source ~/.oracle_env && dbca -silent -createDatabase \
-            -templateName General_Purpose.dbc \
-            -gdbname $ORACLE_SID \
-            -sid $ORACLE_SID \
-            -responseFile NO_VALUE \
-            -characterSet $ORACLE_CHARACTERSET \
-            -sysPassword $ORACLE_PWD \
-            -systemPassword $ORACLE_PWD \
-            -createAsContainerDatabase true \
-            -numberOfPDBs 1 \
-            -pdbName $ORACLE_PDB \
-            -pdbAdminPassword $ORACLE_PWD \
-            -databaseType MULTIPURPOSE \
-            -memoryPercentage 30 \
-            -storageType FS \
-            -datafileDestination $DATA_DIR \
-            -recoveryAreaDestination $FRA_DIR \
-            -recoveryAreaSize 10240 \
-            -emConfiguration NONE" >> "$LOG_FILE" 2>&1
+        if [ "$FORCE_DB_RECREATE_ON_MISPLACEMENT" != "true" ]; then
+            log "ERROR: Existing database placement is invalid and recreation is disabled"
+            exit 1
+        fi
+        log "Existing database placement is invalid; recreating on project storage"
+        delete_existing_database
+        create_database_with_dbca
+        placement_action="repair"
     fi
-
-    log "Database creation completed"
+else
+    log "Creating database (this may take several minutes)..."
+    create_database_with_dbca
+    placement_action="repair"
 fi
+
+log "Database creation completed"
+ensure_database_open
+if [ "$placement_action" = "repair" ]; then
+    move_redo_logs_to_project_storage
+fi
+verify_database_placement
 
 # Configure listener if not running
 log "Configuring listener..."

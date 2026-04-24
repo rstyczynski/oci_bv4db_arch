@@ -1,6 +1,6 @@
 # Sprint 16 Tests
 
-Status: passed
+Status: failed
 
 ## Integration Tests
 
@@ -27,4 +27,4 @@ Validates that the specific Sprint 15 and Sprint 17 artifacts required by the an
 - Sprint 15 regression log: `progress/sprint_16/regression_sprint15_20260423_184100.log`
 - Sprint 17 regression log: `progress/sprint_16/regression_sprint17_20260423_184100.log`
 
-Both source sprints still pass their integration gates, so Sprint 16 was completed from valid archived evidence rather than stale or incomplete artifacts.
+The original Sprint 16 checks passed only artifact presence and reference coverage. They did not fail when the archived Swingbench evidence showed attached data block volumes effectively idle and the boot device active during the workload. Sprint 16 is therefore retrospectively failed despite the local document-level checks passing.

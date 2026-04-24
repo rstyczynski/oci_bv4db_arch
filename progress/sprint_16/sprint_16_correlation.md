@@ -1,5 +1,11 @@
 # Sprint 16 Correlation Analysis
 
+## Retrospective Status
+
+Retrospective verdict: failed.
+
+This analysis was completed before the Sprint 18 storage-placement defect was fully proven, but the failure was already visible in the archived workload evidence. During Sprint 17 Swingbench, guest `iostat` did not sustain the expected data-volume traffic on attached block volumes, the attached block-volume OCI metrics were nearly all zero, and the boot device showed strong activity. Sprint 16 should have treated that contradiction as invalid correlation evidence rather than accepting it as a usable multi-volume dataset.
+
 ## Scope
 
 This document completes:
@@ -8,6 +14,8 @@ This document completes:
 - `BV4DB-40`: correlate AWR evidence with OCI and guest benchmark metrics
 
 The analysis uses archived artifacts only. No OCI rerun was required because the source evidence already exists.
+
+This was the key mistake: artifact existence was validated, but the workload-to-storage correlation evidence was not challenged when the attached volumes appeared idle during Swingbench.
 
 ## Source Evidence
 

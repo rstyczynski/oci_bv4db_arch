@@ -1,0 +1,15 @@
+
+=== BV4DB Integration Tests — Sprint 18 ===
+
+=== IT-72: Sprint 18 documentation exists ===
+  [PASS] IT-72: sprint 18 documentation exists
+=== IT-73: Sprint 18 wrapper enforces mirror-run parameters ===
+  [PASS] IT-73: sprint 18 wrapper enforces mirror-run parameters
+=== IT-74: Sprint 18 report artifacts exist ===
+  [PASS] IT-74: sprint 18 report artifacts exist
+=== IT-75: Oracle DB install enforces project storage layout ===
+  [PASS] IT-75: Oracle DB install enforces project storage layout
+=== IT-76: metrics path includes boot volume ===
+  [PASS] IT-76: metrics path includes boot volume
+
+Results: 5 passed, 0 failed

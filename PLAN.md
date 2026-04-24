@@ -206,14 +206,14 @@ Backlog Items:
 * BV4DB-38. Automated AWR snapshot window capture for database benchmarks
 * BV4DB-39. Automated AWR report export and archival for benchmark runs
 
-## Sprint 15 - Standardize Oracle Database Free load generator
+## Sprint 15 - Validate FIO and database-level test metrics accuracy
 
 Status: Done
 Mode: managed
 Test: integration
 Regression: integration
 
-Sprint 15 fixes the standard workload tool choice for future Oracle Database Free benchmark runs after the AWR-capable execution path is already established. The sprint standardizes Swingbench as the primary load generator and keeps HammerDB as the fallback when Swingbench is unsuitable for the required benchmark scenario.
+Sprint 15 validates that the FIO storage-level metrics and Oracle Database Free workload metrics measure the same underlying block volume behavior accurately. To produce a repeatable and comparable database-side signal, the sprint standardizes Swingbench as the primary database load generator (with HammerDB as the documented fallback), moves the workload definition into a project-owned configuration file, and renders the benchmark result as a standalone HTML artifact. The combination of archived FIO evidence and a standardized Swingbench run with AWR capture provides the two consistent measurement planes needed for cross-level metric validation in later sprints.
 
 Backlog Items:
 
@@ -223,12 +223,15 @@ Backlog Items:
 
 ## Sprint 16 - Oracle Database benchmark correlation and comparative reporting
 
-Status: Done
+Status: Failed
 Mode: yolo
 Test: integration
 Regression: integration
 
 Sprint 16 closes the first database-benchmark loop by comparing Oracle Database Free evidence with the storage-oriented evidence already produced by the repository. The sprint correlates AWR, OCI metrics, guest observations, and the existing fio baselines so the project can explain what database-level benchmarking adds beyond synthetic storage tests.
+
+Retrospective failure note:
+Sprint 16 overlooked a workload-level correlation failure that was already visible in the archived Sprint 17 evidence. During Swingbench, guest `iostat` did not sustain the expected data-volume traffic on the attached block volumes, the archived OCI metrics for attached block volumes were nearly all zero, and the boot device showed strong activity. Sprint 16 should have treated that contradiction as invalid correlation evidence instead of accepting the dataset.
 
 Backlog Items:
 
@@ -256,3 +259,44 @@ Backlog Items:
 
 * BV4DB-44. Consolidated Oracle multi-volume UHP benchmark with FIO and Swingbench evidence
 * BV4DB-45. Integrated benchmark summary report for the project baseline
+
+## Sprint 18 - Nine-hundred-second mirror rerun of Sprint 17
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 18 is intentionally a mirror rerun of Sprint 17 and must not introduce a new topology, a new workload model, or a new reporting branch. The sprint reuses the same Oracle-style multi-volume UHP benchmark flow, the same `fio` phase, the same Oracle Database Free `Swingbench` phase, the same guest `iostat` capture, the same OCI Monitoring collection, the same HTML report generation, and the same AWR export path. The only intended change is benchmark duration: both phases run for `900` seconds so the result becomes a benchmark-quality evidence set rather than only an automation-validation run.
+
+Expected completion outputs:
+
+* HTML report for the `fio` phase
+* HTML report for the `Swingbench` phase
+* HTML AWR report for the Swingbench phase
+* Markdown/HTML OCI metrics reporting for both phases
+* Integrated summary artifact in the same style as Sprint 17
+* Swingbench-phase OCI block-volume metrics with non-trivial values
+
+Backlog Items:
+
+* BV4DB-46. Nine-hundred-second mirror rerun of the Sprint 17 consolidated benchmark
+
+## Sprint 19 - Benchmark outcome analysis and acceptance criteria
+
+Status: Done
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 19 implemented a data science correlation framework to validate benchmark evidence across observation layers (Guest I/O, OCI Block Volume metrics, Swingbench TPS). The framework applies Pearson/Spearman correlation and Quadrant Correlation Matrix analysis to detect cross-layer inconsistencies and score evidence quality.
+
+Results summary:
+- Sprint 17 FIO: 65/100 (C) INCONCLUSIVE - Low correlation due to short test duration
+- Sprint 17 Swingbench: 10/100 (F) INCONCLUSIVE - Critical anomaly: OCI metrics show 0 MB/s
+- Sprint 18 FIO: 100/100 (A) PASS - Excellent correlation (r=0.926)
+- Sprint 18 Swingbench: 75/100 (B) PASS - Acceptable quality despite low correlation
+
+Backlog Items:
+
+* BV4DB-48. Analyze benchmark and test outcomes for evidence quality, contradictions, and conclusions

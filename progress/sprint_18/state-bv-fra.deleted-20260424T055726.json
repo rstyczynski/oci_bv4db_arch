@@ -1,0 +1,36 @@
+{
+  "inputs": {
+    "name_prefix": "bv-fra",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_size_gb": 100,
+    "bv_vpus_per_gb": 10,
+    "bv_attach_type": "iscsi",
+    "bv_device_path": "/dev/oracleoci/oraclevdf"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a"
+  },
+  "summary": {
+    "created": 0,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "73147-28321-1777010246",
+    "creation_order": [
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-24T05:57:26Z"
+  },
+  "blockvolume": {
+    "created": false,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+    "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+    "device_path": "/dev/oracleoci/oraclevdf",
+    "vpus_per_gb": 10,
+    "iqn": "iqn.2015-12.com.oracleiaas:91713549-6816-465e-9eb2-37392c388fd4",
+    "ipv4": "169.254.2.14",
+    "port": 3260
+  }
+}

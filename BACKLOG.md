@@ -364,3 +364,75 @@ The project needs one top-level summary artifact that explains, in one place, wh
 This summary artifact should not replace the detailed reports. It should sit above them and reference them. The expected content is a concise integrated explanation of the benchmark topology, the two benchmark phases, the key observations from each phase, the location of the detailed HTML reports, and the practical conclusions the operator should take away from the project at this point. The aim is to make the repository understandable as a complete benchmark story rather than only as a sequence of individual sprint artifacts.
 
 Test: the consolidated benchmark sprint produces a top-level summary artifact that links the FIO HTML report, the Swingbench HTML report, the AWR report, and the OCI metrics outputs, and explains the main benchmark conclusions in operator-facing form.
+
+### BV4DB-46. Nine-hundred-second mirror rerun of the Sprint 17 consolidated benchmark
+
+The project needs one follow-up benchmark that is deliberately not a redesign, not a new scenario, and not another analysis-only sprint. It is an exact mirror rerun of Sprint 17 on the same Oracle-style multi-volume UHP benchmark path, with only one intentional change: both benchmark phases must run long enough to produce provider-side monitoring evidence that is analytically strong at OCI Monitoring resolution. The purpose of this item is to convert the already validated Sprint 17 automation path into a benchmark-quality evidence run, not to explore a new topology.
+
+This backlog item must therefore preserve the Sprint 17 architecture and artifact contract:
+
+- same Oracle-style multi-volume topology
+- same UHP-oriented compute intent and the same capacity-fallback behavior if OCI capacity requires it
+- same FIO phase followed by the same Oracle Database Free Swingbench phase
+- same guest `iostat` capture model
+- same OCI Monitoring collection and Markdown/HTML reporting path
+- same Swingbench HTML report and AWR export path
+- same integrated summary style
+
+The only required scope difference relative to Sprint 17 is duration:
+
+- `fio` must run for `900` seconds
+- `Swingbench` must run for `900` seconds
+
+That longer runtime is required so the benchmark produces real block-volume OCI Monitoring evidence for the database phase instead of a mostly empty provider-side view caused by a too-short benchmark window. The sprint is therefore a benchmark-quality mirror run of Sprint 17 whose main purpose is stronger observability, not new functionality.
+
+Test: a Sprint 17 mirror benchmark completes with both `fio` and `Swingbench` running for `900` seconds, produces the same report set as Sprint 17, and the Swingbench-phase OCI Monitoring report contains non-trivial block-volume evidence suitable for comparison with guest `iostat`, Swingbench results, and AWR.
+
+### BV4DB-47. Force Oracle Database Free file placement onto the project block-volume layout
+
+Sprint 18 exposed a structural defect in the current Oracle Database Free automation: the benchmark host prepares the intended Oracle-style block-volume layout at `/u02/oradata`, `/u03/redo`, and `/u04/fra`, but the database creation path still allows Oracle Database Free to create the real database under `/opt/oracle/oradata` on the boot volume. That behavior invalidates the storage-to-database correlation goal for the consolidated benchmark because `fio` stresses the attached block volumes while `Swingbench` can end up driving boot-volume I/O instead of the project-managed data, redo, and FRA devices.
+
+This backlog item is therefore not a reporting tweak. It is a placement-correctness fix for the benchmark itself. The project must harden the Oracle Database Free installation and creation path so that database datafiles, redo logs, and recovery area are verifiably created on the project-managed block-volume mount points and not silently left on the boot volume by the Oracle Free configure helper. The resulting automation must prove the final placement from artifacts, not only from intended environment variables.
+
+Expected implementation scope:
+
+- replace or constrain the Oracle Database Free creation path so it cannot silently fall back to `/opt/oracle/oradata`
+- ensure the final database uses `/u02/oradata` for datafiles, `/u03/redo` for redo placement, and `/u04/fra` for the recovery area
+- archive evidence of actual file placement in sprint artifacts
+- make placement validation part of integration coverage so future consolidated runs fail fast if the database lands on the boot volume again
+
+Test: an Oracle Database Free benchmark run completes and the archived installation/status evidence proves that database files are placed on `/u02/oradata`, `/u03/redo`, and `/u04/fra`, while the boot-volume default path `/opt/oracle/oradata` is not the active location for the benchmark database workload.
+
+### BV4DB-48. Analyze benchmark and test outcomes for evidence quality, contradictions, and conclusions
+
+The project needs one explicit backlog item focused on analytical quality control across the benchmark evidence already produced by the repository. The repository now contains multiple layers of outputs for the same benchmark stories: raw benchmark results, guest `iostat`, OCI Monitoring metrics, AWR reports, HTML dashboards, summaries, regression logs, and sprint-level conclusions. That breadth is valuable, but it also creates risk: a sprint can appear complete while its conclusions are not actually supported by the data, or while different observation layers contradict each other in ways that should have blocked acceptance.
+
+This item is therefore about outcome analysis rather than another benchmark execution. Its purpose is to examine completed sprint outputs and validate whether the resulting conclusions are defensible, sufficiently correlated, and evidence-complete. The work should look specifically for mismatches such as:
+
+- guest `iostat` activity not matching the intended storage topology
+- OCI Monitoring evidence contradicting the expected active resources
+- benchmark summaries that overclaim beyond what the raw artifacts justify
+- gaps between test-pass status and actual benchmark-evidence quality
+- places where the sprint should have failed or been marked inconclusive rather than accepted
+
+This backlog item should lead to explicit analytical rules for future sprints: what evidence is mandatory, what contradictions are disqualifying, how benchmark-quality correlation is recognized, and when a sprint must be marked failed even if the automation technically completed. The detailed scope, method, and acceptance approach are intentionally left to sprint design so the analysis can be framed carefully rather than hard-coded prematurely here.
+
+Test: a dedicated analysis sprint produces written outcome-validation rules, applies them to selected completed benchmark sprints, and records whether the prior sprint conclusions remain valid, must be revised, or must be failed.
+
+### BV4DB-49. Proper FIO time-series ingestion for correlation (with synthetic fallback)
+
+The correlation pipeline currently uses topology-aligned time series (guest `iostat`, OCI Monitoring) but does not include `fio_*` variables in the **Full Correlation Matrix** because the archived fio artifact (`fio_results.json`) is summary-style. The project needs true fio time-series signals (per job / per mount / per resource group) so that `fio_data_mbps`, `fio_redo_mbps`, `fio_fra_mbps`, etc. can participate in the topology-aware correlation matrix the same way Swingbench TPS does.
+
+Implementation has two tiers:
+
+1. **Real fio time series (preferred)**:
+   - Update the fio execution to emit per-interval logs (e.g. bw/iops/lat logs) for each job, with an explicit averaging interval.
+   - Add a loader that parses these logs, normalizes units to MB/s, and maps job outputs to topology resources (`boot`, `data`, `redo`, `fra`) based on job name + target directory/mount.
+   - Join the fio time series into the aligned correlation frame on timestamps, resampled to the analysis `freq` (primary `1min`, fallback `10s` when runs are too short).
+
+2. **Synthetic fio time series (current-stage workaround)**:
+   - Generate a synthetic time series per fio job using the known constant throughput level from fio summaries (`read_bw_kbps`, `write_bw_kbps`, `runtime_s`) and the known phase time window.
+   - Produce topology-level synthetic columns (`fio_data_mbps`, `fio_redo_mbps`, `fio_fra_mbps`, …) by summing per-job synthetic series mapped to each resource.
+   - Mark synthetic signals explicitly in outputs/metadata so they are not confused with real measured per-interval fio telemetry.
+
+Test: for Sprint 17 and Sprint 18, the FIO phase Full Correlation Matrix includes `fio_*_mbps` topology variables and produces stable, interpretable correlations against `iostat_*_mbps` and `oci_*_mbps` under the same alignment methodology used for Swingbench.

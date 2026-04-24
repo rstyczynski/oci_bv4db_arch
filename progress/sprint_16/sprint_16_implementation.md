@@ -4,6 +4,8 @@
 
 Sprint 16 is implemented as a repository-only evidence-correlation sprint.
 
+Retrospective status: failed. The implementation validated evidence presence but did not fail when the archived Swingbench workload data showed attached data volumes effectively idle while boot-device activity remained strong.
+
 It does not introduce a new OCI runner. Instead it turns the validated artifact sets from Sprint 10, Sprint 15, and Sprint 17 into one comparison layer that explains:
 
 1. what the storage-only `fio` evidence proves

@@ -1,0 +1,103 @@
+{
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-oracle18-run",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 40,
+    "compute_memory_gb": 64,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "storage_layout_mode": "multi_volume",
+    "fio_runtime_sec": 900,
+    "swingbench_workload_duration": 900,
+    "metrics_definition_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_18/swingbench_metrics_definition.json",
+    "metrics_report_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_18/swingbench_oci_metrics_report.md",
+    "metrics_html_report_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_18/swingbench_oci_metrics_report.html",
+    "metrics_raw_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_18/swingbench_oci_metrics_raw.json",
+    "metrics_resolution": "1m"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "load_generator": {
+    "name": "swingbench"
+  },
+  "summary": {
+    "created": 0,
+    "existing": 0,
+    "tested": 3,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "62473-19781-1776980571",
+    "creation_order": [
+      "compute"
+    ]
+  },
+  "compute": {
+    "created": false,
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic2h4mqth5xnae2cgfijsqxhghpnksnmfbjra4o36yld3a",
+    "name": "bv4db-oracle18-run-instance",
+    "public_ip": "140.238.222.118",
+    "private_ip": "10.0.0.7",
+    "vnic_ocid": "ocid1.vnic.oc1.eu-zurich-1.ab5heljr72odujfawt6k7phaxaslvjkkzdxb3erpxfhu5hn6rx42gsg7wzha"
+  },
+  "volumes": {
+    "data1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrusdegpojs756t5paows4jqdlxctwa6nvn24o5gqdbon2ym63rexa",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdpkycvp6gtbeq3tb7gvf6texqyejdtzn6lifspaj6emq",
+      "device_path": "/dev/oracleoci/oraclevdb",
+      "vpus_per_gb": 120
+    },
+    "data2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrehls7xjqsq7acmfvqdaomf4ol2lmiashszlslqatuftqveqi365a",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic2xn65r7htivmfeff2ipkgxkhbvakv56jeqygem4si2ka",
+      "device_path": "/dev/oracleoci/oraclevdc",
+      "vpus_per_gb": 120
+    },
+    "redo1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlh2s4qrowuea4z64rpeuqt54rkjeikxu3ngalvk5gmjtic7cpzwa",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyict3i5rqcytpbc3cb4xyp2blvv3eckiv4erl3w3ityiv2a",
+      "device_path": "/dev/oracleoci/oraclevdd",
+      "vpus_per_gb": 20
+    },
+    "redo2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrxckoe6w7ish5332osb5ijnk2rswdyxxl3krncl2gxrqk7ccyftba",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoxhgvnfgkuv4qpi2kjjj2nfac2gdeatuxblxohvh2qqa",
+      "device_path": "/dev/oracleoci/oraclevde",
+      "vpus_per_gb": 20
+    },
+    "fra": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr4psesftgby6gazr4r4y4wwrzei57gu2rlqevin5yrbv3xfg4ejfq",
+      "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj62bkbngac2ygncguyoc7ip7ihs4s7dnrd2ksk4rqn3q",
+      "device_path": "/dev/oracleoci/oraclevdf",
+      "vpus_per_gb": 10
+    }
+  },
+  "fio_phase": {
+    "start_time": "2026-04-23T20:22:58Z",
+    "end_time": "2026-04-23T20:40:28Z"
+  },
+  "benchmark": {
+    "start_time": "2026-04-23T21:43:45Z",
+    "end_time": "2026-04-23T22:18:01Z"
+  },
+  "awr": {
+    "begin_snap_id": 1,
+    "end_snap_id": 2
+  },
+  "database": {
+    "oracle_home": "/opt/oracle/product/23ai/dbhomeFree",
+    "oracle_sid": "FREE",
+    "oracle_pdb": "FREEPDB1"
+  },
+  "sprint": 18,
+  "boot_volume": {
+    "ocid": "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljr2s6ztsawsknekuay6fzngf4aadzsikdfor7rcsvdn3g7qu3nlnbq"
+  },
+  "test_window": {
+    "start_time": "2026-04-23T21:43:45Z",
+    "end_time": "2026-04-23T22:18:01Z"
+  }
+}

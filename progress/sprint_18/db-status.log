@@ -1,0 +1,13 @@
+=== Instance Status ===
+
+INSTANCE_NAME	STATUS		DATABASE_STATUS
+--------------- --------------- -----------------
+FREE		OPEN		ACTIVE
+
+
+=== PDB Status ===
+
+NAME		     OPEN_MODE
+-------------------- ---------------
+PDB$SEED	     READ ONLY
+FREEPDB1	     READ WRITE

@@ -1,0 +1,108 @@
+[2026-04-23 21:43:01] Starting Oracle Database storage layout configuration
+[2026-04-23 21:43:01] Mode: multi_volume
+[2026-04-23 21:43:01] Installing required packages...
+[2026-04-23 21:43:04] Configuring multi-volume layout
+[2026-04-23 21:43:04] Storage layout already configured
+[2026-04-23 21:43:04] === Storage Layout Summary ===
+[2026-04-23 21:43:04] Mount points:
+Filesystem                      Size  Used Avail Use% Mounted on
+/dev/mapper/vg_data-lv_oradata  393G  3.8G  369G   2% /u02/oradata
+/dev/mapper/vg_redo-lv_redo      98G 1001M   92G   2% /u03/redo
+/dev/sdn                         98G   18M   93G   1% /u04/fra
+[2026-04-23 21:43:04] 
+[2026-04-23 21:43:04] Block device layout:
+NAME                   MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+sda                      8:0    0 46.6G  0 disk  
+├─sda1                   8:1    0  100M  0 part  /boot/efi
+├─sda2                   8:2    0    1G  0 part  /boot
+└─sda3                   8:3    0 45.5G  0 part  
+  ├─ocivolume-root     252:0    0 35.5G  0 lvm   /
+  └─ocivolume-oled     252:1    0   10G  0 lvm   /var/oled
+sdb                      8:16   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdc                      8:32   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdd                      8:48   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sde                      8:64   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdf                      8:80   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdg                      8:96   0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdh                      8:112  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdi                      8:128  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdj                      8:144  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdk                      8:160  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdl                      8:176  0   50G  0 disk  
+└─vg_redo-lv_redo      252:5    0  100G  0 lvm   /u03/redo
+sdm                      8:192  0   50G  0 disk  
+└─vg_redo-lv_redo      252:5    0  100G  0 lvm   /u03/redo
+sdn                      8:208  0  100G  0 disk  /u04/fra
+[2026-04-23 21:43:04] 
+[2026-04-23 21:43:04] LVM status:
+  VG        #PV #LV #SN Attr   VSize   VFree
+  ocivolume   1   2   0 wz--n-  45.50g    0 
+  vg_data     2   1   0 wz--n- 399.99g    0 
+  vg_redo     2   1   0 wz--n-  99.99g    0 
+  LV         VG        Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  oled       ocivolume -wi-ao----  10.00g                                                    
+  root       ocivolume -wi-ao----  35.50g                                                    
+  lv_oradata vg_data   -wi-ao---- 399.99g                                                    
+  lv_redo    vg_redo   -wi-ao----  99.99g                                                    
+[2026-04-23 21:43:04] Storage layout configuration complete
+  8:48   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sde                      8:64   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdf                      8:80   0  200G  0 disk  
+└─mpatha               252:2    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdg                      8:96   0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdh                      8:112  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdi                      8:128  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdj                      8:144  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdk                      8:160  0  200G  0 disk  
+└─mpathb               252:3    0  200G  0 mpath 
+  └─vg_data-lv_oradata 252:4    0  400G  0 lvm   /u02/oradata
+sdl                      8:176  0   50G  0 disk  
+└─vg_redo-lv_redo      252:5    0  100G  0 lvm   /u03/redo
+sdm                      8:192  0   50G  0 disk  
+└─vg_redo-lv_redo      252:5    0  100G  0 lvm   /u03/redo
+sdn                      8:208  0  100G  0 disk  /u04/fra
+[2026-04-23 21:43:04] 
+[2026-04-23 21:43:04] LVM status:
+  VG        #PV #LV #SN Attr   VSize   VFree
+  ocivolume   1   2   0 wz--n-  45.50g    0 
+  vg_data     2   1   0 wz--n- 399.99g    0 
+  vg_redo     2   1   0 wz--n-  99.99g    0 
+  LV         VG        Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  oled       ocivolume -wi-ao----  10.00g                                                    
+  root       ocivolume -wi-ao----  35.50g                                                    
+  lv_oradata vg_data   -wi-ao---- 399.99g                                                    
+  lv_redo    vg_redo   -wi-ao----  99.99g                                                    
+[2026-04-23 21:43:04] Storage layout configuration complete

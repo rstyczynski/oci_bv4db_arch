@@ -49,3 +49,13 @@
 
 - Sprint 17 combines storage-only stress and database-level stress on one repeatable Oracle-style topology.
 - The result set now aligns benchmark output, guest iostat, OCI metrics, and AWR into one end-to-end benchmark package.
+
+## Conclusions for future sprints
+
+- **Hard-validate DB file placement before Swingbench starts**:
+  - prove datafiles, redo logs, and FRA are placed on `/u02`, `/u03`, `/u04`
+  - archive placement evidence as sprint artifacts so topology issues can be detected without ambiguity
+- **Use benchmark-quality durations**:
+  - run `Swingbench` (and preferably `fio`) for `900s` so OCI Monitoring 1-minute metrics have enough overlap for correlation
+- **Treat overlap `n` as evidence quality**:
+  - correlations computed on small overlaps can be misleading; avoid drawing conclusions when overlap counts are low
