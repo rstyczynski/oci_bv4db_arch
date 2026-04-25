@@ -1,0 +1,1589 @@
+=== label ===
+multipath_post
+
+=== date ===
+Sat Apr 25 22:28:05 UTC 2026
+
+=== findmnt (mountpoint) ===
+/dev/mapper/360debd75f3ad4e8d93bb56045cd9cb1d xfs    /mnt/sprint23
+
+=== mount | grep mountpoint ===
+/dev/mapper/360debd75f3ad4e8d93bb56045cd9cb1d on /mnt/sprint23 type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota,_netdev)
+
+=== /etc/fstab (mountpoint + tags) ===
+31:/dev/mapper/360debd75f3ad4e8d93bb56045cd9cb1d /mnt/sprint23 xfs defaults,_netdev,nofail 0 2 # bv4db-sprint23
+
+=== /etc/multipath.conf ===
+defaults {
+    user_friendly_names no
+    find_multipaths yes
+}
+
+blacklist_exceptions {
+    property "(SCSI_IDENT_|ID_WWN)"
+}
+
+blacklist {
+}
+
+devices {
+    device {
+        vendor "ORACLE"
+        product "BlockVolume"
+
+        path_grouping_policy multibus
+        path_selector "round-robin 0"
+        rr_weight uniform
+        rr_min_io 1
+        rr_min_io_rq 1
+
+        path_checker tur
+        failback immediate
+        no_path_retry queue
+
+        fast_io_fail_tmo 5
+        dev_loss_tmo infinity
+    }
+}
+
+=== multipath effective config (multipath -t) ===
+defaults {
+	verbosity 2
+	polling_interval 5
+	max_polling_interval 20
+	reassign_maps "no"
+	multipath_dir "/lib64/multipath"
+	path_selector "service-time 0"
+	path_grouping_policy "failover"
+	uid_attribute "ID_SERIAL"
+	prio "const"
+	prio_args ""
+	features "0"
+	path_checker "tur"
+	alias_prefix "mpath"
+	failback "manual"
+	rr_min_io 1000
+	rr_min_io_rq 1
+	max_fds "max"
+	rr_weight "uniform"
+	queue_without_daemon "no"
+	flush_on_last_del "no"
+	user_friendly_names "no"
+	fast_io_fail_tmo 5
+	bindings_file "/etc/multipath/bindings"
+	wwids_file "/etc/multipath/wwids"
+	prkeys_file "/etc/multipath/prkeys"
+	log_checker_err always
+	all_tg_pt "no"
+	retain_attached_hw_handler "yes"
+	detect_prio "yes"
+	detect_checker "yes"
+	force_sync "yes"
+	strict_timing "no"
+	deferred_remove "no"
+	config_dir "/etc/multipath/conf.d"
+	delay_watch_checks "no"
+	delay_wait_checks "no"
+	san_path_err_threshold "no"
+	san_path_err_forget_rate "no"
+	san_path_err_recovery_time "no"
+	marginal_path_err_sample_time "no"
+	marginal_path_err_rate_threshold "no"
+	marginal_path_err_recheck_gap_time "no"
+	marginal_path_double_failed_time "no"
+	find_multipaths "on"
+	uxsock_timeout 4000
+	retrigger_tries 0
+	retrigger_delay 10
+	missing_uev_wait_timeout 30
+	skip_kpartx "no"
+	disable_changed_wwids ignored
+	remove_retries 0
+	ghost_delay "no"
+	find_multipaths_timeout -10
+	enable_foreign ""
+	marginal_pathgroups "off"
+	recheck_wwid "no"
+}
+blacklist {
+	devnode "!^(sd[a-z]|dasd[a-z]|nvme[0-9])"
+	device {
+		vendor "SGI"
+		product "Universal Xport"
+	}
+	device {
+		vendor "^DGC"
+		product "LUNZ"
+	}
+	device {
+		vendor "EMC"
+		product "LUNZ"
+	}
+	device {
+		vendor "DELL"
+		product "Universal Xport"
+	}
+	device {
+		vendor "FUJITSU"
+		product "Universal Xport"
+	}
+	device {
+		vendor "IBM"
+		product "Universal Xport"
+	}
+	device {
+		vendor "IBM"
+		product "S/390"
+	}
+	device {
+		vendor "LENOVO"
+		product "Universal Xport"
+	}
+	device {
+		vendor "(NETAPP|LSI|ENGENIO)"
+		product "Universal Xport"
+	}
+	device {
+		vendor "STK"
+		product "Universal Xport"
+	}
+	device {
+		vendor "SUN"
+		product "Universal Xport"
+	}
+	device {
+		vendor "(Intel|INTEL)"
+		product "VTrak V-LUN"
+	}
+	device {
+		vendor "Promise"
+		product "VTrak V-LUN"
+	}
+	device {
+		vendor "Promise"
+		product "Vess V-LUN"
+	}
+}
+blacklist_exceptions {
+	property "(SCSI_IDENT_|ID_WWN)"
+}
+devices {
+	device {
+		vendor "NVME"
+		product ".*"
+		uid_attribute "ID_WWN"
+		path_checker "none"
+		retain_attached_hw_handler "no"
+	}
+	device {
+		vendor "APPLE"
+		product "Xserve RAID"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "3PARdata"
+		product "VV"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 18
+		fast_io_fail_tmo 10
+		dev_loss_tmo "infinity"
+		vpd_vendor hp3par
+	}
+	device {
+		vendor "DEC"
+		product "HSG80"
+		path_grouping_policy "group_by_prio"
+		path_checker "hp_sw"
+		hardware_handler "1 hp_sw"
+		prio "hp_sw"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "HP"
+		product "A6189A"
+		path_grouping_policy "multibus"
+		no_path_retry 12
+	}
+	device {
+		vendor "(COMPAQ|HP)"
+		product "(MSA|HSV)1[01]0"
+		path_grouping_policy "group_by_prio"
+		path_checker "hp_sw"
+		hardware_handler "1 hp_sw"
+		prio "hp_sw"
+		no_path_retry 12
+	}
+	device {
+		vendor "(COMPAQ|HP)"
+		product "MSA VOLUME"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 12
+	}
+	device {
+		vendor "(COMPAQ|HP)"
+		product "(HSV1[01]1|HSV2[01]0|HSV3[046]0|HSV4[05]0)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 12
+	}
+	device {
+		vendor "HP"
+		product "(MSA2[02]12fc|MSA2012i)"
+		path_grouping_policy "multibus"
+		no_path_retry 18
+	}
+	device {
+		vendor "HP"
+		product "(MSA2012sa|MSA23(12|24)(fc|i|sa)|MSA2000s VOLUME)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 18
+	}
+	device {
+		vendor "(HP|HPE)"
+		product "MSA [12]0[456]0 (SAN|SAS|FC|iSCSI)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 18
+	}
+	device {
+		vendor "HP"
+		product "HSVX700"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 12
+	}
+	device {
+		vendor "HP"
+		product "LOGICAL VOLUME"
+		path_grouping_policy "multibus"
+		no_path_retry 12
+	}
+	device {
+		vendor "HP"
+		product "(P2000 G3 FC|P2000G3 FC/iSCSI|P2000 G3 SAS|P2000 G3 iSCSI)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 18
+	}
+	device {
+		vendor "LEFTHAND"
+		product "(P4000|iSCSIDisk|FCDISK)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 18
+	}
+	device {
+		vendor "Nimble"
+		product "Server"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "SGI"
+		product "TP9100"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "SGI"
+		product "TP9[3457]00"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SGI"
+		product "IS"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SGI"
+		product "^DD[46]A-"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "DDN"
+		product "SAN DataDirector"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "DDN"
+		product "^EF3010"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "DDN"
+		product "^(EF3015|S2A|SFA)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "NEXENTA"
+		product "COMSTAR"
+		path_grouping_policy "group_by_serial"
+		no_path_retry 30
+	}
+	device {
+		vendor "TEGILE"
+		product "(ZEBI-(FC|ISCSI)|INTELLIFLASH)"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 10
+	}
+	device {
+		vendor "EMC"
+		product "SYMMETRIX"
+		path_grouping_policy "multibus"
+		no_path_retry 6
+	}
+	device {
+		vendor "^DGC"
+		product "^(RAID|DISK|VRAID)"
+		product_blacklist "LUNZ"
+		path_grouping_policy "group_by_prio"
+		path_checker "emc_clariion"
+		hardware_handler "1 emc"
+		prio "emc"
+		failback "immediate"
+		no_path_retry 60
+		detect_checker "no"
+	}
+	device {
+		vendor "EMC"
+		product "Invista"
+		product_blacklist "LUNZ"
+		path_grouping_policy "multibus"
+		no_path_retry 5
+	}
+	device {
+		vendor "XtremIO"
+		product "XtremApp"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "COMPELNT"
+		product "Compellent Vol"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "DELL"
+		product "^MD3"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "NVME"
+		product "^EMC PowerMax_"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "FSC"
+		product "CentricStor"
+		path_grouping_policy "group_by_serial"
+	}
+	device {
+		vendor "FUJITSU"
+		product "ETERNUS_DX(H|L|M|400|8000)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 10
+	}
+	device {
+		vendor "(EUROLOGC|EuroLogc)"
+		product "FC2502"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "FUJITSU"
+		product "E[234]000"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 10
+	}
+	device {
+		vendor "FUJITSU"
+		product "E[68]000"
+		path_grouping_policy "multibus"
+		no_path_retry 10
+	}
+	device {
+		vendor "FUJITSU"
+		product "ETERNUS_AHB"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "(HITACHI|HP)"
+		product "^OPEN-"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "HITACHI"
+		product "^DF"
+		path_grouping_policy "group_by_prio"
+		prio "hds"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "HITACHI"
+		product "^DF600F"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "IBM"
+		product "ProFibre 4000R"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "IBM"
+		product "^1722-600"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1724"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1726"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1742"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1746"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1813"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1814"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1815"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^1818"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^3526"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^(3542|3552)"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "IBM"
+		product "^2105"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "^1750500"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "^2107900"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "^2145"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "S/390 DASD ECKD"
+		product_blacklist "S/390"
+		path_grouping_policy "multibus"
+		uid_attribute "ID_UID"
+		path_checker "directio"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "S/390 DASD FBA"
+		product_blacklist "S/390"
+		path_grouping_policy "multibus"
+		uid_attribute "ID_UID"
+		path_checker "directio"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "^IPR"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "IBM"
+		product "1820N00"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "(XIV|IBM)"
+		product "(NEXTRA|2810XIV)"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "(TMS|IBM)"
+		product "(RamSan|FlashSystem)"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "IBM"
+		product "^(DCS9900|2851)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "AIX"
+		product "VDASD"
+		path_grouping_policy "multibus"
+		no_path_retry 60
+	}
+	device {
+		vendor "IBM"
+		product "3303[ ]+NVDISK"
+		no_path_retry 60
+	}
+	device {
+		vendor "AIX"
+		product "NVDISK"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 60
+	}
+	device {
+		vendor "LENOVO"
+		product "DE_Series"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "NETAPP"
+		product "LUN"
+		path_grouping_policy "group_by_prio"
+		features "2 pg_init_retries 50"
+		prio "ontap"
+		failback "immediate"
+		no_path_retry "queue"
+		flush_on_last_del "yes"
+		dev_loss_tmo "infinity"
+		user_friendly_names "no"
+	}
+	device {
+		vendor "(NETAPP|LSI|ENGENIO)"
+		product "INF-01-00"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SolidFir"
+		product "SSD SAN"
+		path_grouping_policy "multibus"
+		no_path_retry 24
+	}
+	device {
+		vendor "NVME"
+		product "^NetApp ONTAP Controller"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "NEC"
+		product "DISK ARRAY"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+	}
+	device {
+		vendor "^Pillar"
+		product "^Axiom"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+	}
+	device {
+		vendor "^Oracle"
+		product "^Oracle FS"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+	}
+	device {
+		vendor "STK"
+		product "BladeCtlr"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "STK"
+		product "OPENstorage"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "STK"
+		product "FLEXLINE 380"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "StorEdge 3"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "SUN"
+		product "STK6580_6780"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "CSM[12]00_R"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "LCSM100_[IEFS]"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "SUN_6180"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "ArrayStorage"
+		product_blacklist "Universal Xport"
+		path_grouping_policy "group_by_prio"
+		path_checker "rdac"
+		features "2 pg_init_retries 50"
+		hardware_handler "1 rdac"
+		prio "rdac"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "SUN"
+		product "(Sun Storage|ZFS Storage|COMSTAR)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "PIVOT3"
+		product "RAIGE VOLUME"
+		path_grouping_policy "multibus"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "(NexGen|Pivot3)"
+		product "(TierStore|vSTAC)"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "(Intel|INTEL)"
+		product "Multi-Flex"
+		product_blacklist "VTrak V-LUN"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "(LIO-ORG|SUSE)"
+		product "RBD"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 12
+	}
+	device {
+		vendor "DataCore"
+		product "SANmelody"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "DataCore"
+		product "Virtual Disk"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry "queue"
+	}
+	device {
+		vendor "PURE"
+		product "FlashArray"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		fast_io_fail_tmo 10
+	}
+	device {
+		vendor "HUAWEI"
+		product "XSG1"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+	}
+	device {
+		vendor "KOVE"
+		product "XPD"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "NFINIDAT"
+		product "InfiniBox"
+		path_grouping_policy "group_by_prio"
+		path_selector "round-robin 0"
+		prio "alua"
+		failback 30
+		rr_weight "priorities"
+		no_path_retry "fail"
+		rr_min_io 1
+		rr_min_io_rq 1
+		flush_on_last_del "yes"
+		fast_io_fail_tmo 15
+		dev_loss_tmo 15
+	}
+	device {
+		vendor "KMNRIO"
+		product "K2"
+		path_grouping_policy "multibus"
+	}
+	device {
+		vendor "NEXSAN"
+		product "NXS-B0"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 15
+	}
+	device {
+		vendor "NEXSAN"
+		product "SATAB"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 15
+	}
+	device {
+		vendor "Nexsan"
+		product "(NestOS|NST5000)"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "VIOLIN"
+		product "SAN ARRAY$"
+		path_grouping_policy "group_by_serial"
+		no_path_retry 30
+	}
+	device {
+		vendor "VIOLIN"
+		product "SAN ARRAY ALUA"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "VIOLIN"
+		product "CONCERTO ARRAY"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "(XIOTECH|XIOtech)"
+		product "ISE"
+		path_grouping_policy "multibus"
+		no_path_retry 12
+	}
+	device {
+		vendor "(XIOTECH|XIOtech)"
+		product "IGLU DISK"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "(XIOTECH|XIOtech)"
+		product "Magnitude"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "Promise"
+		product "VTrak"
+		product_blacklist "VTrak V-LUN"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "Promise"
+		product "Vess"
+		product_blacklist "Vess V-LUN"
+		path_grouping_policy "group_by_prio"
+		hardware_handler "1 alua"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "^IFT"
+		product ".*"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "DotHill"
+		product "SANnet"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "DotHill"
+		product "R/Evo"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "DotHill"
+		product "^DH"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+		no_path_retry 30
+	}
+	device {
+		vendor "AStor"
+		product "NeoSapphire"
+		path_grouping_policy "multibus"
+		no_path_retry 30
+	}
+	device {
+		vendor "INSPUR"
+		product "MCS"
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+	}
+	device {
+		vendor "ORACLE"
+		product "BlockVolume"
+		path_grouping_policy "multibus"
+		path_selector "round-robin 0"
+		path_checker "tur"
+		failback "immediate"
+		rr_weight "uniform"
+		no_path_retry "queue"
+		rr_min_io 1
+		rr_min_io_rq 1
+		fast_io_fail_tmo 5
+		dev_loss_tmo "infinity"
+	}
+}
+overrides {
+}
+
+=== ORACLE BlockVolume section (from multipath -t) ===
+		path_grouping_policy "group_by_prio"
+		prio "alua"
+		failback "immediate"
+	}
+	device {
+		vendor "ORACLE"
+		product "BlockVolume"
+		path_grouping_policy "multibus"
+		path_selector "round-robin 0"
+		path_checker "tur"
+		failback "immediate"
+		rr_weight "uniform"
+		no_path_retry "queue"
+		rr_min_io 1
+		rr_min_io_rq 1
+		fast_io_fail_tmo 5
+		dev_loss_tmo "infinity"
+	}
+
+=== dmsetup status (mpatha) ===
+360debd75f3ad4e8d93bb56045cd9cb1d: 0 3145728000 multipath 2 0 0 0 1 1 A 0 5 0 8:64 A 0 8:80 A 0 8:16 A 0 8:32 A 0 8:48 A 0 
+ocivolume-oled: 0 20971520 linear 
+ocivolume-root: 0 74448896 linear 
+
+=== multipathd show config (subset) ===
+7:	path_selector "service-time 0"
+8:	path_grouping_policy "failover"
+10:	prio "const"
+11:	prio_args ""
+15:	failback "manual"
+16:	rr_min_io 1000
+17:	rr_min_io_rq 1
+19:	rr_weight "uniform"
+23:	fast_io_fail_tmo 5
+30:	detect_prio "yes"
+132:		path_grouping_policy "multibus"
+137:		path_grouping_policy "group_by_prio"
+139:		prio "alua"
+140:		failback "immediate"
+141:		no_path_retry 18
+142:		fast_io_fail_tmo 10
+143:		dev_loss_tmo "infinity"
+149:		path_grouping_policy "group_by_prio"
+152:		prio "hp_sw"
+153:		no_path_retry "queue"
+158:		path_grouping_policy "multibus"
+159:		no_path_retry 12
+164:		path_grouping_policy "group_by_prio"
+167:		prio "hp_sw"
+168:		no_path_retry 12
+173:		path_grouping_policy "group_by_prio"
+174:		prio "alua"
+175:		failback "immediate"
+176:		no_path_retry 12
+181:		path_grouping_policy "group_by_prio"
+182:		prio "alua"
+183:		failback "immediate"
+184:		no_path_retry 12
+189:		path_grouping_policy "multibus"
+190:		no_path_retry 18
+195:		path_grouping_policy "group_by_prio"
+196:		prio "alua"
+197:		failback "immediate"
+198:		no_path_retry 18
+203:		path_grouping_policy "group_by_prio"
+204:		prio "alua"
+205:		failback "immediate"
+206:		no_path_retry 18
+211:		path_grouping_policy "group_by_prio"
+213:		prio "alua"
+214:		failback "immediate"
+215:		no_path_retry 12
+220:		path_grouping_policy "multibus"
+221:		no_path_retry 12
+226:		path_grouping_policy "group_by_prio"
+227:		prio "alua"
+228:		failback "immediate"
+229:		no_path_retry 18
+234:		path_grouping_policy "group_by_prio"
+235:		prio "alua"
+236:		failback "immediate"
+237:		no_path_retry 18
+242:		path_grouping_policy "group_by_prio"
+244:		prio "alua"
+245:		failback "immediate"
+246:		no_path_retry "queue"
+251:		path_grouping_policy "multibus"
+257:		path_grouping_policy "group_by_prio"
+261:		prio "rdac"
+262:		failback "immediate"
+263:		no_path_retry 30
+269:		path_grouping_policy "group_by_prio"
+273:		prio "rdac"
+274:		failback "immediate"
+275:		no_path_retry 30
+280:		path_grouping_policy "group_by_prio"
+281:		prio "alua"
+282:		failback "immediate"
+283:		no_path_retry 30
+288:		path_grouping_policy "multibus"
+293:		path_grouping_policy "multibus"
+294:		no_path_retry 30
+299:		path_grouping_policy "group_by_prio"
+300:		prio "alua"
+301:		failback "immediate"
+302:		no_path_retry 30
+307:		path_grouping_policy "group_by_serial"
+308:		no_path_retry 30
+313:		path_grouping_policy "group_by_prio"
+315:		prio "alua"
+316:		failback "immediate"
+317:		no_path_retry 10
+322:		path_grouping_policy "multibus"
+323:		no_path_retry 6
+329:		path_grouping_policy "group_by_prio"
+332:		prio "emc"
+333:		failback "immediate"
+334:		no_path_retry 60
+341:		path_grouping_policy "multibus"
+342:		no_path_retry 5
+347:		path_grouping_policy "multibus"
+352:		path_grouping_policy "multibus"
+353:		no_path_retry "queue"
+359:		path_grouping_policy "group_by_prio"
+363:		prio "rdac"
+364:		failback "immediate"
+365:		no_path_retry 30
+370:		path_grouping_policy "multibus"
+375:		path_grouping_policy "group_by_serial"
+380:		path_grouping_policy "group_by_prio"
+381:		prio "alua"
+382:		failback "immediate"
+383:		no_path_retry 10
+388:		path_grouping_policy "multibus"
+393:		path_grouping_policy "group_by_prio"
+394:		prio "alua"
+395:		failback "immediate"
+396:		no_path_retry 10
+401:		path_grouping_policy "multibus"
+402:		no_path_retry 10
+408:		path_grouping_policy "group_by_prio"
+412:		prio "rdac"
+413:		failback "immediate"
+414:		no_path_retry 30
+419:		path_grouping_policy "multibus"
+424:		path_grouping_policy "group_by_prio"
+425:		prio "hds"
+426:		failback "immediate"
+427:		no_path_retry "queue"
+432:		path_grouping_policy "multibus"
+437:		path_grouping_policy "multibus"
+443:		path_grouping_policy "group_by_prio"
+447:		prio "rdac"
+448:		failback "immediate"
+449:		no_path_retry 30
+455:		path_grouping_policy "group_by_prio"
+459:		prio "rdac"
+460:		failback "immediate"
+461:		no_path_retry 30
+467:		path_grouping_policy "group_by_prio"
+471:		prio "rdac"
+472:		failback "immediate"
+473:		no_path_retry 30
+479:		path_grouping_policy "group_by_prio"
+483:		prio "rdac"
+484:		failback "immediate"
+485:		no_path_retry 30
+491:		path_grouping_policy "group_by_prio"
+495:		prio "rdac"
+496:		failback "immediate"
+497:		no_path_retry 30
+503:		path_grouping_policy "group_by_prio"
+507:		prio "rdac"
+508:		failback "immediate"
+509:		no_path_retry 30
+515:		path_grouping_policy "group_by_prio"
+519:		prio "rdac"
+520:		failback "immediate"
+521:		no_path_retry 30
+527:		path_grouping_policy "group_by_prio"
+531:		prio "rdac"
+532:		failback "immediate"
+533:		no_path_retry 30
+539:		path_grouping_policy "group_by_prio"
+543:		prio "rdac"
+544:		failback "immediate"
+545:		no_path_retry 30
+551:		path_grouping_policy "group_by_prio"
+555:		prio "rdac"
+556:		failback "immediate"
+557:		no_path_retry 30
+563:		path_grouping_policy "group_by_prio"
+567:		prio "rdac"
+568:		failback "immediate"
+569:		no_path_retry 30
+574:		path_grouping_policy "multibus"
+575:		no_path_retry "queue"
+580:		path_grouping_policy "group_by_prio"
+581:		prio "alua"
+582:		failback "immediate"
+583:		no_path_retry "queue"
+588:		path_grouping_policy "multibus"
+589:		no_path_retry "queue"
+594:		path_grouping_policy "group_by_prio"
+595:		prio "alua"
+596:		failback "immediate"
+597:		no_path_retry "queue"
+603:		path_grouping_policy "multibus"
+606:		no_path_retry "queue"
+612:		path_grouping_policy "multibus"
+615:		no_path_retry "queue"
+620:		path_grouping_policy "group_by_prio"
+622:		prio "alua"
+623:		failback "immediate"
+624:		no_path_retry "queue"
+629:		path_grouping_policy "group_by_prio"
+630:		prio "alua"
+631:		failback "immediate"
+632:		no_path_retry "queue"
+637:		path_grouping_policy "multibus"
+638:		no_path_retry "queue"
+643:		path_grouping_policy "multibus"
+648:		path_grouping_policy "group_by_prio"
+649:		prio "alua"
+650:		failback "immediate"
+651:		no_path_retry 30
+656:		path_grouping_policy "multibus"
+657:		no_path_retry 60
+662:		no_path_retry 60
+667:		path_grouping_policy "group_by_prio"
+669:		prio "alua"
+670:		failback "immediate"
+671:		no_path_retry 60
+677:		path_grouping_policy "group_by_prio"
+681:		prio "rdac"
+682:		failback "immediate"
+683:		no_path_retry 30
+688:		path_grouping_policy "group_by_prio"
+690:		prio "ontap"
+691:		failback "immediate"
+692:		no_path_retry "queue"
+694:		dev_loss_tmo "infinity"
+701:		path_grouping_policy "group_by_prio"
+705:		prio "rdac"
+706:		failback "immediate"
+707:		no_path_retry 30
+712:		path_grouping_policy "multibus"
+713:		no_path_retry 24
+718:		path_grouping_policy "multibus"
+719:		no_path_retry "queue"
+724:		path_grouping_policy "group_by_prio"
+726:		prio "alua"
+727:		failback "immediate"
+732:		path_grouping_policy "group_by_prio"
+733:		prio "alua"
+734:		failback "immediate"
+739:		path_grouping_policy "group_by_prio"
+740:		prio "alua"
+741:		failback "immediate"
+747:		path_grouping_policy "group_by_prio"
+751:		prio "rdac"
+752:		failback "immediate"
+753:		no_path_retry 30
+759:		path_grouping_policy "group_by_prio"
+763:		prio "rdac"
+764:		failback "immediate"
+765:		no_path_retry 30
+771:		path_grouping_policy "group_by_prio"
+775:		prio "rdac"
+776:		failback "immediate"
+777:		no_path_retry 30
+782:		path_grouping_policy "multibus"
+788:		path_grouping_policy "group_by_prio"
+792:		prio "rdac"
+793:		failback "immediate"
+794:		no_path_retry 30
+800:		path_grouping_policy "group_by_prio"
+804:		prio "rdac"
+805:		failback "immediate"
+806:		no_path_retry 30
+812:		path_grouping_policy "group_by_prio"
+816:		prio "rdac"
+817:		failback "immediate"
+818:		no_path_retry 30
+824:		path_grouping_policy "group_by_prio"
+828:		prio "rdac"
+829:		failback "immediate"
+830:		no_path_retry 30
+836:		path_grouping_policy "group_by_prio"
+840:		prio "rdac"
+841:		failback "immediate"
+842:		no_path_retry 30
+847:		path_grouping_policy "group_by_prio"
+848:		prio "alua"
+849:		failback "immediate"
+850:		no_path_retry 30
+855:		path_grouping_policy "multibus"
+856:		no_path_retry "queue"
+861:		path_grouping_policy "group_by_prio"
+862:		prio "alua"
+863:		failback "immediate"
+864:		no_path_retry "queue"
+870:		path_grouping_policy "group_by_prio"
+872:		prio "alua"
+873:		failback "immediate"
+874:		no_path_retry "queue"
+879:		path_grouping_policy "group_by_prio"
+881:		prio "alua"
+882:		failback "immediate"
+883:		no_path_retry 12
+888:		path_grouping_policy "group_by_prio"
+889:		prio "alua"
+890:		failback "immediate"
+891:		no_path_retry "queue"
+896:		path_grouping_policy "group_by_prio"
+897:		prio "alua"
+898:		failback "immediate"
+899:		no_path_retry "queue"
+904:		path_grouping_policy "group_by_prio"
+906:		prio "alua"
+907:		failback "immediate"
+908:		fast_io_fail_tmo 10
+913:		path_grouping_policy "group_by_prio"
+914:		prio "alua"
+919:		path_grouping_policy "multibus"
+924:		path_grouping_policy "group_by_prio"
+925:		path_selector "round-robin 0"
+926:		prio "alua"
+927:		failback 30
+928:		rr_weight "priorities"
+929:		no_path_retry "fail"
+930:		rr_min_io 1
+931:		rr_min_io_rq 1
+933:		fast_io_fail_tmo 15
+934:		dev_loss_tmo 15
+939:		path_grouping_policy "multibus"
+944:		path_grouping_policy "group_by_prio"
+945:		prio "alua"
+946:		failback "immediate"
+947:		no_path_retry 15
+952:		path_grouping_policy "group_by_prio"
+953:		prio "alua"
+954:		failback "immediate"
+955:		no_path_retry 15
+960:		path_grouping_policy "group_by_prio"
+962:		prio "alua"
+963:		failback "immediate"
+964:		no_path_retry 30
+969:		path_grouping_policy "group_by_serial"
+970:		no_path_retry 30
+975:		path_grouping_policy "group_by_prio"
+977:		prio "alua"
+978:		failback "immediate"
+979:		no_path_retry 30
+984:		path_grouping_policy "multibus"
+985:		no_path_retry 30
+990:		path_grouping_policy "multibus"
+991:		no_path_retry 12
+996:		path_grouping_policy "multibus"
+997:		no_path_retry 30
+1002:		path_grouping_policy "multibus"
+1003:		no_path_retry 30
+1009:		path_grouping_policy "group_by_prio"
+1011:		prio "alua"
+1012:		failback "immediate"
+1013:		no_path_retry 30
+1019:		path_grouping_policy "group_by_prio"
+1021:		prio "alua"
+1022:		failback "immediate"
+1023:		no_path_retry 30
+1028:		path_grouping_policy "group_by_prio"
+1029:		prio "alua"
+1030:		failback "immediate"
+1031:		no_path_retry 30
+1036:		path_grouping_policy "multibus"
+1037:		no_path_retry 30
+1042:		path_grouping_policy "group_by_prio"
+1043:		prio "alua"
+1044:		failback "immediate"
+1045:		no_path_retry 30
+1050:		path_grouping_policy "group_by_prio"
+1051:		prio "alua"
+1052:		failback "immediate"
+1053:		no_path_retry 30
+1058:		path_grouping_policy "multibus"
+1059:		no_path_retry 30
+1064:		path_grouping_policy "group_by_prio"
+1065:		prio "alua"
+1066:		failback "immediate"
+1071:		path_grouping_policy "multibus"
+1072:		path_selector "round-robin 0"
+1074:		failback "immediate"
+1075:		rr_weight "uniform"
+1076:		no_path_retry "queue"
+1077:		rr_min_io 1
+1078:		rr_min_io_rq 1
+1079:		fast_io_fail_tmo 5
+1080:		dev_loss_tmo "infinity"
+
+=== iscsiadm -m session ===
+tcp: [17] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+tcp: [18] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+tcp: [19] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+tcp: [20] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+tcp: [21] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+
+=== multipath -ll ===
+360debd75f3ad4e8d93bb56045cd9cb1d dm-2 ORACLE,BlockVolume
+size=1.5T features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  |- 10:0:0:2 sde 8:64 active ready running
+  |- 11:0:0:2 sdf 8:80 active ready running
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  `- 9:0:0:2  sdd 8:48 active ready running
+
+=== ls -la /dev/oracleoci ===
+total 0
+drwxr-xr-x.  2 root root  140 Apr 25 22:25 .
+drwxr-xr-x. 21 root root 3680 Apr 25 22:25 ..
+lrwxrwxrwx.  1 root root    6 Apr 25 22:03 oraclevda -> ../sda
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda1 -> ../sda1
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda2 -> ../sda2
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda3 -> ../sda3
+lrwxrwxrwx.  1 root root    6 Apr 25 22:25 oraclevdb -> ../sdf
+
+=== ls -la /dev/mapper ===
+total 0
+drwxr-xr-x.  2 root root     120 Apr 25 22:25 .
+drwxr-xr-x. 21 root root    3680 Apr 25 22:25 ..
+lrwxrwxrwx.  1 root root       7 Apr 25 22:25 360debd75f3ad4e8d93bb56045cd9cb1d -> ../dm-2
+crw-------.  1 root root 10, 236 Apr 25 22:03 control
+lrwxrwxrwx.  1 root root       7 Apr 25 22:03 ocivolume-oled -> ../dm-1
+lrwxrwxrwx.  1 root root       7 Apr 25 22:03 ocivolume-root -> ../dm-0
+
+=== lsblk ===
+NAME                                TYPE   SIZE MODEL            WWN                                MOUNTPOINT
+sda                                 disk  46.6G BlockVolume      0x60d4770077d74d1b9d5ed675f40564bf 
+├─sda1                              part   100M                  0x60d4770077d74d1b9d5ed675f40564bf /boot/efi
+├─sda2                              part     1G                  0x60d4770077d74d1b9d5ed675f40564bf /boot
+└─sda3                              part  45.5G                  0x60d4770077d74d1b9d5ed675f40564bf 
+  ├─ocivolume-root                  lvm   35.5G                                                     /
+  └─ocivolume-oled                  lvm     10G                                                     /var/oled
+sdb                                 disk   1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d 
+└─360debd75f3ad4e8d93bb56045cd9cb1d mpath  1.5T                                                     /mnt/sprint23
+sdc                                 disk   1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d 
+└─360debd75f3ad4e8d93bb56045cd9cb1d mpath  1.5T                                                     /mnt/sprint23
+sdd                                 disk   1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d 
+└─360debd75f3ad4e8d93bb56045cd9cb1d mpath  1.5T                                                     /mnt/sprint23
+sde                                 disk   1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d 
+└─360debd75f3ad4e8d93bb56045cd9cb1d mpath  1.5T                                                     /mnt/sprint23
+sdf                                 disk   1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d 
+└─360debd75f3ad4e8d93bb56045cd9cb1d mpath  1.5T                                                     /mnt/sprint23
+

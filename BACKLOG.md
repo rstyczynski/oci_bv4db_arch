@@ -448,3 +448,75 @@ Test: the sandbox host can be created on demand, multipath is active with multip
 Run the same fio workload twice on the same UHP block volume tier to quantify the difference between a **multipath-enabled iSCSI** configuration and an intentionally limited **single-path iSCSI** configuration. Keep the workload identical across both runs and archive the resulting evidence and a short comparison summary.
 
 Test: both runs complete successfully, fio JSON outputs exist for both modes, and the sprint produces a comparison summary showing the observed throughput/IOPS/latency difference.
+
+### BV4DB-52. Persist block-volume mount in /etc/fstab with _netdev,nofail
+
+When operators keep infrastructure (`KEEP_INFRA=true`) or plan to reboot the instance, the non-root block volume mount should be made persistent using an `/etc/fstab` entry that follows Oracle guidance for consistent device paths. Specifically, use `_netdev` (so iSCSI initiator comes up before mount) and `nofail` (so boot is not blocked if volume is unavailable), as documented by Oracle.
+
+Expected implementation scope:
+
+- Ensure scripts (or an operator command) can add/update an `/etc/fstab` entry for the Sprint mountpoint using the consistent device path (for example `/dev/oracleoci/oraclevdb` when available).
+- Use mount options: `defaults,_netdev,nofail`.
+- Provide a safe way to disable/remove the entry during teardown or when switching between multipath and single-path modes.
+
+Test: after adding the entry, `mount -a` succeeds and a reboot leaves the instance reachable while the block volume is mounted (or skipped without boot failure when intentionally absent), using `_netdev,nofail` options.
+
+### BV4DB-53. Configure dm-multipath load balancing policy (round-robin) for UHP iSCSI multipath
+
+The project currently validates **HA multipath correctness** (multiple iSCSI paths aggregated and used via `/dev/mapper/mpath*`), but observed behavior can still be effectively single-path because default dm-multipath policies can be sticky (for example `service-time` selection or priority-based path groups).
+
+This backlog item introduces an explicit, operator-visible **load-balancing policy** for dm-multipath (for example round-robin across all active paths), documents the exact configuration applied (multipath.conf knobs), and archives evidence that I/O distribution is occurring across multiple paths during the benchmark window.
+
+Expected implementation scope:
+
+- Add an explicit dm-multipath policy configuration step (for example `path_selector "round-robin 0"`, `path_grouping_policy multibus`, `rr_min_io_rq` tuning).
+- Provide an operator toggle to enable/disable the load-balancing configuration without breaking the HA baseline.
+- Archive “before/after” evidence of the active policy and the observed per-path distribution (from `multipath -ll`, `multipathd show config`, `multipathd show paths`, and any available path-stat counters on the target OS).
+
+Test: with load-balancing enabled, diagnostics demonstrate that multiple active paths carry I/O during the benchmark window (not only one hot path), and the applied dm-multipath configuration is captured in artifacts.
+
+### BUG-S22-1. Sprint 22 teardown.sh fails when run from repo root
+
+**Severity:** Critical
+**Sprint:** 22
+**Status:** Open
+
+**Description:**
+When running `NAME_PREFIX=bv4db-s22-mpath teardown.sh` from the repository root, teardown fails because oci_scaffold always sets `STATE_FILE="${PWD}/state-${NAME_PREFIX}.json"` when NAME_PREFIX is set (oci_scaffold.sh:12-16). This ignores any exported STATE_FILE and looks in the wrong directory.
+
+Sprint 22 scripts write state to `progress/sprint_22/state-bv4db-s22-mpath.json` but teardown.sh looks for `./state-bv4db-s22-mpath.json` in repo root.
+
+**Root cause:**
+oci_scaffold.sh intentionally overrides STATE_FILE when NAME_PREFIX is set to prevent stale exports. Sprint 22 scripts run from repo root but write state to progress/sprint_22/.
+
+**Fix required:**
+Sprint 22 scripts must either:
+1. Run from progress/sprint_22/ directory, OR
+2. Provide a teardown wrapper that cd's to the correct directory
+
+**Test:** `NAME_PREFIX=bv4db-s22-mpath ./tools/teardown_sprint22.sh` from repo root must successfully teardown Sprint 22 resources
+
+### BUG-S22-2. Block volume not deleted when attachment fails before being stored in state
+
+**Severity:** Medium
+**Sprint:** 22
+**Status:** Fixed (ensure-blockvolume.sh now adds BV to creation_order immediately after creation)
+
+**Description:**
+When a multipath attachment fails (e.g., OCI API returns `isMultipath: null` despite request), the script detaches and retries. If all retries fail, the block volume is created and recorded in state but the attachment is never stored. On teardown, oci_scaffold deletes only the compute instance because the block volume entry in state has no attachment to detach first, causing the BV to be orphaned.
+
+**Root cause:**
+The Sprint 20 multipath diagnostics script only stores attachment info in state AFTER successful multipath verification. When multipath never enables, the attachment is detached but the BV remains in state without attachment info. Teardown then skips BV deletion.
+
+**Observed behavior:**
+- State file has `blockvolume.created: true` and `blockvolume.ocid` but no attachment
+- Teardown deletes compute but not the BV
+- Orphan BV remains billable in OCI
+
+**Fix required:**
+Either:
+1. Store BV attachment in state immediately after attach succeeds (before multipath check), OR
+2. Make teardown delete BV even when no attachment is recorded, OR
+3. Delete BV in the cleanup path when multipath fails
+
+**Test:** After multipath attachment failure and teardown, `oci bv volume get --volume-id <ocid>` should return 404/TERMINATED, not AVAILABLE

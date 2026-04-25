@@ -323,3 +323,51 @@ Backlog Items:
 
 * BV4DB-50. UHP multipath diagnostics sandbox host
 * BV4DB-51. FIO benchmark: multipath vs single-path iSCSI on UHP
+
+## Sprint 21 - Sprint 20 redo with fstab-based multipath enable/disable
+
+Status: Failed
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 21 re-executes the Sprint 20 multipath diagnostics + A/B benchmark, but adds an operator-facing, reboot-safe workflow by managing the mount via `/etc/fstab` using Oracle-recommended options (`_netdev,nofail`) and by documenting how to enable/disable multipath cleanly using fstab + iSCSI session control.
+
+Retrospective failure note:
+Sprint 21 implementation was incomplete. The scripts were thin wrappers around Sprint 20 that only passed `USE_FSTAB=true` but Sprint 20 scripts lacked complete fstab handling. The manual lacked runnable snippets and the integration tests were not fully executed. Sprint 22 supersedes this with a complete implementation.
+
+Backlog Items:
+
+* BV4DB-52. Persist block-volume mount in /etc/fstab with _netdev,nofail
+
+## Sprint 22 - Multipath fstab configuration (Sprint 20 redo)
+
+Status: Planned
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 22 re-implements the Sprint 20 multipath diagnostics + A/B benchmark with proper fstab-based mount persistence. The sprint keeps all Sprint 20 features (auto-run tests, manual operator procedures) and adds operator-facing documentation for using `/etc/fstab` to configure and disable multipath. Sprint 20 scripts are proven stable — Sprint 22 creates new wrapper scripts without modifying oci_scaffold ensure_* scripts.
+
+Key differences from Sprint 21:
+- Complete fstab handling in Sprint 22 scripts (not delegated to Sprint 20)
+- Manual with ALL executable snippets for operator fstab workflows
+- Integration tests that REALLY run all test scripts and manual snippets
+- Learning from Sprint 21: no thin wrappers, explicit implementation
+
+Backlog Items:
+
+* BV4DB-52. Persist block-volume mount in /etc/fstab with _netdev,nofail
+
+## Sprint 23 - Multipath load balancing configuration (Sprint 22 + round-robin)
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 23 reuses Sprint 22’s stable HA multipath + fstab baseline, but adds an explicit dm-multipath **load-balancing** policy configuration (for example round-robin across all active paths). The sprint must make the difference between HA correctness and throughput/path distribution unambiguous by documenting the exact `multipath.conf` knobs used and archiving evidence of per-path I/O distribution during the benchmark window.
+
+Backlog Items:
+
+* BV4DB-53. Configure dm-multipath load balancing policy (round-robin) for UHP iSCSI multipath

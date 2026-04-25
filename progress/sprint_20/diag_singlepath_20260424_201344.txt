@@ -1,0 +1,38 @@
+=== date ===
+Fri Apr 24 20:16:14 UTC 2026
+
+=== iscsiadm -m session ===
+tcp: [62] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+
+=== systemctl status multipathd ===
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; disabled; vendor preset: enabled)
+   Active: inactive (dead)
+
+Apr 24 20:14:01 bv4db-s20-mpath-instance multipathd[106155]: mpatha: load table [0 3145728000 multipath 3 queue_mode bio queue_if_no_path 0 1 1 queue-length 0 5 1 8:16 1 8:32 1 8:48 1 8:64 1 8:80 1]
+Apr 24 20:14:01 bv4db-s20-mpath-instance multipathd[106155]: sdf [8:80]: path added to devmap mpatha
+Apr 24 20:14:01 bv4db-s20-mpath-instance multipathd[106155]: reconfigure (operator)
+Apr 24 20:14:01 bv4db-s20-mpath-instance multipathd[106155]: mpatha: Raising dev_loss_tmo to 4294967295 because of no_path_retry setting
+Apr 24 20:14:01 bv4db-s20-mpath-instance multipathd[106155]: mpatha: load table [0 3145728000 multipath 3 queue_mode bio queue_if_no_path 0 1 1 queue-length 0 5 1 8:64 1 8:80 1 8:16 1 8:32 1 8:48 1]
+Apr 24 20:16:12 bv4db-s20-mpath-instance systemd[1]: Stopping Device-Mapper Multipath Device Controller...
+Apr 24 20:16:12 bv4db-s20-mpath-instance multipathd[106155]: exit (signal)
+Apr 24 20:16:12 bv4db-s20-mpath-instance multipathd[106155]: --------shut down-------
+Apr 24 20:16:12 bv4db-s20-mpath-instance systemd[1]: multipathd.service: Succeeded.
+Apr 24 20:16:12 bv4db-s20-mpath-instance systemd[1]: Stopped Device-Mapper Multipath Device Controller.
+
+=== multipath -ll ===
+
+=== multipathd show paths ===
+
+=== multipathd show maps ===
+
+=== lsblk ===
+NAME               TYPE  SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk 46.6G BlockVolume      0x60df51a3c3f74a40978be4fccb0ba99f 
+├─sda1             part  100M                  0x60df51a3c3f74a40978be4fccb0ba99f /boot/efi
+├─sda2             part    1G                  0x60df51a3c3f74a40978be4fccb0ba99f /boot
+└─sda3             part 45.5G                  0x60df51a3c3f74a40978be4fccb0ba99f 
+  ├─ocivolume-root lvm  35.5G                                                     /
+  └─ocivolume-oled lvm    10G                                                     /var/oled
+sdb                disk  1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+

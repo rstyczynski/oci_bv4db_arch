@@ -1,0 +1,38 @@
+=== date ===
+Sat Apr 25 20:22:47 UTC 2026
+
+=== iscsiadm -m session ===
+tcp: [65] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:222dfe73-2ac9-4e62-be03-8a7510159db9 (non-flash)
+
+=== systemctl status multipathd ===
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; disabled; vendor preset: enabled)
+   Active: inactive (dead)
+
+Apr 25 20:22:14 bv4db-s22-mpath-instance multipathd[87007]: sde [8:64]: path added to devmap mpatha
+Apr 25 20:22:14 bv4db-s22-mpath-instance multipathd[87007]: mpatha: load table [0 3145728000 multipath 0 0 5 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1 service-time 0 1 1 8:48 1 service-time 0 1 1 8:64 1 service-time 0 1 1 8:80 1]
+Apr 25 20:22:14 bv4db-s22-mpath-instance multipathd[87007]: sdf [8:80]: path added to devmap mpatha
+Apr 25 20:22:14 bv4db-s22-mpath-instance multipathd[87007]: reconfigure (operator)
+Apr 25 20:22:14 bv4db-s22-mpath-instance multipathd[87007]: mpatha: load table [0 3145728000 multipath 0 0 5 1 service-time 0 1 1 8:64 1 service-time 0 1 1 8:80 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1 service-time 0 1 1 8:48 1]
+Apr 25 20:22:45 bv4db-s22-mpath-instance systemd[1]: Stopping Device-Mapper Multipath Device Controller...
+Apr 25 20:22:45 bv4db-s22-mpath-instance multipathd[87007]: exit (signal)
+Apr 25 20:22:45 bv4db-s22-mpath-instance multipathd[87007]: --------shut down-------
+Apr 25 20:22:45 bv4db-s22-mpath-instance systemd[1]: multipathd.service: Succeeded.
+Apr 25 20:22:45 bv4db-s22-mpath-instance systemd[1]: Stopped Device-Mapper Multipath Device Controller.
+
+=== multipath -ll ===
+
+=== multipathd show paths ===
+
+=== multipathd show maps ===
+
+=== lsblk ===
+NAME               TYPE  SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk 46.6G BlockVolume      0x60ff555c6b4a44cba53751b5201ff999 
+├─sda1             part  100M                  0x60ff555c6b4a44cba53751b5201ff999 /boot/efi
+├─sda2             part    1G                  0x60ff555c6b4a44cba53751b5201ff999 /boot
+└─sda3             part 45.5G                  0x60ff555c6b4a44cba53751b5201ff999 
+  ├─ocivolume-root lvm  35.5G                                                     /
+  └─ocivolume-oled lvm    10G                                                     /var/oled
+sdb                disk  1.5T BlockVolume      0x60cbc85f207248a7b45b9451eeca36e8 
+

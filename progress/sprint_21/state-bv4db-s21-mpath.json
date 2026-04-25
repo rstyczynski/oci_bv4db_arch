@@ -1,0 +1,51 @@
+{
+  "blockvolume": {
+    "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicy54pyniv6lj7rvhhle2urmjq6eqbupawvfsuz4ozoqwa",
+    "created": true,
+    "device_path": "/dev/oracleoci/oraclevdb",
+    "ipv4": "169.254.2.6",
+    "iqn": "iqn.2015-12.com.oracleiaas:084668dd-f3f7-4fb5-8b29-bbf5a97a846c",
+    "is_multipath": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljryvacj5xnf3f3kzipuuhogbh6vtaviuz535ugqzde2w7wm7trg2ra",
+    "port": 3260,
+    "vpus_per_gb": 120
+  },
+  "compute": {
+    "created": true,
+    "name": "bv4db-s21-mpath-instance",
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxma7bz7wijjtjray25p6j3e2a7we563asbuft2p6rxsa",
+    "private_ip": "10.0.0.76",
+    "public_ip": "140.86.208.181"
+  },
+  "inputs": {
+    "bv_attach_type": "iscsi",
+    "bv_device_path": "/dev/oracleoci/oraclevdb",
+    "bv_is_multipath": true,
+    "bv_size_gb": 1500,
+    "bv_vpus_per_gb": 120,
+    "compute_memory_gb": 32,
+    "compute_ocpus": 8,
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "name_prefix": "bv4db-s21-mpath",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "oci_region": "eu-zurich-1",
+    "subnet_prohibit_public_ip": false
+  },
+  "meta": {
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ],
+    "run_id": "25565-8218-1777122102"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "summary": {
+    "created": 0,
+    "existing": 2,
+    "tested": 0,
+    "failed": 0
+  }
+}

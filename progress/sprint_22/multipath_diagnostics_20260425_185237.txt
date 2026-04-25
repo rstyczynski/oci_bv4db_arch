@@ -1,0 +1,183 @@
+=== date ===
+Sat Apr 25 18:54:28 UTC 2026
+
+=== uname ===
+Linux bv4db-s22-mpath-instance 5.15.0-318.199.3.2.el8uek.x86_64 #2 SMP Mon Mar 9 08:37:04 PDT 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+=== systemctl status iscsid ===
+● iscsid.service - Open-iSCSI
+   Loaded: loaded (/usr/lib/systemd/system/iscsid.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sat 2026-04-25 18:53:39 GMT; 49s ago
+     Docs: man:iscsid(8)
+           man:iscsiuio(8)
+           man:iscsiadm(8)
+ Main PID: 2710 (iscsid)
+   Status: "Ready to process requests"
+    Tasks: 1 (limit: 408940)
+   Memory: 4.1M
+   CGroup: /system.slice/iscsid.service
+           └─2710 /usr/sbin/iscsid -f -d2
+
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: session 4 login response status 0000
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: Connection4:0 to [target: iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465, portal: 169.254.2.5,3260] through [iface: default] is operational now
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: Allocted session 0x557f63f63140
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: session -1 connecting to 169.254.2.6:3260
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: session -1 connected local port 53630 to 169.254.2.6:3260
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: expecting event 11, got 106, handling...
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: Could not set session5 priority. READ/WRITE throughout and latency could be affected.
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: session 5 login response status 0000
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: session 5 login response status 0000
+Apr 25 18:54:25 bv4db-s22-mpath-instance iscsid[2710]: iscsid: Connection5:0 to [target: iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465, portal: 169.254.2.6,3260] through [iface: default] is operational now
+
+=== systemctl status multipathd ===
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2026-04-25 18:54:24 GMT; 4s ago
+ Main PID: 11040 (multipathd)
+   Status: "up"
+    Tasks: 7
+   Memory: 11.8M
+   CGroup: /system.slice/multipathd.service
+           └─11040 /sbin/multipathd -d -s
+
+Apr 25 18:54:24 bv4db-s22-mpath-instance multipathd[11040]: path checkers start up
+Apr 25 18:54:24 bv4db-s22-mpath-instance systemd[1]: Started Device-Mapper Multipath Device Controller.
+Apr 25 18:54:25 bv4db-s22-mpath-instance multipathd[11040]: mpatha: load table [0 3145728000 multipath 0 0 2 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1]
+Apr 25 18:54:25 bv4db-s22-mpath-instance multipathd[11040]: sdc [8:32]: path added to devmap mpatha
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: mpatha: load table [0 3145728000 multipath 0 0 3 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1 service-time 0 1 1 8:48 1]
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: sdd [8:48]: path added to devmap mpatha
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: mpatha: load table [0 3145728000 multipath 0 0 4 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1 service-time 0 1 1 8:48 1 service-time 0 1 1 8:64 1]
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: sde [8:64]: path added to devmap mpatha
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: mpatha: load table [0 3145728000 multipath 0 0 5 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1 service-time 0 1 1 8:48 1 service-time 0 1 1 8:64 1 service-time 0 1 1 8:80 1]
+Apr 25 18:54:26 bv4db-s22-mpath-instance multipathd[11040]: sdf [8:80]: path added to devmap mpatha
+
+=== iscsiadm -m session ===
+tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465 (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465 (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465 (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465 (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465 (non-flash)
+
+=== iscsiadm -m node ===
+169.254.0.2:3260,1 iqn.2015-02.oracle.boot:uefi
+169.254.2.2:3260,4294967295 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465
+169.254.2.3:3260,4294967295 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465
+169.254.2.4:3260,4294967295 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465
+169.254.2.5:3260,4294967295 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465
+169.254.2.6:3260,4294967295 iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465
+
+=== multipath -ll ===
+mpatha (3605786250c4a4d64a167f970feeaa7a6) dm-2 ORACLE,BlockVolume
+size=1.5T features='0' hwhandler='0' wp=rw
+|-+- policy='service-time 0' prio=1 status=active
+| `- 7:0:0:2  sdb 8:16 active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 8:0:0:2  sdc 8:32 active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 9:0:0:2  sdd 8:48 active ready running
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 10:0:0:2 sde 8:64 active ready running
+`-+- policy='service-time 0' prio=1 status=enabled
+  `- 11:0:0:2 sdf 8:80 active ready running
+
+=== multipathd show paths ===
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check     
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan         
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXX... 7/10
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXX... 7/10
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXXX.. 8/10
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXXX.. 8/10
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXXX.. 8/10
+
+=== multipathd show maps ===
+name   sysfs uuid                             
+mpatha dm-2  3605786250c4a4d64a167f970feeaa7a6
+
+=== lsblk ===
+NAME               TYPE   SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk  46.6G BlockVolume      0x6067a81bfe464398ada76ddfbc2acf36 
+|-sda1             part   100M                  0x6067a81bfe464398ada76ddfbc2acf36 /boot/efi
+|-sda2             part     1G                  0x6067a81bfe464398ada76ddfbc2acf36 /boot
+`-sda3             part  45.5G                  0x6067a81bfe464398ada76ddfbc2acf36 
+  |-ocivolume-root lvm   35.5G                                                     /
+  `-ocivolume-oled lvm     10G                                                     /var/oled
+sdb                disk   1.5T BlockVolume      0x605786250c4a4d64a167f970feeaa7a6 
+`-mpatha           mpath  1.5T                                                     
+sdc                disk   1.5T BlockVolume      0x605786250c4a4d64a167f970feeaa7a6 
+`-mpatha           mpath  1.5T                                                     
+sdd                disk   1.5T BlockVolume      0x605786250c4a4d64a167f970feeaa7a6 
+`-mpatha           mpath  1.5T                                                     
+sde                disk   1.5T BlockVolume      0x605786250c4a4d64a167f970feeaa7a6 
+`-mpatha           mpath  1.5T                                                     
+sdf                disk   1.5T BlockVolume      0x605786250c4a4d64a167f970feeaa7a6 
+`-mpatha           mpath  1.5T                                                     
+
+=== dmsetup ls --tree ===
+mpatha (252:2)
+ |- (8:80)
+ |- (8:64)
+ |- (8:48)
+ |- (8:32)
+ `- (8:16)
+ocivolume-oled (252:1)
+ `- (8:3)
+ocivolume-root (252:0)
+ `- (8:3)
+
+=== /dev/oracleoci ===
+total 0
+drwxr-xr-x.  2 root root  140 Apr 25 18:54 .
+drwxr-xr-x. 21 root root 3680 Apr 25 18:54 ..
+lrwxrwxrwx.  1 root root    6 Apr 25 18:53 oraclevda -> ../sda
+lrwxrwxrwx.  1 root root    7 Apr 25 18:53 oraclevda1 -> ../sda1
+lrwxrwxrwx.  1 root root    7 Apr 25 18:53 oraclevda2 -> ../sda2
+lrwxrwxrwx.  1 root root    7 Apr 25 18:53 oraclevda3 -> ../sda3
+lrwxrwxrwx.  1 root root    6 Apr 25 18:54 oraclevdb -> ../sdf
+
+=== udevadm info (oracleoci block device) ===
+P: /devices/platform/host11/session5/target11:0:0/11:0:0:2/block/sdf
+N: sdf
+S: disk/by-id/scsi-3605786250c4a4d64a167f970feeaa7a6
+S: disk/by-id/wwn-0x605786250c4a4d64a167f970feeaa7a6
+S: disk/by-path/ip-169.254.2.6:3260-iscsi-iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465-lun-2
+S: oracleoci/oraclevdb
+E: DEVLINKS=/dev/disk/by-id/wwn-0x605786250c4a4d64a167f970feeaa7a6 /dev/oracleoci/oraclevdb /dev/disk/by-id/scsi-3605786250c4a4d64a167f970feeaa7a6 /dev/disk/by-path/ip-169.254.2.6:3260-iscsi-iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465-lun-2
+E: DEVNAME=/dev/sdf
+E: DEVPATH=/devices/platform/host11/session5/target11:0:0/11:0:0:2/block/sdf
+E: DEVTYPE=disk
+E: DISKSEQ=9
+E: DM_DEL_PART_NODES=1
+E: DM_MULTIPATH_DEVICE_PATH=1
+E: ID_BUS=scsi
+E: ID_FS_TYPE=mpath_member
+E: ID_MODEL=BlockVolume
+E: ID_MODEL_ENC=BlockVolume\x20\x20\x20\x20\x20
+E: ID_PATH=ip-169.254.2.6:3260-iscsi-iqn.2015-12.com.oracleiaas:c834758e-efb4-431d-bcd7-e838ca34f465-lun-2
+E: ID_PATH_TAG=ip-169_254_2_6_3260-iscsi-iqn_2015-12_com_oracleiaas_c834758e-efb4-431d-bcd7-e838ca34f465-lun-2
+E: ID_REVISION=1.0
+E: ID_SCSI=1
+E: ID_SCSI_INQUIRY=1
+E: ID_SERIAL=3605786250c4a4d64a167f970feeaa7a6
+E: ID_SERIAL_SHORT=605786250c4a4d64a167f970feeaa7a6
+E: ID_TYPE=disk
+E: ID_VENDOR=ORACLE
+E: ID_VENDOR_ENC=ORACLE\x20\x20
+E: ID_WWN=0x605786250c4a4d64
+E: ID_WWN_VENDOR_EXTENSION=0xa167f970feeaa7a6
+E: ID_WWN_WITH_EXTENSION=0x605786250c4a4d64a167f970feeaa7a6
+E: MAJOR=8
+E: MINOR=80
+E: MPATH_SBIN_PATH=/sbin
+E: SCSI_IDENT_LUN_NAA_REGEXT=605786250c4a4d64a167f970feeaa7a6
+E: SCSI_MODEL=BlockVolume
+E: SCSI_MODEL_ENC=BlockVolume\x20\x20\x20\x20\x20
+E: SCSI_REVISION=1.0
+E: SCSI_TPGS=0
+E: SCSI_TYPE=disk
+E: SCSI_VENDOR=ORACLE
+E: SCSI_VENDOR_ENC=ORACLE\x20\x20
+E: SUBSYSTEM=block
+E: SYSTEMD_READY=0
+E: TAGS=:systemd:
+E: USEC_INITIALIZED=65810177
+

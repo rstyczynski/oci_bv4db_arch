@@ -1,0 +1,9 @@
+=== fio progress ===
+start_utc: 2026-04-25T20:19:57Z
+profile: randrw_4k
+runtime_sec: 15
+numjobs: 4
+iodepth: 32
+status_interval_sec: 10
+
+[fio] 2026-04-25T20:20:14Z Jobs: 4 (f=4)Jobs: 4 (f=4): [m(4)][18.8%][r=137MiB/s,w=58.9MiB/s][r=35.2k,w=15.1k IOPS][eta 00m:13s]Jobs: 4 (f=4): [m(4)][25.0%][r=135MiB/s,w=58.9MiB/s][r=34.7k,w=15.1k IOPS][eta 00m:12s]Jobs: 4 (f=4): [m(4)][31.2%][r=130MiB/s,w=55.4MiB/s][r=33.2k,w=14.2k IOPS][eta 00m:11s]Jobs: 4 (f=4): [m(4)][37.5%][r=127MiB/s,w=54.5MiB/s][r=32.6k,w=13.0k IOPS][eta 00m:10s]Jobs: 4 (f=4): [m(4)][43.8%][r=131MiB/s,w=56.2MiB/s][r=33.7k,w=14.4k IOPS][eta 00m:09s]Jobs: 4 (f=4): [m(4)][50.0%][r=141MiB/s,w=58.5MiB/s][r=36.0k,w=14.0k IOPS][eta 00m:08s]Jobs: 4 (f=4): [m(4)][56.2%][r=137MiB/s,w=59.6MiB/s][r=34.0k,w=15.2k IOPS][eta 00m:07s]Jobs: 4 (f=4): [m(4)][62.5%][r=131MiB/s,w=57.0MiB/s][r=33.7k,w=14.6k IOPS][eta 00m:06s]Jobs: 4 (f=4): [m(4)][75.0%][r=136MiB/s,w=58.2MiB/s][r=34.8k,w=14.9k IOPS][eta 00m:04s]Jobs: 4 (f=4): [m(4)][81.2%][r=135MiB/s,w=57.2MiB/s][r=34.5k,w=14.7k IOPS][eta 00m:03s]Jobs: 4 (f=4): [m(4)][87.5%][r=137MiB/s,w=59.1MiB/s][r=35.1k,w=15.1k IOPS][eta 00m:02s]Jobs: 4 (f=4): [m(4)][93.8%][r=136MiB/s,w=58.0MiB/s][r=34.7k,w=14.8k IOPS][eta 00m:01s]Jobs: 4 (f=4): [m(4)][100.0%][r=132MiB/s,w=56.7MiB/s][r=33.7k,w=14.5k IOPS][eta 00m:00s]

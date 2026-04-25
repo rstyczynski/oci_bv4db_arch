@@ -1,0 +1,20 @@
+=== label ===
+multipath
+
+=== date ===
+Sat Apr 25 22:25:54 UTC 2026
+
+=== devices ===
+8:16
+8:32
+8:48
+8:64
+8:80
+
+=== iostat -x 1 (captured) ===
+Usage: iostat [ options ] [ <interval> [ <count> ] ]
+Options are:
+[ -c ] [ -d ] [ -h ] [ -k | -m ] [ -N ] [ -s ] [ -t ] [ -V ] [ -x ] [ -y ] [ -z ]
+[ -j { ID | LABEL | PATH | UUID | ... } ] [ --human ] [ -o JSON ]
+[ [ -H ] -g <group_name> ] [ -p [ <device> [,...] | ALL ] ]
+[ <device> [...] | ALL ]

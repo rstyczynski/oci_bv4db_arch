@@ -1,0 +1,74 @@
+=== date ===
+Fri Apr 24 19:30:52 UTC 2026
+
+=== iscsiadm -m session ===
+tcp: [26] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+tcp: [27] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+tcp: [28] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+tcp: [29] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+tcp: [30] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+
+=== systemctl status multipathd ===
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Fri 2026-04-24 19:24:45 GMT; 6min ago
+ Main PID: 79246 (multipathd)
+   Status: "up"
+    Tasks: 7
+   Memory: 11.1M
+   CGroup: /system.slice/multipathd.service
+           └─79246 /sbin/multipathd -d -s
+
+Apr 24 19:27:08 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:27:08 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:28:18 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:28:18 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:29:00 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:29:00 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:29:58 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:29:58 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:30:51 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:30:51 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+
+=== multipath -ll ===
+mpatha (360f36e8b85e34af0a5f419936b1281c0) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=enabled
+  |- 12:0:0:2 sdg 8:96 active ready running
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  `- 10:0:0:2 sde 8:64 active ready running
+
+=== multipathd show paths ===
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check       
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan           
+12:0:0:2 sdg 8:96  1   active ready  running XXXX...... 53/120
+7:0:0:2  sdb 8:16  1   active ready  running XXXX...... 54/120
+8:0:0:2  sdc 8:32  1   active ready  running XXXX...... 54/120
+9:0:0:2  sdd 8:48  1   active ready  running XXXX...... 55/120
+10:0:0:2 sde 8:64  1   active ready  running XXXX...... 55/120
+
+=== multipathd show maps ===
+name   sysfs uuid                             
+mpatha dm-2  360f36e8b85e34af0a5f419936b1281c0
+
+=== lsblk ===
+NAME               TYPE   SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk  46.6G BlockVolume      0x60df51a3c3f74a40978be4fccb0ba99f 
+├─sda1             part   100M                  0x60df51a3c3f74a40978be4fccb0ba99f /boot/efi
+├─sda2             part     1G                  0x60df51a3c3f74a40978be4fccb0ba99f /boot
+└─sda3             part  45.5G                  0x60df51a3c3f74a40978be4fccb0ba99f 
+  ├─ocivolume-root lvm   35.5G                                                     /
+  └─ocivolume-oled lvm     10G                                                     /var/oled
+sdb                disk   1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+└─mpatha           mpath  1.5T                                                     /mnt/sprint20
+sdc                disk   1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+└─mpatha           mpath  1.5T                                                     /mnt/sprint20
+sdd                disk   1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+└─mpatha           mpath  1.5T                                                     /mnt/sprint20
+sde                disk   1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+└─mpatha           mpath  1.5T                                                     /mnt/sprint20
+sdg                disk   1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+└─mpatha           mpath  1.5T                                                     /mnt/sprint20
+

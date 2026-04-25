@@ -1,0 +1,48 @@
+=== label ===
+singlepath_pre
+
+=== date ===
+Sat Apr 25 22:13:14 UTC 2026
+
+=== findmnt (mountpoint) ===
+/dev/sdb xfs    /mnt/sprint23
+
+=== mount | grep mountpoint ===
+/dev/sdb on /mnt/sprint23 type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota,_netdev)
+
+=== /etc/fstab (mountpoint + tags) ===
+31:/dev/disk/by-path/ip-169.254.2.2:3260-iscsi-iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5-lun-2 /mnt/sprint23 xfs defaults,_netdev,nofail 0 2 # bv4db-sprint23
+
+=== iscsiadm -m session ===
+tcp: [11] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:8ae7f62a-c86e-4df8-ae43-6054b57e46c5 (non-flash)
+
+=== multipath -ll ===
+
+=== ls -la /dev/oracleoci ===
+total 0
+drwxr-xr-x.  2 root root  140 Apr 25 22:13 .
+drwxr-xr-x. 21 root root 3420 Apr 25 22:13 ..
+lrwxrwxrwx.  1 root root    6 Apr 25 22:03 oraclevda -> ../sda
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda1 -> ../sda1
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda2 -> ../sda2
+lrwxrwxrwx.  1 root root    7 Apr 25 22:03 oraclevda3 -> ../sda3
+lrwxrwxrwx.  1 root root    6 Apr 25 22:13 oraclevdb -> ../sdb
+
+=== ls -la /dev/mapper ===
+total 0
+drwxr-xr-x.  2 root root     100 Apr 25 22:13 .
+drwxr-xr-x. 21 root root    3420 Apr 25 22:13 ..
+crw-------.  1 root root 10, 236 Apr 25 22:03 control
+lrwxrwxrwx.  1 root root       7 Apr 25 22:03 ocivolume-oled -> ../dm-1
+lrwxrwxrwx.  1 root root       7 Apr 25 22:03 ocivolume-root -> ../dm-0
+
+=== lsblk ===
+NAME               TYPE  SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk 46.6G BlockVolume      0x60d4770077d74d1b9d5ed675f40564bf 
+├─sda1             part  100M                  0x60d4770077d74d1b9d5ed675f40564bf /boot/efi
+├─sda2             part    1G                  0x60d4770077d74d1b9d5ed675f40564bf /boot
+└─sda3             part 45.5G                  0x60d4770077d74d1b9d5ed675f40564bf 
+  ├─ocivolume-root lvm  35.5G                                                     /
+  └─ocivolume-oled lvm    10G                                                     /var/oled
+sdb                disk  1.5T BlockVolume      0x60debd75f3ad4e8d93bb56045cd9cb1d /mnt/sprint23
+

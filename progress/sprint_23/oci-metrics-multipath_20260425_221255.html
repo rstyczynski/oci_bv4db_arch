@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 23 OCI Metrics Dashboard (bv4db multipath A/B with LB policy)</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-alt: #eef2f5;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #d9e2ec;
+      --brand: #146672;
+      --accent: #ea7a15;
+      --ok: #4c7c2a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Oracle Sans", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 45%, #eef3f7 100%);
+      color: var(--ink);
+    }
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 32px 24px 48px;
+    }
+    .hero {
+      background: radial-gradient(circle at top right, rgba(234,122,21,0.18), transparent 30%), linear-gradient(135deg, #ffffff 0%, #edf4f6 100%);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px 32px;
+      box-shadow: 0 18px 42px rgba(31, 41, 51, 0.08);
+      margin-bottom: 24px;
+    }
+    h1, h2, h3, h4, p { margin: 0; }
+    h1 { font-size: 2rem; margin-bottom: 12px; }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .meta-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+    .meta-card span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .toc {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin-top: 18px;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .toc ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    .toc li + li {
+      margin-top: 6px;
+    }
+    .toc a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+    .class-section,
+    .resource-section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      margin-top: 20px;
+      box-shadow: 0 12px 30px rgba(31, 41, 51, 0.05);
+    }
+    .class-head,
+    .resource-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 22px;
+      cursor: pointer;
+      list-style: none;
+    }
+    .class-head::-webkit-details-marker,
+    .resource-head::-webkit-details-marker {
+      display: none;
+    }
+    .class-body,
+    .resource-body {
+      padding: 0 22px 22px;
+    }
+    .resource-head code {
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow-x: auto;
+      max-width: 50%;
+    }
+    .count-chip {
+      background: rgba(234,122,21,0.10);
+      border: 1px solid rgba(234,122,21,0.18);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 8px 12px;
+      white-space: nowrap;
+    }
+    .eyebrow {
+      color: var(--brand);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 18px;
+    }
+    .metric-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .metric-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .metric-head h4 {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    .stat-chip {
+      background: rgba(20,102,114,0.10);
+      border: 1px solid rgba(20,102,114,0.18);
+      color: var(--brand);
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      letter-spacing: 0.05em;
+    }
+    .metric-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+      gap: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .metric-meta strong {
+      color: var(--ink);
+    }
+    .metric-chart {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f8fafb;
+    }
+    .chart-bg {
+      fill: #f8fafb;
+    }
+    .grid-line {
+      stroke: #d9e2ec;
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+    }
+    .axis-line {
+      stroke: #9fb3c8;
+      stroke-width: 1.25;
+    }
+    .axis-label {
+      fill: #52606d;
+      font-size: 11px;
+      font-family: "Oracle Sans", "Helvetica Neue", Arial, sans-serif;
+    }
+    .empty-chart {
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      background: #f8fafb;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    @media (max-width: 800px) {
+      .page { padding: 18px 14px 30px; }
+      .hero { padding: 20px 18px; border-radius: 18px; }
+      .class-head,
+      .resource-head { flex-direction: column; }
+      .resource-head code { max-width: 100%; }
+      .metric-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">OCI Metrics Dashboard</p>
+      <h1>Sprint 23 OCI Metrics Dashboard (bv4db multipath A/B with LB policy)</h1>
+      <p>OCI Monitoring data collected after the benchmark window and rendered into summary cards plus time-series charts.</p>
+      <div class="hero-meta">
+        <div class="meta-card"><span>Start time</span><strong>2026-04-25T22:05:19Z</strong></div>
+        <div class="meta-card"><span>End time</span><strong>2026-04-25T22:14:51Z</strong></div>
+        <div class="meta-card"><span>Resolution</span><strong>1m</strong></div>
+        <div class="meta-card"><span>Resources</span><strong>3</strong></div>
+      </div>
+      <nav class="toc" aria-label="Table of contents">
+        <h2>Table of Contents</h2>
+        <ul>
+          
+<li>
+  <a href="#class-blockvolume">Blockvolume</a>
+  <ul>
+    <li><a href="#class-blockvolume-resource-blockvolume">blockvolume</a></li>
+  </ul>
+</li>
+
+<li>
+  <a href="#class-compute">Compute</a>
+  <ul>
+    <li><a href="#class-compute-resource-compute">compute</a></li>
+  </ul>
+</li>
+
+<li>
+  <a href="#class-network">Network</a>
+  <ul>
+    <li><a href="#class-network-resource-primary-vnic">primary_vnic</a></li>
+  </ul>
+</li>
+
+        </ul>
+      </nav>
+    </section>
+    
+<details class="class-section" id="class-blockvolume" open>
+  <summary class="class-head">
+    <div>
+      <p class="eyebrow">Resource class</p>
+      <h2>Blockvolume</h2>
+    </div>
+    <span class="count-chip">1 resources</span>
+  </summary>
+  <div class="class-body">
+    
+<details class="resource-section" id="class-blockvolume-resource-blockvolume" open>
+  <summary class="resource-head">
+    <div>
+      <p class="eyebrow">Blockvolume</p>
+      <h3>blockvolume</h3>
+    </div>
+    <code>ocid1.volume.oc1.eu-zurich-1.ab5heljrlrurzlgjdyx5e43xkiqjrafhbj4lhjtxvtazf7d75oliyovrasga</code>
+  </summary>
+  <div class="resource-body">
+    <div class="metric-grid">
+      
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VolumeReadOps (ops)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 (160.50)</strong></span>
+    <span>Avg: <strong>102767.36</strong></span>
+    <span>Max: <strong>411562.60</strong></span>
+    <span>Latest: <strong>0.00</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">205781.30</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">411562.60</text>
+  <polyline points="52.00,187.93 144.86,187.91 237.71,188.00 330.57,151.79 423.43,18.00 516.29,54.77 609.14,188.00 702.00,188.00" fill="none" stroke="#146672" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="187.93" r="3.5" fill="#146672"><title>2026-04-25T22:06:00+00:00: 160.50</title></circle><circle cx="144.86" cy="187.91" r="3.5" fill="#146672"><title>2026-04-25T22:07:00+00:00: 207.00</title></circle><circle cx="237.71" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:08:00+00:00: 0.00</title></circle><circle cx="330.57" cy="151.79" r="3.5" fill="#146672"><title>2026-04-25T22:09:00+00:00: 87653.20</title></circle><circle cx="423.43" cy="18.00" r="3.5" fill="#146672"><title>2026-04-25T22:10:00+00:00: 411562.60</title></circle><circle cx="516.29" cy="54.77" r="3.5" fill="#146672"><title>2026-04-25T22:11:00+00:00: 322555.60</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:12:00+00:00: 0.00</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VolumeReadThroughput (bytes/interval)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 MiB (3.33 MiB)</strong></span>
+    <span>Avg: <strong>402.17 MiB</strong></span>
+    <span>Max: <strong>1607.70 MiB</strong></span>
+    <span>Latest: <strong>0.00 MiB</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">803.85</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">1607.70</text>
+  <polyline points="52.00,187.65 144.86,187.58 237.71,188.00 330.57,151.79 423.43,18.00 516.29,54.76 609.14,188.00 702.00,188.00" fill="none" stroke="#ea7a15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="187.65" r="3.5" fill="#ea7a15"><title>2026-04-25T22:06:00+00:00: 3.33</title></circle><circle cx="144.86" cy="187.58" r="3.5" fill="#ea7a15"><title>2026-04-25T22:07:00+00:00: 3.96</title></circle><circle cx="237.71" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:08:00+00:00: 0.00</title></circle><circle cx="330.57" cy="151.79" r="3.5" fill="#ea7a15"><title>2026-04-25T22:09:00+00:00: 342.40</title></circle><circle cx="423.43" cy="18.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:10:00+00:00: 1607.70</title></circle><circle cx="516.29" cy="54.76" r="3.5" fill="#ea7a15"><title>2026-04-25T22:11:00+00:00: 1260.01</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:12:00+00:00: 0.00</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VolumeWriteOps (ops)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 (0.40)</strong></span>
+    <span>Avg: <strong>45775.60</strong></span>
+    <span>Max: <strong>176834.40</strong></span>
+    <span>Latest: <strong>0.00</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">88417.20</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">176834.40</text>
+  <polyline points="52.00,188.00 144.86,187.84 237.71,188.00 330.57,138.87 423.43,18.00 516.29,55.24 609.14,188.00 702.00,188.00" fill="none" stroke="#4c7c2a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:06:00+00:00: 0.00</title></circle><circle cx="144.86" cy="187.84" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:07:00+00:00: 163.60</title></circle><circle cx="237.71" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:08:00+00:00: 0.40</title></circle><circle cx="330.57" cy="138.87" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:09:00+00:00: 51110.20</title></circle><circle cx="423.43" cy="18.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:10:00+00:00: 176834.40</title></circle><circle cx="516.29" cy="55.24" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:11:00+00:00: 138095.80</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:12:00+00:00: 0.40</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VolumeWriteThroughput (bytes/interval)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 MiB (150.50 MiB)</strong></span>
+    <span>Avg: <strong>600.60 MiB</strong></span>
+    <span>Max: <strong>3424.06 MiB</strong></span>
+    <span>Latest: <strong>0.00 MiB</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">1712.03</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">3424.06</text>
+  <polyline points="52.00,188.00 144.86,180.53 237.71,188.00 330.57,18.00 423.43,153.70 516.29,161.22 609.14,188.00 702.00,188.00" fill="none" stroke="#8f4db8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:06:00+00:00: 0.00</title></circle><circle cx="144.86" cy="180.53" r="3.5" fill="#8f4db8"><title>2026-04-25T22:07:00+00:00: 150.50</title></circle><circle cx="237.71" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:08:00+00:00: 0.00</title></circle><circle cx="330.57" cy="18.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:09:00+00:00: 3424.06</title></circle><circle cx="423.43" cy="153.70" r="3.5" fill="#8f4db8"><title>2026-04-25T22:10:00+00:00: 690.77</title></circle><circle cx="516.29" cy="161.22" r="3.5" fill="#8f4db8"><title>2026-04-25T22:11:00+00:00: 539.44</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:12:00+00:00: 0.00</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+    </div>
+  </div>
+</details>
+
+  </div>
+</details>
+
+<details class="class-section" id="class-compute" open>
+  <summary class="class-head">
+    <div>
+      <p class="eyebrow">Resource class</p>
+      <h2>Compute</h2>
+    </div>
+    <span class="count-chip">1 resources</span>
+  </summary>
+  <div class="class-body">
+    
+<details class="resource-section" id="class-compute-resource-compute" open>
+  <summary class="resource-head">
+    <div>
+      <p class="eyebrow">Compute</p>
+      <h3>compute</h3>
+    </div>
+    <code>ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicrs75auly36txwzyfocics3vzll5v5dqyv23nmde7bhmq</code>
+  </summary>
+  <div class="resource-body">
+    <div class="metric-grid">
+      
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>CpuUtilization (percent)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.01%</strong></span>
+    <span>Avg: <strong>2.03%</strong></span>
+    <span>Max: <strong>4.31%</strong></span>
+    <span>Latest: <strong>0.01%</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.01</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">2.16</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">4.31</text>
+  <polyline points="52.00,151.87 144.86,66.91 237.71,18.00 330.57,43.46 423.43,53.64 516.29,160.84 609.14,183.02 702.00,188.00" fill="none" stroke="#146672" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="151.87" r="3.5" fill="#146672"><title>2026-04-25T22:06:00+00:00: 0.92</title></circle><circle cx="144.86" cy="66.91" r="3.5" fill="#146672"><title>2026-04-25T22:07:00+00:00: 3.07</title></circle><circle cx="237.71" cy="18.00" r="3.5" fill="#146672"><title>2026-04-25T22:08:00+00:00: 4.31</title></circle><circle cx="330.57" cy="43.46" r="3.5" fill="#146672"><title>2026-04-25T22:09:00+00:00: 3.67</title></circle><circle cx="423.43" cy="53.64" r="3.5" fill="#146672"><title>2026-04-25T22:10:00+00:00: 3.41</title></circle><circle cx="516.29" cy="160.84" r="3.5" fill="#146672"><title>2026-04-25T22:11:00+00:00: 0.70</title></circle><circle cx="609.14" cy="183.02" r="3.5" fill="#146672"><title>2026-04-25T22:12:00+00:00: 0.13</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:13:00+00:00: 0.01</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>DiskBytesRead (bytes/s)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 MiB/s (0.03 MiB/s)</strong></span>
+    <span>Avg: <strong>34.26 MiB/s</strong></span>
+    <span>Max: <strong>133.83 MiB/s</strong></span>
+    <span>Latest: <strong>0.00 MiB/s</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">66.92</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">133.83</text>
+  <polyline points="52.00,181.94 144.86,188.00 237.71,175.78 330.57,18.00 423.43,28.82 516.29,187.39 609.14,187.96 702.00,188.00" fill="none" stroke="#ea7a15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="181.94" r="3.5" fill="#ea7a15"><title>2026-04-25T22:06:00+00:00: 4.77</title></circle><circle cx="144.86" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:07:00+00:00: 0.00</title></circle><circle cx="237.71" cy="175.78" r="3.5" fill="#ea7a15"><title>2026-04-25T22:08:00+00:00: 9.62</title></circle><circle cx="330.57" cy="18.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:09:00+00:00: 133.83</title></circle><circle cx="423.43" cy="28.82" r="3.5" fill="#ea7a15"><title>2026-04-25T22:10:00+00:00: 125.31</title></circle><circle cx="516.29" cy="187.39" r="3.5" fill="#ea7a15"><title>2026-04-25T22:11:00+00:00: 0.48</title></circle><circle cx="609.14" cy="187.96" r="3.5" fill="#ea7a15"><title>2026-04-25T22:12:00+00:00: 0.03</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>DiskBytesWritten (bytes/s)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.02 MiB/s</strong></span>
+    <span>Avg: <strong>55.43 MiB/s</strong></span>
+    <span>Max: <strong>285.37 MiB/s</strong></span>
+    <span>Latest: <strong>0.02 MiB/s</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.02</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">142.70</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">285.37</text>
+  <polyline points="52.00,170.85 144.86,183.02 237.71,18.00 330.57,153.76 423.43,156.01 516.29,183.84 609.14,186.47 702.00,188.00" fill="none" stroke="#4c7c2a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="170.85" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:06:00+00:00: 28.81</title></circle><circle cx="144.86" cy="183.02" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:07:00+00:00: 8.39</title></circle><circle cx="237.71" cy="18.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:08:00+00:00: 285.37</title></circle><circle cx="330.57" cy="153.76" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:09:00+00:00: 57.50</title></circle><circle cx="423.43" cy="156.01" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:10:00+00:00: 53.72</title></circle><circle cx="516.29" cy="183.84" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:11:00+00:00: 7.01</title></circle><circle cx="609.14" cy="186.47" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:12:00+00:00: 2.60</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:13:00+00:00: 0.02</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>MemoryUtilization (percent)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>2.09%</strong></span>
+    <span>Avg: <strong>2.85%</strong></span>
+    <span>Max: <strong>3.79%</strong></span>
+    <span>Latest: <strong>2.33%</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">2.09</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">2.94</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">3.79</text>
+  <polyline points="52.00,188.00 144.86,100.62 237.71,55.70 330.57,18.00 423.43,47.10 516.29,156.36 609.14,163.68 702.00,164.09" fill="none" stroke="#8f4db8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:06:00+00:00: 2.09</title></circle><circle cx="144.86" cy="100.62" r="3.5" fill="#8f4db8"><title>2026-04-25T22:07:00+00:00: 2.96</title></circle><circle cx="237.71" cy="55.70" r="3.5" fill="#8f4db8"><title>2026-04-25T22:08:00+00:00: 3.41</title></circle><circle cx="330.57" cy="18.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:09:00+00:00: 3.79</title></circle><circle cx="423.43" cy="47.10" r="3.5" fill="#8f4db8"><title>2026-04-25T22:10:00+00:00: 3.50</title></circle><circle cx="516.29" cy="156.36" r="3.5" fill="#8f4db8"><title>2026-04-25T22:11:00+00:00: 2.40</title></circle><circle cx="609.14" cy="163.68" r="3.5" fill="#8f4db8"><title>2026-04-25T22:12:00+00:00: 2.33</title></circle><circle cx="702.00" cy="164.09" r="3.5" fill="#8f4db8"><title>2026-04-25T22:13:00+00:00: 2.33</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+    </div>
+  </div>
+</details>
+
+  </div>
+</details>
+
+<details class="class-section" id="class-network" open>
+  <summary class="class-head">
+    <div>
+      <p class="eyebrow">Resource class</p>
+      <h2>Network</h2>
+    </div>
+    <span class="count-chip">1 resources</span>
+  </summary>
+  <div class="class-body">
+    
+<details class="resource-section" id="class-network-resource-primary-vnic" open>
+  <summary class="resource-head">
+    <div>
+      <p class="eyebrow">Network</p>
+      <h3>primary_vnic</h3>
+    </div>
+    <code>ocid1.vnic.oc1.eu-zurich-1.ab5heljrmrfmcam5zegsr3s35oibsfp6c4hf5euxaqdz2szhxfahfywayfga</code>
+  </summary>
+  <div class="resource-body">
+    <div class="metric-grid">
+      
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VnicEgressDropsSecurityList (packets)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00</strong></span>
+    <span>Avg: <strong>0.00</strong></span>
+    <span>Max: <strong>0.00</strong></span>
+    <span>Latest: <strong>0.00</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">0.50</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">1.00</text>
+  <polyline points="52.00,188.00 144.86,188.00 237.71,188.00 330.57,188.00 423.43,188.00 516.29,188.00 609.14,188.00 702.00,188.00" fill="none" stroke="#146672" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:06:00+00:00: 0.00</title></circle><circle cx="144.86" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:07:00+00:00: 0.00</title></circle><circle cx="237.71" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:08:00+00:00: 0.00</title></circle><circle cx="330.57" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:09:00+00:00: 0.00</title></circle><circle cx="423.43" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:10:00+00:00: 0.00</title></circle><circle cx="516.29" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:11:00+00:00: 0.00</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:12:00+00:00: 0.00</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#146672"><title>2026-04-25T22:13:00+00:00: 0.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VnicFromNetworkBytes (bytes/interval)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.02 MiB</strong></span>
+    <span>Avg: <strong>2158.73 MiB</strong></span>
+    <span>Max: <strong>8085.80 MiB</strong></span>
+    <span>Latest: <strong>0.02 MiB</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.02</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">4042.91</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">8085.80</text>
+  <polyline points="52.00,188.00 144.86,179.92 237.71,182.81 330.57,94.85 423.43,18.00 516.29,101.94 609.14,187.39 702.00,188.00" fill="none" stroke="#ea7a15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:06:00+00:00: 0.08</title></circle><circle cx="144.86" cy="179.92" r="3.5" fill="#ea7a15"><title>2026-04-25T22:07:00+00:00: 384.46</title></circle><circle cx="237.71" cy="182.81" r="3.5" fill="#ea7a15"><title>2026-04-25T22:08:00+00:00: 246.72</title></circle><circle cx="330.57" cy="94.85" r="3.5" fill="#ea7a15"><title>2026-04-25T22:09:00+00:00: 4430.49</title></circle><circle cx="423.43" cy="18.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:10:00+00:00: 8085.80</title></circle><circle cx="516.29" cy="101.94" r="3.5" fill="#ea7a15"><title>2026-04-25T22:11:00+00:00: 4093.12</title></circle><circle cx="609.14" cy="187.39" r="3.5" fill="#ea7a15"><title>2026-04-25T22:12:00+00:00: 29.11</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#ea7a15"><title>2026-04-25T22:13:00+00:00: 0.02</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VnicIngressDropsSecurityList (packets)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.00 (1.00)</strong></span>
+    <span>Avg: <strong>1.62</strong></span>
+    <span>Max: <strong>3.00</strong></span>
+    <span>Latest: <strong>3.00</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.00</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">1.50</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">3.00</text>
+  <polyline points="52.00,188.00 144.86,188.00 237.71,131.33 330.57,131.33 423.43,74.67 516.29,18.00 609.14,18.00 702.00,18.00" fill="none" stroke="#4c7c2a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:06:00+00:00: 0.00</title></circle><circle cx="144.86" cy="188.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:07:00+00:00: 0.00</title></circle><circle cx="237.71" cy="131.33" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:08:00+00:00: 1.00</title></circle><circle cx="330.57" cy="131.33" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:09:00+00:00: 1.00</title></circle><circle cx="423.43" cy="74.67" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:10:00+00:00: 2.00</title></circle><circle cx="516.29" cy="18.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:11:00+00:00: 3.00</title></circle><circle cx="609.14" cy="18.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:12:00+00:00: 3.00</title></circle><circle cx="702.00" cy="18.00" r="3.5" fill="#4c7c2a"><title>2026-04-25T22:13:00+00:00: 3.00</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+<article class="metric-card">
+  <div class="metric-head">
+    <h4>VnicToNetworkBytes (bytes/interval)</h4>
+    <span class="stat-chip"></span>
+  </div>
+  <div class="metric-meta">
+    <span>Points: <strong>8</strong></span>
+    <span>Min: <strong>0.07 MiB</strong></span>
+    <span>Avg: <strong>3096.64 MiB</strong></span>
+    <span>Max: <strong>18535.70 MiB</strong></span>
+    <span>Latest: <strong>0.07 MiB</strong></span>
+  </div>
+  
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="metric chart">
+  <rect x="0" y="0" width="720" height="220" class="chart-bg"/>
+  <line x1="52" y1="18" x2="52" y2="188" class="axis-line"/>
+  <line x1="52" y1="188" x2="702" y2="188" class="axis-line"/>
+  <line x1="52" y1="188.00" x2="702" y2="188.00" class="grid-line"/><text x="44" y="192.00" class="axis-label" text-anchor="end">0.07</text><line x1="52" y1="103.00" x2="702" y2="103.00" class="grid-line"/><text x="44" y="107.00" class="axis-label" text-anchor="end">9267.88</text><line x1="52" y1="18.00" x2="702" y2="18.00" class="grid-line"/><text x="44" y="22.00" class="axis-label" text-anchor="end">18535.70</text>
+  <polyline points="52.00,188.00 144.86,181.02 237.71,187.99 330.57,18.00 423.43,154.59 516.29,171.20 609.14,188.00 702.00,188.00" fill="none" stroke="#8f4db8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="52.00" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:06:00+00:00: 0.09</title></circle><circle cx="144.86" cy="181.02" r="3.5" fill="#8f4db8"><title>2026-04-25T22:07:00+00:00: 760.90</title></circle><circle cx="237.71" cy="187.99" r="3.5" fill="#8f4db8"><title>2026-04-25T22:08:00+00:00: 0.88</title></circle><circle cx="330.57" cy="18.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:09:00+00:00: 18535.70</title></circle><circle cx="423.43" cy="154.59" r="3.5" fill="#8f4db8"><title>2026-04-25T22:10:00+00:00: 3642.81</title></circle><circle cx="516.29" cy="171.20" r="3.5" fill="#8f4db8"><title>2026-04-25T22:11:00+00:00: 1832.33</title></circle><circle cx="609.14" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:12:00+00:00: 0.32</title></circle><circle cx="702.00" cy="188.00" r="3.5" fill="#8f4db8"><title>2026-04-25T22:13:00+00:00: 0.07</title></circle>
+  <text x="52.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:06:00+00:00</text><text x="423.43" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:10:00+00:00</text><text x="702.00" y="212" class="axis-label" text-anchor="middle">2026-04-25 22:13:00+00:00</text>
+</svg>
+
+</article>
+
+    </div>
+  </div>
+</details>
+
+  </div>
+</details>
+
+  </main>
+</body>
+</html>

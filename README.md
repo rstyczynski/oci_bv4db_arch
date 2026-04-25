@@ -17,6 +17,7 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
   - [1. Entry-Level Block Volume](#1-entry-level-block-volume)
   - [2. Single-Volume OCI Tiers](#2-single-volume-oci-tiers)
   - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
+- [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23)
 - [Direct Comparison](#direct-comparison)
 - [What To Use In Practice](#what-to-use-in-practice)
 - [RMAN and FRA During Production](#rman-and-fra-during-production)
@@ -58,6 +59,8 @@ Oracle also recommends placing the Fast Recovery Area on separate storage from t
 <a href="https://docs.oracle.com/html/E10642_06/rcmconfb.htm" target="_blank" rel="noopener noreferrer">Configuring the RMAN Environment</a>.
 
 Because this repository is specifically about OCI, the practical conclusions also depend on OCI block volume performance levels, UHP attachment behavior, multipath, and instance-side block volume limits.
+
+Sprints **22** and **23** document how this project actually exercises **UHP iSCSI multipath on the instance**: Sprint 22 establishes **HA-correct** multipath (paths aggregated via dm-multipath, mount on the mapper device), optional **`/etc/fstab`** persistence with `_netdev` and `nofail`, and a reproducible **multipath versus single-path** A/B benchmark with **OCI Monitoring** reports and timestamps aligned to fio. Sprint 23 keeps that baseline and adds an **explicit `multipath.conf`** load-balancing policy for the multipath phase (multibus + round-robin intent), richer **before/after configuration** captures, and **bounded `iostat`** during fio so path-level behavior is visible in artifacts. Details and runbooks are in [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23).
 
 ## The Three Layouts
 
@@ -127,6 +130,8 @@ Relevant OCI references:
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
 
+The tier numbers above assume a healthy attachment stack on the instance. For **how this repository validates multipath, fstab, single-path fallback, and optional load balancing** on UHP iSCSI, see [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23).
+
 ### 3. Multiple Volumes With Storage-Domain Separation
 
 This is the practical Oracle layout used by the current repository baseline:
@@ -164,11 +169,31 @@ Relevant OCI references:
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
 
+## UHP iSCSI multipath evidence (Sprints 22 and 23)
+
+Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
+
+**Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** (multiple iSCSI sessions, dm-multipath map, filesystem on the mapper, not on a raw path-only device) from **throughput spread across paths**, which default dm-multipath policies can keep effectively single-path while still being HA-safe. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
+
+**Sprint 23 — Sprint 22 plus explicit load-balancing configuration.** The same A/B engine and fstab story apply; Sprint 23 additionally writes a documented **`/etc/multipath.conf`** stanza for OCI Block Volume (for example multibus with round-robin path selection when enabled), archives **pre/post** configuration snapshots around the multipath phase, extends diagnostics (including `multipath -t`, `dmsetup`, and fstab lines in diagnostic bundles), and captures **bounded `iostat -x` during fio** so path activity is visible without an unbounded capture.
+
+Practical references:
+
+- Sprint 22 operator guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
+- Sprint 23 operator guide: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
+- Sprint 22 design (HA vs load balancing): [progress/sprint_22/sprint_22_design.md](progress/sprint_22/sprint_22_design.md)
+- Sprint 23 design (policy and artifacts): [progress/sprint_23/sprint_23_design.md](progress/sprint_23/sprint_23_design.md)
+- A/B runners: [tools/run_bv4db_fio_multipath_ab_sprint22.sh](tools/run_bv4db_fio_multipath_ab_sprint22.sh), [tools/run_bv4db_fio_multipath_ab_sprint23.sh](tools/run_bv4db_fio_multipath_ab_sprint23.sh)
+- Multipath diagnostics entry points: [tools/run_bv4db_multipath_diag_sprint22.sh](tools/run_bv4db_multipath_diag_sprint22.sh), [tools/run_bv4db_multipath_diag_sprint23.sh](tools/run_bv4db_multipath_diag_sprint23.sh)
+- Shared benchmark core (also used by earlier multipath sprints): [tools/run_bv4db_fio_multipath_ab_sprint20.sh](tools/run_bv4db_fio_multipath_ab_sprint20.sh)
+
 ## Direct Comparison
 
 The most important comparison in the repository is now the OCI tier matrix from Sprint 10, with Sprint 9 retained as the UHP reference.
 
-Those runs keep the same Oracle fio workload and guest-visible Oracle layout model. The variables are:
+That matrix varies **OCI tier and volume topology** while holding the Oracle-style fio layout model steady. It does not, by itself, prove how multipathed UHP iSCSI behaves on the Linux instance; for **multipath versus single-path** and **host-side policy** evidence on a database-class guest, use [Sprints 22 and 23](#uhp-iscsi-multipath-evidence-sprints-22-and-23) alongside the tier numbers below.
+
+The Sprint 9 and Sprint 10 runs keep the same Oracle fio workload and guest-visible Oracle layout model. The variables are:
 
 - OCI block volume performance tier
 - single-volume versus multi-volume topology
@@ -221,6 +246,7 @@ Use single UHP volume when:
 - the database is still fairly small
 - more headroom is needed than a basic entry-level volume can provide
 - one shared contention domain is acceptable
+- you care about **iSCSI multipath on the instance** (HA vs deliberate single-path, fstab, optional load balancing); see [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23)
 
 Use multiple separated volumes when:
 
@@ -261,6 +287,8 @@ Oracle also documents archived redo handling inside FRA:
 - Sprint 10 higher-performance single analysis: [progress/sprint_10/fio-analysis-oracle-hp-single-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-hp-single-4k-redo-integration.md)
 - Sprint 10 higher-performance multi analysis: [progress/sprint_10/fio-analysis-oracle-hp-multi-4k-redo-integration.md](progress/sprint_10/fio-analysis-oracle-hp-multi-4k-redo-integration.md)
 - Sprint 9 UHP baseline guide: [progress/sprint_9/oracle_block_volume_baseline_guide.md](progress/sprint_9/oracle_block_volume_baseline_guide.md)
+- Sprint 22 UHP iSCSI multipath + fstab + A/B guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
+- Sprint 23 explicit multipath load balancing, deeper diagnostics, and iostat during fio: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
 
 ## Official OCI References
 

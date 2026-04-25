@@ -1,0 +1,46 @@
+=== date ===
+Fri Apr 24 19:41:57 UTC 2026
+
+=== iscsiadm -m session ===
+tcp: [31] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0b14e469-8896-4a72-8fa8-61084c722421 (non-flash)
+
+=== systemctl status multipathd ===
+● multipathd.service - Device-Mapper Multipath Device Controller
+   Loaded: loaded (/usr/lib/systemd/system/multipathd.service; disabled; vendor preset: enabled)
+   Active: inactive (dead)
+
+Apr 24 19:39:29 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:40:39 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:40:39 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:41:19 bv4db-s20-mpath-instance multipathd[79246]: Multipath configuration updated.
+Apr 24 19:41:19 bv4db-s20-mpath-instance multipathd[79246]: Reload multipathd for changes to take effect
+Apr 24 19:41:55 bv4db-s20-mpath-instance systemd[1]: Stopping Device-Mapper Multipath Device Controller...
+Apr 24 19:41:55 bv4db-s20-mpath-instance multipathd[79246]: exit (signal)
+Apr 24 19:41:55 bv4db-s20-mpath-instance multipathd[79246]: --------shut down-------
+Apr 24 19:41:55 bv4db-s20-mpath-instance systemd[1]: multipathd.service: Succeeded.
+Apr 24 19:41:55 bv4db-s20-mpath-instance systemd[1]: Stopped Device-Mapper Multipath Device Controller.
+
+=== multipath -ll ===
+mpatha (360f36e8b85e34af0a5f419936b1281c0) dm-2 ##,##
+size=1.5T features='3 retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=0 status=active
+  |- #:#:#:#  -   #:#  active undef unknown
+  |- #:#:#:#  -   #:#  active undef unknown
+  |- #:#:#:#  -   #:#  active undef unknown
+  |- #:#:#:#  -   #:#  active undef unknown
+  `- #:#:#:#  -   #:#  active undef unknown
+
+=== multipathd show paths ===
+
+=== multipathd show maps ===
+
+=== lsblk ===
+NAME               TYPE  SIZE MODEL            WWN                                MOUNTPOINT
+sda                disk 46.6G BlockVolume      0x60df51a3c3f74a40978be4fccb0ba99f 
+├─sda1             part  100M                  0x60df51a3c3f74a40978be4fccb0ba99f /boot/efi
+├─sda2             part    1G                  0x60df51a3c3f74a40978be4fccb0ba99f /boot
+└─sda3             part 45.5G                  0x60df51a3c3f74a40978be4fccb0ba99f 
+  ├─ocivolume-root lvm  35.5G                                                     /
+  └─ocivolume-oled lvm    10G                                                     /var/oled
+sdf                disk  1.5T BlockVolume      0x60f36e8b85e34af0a5f419936b1281c0 
+

@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "created": 3,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "67205-27739-1777143832",
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-04-25T19:05:17Z"
+  },
+  "inputs": {
+    "oci_region": "eu-zurich-1",
+    "name_prefix": "bv4db-s22-mpath",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 16,
+    "compute_memory_gb": 64,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "bv_size_gb": 1500,
+    "bv_vpus_per_gb": 120,
+    "bv_attach_type": "iscsi",
+    "bv_is_multipath": true,
+    "bv_device_path": "/dev/oracleoci/oraclevdb"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicta26yuooyu5l7siasemvnarla6p7v5yxj6il3l6d7nya",
+    "created": true,
+    "name": "bv4db-s22-mpath-instance",
+    "public_ip": "140.238.174.166",
+    "private_ip": "10.0.0.254",
+    "deleted": true
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr3fwxa6pcvpkphxnaurckql5xutz7boa6zkz4fuymi7oqlg4diamq",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdb",
+    "is_multipath": true,
+    "vpus_per_gb": 120,
+    "iqn": "iqn.2015-12.com.oracleiaas:8719337b-89ab-4b79-be25-b2a3bd3dc831",
+    "ipv4": "169.254.2.2",
+    "port": 3260,
+    "deleted": true
+  }
+}

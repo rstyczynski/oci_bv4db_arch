@@ -20,6 +20,18 @@
   - archives artifacts under `progress/sprint_20/`
   - tears down resources
 
+## Multipath attachment (OCI quirk)
+
+- OCI supports multipath iSCSI attachments, but the OCI CLI subcommand we use for iSCSI attach
+  (`oci compute volume-attachment attach-iscsi-volume`) does **not** expose a flag to request
+  a multipath-enabled attachment.
+- Implementation:
+  - sprint scripts set `.inputs.bv_is_multipath=true`
+  - `oci_scaffold/resource/ensure-blockvolume.sh` performs the attach via `oci raw-request`
+    (`POST /20160918/volumeAttachments` with `isMultipath:true`) when `.inputs.bv_is_multipath=true`
+  - if an existing attachment is present but not multipath-enabled, `ensure-blockvolume.sh`
+    detaches and re-attaches to enforce multipath
+
 ## Artifacts
 
 - `progress/sprint_20/multipath_diagnostics_*.txt`

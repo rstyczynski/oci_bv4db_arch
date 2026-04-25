@@ -1,0 +1,9 @@
+=== fio progress ===
+start_utc: 2026-04-25T20:26:06Z
+profile: randrw_4k
+runtime_sec: 5
+numjobs: 4
+iodepth: 32
+status_interval_sec: 10
+
+[fio] 2026-04-25T20:26:12Z Jobs: 4 (f=4)Jobs: 4 (f=4): [m(4)][50.0%][r=131MiB/s,w=56.3MiB/s][r=33.6k,w=14.4k IOPS][eta 00m:03s]Jobs: 4 (f=4): [m(4)][66.7%][r=133MiB/s,w=57.7MiB/s][r=34.1k,w=14.8k IOPS][eta 00m:02s]Jobs: 4 (f=4): [m(4)][83.3%][r=140MiB/s,w=60.1MiB/s][r=35.9k,w=15.4k IOPS][eta 00m:01s]Jobs: 4 (f=4): [m(4)][100.0%][r=144MiB/s,w=61.7MiB/s][r=36.9k,w=15.8k IOPS][eta 00m:00s]
