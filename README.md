@@ -8,7 +8,7 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
 2. single-volume OCI tiers from Balanced to UHP
 3. multi-volume OCI tiers with Oracle-style storage-domain separation
 
-![Architecture Diagram](model/model.svg)
+![Architecture Diagram](model/storage_view.svg)
 
 ## Table of Contents
 
