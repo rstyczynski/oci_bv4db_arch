@@ -227,13 +227,13 @@ This is the comparison this repository makes explicit:
 - **Multipath (HA correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a raw path device. This is the default “correct attachment” goal.
 - **Multipath + load balancing (distribution evidence)**: HA-correct multipath plus an explicit dm-multipath policy (for example round-robin) so I/O distribution across active paths is observable in evidence (for example bounded `iostat -x` during fio).
 
-Direct comparison (attachment mode):
+Direct comparison (Sprint 23 measured result, fio `randrw_4k`):
 
-| Mode | Primary intent | Mount source (expected) | Path distribution (expected) | Evidence focus | Where this repo proves it |
-| --- | --- | --- | --- | --- | --- |
-| Single-path | Controlled baseline (no redundancy) | Single iSCSI path device (by-path) | One path only | “What breaks/changes when redundancy is removed” | Sprint 22 A/B and Sprint 23 A/B (`singlepath` phase artifacts + diagnostics) |
-| Multipath (HA) | Correct aggregation + failover | `/dev/mapper/mpath*` (or WWID) | May still look like “one hot path” | Multipath map exists + filesystem uses mapper | Sprint 22 (HA baseline), Sprint 23 (same HA baseline) |
-| Multipath (load balancing) | Distribution evidence | `/dev/mapper/mpath*` (or WWID) | Multiple active paths carry I/O during the window | Policy + per-path I/O evidence (bounded `iostat -x`) | Sprint 23 (explicit dm-multipath policy + distribution evidence) |
+| Mode | Total BW (MB/s) | Read BW (MB/s) / IOPS | Write BW (MB/s) / IOPS | Mean clat read/write (ms) | Notes |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Single-path | 194.46 | 135.94 / 33,200 | 58.52 / 14,290 | 2.851 / 2.314 | Baseline with one iSCSI path (no redundancy). Artifact: `progress/sprint_23/fio_singlepath_20260425_222528.json` |
+| Multipath (HA, default policy `service-time`) | 198.12 | 138.51 / 33,827 | 59.61 / 14,557 | 2.577 / 2.775 | HA-correct multipath without explicit load-balancing. Artifact: `progress/sprint_23/fio_multipath_20260425_220513.json` |
+| Multipath (load balancing, `round-robin`) | 665.78 | 465.42 / 113,638 | 200.36 / 48,923 | 0.755 / 0.813 | HA-correct multipath with explicit dm-multipath policy for distribution evidence. Artifact: `progress/sprint_23/fio_multipath_20260425_222528.json` |
 
 Important: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
 
