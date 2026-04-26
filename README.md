@@ -12,18 +12,22 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
 
 ## Table of Contents
 
-- [What This Repository Proves](#what-this-repository-proves)
-- [The Three Layouts](#the-three-layouts)
-  - [1. Entry-Level Block Volume](#1-entry-level-block-volume)
-  - [2. Single-Volume OCI Tiers](#2-single-volume-oci-tiers)
-  - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
-- [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23)
-- [Direct Comparison](#direct-comparison)
-- [What To Use In Practice](#what-to-use-in-practice)
-- [RMAN and FRA During Production](#rman-and-fra-during-production)
-- [Relevant Project Artifacts](#relevant-project-artifacts)
-- [Official OCI References](#official-oci-references)
-- [Official Oracle References](#official-oracle-references)
+- [OCI Block Volume for Oracle Database Architecture](#oci-block-volume-for-oracle-database-architecture)
+  - [Table of Contents](#table-of-contents)
+  - [What This Repository Proves](#what-this-repository-proves)
+  - [The Three Layouts](#the-three-layouts)
+    - [1. Entry-Level Block Volume](#1-entry-level-block-volume)
+    - [2. Single-Volume OCI Tiers](#2-single-volume-oci-tiers)
+    - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
+  - [Direct Comparison](#direct-comparison)
+  - [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity)
+    - [Single-path vs multipath (HA) vs multipath (load balancing)](#single-path-vs-multipath-ha-vs-multipath-load-balancing)
+    - [Sprint summary](#sprint-summary)
+  - [What To Use In Practice](#what-to-use-in-practice)
+  - [RMAN and FRA During Production](#rman-and-fra-during-production)
+  - [Relevant Project Artifacts](#relevant-project-artifacts)
+  - [Official OCI References](#official-oci-references)
+  - [Official Oracle References](#official-oracle-references)
 
 ## What This Repository Proves
 
@@ -215,7 +219,7 @@ Single-volume safety clarification:
 
 That is the central OCI Oracle result of this repository.
 
-## UHP iSCSI multipath evidence (Sprints 22 and 23)
+## UHP iSCSI multipath connectivity
 
 Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
 
