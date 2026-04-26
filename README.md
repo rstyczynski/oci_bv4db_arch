@@ -22,7 +22,7 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
   - [Direct Comparison](#direct-comparison)
   - [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity)
     - [Single-path vs multipath (HA) vs multipath (load balancing)](#single-path-vs-multipath-ha-vs-multipath-load-balancing)
-    - [Sprint summary](#sprint-summary)
+    - [Multipath HA vs. load balancing sprint summary](#multipath-ha-vs-load-balancing-sprint-summary)
   - [What To Use In Practice](#what-to-use-in-practice)
   - [RMAN and FRA During Production](#rman-and-fra-during-production)
   - [Relevant Project Artifacts](#relevant-project-artifacts)
@@ -228,8 +228,8 @@ Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across
 This is the comparison this repository makes explicit:
 
 - **Single-path (intentional limitation)**: one iSCSI path is logged in and the filesystem is mounted from a single path device. This is used only as a controlled baseline to show what changes when redundancy is removed.
-- **Multipath (HA correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a raw path device. This is the default “correct attachment” goal.
-- **Multipath + load balancing (distribution evidence)**: HA-correct multipath plus an explicit dm-multipath policy (for example round-robin) so I/O distribution across active paths is observable in evidence (for example bounded `iostat -x` during fio).
+- **Multipath (HA correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a raw path device. This is the default “correct attachment” goal. Validated in [Sprint 22](progress/sprint_22/sprint22_manual.md).
+- **Multipath + load balancing (distribution evidence)**: HA-correct multipath plus an explicit dm-multipath policy (for example round-robin) so I/O distribution across active paths is observable in evidence (for example bounded `iostat -x` during fio). Validated in [Sprint 23](progress/sprint_23/sprint23_manual.md).
 
 Direct comparison (Sprint 23 measured result, fio `randrw_4k`):
 
@@ -248,25 +248,15 @@ Direct comparison (Sprint 23 A/B headline, total BW only):
 
 Important: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
 
-Performance diagram (draw.io “Performance” page):
+Optimal performance configuration is presented on below diagram. REDO volume gets parallel communication what limits latency; even with one block volume multipath delivers clear benefit, what may be compared to multiple devices in classic hardware setup. FRA withy typically bigger data transfers gets maximum block volume's bandwidth. DATA gets both: minimized latency and the bandwidth.
 
 ![Performance Diagram](model/performance_multipath.svg)
 
-### Sprint summary
+### Multipath HA vs. load balancing sprint summary
 
 **Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** from **throughput spread across paths**. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
 
 **Sprint 23 — Sprint 22 plus explicit load-balancing configuration.** The same A/B engine and fstab story apply; Sprint 23 additionally writes a documented **`/etc/multipath.conf`** stanza for OCI Block Volume (for example multibus with round-robin intent), archives **pre/post** configuration snapshots around the multipath phase, extends diagnostics (including `multipath -t`, `dmsetup`, and fstab lines in diagnostic bundles), and captures **bounded `iostat -x` during fio** so path activity is visible without an unbounded capture.
-
-Practical references:
-
-- Sprint 22 operator guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
-- Sprint 23 operator guide: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
-- Sprint 22 design (HA vs load balancing): [progress/sprint_22/sprint_22_design.md](progress/sprint_22/sprint_22_design.md)
-- Sprint 23 design (policy and artifacts): [progress/sprint_23/sprint_23_design.md](progress/sprint_23/sprint_23_design.md)
-- A/B runners: [tools/run_bv4db_fio_multipath_ab_sprint22.sh](tools/run_bv4db_fio_multipath_ab_sprint22.sh), [tools/run_bv4db_fio_multipath_ab_sprint23.sh](tools/run_bv4db_fio_multipath_ab_sprint23.sh)
-- Multipath diagnostics entry points: [tools/run_bv4db_multipath_diag_sprint22.sh](tools/run_bv4db_multipath_diag_sprint22.sh), [tools/run_bv4db_multipath_diag_sprint23.sh](tools/run_bv4db_multipath_diag_sprint23.sh)
-- Shared benchmark core (also used by earlier multipath sprints): [tools/run_bv4db_fio_multipath_ab_sprint20.sh](tools/run_bv4db_fio_multipath_ab_sprint20.sh)
 
 ## What To Use In Practice
 
