@@ -173,6 +173,18 @@ Relevant OCI references:
 
 Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
 
+### HA vs link aggregation vs multipath (what this repo means)
+
+This repository uses the following meanings (aligned with Sprint 22/23 wording):
+
+- **HA multipath (correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a single raw path device.
+- **Link aggregation / load balancing (distribution evidence)**: I/O is intentionally distributed across active paths during the benchmark window (for example via an explicit dm-multipath policy such as round-robin).
+- **Important**: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
+
+Performance diagram (draw.io “Performance” page):
+
+![Performance Diagram](model/performance.svg)
+
 **Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** (multiple iSCSI sessions, dm-multipath map, filesystem on the mapper, not on a raw path-only device) from **throughput spread across paths**, which default dm-multipath policies can keep effectively single-path while still being HA-safe. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
 
 **Sprint 23 — Sprint 22 plus explicit load-balancing configuration.** The same A/B engine and fstab story apply; Sprint 23 additionally writes a documented **`/etc/multipath.conf`** stanza for OCI Block Volume (for example multibus with round-robin path selection when enabled), archives **pre/post** configuration snapshots around the multipath phase, extends diagnostics (including `multipath -t`, `dmsetup`, and fstab lines in diagnostic bundles), and captures **bounded `iostat -x` during fio** so path activity is visible without an unbounded capture.
