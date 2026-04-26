@@ -183,7 +183,7 @@ This repository uses the following meanings (aligned with Sprint 22/23 wording):
 
 Performance diagram (draw.io “Performance” page):
 
-![Performance Diagram](model/performance.svg)
+![Performance Diagram](model/performance_multipath.svg)
 
 **Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** (multiple iSCSI sessions, dm-multipath map, filesystem on the mapper, not on a raw path-only device) from **throughput spread across paths**, which default dm-multipath policies can keep effectively single-path while still being HA-safe. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
 
