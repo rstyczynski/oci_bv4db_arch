@@ -169,41 +169,11 @@ Relevant OCI references:
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/attachingavolume.htm" target="_blank" rel="noopener noreferrer">OCI Attaching a Block Volume to an Instance</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/connectingtoavolume.htm" target="_blank" rel="noopener noreferrer">OCI Connecting to a Block Volume</a>
 
-## UHP iSCSI multipath evidence (Sprints 22 and 23)
-
-Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
-
-### HA vs link aggregation vs multipath (what this repo means)
-
-This repository uses the following meanings (aligned with Sprint 22/23 wording):
-
-- **HA multipath (correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a single raw path device.
-- **Link aggregation / load balancing (distribution evidence)**: I/O is intentionally distributed across active paths during the benchmark window (for example via an explicit dm-multipath policy such as round-robin).
-- **Important**: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
-
-Performance diagram (draw.io “Performance” page):
-
-![Performance Diagram](model/performance_multipath.svg)
-
-**Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** (multiple iSCSI sessions, dm-multipath map, filesystem on the mapper, not on a raw path-only device) from **throughput spread across paths**, which default dm-multipath policies can keep effectively single-path while still being HA-safe. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
-
-**Sprint 23 — Sprint 22 plus explicit load-balancing configuration.** The same A/B engine and fstab story apply; Sprint 23 additionally writes a documented **`/etc/multipath.conf`** stanza for OCI Block Volume (for example multibus with round-robin path selection when enabled), archives **pre/post** configuration snapshots around the multipath phase, extends diagnostics (including `multipath -t`, `dmsetup`, and fstab lines in diagnostic bundles), and captures **bounded `iostat -x` during fio** so path activity is visible without an unbounded capture.
-
-Practical references:
-
-- Sprint 22 operator guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
-- Sprint 23 operator guide: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
-- Sprint 22 design (HA vs load balancing): [progress/sprint_22/sprint_22_design.md](progress/sprint_22/sprint_22_design.md)
-- Sprint 23 design (policy and artifacts): [progress/sprint_23/sprint_23_design.md](progress/sprint_23/sprint_23_design.md)
-- A/B runners: [tools/run_bv4db_fio_multipath_ab_sprint22.sh](tools/run_bv4db_fio_multipath_ab_sprint22.sh), [tools/run_bv4db_fio_multipath_ab_sprint23.sh](tools/run_bv4db_fio_multipath_ab_sprint23.sh)
-- Multipath diagnostics entry points: [tools/run_bv4db_multipath_diag_sprint22.sh](tools/run_bv4db_multipath_diag_sprint22.sh), [tools/run_bv4db_multipath_diag_sprint23.sh](tools/run_bv4db_multipath_diag_sprint23.sh)
-- Shared benchmark core (also used by earlier multipath sprints): [tools/run_bv4db_fio_multipath_ab_sprint20.sh](tools/run_bv4db_fio_multipath_ab_sprint20.sh)
-
 ## Direct Comparison
 
 The most important comparison in the repository is now the OCI tier matrix from Sprint 10, with Sprint 9 retained as the UHP reference.
 
-That matrix varies **OCI tier and volume topology** while holding the Oracle-style fio layout model steady. It does not, by itself, prove how multipathed UHP iSCSI behaves on the Linux instance; for **multipath versus single-path** and **host-side policy** evidence on a database-class guest, use [Sprints 22 and 23](#uhp-iscsi-multipath-evidence-sprints-22-and-23) alongside the tier numbers below.
+That matrix varies **OCI tier and volume topology** while holding the Oracle-style fio layout model steady. It does not, by itself, prove how multipathed UHP iSCSI behaves on the Linux instance; for **multipath versus single-path** and **host-side policy** evidence on a database-class guest, use the **UHP iSCSI multipath evidence** section below alongside the tier numbers.
 
 The Sprint 9 and Sprint 10 runs keep the same Oracle fio workload and guest-visible Oracle layout model. The variables are:
 
@@ -245,6 +215,40 @@ Single-volume safety clarification:
 
 That is the central OCI Oracle result of this repository.
 
+## UHP iSCSI multipath evidence (Sprints 22 and 23)
+
+Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
+
+### Single-path vs multipath (HA) vs multipath (load balancing)
+
+This is the comparison this repository makes explicit:
+
+- **Single-path (intentional limitation)**: one iSCSI path is logged in and the filesystem is mounted from a single path device. This is used only as a controlled baseline to show what changes when redundancy is removed.
+- **Multipath (HA correctness)**: multiple iSCSI sessions/paths are present, dm-multipath aggregates them into a mapper device, and the filesystem is mounted on `/dev/mapper/mpath*` (or WWID) rather than on a raw path device. This is the default “correct attachment” goal.
+- **Multipath + load balancing (distribution evidence)**: HA-correct multipath plus an explicit dm-multipath policy (for example round-robin) so I/O distribution across active paths is observable in evidence (for example bounded `iostat -x` during fio).
+
+Important: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
+
+Performance diagram (draw.io “Performance” page):
+
+![Performance Diagram](model/performance_multipath.svg)
+
+### Sprint summary
+
+**Sprint 22 — HA multipath baseline (not load balancing by default).** The sprint separates **HA multipath correctness** from **throughput spread across paths**. It adds optional **fstab** management for the sprint mountpoint, **A/B fio** in multipath mode then again after switching to single-path, **timestamped fio progress**, and **OCI metrics** exports scoped to each run for correlation.
+
+**Sprint 23 — Sprint 22 plus explicit load-balancing configuration.** The same A/B engine and fstab story apply; Sprint 23 additionally writes a documented **`/etc/multipath.conf`** stanza for OCI Block Volume (for example multibus with round-robin intent), archives **pre/post** configuration snapshots around the multipath phase, extends diagnostics (including `multipath -t`, `dmsetup`, and fstab lines in diagnostic bundles), and captures **bounded `iostat -x` during fio** so path activity is visible without an unbounded capture.
+
+Practical references:
+
+- Sprint 22 operator guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
+- Sprint 23 operator guide: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
+- Sprint 22 design (HA vs load balancing): [progress/sprint_22/sprint_22_design.md](progress/sprint_22/sprint_22_design.md)
+- Sprint 23 design (policy and artifacts): [progress/sprint_23/sprint_23_design.md](progress/sprint_23/sprint_23_design.md)
+- A/B runners: [tools/run_bv4db_fio_multipath_ab_sprint22.sh](tools/run_bv4db_fio_multipath_ab_sprint22.sh), [tools/run_bv4db_fio_multipath_ab_sprint23.sh](tools/run_bv4db_fio_multipath_ab_sprint23.sh)
+- Multipath diagnostics entry points: [tools/run_bv4db_multipath_diag_sprint22.sh](tools/run_bv4db_multipath_diag_sprint22.sh), [tools/run_bv4db_multipath_diag_sprint23.sh](tools/run_bv4db_multipath_diag_sprint23.sh)
+- Shared benchmark core (also used by earlier multipath sprints): [tools/run_bv4db_fio_multipath_ab_sprint20.sh](tools/run_bv4db_fio_multipath_ab_sprint20.sh)
+
 ## What To Use In Practice
 
 Use entry-level block volume when:
@@ -258,7 +262,7 @@ Use single UHP volume when:
 - the database is still fairly small
 - more headroom is needed than a basic entry-level volume can provide
 - one shared contention domain is acceptable
-- you care about **iSCSI multipath on the instance** (HA vs deliberate single-path, fstab, optional load balancing); see [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23)
+- you care about **iSCSI multipath on the instance** (HA vs deliberate single-path, and optional load balancing); see **UHP iSCSI multipath evidence (Sprints 22 and 23)** below
 
 Use multiple separated volumes when:
 
