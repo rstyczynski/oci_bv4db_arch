@@ -235,6 +235,13 @@ Direct comparison (Sprint 23 measured result, fio `randrw_4k`):
 | Multipath (HA, default policy `service-time`) | 198.12 | 138.51 / 33,827 | 59.61 / 14,557 | 2.577 / 2.775 | HA-correct multipath without explicit load-balancing. Artifact: `progress/sprint_23/fio_multipath_20260425_220513.json` |
 | Multipath (load balancing, `round-robin`) | 665.78 | 465.42 / 113,638 | 200.36 / 48,923 | 0.755 / 0.813 | HA-correct multipath with explicit dm-multipath policy for distribution evidence. Artifact: `progress/sprint_23/fio_multipath_20260425_222528.json` |
 
+Direct comparison (Sprint 23 A/B headline, total BW only):
+
+| Mode | Total BW (MB/s) | Source |
+| --- | ---: | --- |
+| Multipath (HA/LB run) | 634.94 | `progress/sprint_23/fio_compare_20260425_222528.md` |
+| Single-path (same run) | 185.45 | `progress/sprint_23/fio_compare_20260425_222528.md` |
+
 Important: HA-correct multipath does **not** automatically imply observable path distribution. Default dm-multipath policies can remain effectively “one hot path” while still being HA-safe.
 
 Performance diagram (draw.io “Performance” page):
