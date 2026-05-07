@@ -1,5 +1,0 @@
-# Sprint 24 new tests — used by tests/run.sh --new-only
-
-# Integration tests
-integration:test_sprint24_oci_agent_multipath.sh
-
