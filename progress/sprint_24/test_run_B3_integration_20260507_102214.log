@@ -1,0 +1,378 @@
+
+=== Running integration tests (20 selected) ===
+
+--- integration:test_bv4db_mixed8k.sh ---
+
+=== BV4DB Integration Tests — Sprint 3 ===
+
+=== IT-10: mixed 8k fio profile file present ===
+  [PASS] IT-10: mixed-8k fio profile file present
+=== IT-11: smoke run completed on Sprint 2 topology ===
+  [PASS] IT-11: mixed-8k smoke runtime is 60 seconds
+=== IT-12: smoke analysis written ===
+  [PASS] IT-12: smoke analysis created
+=== IT-13: smoke resources torn down automatically ===
+  [PASS] IT-13: Sprint 3 archived state indicates automatic teardown
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint10.sh ---
+
+=== BV4DB Integration Tests — Sprint 10 ===
+
+=== IT-35: Sprint 10 fio profile exists ===
+  [PASS] IT-35: sprint 10 fio profile exists
+=== IT-36: Sprint 10 artifacts exist ===
+  [PASS] IT-36: sprint 10 fio artifacts exist
+=== IT-37: Sprint 10 analyses exist ===
+  [PASS] IT-37: sprint 10 analysis artifacts exist
+=== IT-38: Sprint 10 teardown archived state ===
+  [PASS] IT-38: teardown archived state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint5.sh ---
+
+=== BV4DB Integration Tests — Sprint 5 ===
+
+=== IT-20: Corrected Sprint 5 fio profile present ===
+  [PASS] IT-20: corrected Sprint 5 profile present
+=== IT-21: Smoke run produces per-job fio output ===
+  [PASS] IT-21: smoke fio output contains distinct per-job results
+=== IT-22: Integration run produces per-job fio output ===
+  [PASS] IT-22: integration fio output contains distinct per-job results
+=== IT-23: iostat and analysis artifacts present ===
+  [PASS] IT-23: iostat and analysis artifacts present
+=== IT-24: Sprint 5 resources torn down automatically ===
+  [PASS] IT-24: Sprint 5 archived deleted state files confirm automatic teardown
+
+Results: 5 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint8.sh ---
+
+=== BV4DB Integration Tests — Sprint 8 ===
+
+=== IT-27: Sprint 8 reuses Sprint 5 fio profile ===
+  [PASS] IT-27: Sprint 8 reuses the Sprint 5 fio profile
+=== IT-28: Sprint 8 integration artifacts present ===
+  [PASS] IT-28: Sprint 8 integration artifacts present
+=== IT-29: Sprint 8 preserves per-job fio output ===
+  [PASS] IT-29: per-job fio output preserved
+=== IT-30: Sprint 8 documents single-UHP layout and tears resources down ===
+  [PASS] IT-30: Sprint 8 teardown archived deleted state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint9.sh ---
+
+=== BV4DB Integration Tests — Sprint 9 ===
+
+=== IT-31: Sprint 9 profile uses 4 KB redo ===
+  [PASS] IT-31: sprint 9 fio profile uses 4 KB redo
+=== IT-32: Sprint 9 artifacts exist for both layouts ===
+  [PASS] IT-32: sprint 9 artifacts exist for both layouts
+=== IT-33: Sprint 9 preserves per-job output ===
+  [PASS] IT-33: per-job output preserved with 4 KB redo
+=== IT-34: Sprint 9 teardown archived state files ===
+  [PASS] IT-34: sprint 9 teardown archived state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle.sh ---
+
+=== BV4DB Integration Tests — Sprint 4 ===
+
+=== IT-14: Oracle fio profile file present ===
+  [PASS] IT-14: Oracle fio profile has all three job sections
+=== IT-15: Smoke run completed on Oracle layout ===
+  [PASS] IT-15: Oracle smoke run completed with runtime=60 and 1 aggregated fio record(s)
+=== IT-16: Device utilization captured ===
+  [PASS] IT-16: iostat JSON captured
+=== IT-17: I/O isolation validated ===
+  [PASS] IT-17: iostat shows isolated activity on data, redo, and FRA devices
+=== IT-18: Resources torn down automatically ===
+  [PASS] IT-18: Sprint 4 archived deleted state files confirm automatic teardown
+=== IT-19: Analysis document present ===
+  [PASS] IT-19: analysis document present
+
+Results: 6 passed, 0 failed
+
+--- integration:test_bv4db_perf.sh ---
+
+=== BV4DB Integration Tests — Sprint 2 ===
+
+=== IT-5: Maximum-performance compute instance provisioned ===
+  [PASS] IT-5: Sprint 2 benchmark compute recorded as VM.Standard.E5.Flex with 40 OCPUs
+=== IT-6: Ultra High Performance block volume attached ===
+  [PASS] IT-6: UHP volume recorded with 120 VPUs/GB and multipath-enabled attachment
+=== IT-7: 60-second fio benchmark completed ===
+  [PASS] IT-7: fio runtime totals 60 seconds
+=== IT-8: per-workload fio artifacts and analysis written ===
+  [PASS] IT-8: Sprint 2 per-workload artifacts and analysis created
+=== IT-9: Benchmark resources torn down automatically ===
+  [PASS] IT-9: Sprint 2 archived state indicates automatic teardown
+
+Results: 5 passed, 0 failed
+
+--- integration:test_bv4db.sh ---
+
+=== BV4DB Integration Tests — Sprint 1 ===
+
+=== IT-1: Infrastructure provisioned ===
+  [PASS] IT-1: infra state complete (compartment, subnet, secret, pubkey)
+=== IT-2: SSH access using key from vault ===
+  [SKIP] IT-2: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-3: Block volume mounted at /mnt/bv ===
+  [SKIP] IT-3: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-4: fio performance report produced ===
+  [PASS] IT-4: fio-results.json valid — seq read 11 IOPS 11 MB/s, rand read 1520 IOPS 6 MB/s
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_metrics_operate.sh ---
+
+=== BV4DB Integration Tests — Sprint 11 ===
+
+=== IT-39: Sprint 11 metrics artifacts exist ===
+  [PASS] IT-39: metrics artifacts exist
+=== IT-40: Sprint 11 metrics report has expected sections ===
+  [PASS] IT-40: report sections present
+=== IT-41: Sprint 11 metrics state contains test window ===
+  [PASS] IT-41: metrics state contains required fields
+=== IT-42: Sprint 11 metrics refactor structure exists ===
+  [PASS] IT-42: shared and resource-specific metrics files exist
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_metrics_report_html.sh ---
+
+=== BV4DB Integration Tests — Sprint 12 ===
+
+=== IT-43: Sprint 12 metrics artifacts exist ===
+  [PASS] IT-43: markdown, html, and raw metrics artifacts exist
+=== IT-44: Sprint 12 HTML report contains sections and charts ===
+  [PASS] IT-44: html report contains sections and charts
+=== IT-45: Sprint 12 metrics state includes multiple block volumes ===
+  [PASS] IT-45: metrics state contains multiple block volumes
+=== IT-46: Sprint 12 markdown report keeps summary sections ===
+  [PASS] IT-46: markdown report sections present
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_scaffold_sync.sh ---
+
+=== BV4DB Smoke Tests — Sprint 6 ===
+
+=== IT-25: Scaffold smoke report present ===
+  [PASS] IT-25: scaffold smoke report recorded attached block volume
+=== IT-26: Scaffold smoke teardown complete ===
+  [PASS] IT-26: scaffold smoke state archived after teardown
+
+Results: 2 passed, 0 failed
+
+--- integration:test_oracle_db_sprint13.sh ---
+
+=== BV4DB Integration Tests — Sprint 13 ===
+
+=== IT-47: Sprint 13 design documentation exists ===
+  [PASS] IT-47: sprint 13 design documentation exists
+=== IT-48: Sprint 13 summary report exists ===
+  [PASS] IT-48: sprint 13 summary report exists
+=== IT-49: Sprint 13 installation logs exist ===
+  [PASS] IT-49: sprint 13 installation logs exist
+=== IT-50: Sprint 13 database status shows OPEN ===
+  [PASS] IT-50: database status shows OPEN
+=== IT-51: Sprint 13 state files exist ===
+  [PASS] IT-51: sprint 13 state files exist
+=== IT-52: Sprint 13 scripts are executable ===
+  [PASS] IT-52: sprint 13 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint14.sh ---
+
+=== BV4DB Integration Tests — Sprint 14 ===
+
+=== IT-53: Sprint 14 design documentation exists ===
+  [PASS] IT-53: sprint 14 design documentation exists
+=== IT-54: Sprint 14 workload results exist ===
+  [PASS] IT-54: workload results exist
+=== IT-55: Sprint 14 AWR snapshots captured ===
+  [PASS] IT-55: AWR snapshots captured (begin=2, end=3)
+=== IT-56: Sprint 14 AWR report generated ===
+  [PASS] IT-56: AWR report generated
+=== IT-57: Sprint 14 summary report exists ===
+  [PASS] IT-57: sprint 14 summary report exists
+=== IT-58: Sprint 14 scripts are executable ===
+  [PASS] IT-58: sprint 14 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint15.sh ---
+
+=== BV4DB Integration Tests — Sprint 15 ===
+
+=== IT-59: Sprint 15 documentation exists ===
+  [PASS] IT-59: sprint 15 documentation exists
+=== IT-60: Sprint 15 scripts exist and are executable ===
+  [PASS] IT-60: sprint 15 scripts exist and are executable
+=== IT-61: Sprint 15 scripts pass bash syntax check ===
+  [PASS] IT-61: sprint 15 scripts pass bash syntax check
+=== IT-62: Sprint 15 runner wires Swingbench and AWR ===
+  [PASS] IT-62: sprint 15 runner wires Swingbench and AWR
+=== IT-63: Sprint 15 HTML report exists and contains benchmark sections ===
+  [PASS] IT-63: sprint 15 HTML report exists and contains benchmark sections
+=== IT-64: Sprint 15 uses a project-owned Swingbench config file ===
+  [PASS] IT-64: sprint 15 uses a project-owned Swingbench config file
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint16.sh ---
+
+=== BV4DB Integration Tests — Sprint 16 ===
+
+=== IT-69: Sprint 16 documentation exists ===
+  [PASS] IT-69: sprint 16 documentation exists
+=== IT-70: Sprint 16 analysis references required source evidence ===
+  [PASS] IT-70: sprint 16 analysis references required source evidence
+=== IT-71: Sprint 16 required source artifacts exist ===
+  [PASS] IT-71: sprint 16 required source artifacts exist
+
+Results: 3 passed, 0 failed
+
+--- integration:test_oracle_db_sprint17.sh ---
+
+=== BV4DB Integration Tests — Sprint 17 ===
+
+=== IT-65: Sprint 17 documentation exists ===
+  [PASS] IT-65: sprint 17 documentation exists
+=== IT-66: Sprint 17 scripts exist and are executable ===
+  [PASS] IT-66: sprint 17 scripts exist and are executable
+=== IT-67: Sprint 17 runner wires both phases and metrics ===
+  [PASS] IT-67: sprint 17 runner wires both phases and metrics
+=== IT-68: Sprint 17 report artifacts exist ===
+  [PASS] IT-68: sprint 17 report artifacts exist
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oracle_db_sprint18.sh ---
+
+=== BV4DB Integration Tests — Sprint 18 ===
+
+=== IT-72: Sprint 18 documentation exists ===
+  [PASS] IT-72: sprint 18 documentation exists
+=== IT-73: Sprint 18 wrapper enforces mirror-run parameters ===
+  [PASS] IT-73: sprint 18 wrapper enforces mirror-run parameters
+=== IT-74: Sprint 18 report artifacts exist ===
+  [PASS] IT-74: sprint 18 report artifacts exist
+=== IT-75: Oracle DB install enforces project storage layout ===
+  [PASS] IT-75: Oracle DB install enforces project storage layout
+=== IT-76: metrics path includes boot volume ===
+  [PASS] IT-76: metrics path includes boot volume
+
+Results: 5 passed, 0 failed
+
+--- integration:test_sprint20_multipath_ab.sh ---
+
+=== BV4DB Integration Tests — Sprint 20/21 ===
+
+=== IT-1: Sprint 20/21 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: Diagnostics artifacts exist (if run has been executed) ===
+  [PASS] IT-2: found diagnostics artifact: diag_multipath_20260424_192428.txt
+=== IT-3: fio results + comparison exist (if run has been executed) ===
+  [PASS] IT-3: found fio artifacts: fio_multipath_20260424_194104.json, fio_compare_20260424_194737.md
+
+Results: 3 passed, 0 failed
+
+--- integration:test_sprint22_fstab.sh ---
+
+========================================
+=== BV4DB Integration Tests - Sprint 22 ===
+========================================
+
+=== IT-1: Sprint 22 scripts exist and are executable ===
+    OK: run_bv4db_multipath_diag_sprint22.sh
+    OK: run_bv4db_fio_multipath_ab_sprint22.sh
+    OK: bv4db_sprint22_fstab.sh
+  [PASS] IT-1: all scripts present and executable
+=== IT-2: Sprint 22 progress directory structure ===
+    OK: sprint_22_setup.md
+    OK: sprint_22_design.md
+    OK: sprint_22_implementation.md
+    OK: sprint22_manual.md
+  [PASS] IT-2: progress directory complete
+=== IT-3: Guest fstab script syntax validation ===
+  [PASS] IT-3: fstab script syntax OK
+=== IT-4: Guest fstab script help output ===
+  [PASS] IT-4: fstab script help contains expected commands
+=== IT-5: Manual contains all required sections ===
+    OK: Step 1 - Run Diagnostics
+    OK: Step 2 - Run A/B Performance Test
+    OK: Step 3 - SSH Access
+    OK: Step 4 - fstab Workflow
+    OK: View Current fstab Entry
+    OK: Verify Mount Status
+    OK: Disable Multipath
+    OK: Enable Multipath
+    OK: Remove fstab Entry
+    OK: Test Reboot Persistence
+    OK: Switch Between Multipath and Single-Path
+    OK: Collect Diagnostics
+    OK: Teardown
+    OK: Quick Reference
+  [PASS] IT-5: manual contains all required sections
+=== IT-6: Manual snippets syntax validation ===
+  [PASS] IT-6: manual contains expected bash patterns
+=== IT-7: Sprint 20 scripts exist (dependency check) ===
+    OK: run_bv4db_multipath_diag_sprint20.sh
+    OK: run_bv4db_fio_multipath_ab_sprint20.sh
+    OK: bv4db_sprint20_load.sh
+  [PASS] IT-7: Sprint 20 dependencies present
+=== IT-8: Sprint 1 infrastructure state exists ===
+  [PASS] IT-8: Sprint 1 infrastructure state valid
+=== IT-9: PLAN.md contains Sprint 22 ===
+  [PASS] IT-9: Sprint 22 in PLAN.md with YOLO mode
+=== IT-10: PROGRESS_BOARD.md contains Sprint 22 ===
+  [PASS] IT-10: Sprint 22 in PROGRESS_BOARD.md
+=== IT-11: Sprint 21 marked as failed ===
+  [PASS] IT-11: Sprint 21 correctly marked as Failed
+=== IT-12: oci_scaffold ensure_* scripts not modified ===
+  [SKIP] IT-12: oci_scaffold not a git repo
+=== IT-13: Scripts validate without actual execution ===
+  [PASS] IT-13: Sprint 22 scripts parse without errors
+
+========================================
+Results: 12 passed, 0 failed, 1 skipped
+========================================
+
+--- integration:test_sprint24_oci_agent_multipath.sh ---
+
+=== BV4DB Integration Tests - Sprint 24 ===
+
+=== IT-24-01: Sprint 24 progress artifacts exist ===
+    OK: sprint_24_setup.md
+    OK: sprint_24_design.md
+    OK: sprint_24_implementation.md
+    OK: sprint_24_tests.md
+    OK: sprint24_manual.md
+    OK: new_tests.manifest
+  [PASS] IT-24-01: progress artifacts present
+=== IT-24-02: Manual includes oracle references and verification sections ===
+    OK: Oracle references used by this manual
+    OK: Step 1 - Enable the Block Volume Management plugin
+    OK: Step 2 - Create a multipath-enabled iSCSI attachment (UHP)
+    OK: Step 3 - Evidence checklist (ground truth)
+    OK: Step 4 - Archive evidence
+    OK: Step 5 - Troubleshooting
+    OK: enablingblockvolumemanagementplugin
+    OK: configuringmultipathattachments
+    OK: multipathcheck
+    OK: troubleshootingmultipathattachments
+  [PASS] IT-24-02: manual content present
+=== IT-24-03: Sprint 24 scripts parse without errors (if present) ===
+  [PASS] IT-24-03: no sprint24 scripts found (ok)
+
+Results: 3 passed, 0 failed
+
+Results: 20 passed, 0 failed

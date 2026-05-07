@@ -475,48 +475,26 @@ Expected implementation scope:
 
 Test: with load-balancing enabled, diagnostics demonstrate that multiple active paths carry I/O during the benchmark window (not only one hot path), and the applied dm-multipath configuration is captured in artifacts.
 
-### BUG-S22-1. Sprint 22 teardown.sh fails when run from repo root
+### BV4DB-54. Investigate `oci-utils` vs `oci-iscsi-config` for iSCSI/multipath configuration
 
-**Severity:** Critical
-**Sprint:** 22
-**Status:** Open
+OCI guidance for Ultra High Performance volumes recommends using supported tooling to ensure multipath-capable attachments and warns against mixing `oci-utils` and `oci-iscsi-config` for the same volume. This item investigates both utilities and compares them to a “plain Linux” approach for iSCSI and dm-multipath on supported images, with focus on correctness, repeatability, diagnostics, and reboot/reattach behavior. Use Oracle’s reference as the starting point: `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm`.
 
-**Description:**
-When running `NAME_PREFIX=bv4db-s22-mpath teardown.sh` from the repository root, teardown fails because oci_scaffold always sets `STATE_FILE="${PWD}/state-${NAME_PREFIX}.json"` when NAME_PREFIX is set (oci_scaffold.sh:12-16). This ignores any exported STATE_FILE and looks in the wrong directory.
+Test: a short written comparison exists and the project has a recommended, reproducible method for configuring and validating multipath on a real instance.
 
-Sprint 22 scripts write state to `progress/sprint_22/state-bv4db-s22-mpath.json` but teardown.sh looks for `./state-bv4db-s22-mpath.json` in repo root.
+### BV4DB-55. Document Red Hat dm-multipath tooling for OCI iSCSI multipath volumes
 
-**Root cause:**
-oci_scaffold.sh intentionally overrides STATE_FILE when NAME_PREFIX is set to prevent stale exports. Sprint 22 scripts run from repo root but write state to progress/sprint_22/.
+The repository uses standard Linux iSCSI and device-mapper multipath tooling when working with OCI multipath-enabled iSCSI attachments, but the operator guidance is currently fragmented across sprint notes. Add a focused reference note that maps the expected dm-multipath concepts and operational checks to the OCI iSCSI attachment model, using Red Hat’s documentation as the baseline reference: `https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html-single/configuring_device_mapper_multipath/index#active-active-multipath-configuration-with-one-raid-device_overview-of-device-mapper-multipathing`.
 
-**Fix required:**
-Sprint 22 scripts must either:
-1. Run from progress/sprint_22/ directory, OR
-2. Provide a teardown wrapper that cd's to the correct directory
+Test: a short doc exists in the repo that an operator can follow to understand and validate dm-multipath behavior for an OCI iSCSI multipath-attached volume.
 
-**Test:** `NAME_PREFIX=bv4db-s22-mpath ./tools/teardown_sprint22.sh` from repo root must successfully teardown Sprint 22 resources
+### BV4DB-56. Validate simplified multipath setup fully managed by OCI Block Volume Management plugin
 
-### BUG-S22-2. Block volume not deleted when attachment fails before being stored in state
+The current multipath work relies on guest-side scripting and treats the OCI Management “Block Volume Management” plugin as a potentially misleading signal for this custom layout. Add a validated, simplified configuration path where the Oracle Cloud Agent Block Volume Management plugin is the primary mechanism used to configure and maintain multipath-enabled iSCSI attachments, aligned with Oracle documentation and with clear operator guidance.
 
-**Severity:** Medium
-**Sprint:** 22
-**Status:** Fixed (ensure-blockvolume.sh now adds BV to creation_order immediately after creation)
+Test: a clean instance run produces evidence that the plugin provisions multipath (sessions, mapper device, and mounted filesystem) without relying on custom multipath configuration steps, and the result is documented with references to `https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm` and `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm`.
 
-**Description:**
-When a multipath attachment fails (e.g., OCI API returns `isMultipath: null` despite request), the script detaches and retries. If all retries fail, the block volume is created and recorded in state but the attachment is never stored. On teardown, oci_scaffold deletes only the compute instance because the block volume entry in state has no attachment to detach first, causing the BV to be orphaned.
+### BV4DB-57. Define and validate evidence checklist for OCI agent-managed multipath
 
-**Root cause:**
-The Sprint 20 multipath diagnostics script only stores attachment info in state AFTER successful multipath verification. When multipath never enables, the attachment is detached but the BV remains in state without attachment info. Teardown then skips BV deletion.
+To avoid false positives and “plugin vs reality” contradictions, define a single evidence checklist for confirming that the Oracle Cloud Agent Block Volume Management plugin is correctly managing multipath-enabled iSCSI block volume attachments on a supported image. The checklist must be validated on a real run and document how to troubleshoot common failure modes (for example missing sessions, missing mapper device, or plugin warnings) using Oracle’s official guidance.
 
-**Observed behavior:**
-- State file has `blockvolume.created: true` and `blockvolume.ocid` but no attachment
-- Teardown deletes compute but not the BV
-- Orphan BV remains billable in OCI
-
-**Fix required:**
-Either:
-1. Store BV attachment in state immediately after attach succeeds (before multipath check), OR
-2. Make teardown delete BV even when no attachment is recorded, OR
-3. Delete BV in the cleanup path when multipath fails
-
-**Test:** After multipath attachment failure and teardown, `oci bv volume get --volume-id <ocid>` should return 404/TERMINATED, not AVAILABLE
+Test: the repo contains a validated operator-facing verification procedure with captured run evidence and references to `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/troubleshootingmultipathattachments.htm` and `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/multipathcheck.htm`.

@@ -1,0 +1,33 @@
+
+=== Running integration tests (1 selected) ===
+
+--- integration:test_sprint24_oci_agent_multipath.sh ---
+
+=== BV4DB Integration Tests - Sprint 24 ===
+
+=== IT-24-01: Sprint 24 progress artifacts exist ===
+    OK: sprint_24_setup.md
+    OK: sprint_24_design.md
+    OK: sprint_24_implementation.md
+    OK: sprint_24_tests.md
+    OK: sprint24_manual.md
+    OK: new_tests.manifest
+  [PASS] IT-24-01: progress artifacts present
+=== IT-24-02: Manual includes oracle references and verification sections ===
+    OK: Oracle references used by this manual
+    OK: Step 1 - Enable the Block Volume Management plugin
+    OK: Step 2 - Create a multipath-enabled iSCSI attachment (UHP)
+    OK: Step 3 - Evidence checklist (ground truth)
+    OK: Step 4 - Archive evidence
+    OK: Step 5 - Troubleshooting
+    OK: enablingblockvolumemanagementplugin
+    OK: configuringmultipathattachments
+    OK: multipathcheck
+    OK: troubleshootingmultipathattachments
+  [PASS] IT-24-02: manual content present
+=== IT-24-03: Sprint 24 scripts parse without errors (if present) ===
+  [PASS] IT-24-03: no sprint24 scripts found (ok)
+
+Results: 3 passed, 0 failed
+
+Results: 1 passed, 0 failed

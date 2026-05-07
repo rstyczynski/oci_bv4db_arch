@@ -371,3 +371,17 @@ Sprint 23 reuses Sprint 22’s stable HA multipath + fstab baseline, but adds an
 Backlog Items:
 
 * BV4DB-53. Configure dm-multipath load balancing policy (round-robin) for UHP iSCSI multipath
+
+## Sprint 24 - OCI agent-managed multipath configuration validation
+
+Status: Progress
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 24 validates a simplified multipath configuration path where the Oracle Cloud Agent Block Volume Management plugin is the primary mechanism for managing multipath-enabled iSCSI attachments. The sprint also defines a single evidence checklist and troubleshooting procedure to avoid “plugin vs reality” contradictions.
+
+Backlog Items:
+
+* BV4DB-56. Validate simplified multipath setup fully managed by OCI Block Volume Management plugin
+* BV4DB-57. Define and validate evidence checklist for OCI agent-managed multipath
