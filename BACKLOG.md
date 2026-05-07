@@ -504,3 +504,9 @@ Test: the repo contains a validated operator-facing verification procedure with 
 The Sprint 24 validation proves a simplified OCI agent-managed multipath path, but it is still expressed through project shell runners. Add a minimal Terraform example that creates the same essential infrastructure shape for a clean instance with Oracle Cloud Agent Block Volume Management enabled and a multipath-enabled UHP iSCSI block volume attachment.
 
 Test: `terraform plan` succeeds with documented variables, and the resulting configuration is small enough for an operator to compare directly with the Sprint 24 manual and evidence checklist.
+
+### BV4DB-59. Validate Terraform UHP attachment without raw API multipath helper
+
+Sprint 25 currently uses a small OCI raw API helper because the Terraform provider exposes the attachment `is_multipath` property as computed-only. Oracle documentation states that, for UHP volumes, the Block Volume service attempts to enable multipath during attachment when prerequisites are met, and the Block Volume Management plugin then performs the guest iSCSI and multipath setup from instance metadata. Validate whether a normal Terraform `oci_core_volume_attachment` with a UHP volume, supported shape/image, enabled Block Volume Management plugin, network access, IAM permissions, and a consistent device path is sufficient to produce `is-multipath=true` without the raw API helper.
+
+Test: a live OCI Terraform run using only native Terraform OCI resources creates an attachment that reports `is-multipath=true`, the guest shows agent-created iSCSI sessions and an `mpath*` mapper, and the result is documented. If the provider/native path cannot produce a multipath-enabled attachment, keep the helper and document the provider limitation with exact evidence.

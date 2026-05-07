@@ -388,7 +388,7 @@ Backlog Items:
 
 ## Sprint 25 - Minimal Terraform for OCI agent-managed UHP multipath
 
-Status: Done
+Status: Failed
 Mode: YOLO
 Test: integration
 Regression: integration
@@ -398,3 +398,4 @@ Sprint 25 creates a minimal Terraform example that reflects the Sprint 24 OCI ag
 Backlog Items:
 
 * BV4DB-58. Minimal Terraform setup for OCI agent-managed UHP multipath
+* BV4DB-59. Validate Terraform UHP attachment without raw API multipath helper
