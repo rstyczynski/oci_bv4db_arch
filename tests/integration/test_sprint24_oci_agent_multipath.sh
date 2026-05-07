@@ -134,6 +134,22 @@ test_IT2404_live_evidence_bundle_present() {
   return 0
 }
 
+test_IT2405_evidence_collector_script_present() {
+  echo "=== IT-24-05: Evidence collector script exists and parses ==="
+  local script="$REPO_ROOT/tools/run_sprint24_live_evidence.sh"
+  if [ ! -f "$script" ]; then
+    _fail "IT-24-05: missing: $script"
+    return 0
+  fi
+  if bash -n "$script" 2>/dev/null; then
+    _pass "IT-24-05: evidence collector script present"
+  else
+    _fail "IT-24-05: evidence collector script has syntax errors"
+    bash -n "$script" || true
+  fi
+  return 0
+}
+
 run_all() {
   echo ""
   echo "=== BV4DB Integration Tests - Sprint 24 ==="
@@ -142,6 +158,7 @@ run_all() {
   test_IT2401_progress_artifacts_exist || true
   test_IT2402_manual_has_required_sections_and_refs || true
   test_IT2403_scripts_parse_if_present || true
+  test_IT2405_evidence_collector_script_present || true
   test_IT2404_live_evidence_bundle_present || true
 
   echo ""

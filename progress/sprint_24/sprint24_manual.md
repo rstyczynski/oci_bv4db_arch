@@ -151,6 +151,30 @@ The Sprint 24 integration test requires the following files to exist under `prog
 - `live_multipath_ll.txt` - output of `multipath -ll` (Step 3.2)
 - `live_findmnt.txt` - output of `findmnt` for the mountpoint (Step 3.3)
 
+### 4.2 One-command evidence collection (recommended)
+
+After you have:
+
+- enabled the plugin (Step 1)
+- attached the volume and captured `VOLUME_ATTACHMENT_ID` (Step 2)
+- determined the mountpoint you’re validating (Step 3.3)
+- established SSH access to the instance
+
+run:
+
+```bash
+export COMPARTMENT_ID="<compartment_ocid>"
+export INSTANCE_ID="<instance_ocid>"
+export VOLUME_ATTACHMENT_ID="<volume_attachment_ocid>"
+export MOUNTPOINT="<mountpoint>" # example: /mnt/sprint24
+
+# Choose ONE of these SSH methods:
+export SSH_TARGET="opc@<public_ip>"
+# OR export PUBLIC_IP="<public_ip>"  # used only if SSH_TARGET is unset
+
+./tools/run_sprint24_live_evidence.sh
+```
+
 ## Step 5 - Troubleshooting
 
 Use Oracle’s official troubleshooting and verification guidance:
