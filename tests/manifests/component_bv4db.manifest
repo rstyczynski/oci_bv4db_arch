@@ -11,3 +11,4 @@ integration:test_oracle_db_sprint18.sh
 integration:test_sprint20_multipath_ab.sh
 integration:test_sprint22_fstab.sh
 integration:test_sprint24_oci_agent_multipath.sh
+integration:test_sprint25_terraform_agent_multipath.sh

@@ -1,0 +1,562 @@
+
+=== Running integration tests (21 selected) ===
+
+--- integration:test_bv4db_mixed8k.sh ---
+
+=== BV4DB Integration Tests — Sprint 3 ===
+
+=== IT-10: mixed 8k fio profile file present ===
+  [PASS] IT-10: mixed-8k fio profile file present
+=== IT-11: smoke run completed on Sprint 2 topology ===
+  [PASS] IT-11: mixed-8k smoke runtime is 60 seconds
+=== IT-12: smoke analysis written ===
+  [PASS] IT-12: smoke analysis created
+=== IT-13: smoke resources torn down automatically ===
+  [PASS] IT-13: Sprint 3 archived state indicates automatic teardown
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint10.sh ---
+
+=== BV4DB Integration Tests — Sprint 10 ===
+
+=== IT-35: Sprint 10 fio profile exists ===
+  [PASS] IT-35: sprint 10 fio profile exists
+=== IT-36: Sprint 10 artifacts exist ===
+  [PASS] IT-36: sprint 10 fio artifacts exist
+=== IT-37: Sprint 10 analyses exist ===
+  [PASS] IT-37: sprint 10 analysis artifacts exist
+=== IT-38: Sprint 10 teardown archived state ===
+  [PASS] IT-38: teardown archived state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint5.sh ---
+
+=== BV4DB Integration Tests — Sprint 5 ===
+
+=== IT-20: Corrected Sprint 5 fio profile present ===
+  [PASS] IT-20: corrected Sprint 5 profile present
+=== IT-21: Smoke run produces per-job fio output ===
+  [PASS] IT-21: smoke fio output contains distinct per-job results
+=== IT-22: Integration run produces per-job fio output ===
+  [PASS] IT-22: integration fio output contains distinct per-job results
+=== IT-23: iostat and analysis artifacts present ===
+  [PASS] IT-23: iostat and analysis artifacts present
+=== IT-24: Sprint 5 resources torn down automatically ===
+  [PASS] IT-24: Sprint 5 archived deleted state files confirm automatic teardown
+
+Results: 5 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint8.sh ---
+
+=== BV4DB Integration Tests — Sprint 8 ===
+
+=== IT-27: Sprint 8 reuses Sprint 5 fio profile ===
+  [PASS] IT-27: Sprint 8 reuses the Sprint 5 fio profile
+=== IT-28: Sprint 8 integration artifacts present ===
+  [PASS] IT-28: Sprint 8 integration artifacts present
+=== IT-29: Sprint 8 preserves per-job fio output ===
+  [PASS] IT-29: per-job fio output preserved
+=== IT-30: Sprint 8 documents single-UHP layout and tears resources down ===
+  [PASS] IT-30: Sprint 8 teardown archived deleted state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle_sprint9.sh ---
+
+=== BV4DB Integration Tests — Sprint 9 ===
+
+=== IT-31: Sprint 9 profile uses 4 KB redo ===
+  [PASS] IT-31: sprint 9 fio profile uses 4 KB redo
+=== IT-32: Sprint 9 artifacts exist for both layouts ===
+  [PASS] IT-32: sprint 9 artifacts exist for both layouts
+=== IT-33: Sprint 9 preserves per-job output ===
+  [PASS] IT-33: per-job output preserved with 4 KB redo
+=== IT-34: Sprint 9 teardown archived state files ===
+  [PASS] IT-34: sprint 9 teardown archived state files
+
+Results: 4 passed, 0 failed
+
+--- integration:test_bv4db_oracle.sh ---
+
+=== BV4DB Integration Tests — Sprint 4 ===
+
+=== IT-14: Oracle fio profile file present ===
+  [PASS] IT-14: Oracle fio profile has all three job sections
+=== IT-15: Smoke run completed on Oracle layout ===
+  [PASS] IT-15: Oracle smoke run completed with runtime=60 and 1 aggregated fio record(s)
+=== IT-16: Device utilization captured ===
+  [PASS] IT-16: iostat JSON captured
+=== IT-17: I/O isolation validated ===
+  [PASS] IT-17: iostat shows isolated activity on data, redo, and FRA devices
+=== IT-18: Resources torn down automatically ===
+  [PASS] IT-18: Sprint 4 archived deleted state files confirm automatic teardown
+=== IT-19: Analysis document present ===
+  [PASS] IT-19: analysis document present
+
+Results: 6 passed, 0 failed
+
+--- integration:test_bv4db_perf.sh ---
+
+=== BV4DB Integration Tests — Sprint 2 ===
+
+=== IT-5: Maximum-performance compute instance provisioned ===
+  [PASS] IT-5: Sprint 2 benchmark compute recorded as VM.Standard.E5.Flex with 40 OCPUs
+=== IT-6: Ultra High Performance block volume attached ===
+  [PASS] IT-6: UHP volume recorded with 120 VPUs/GB and multipath-enabled attachment
+=== IT-7: 60-second fio benchmark completed ===
+  [PASS] IT-7: fio runtime totals 60 seconds
+=== IT-8: per-workload fio artifacts and analysis written ===
+  [PASS] IT-8: Sprint 2 per-workload artifacts and analysis created
+=== IT-9: Benchmark resources torn down automatically ===
+  [PASS] IT-9: Sprint 2 archived state indicates automatic teardown
+
+Results: 5 passed, 0 failed
+
+--- integration:test_bv4db.sh ---
+
+=== BV4DB Integration Tests — Sprint 1 ===
+
+=== IT-1: Infrastructure provisioned ===
+  [PASS] IT-1: infra state complete (compartment, subnet, secret, pubkey)
+=== IT-2: SSH access using key from vault ===
+  [SKIP] IT-2: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-3: Block volume mounted at /mnt/bv ===
+  [SKIP] IT-3: state-bv4db-run.json not found (offline gate) — requires run_bv_fio.sh KEEP_INFRA=true
+=== IT-4: fio performance report produced ===
+  [PASS] IT-4: fio-results.json valid — seq read 11 IOPS 11 MB/s, rand read 1520 IOPS 6 MB/s
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_metrics_operate.sh ---
+
+=== BV4DB Integration Tests — Sprint 11 ===
+
+=== IT-39: Sprint 11 metrics artifacts exist ===
+  [PASS] IT-39: metrics artifacts exist
+=== IT-40: Sprint 11 metrics report has expected sections ===
+  [PASS] IT-40: report sections present
+=== IT-41: Sprint 11 metrics state contains test window ===
+  [PASS] IT-41: metrics state contains required fields
+=== IT-42: Sprint 11 metrics refactor structure exists ===
+  [PASS] IT-42: shared and resource-specific metrics files exist
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_metrics_report_html.sh ---
+
+=== BV4DB Integration Tests — Sprint 12 ===
+
+=== IT-43: Sprint 12 metrics artifacts exist ===
+  [PASS] IT-43: markdown, html, and raw metrics artifacts exist
+=== IT-44: Sprint 12 HTML report contains sections and charts ===
+  [PASS] IT-44: html report contains sections and charts
+=== IT-45: Sprint 12 metrics state includes multiple block volumes ===
+  [PASS] IT-45: metrics state contains multiple block volumes
+=== IT-46: Sprint 12 markdown report keeps summary sections ===
+  [PASS] IT-46: markdown report sections present
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oci_scaffold_sync.sh ---
+
+=== BV4DB Smoke Tests — Sprint 6 ===
+
+=== IT-25: Scaffold smoke report present ===
+  [PASS] IT-25: scaffold smoke report recorded attached block volume
+=== IT-26: Scaffold smoke teardown complete ===
+  [PASS] IT-26: scaffold smoke state archived after teardown
+
+Results: 2 passed, 0 failed
+
+--- integration:test_oracle_db_sprint13.sh ---
+
+=== BV4DB Integration Tests — Sprint 13 ===
+
+=== IT-47: Sprint 13 design documentation exists ===
+  [PASS] IT-47: sprint 13 design documentation exists
+=== IT-48: Sprint 13 summary report exists ===
+  [PASS] IT-48: sprint 13 summary report exists
+=== IT-49: Sprint 13 installation logs exist ===
+  [PASS] IT-49: sprint 13 installation logs exist
+=== IT-50: Sprint 13 database status shows OPEN ===
+  [PASS] IT-50: database status shows OPEN
+=== IT-51: Sprint 13 state files exist ===
+  [PASS] IT-51: sprint 13 state files exist
+=== IT-52: Sprint 13 scripts are executable ===
+  [PASS] IT-52: sprint 13 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint14.sh ---
+
+=== BV4DB Integration Tests — Sprint 14 ===
+
+=== IT-53: Sprint 14 design documentation exists ===
+  [PASS] IT-53: sprint 14 design documentation exists
+=== IT-54: Sprint 14 workload results exist ===
+  [PASS] IT-54: workload results exist
+=== IT-55: Sprint 14 AWR snapshots captured ===
+  [PASS] IT-55: AWR snapshots captured (begin=2, end=3)
+=== IT-56: Sprint 14 AWR report generated ===
+  [PASS] IT-56: AWR report generated
+=== IT-57: Sprint 14 summary report exists ===
+  [PASS] IT-57: sprint 14 summary report exists
+=== IT-58: Sprint 14 scripts are executable ===
+  [PASS] IT-58: sprint 14 scripts are executable
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint15.sh ---
+
+=== BV4DB Integration Tests — Sprint 15 ===
+
+=== IT-59: Sprint 15 documentation exists ===
+  [PASS] IT-59: sprint 15 documentation exists
+=== IT-60: Sprint 15 scripts exist and are executable ===
+  [PASS] IT-60: sprint 15 scripts exist and are executable
+=== IT-61: Sprint 15 scripts pass bash syntax check ===
+  [PASS] IT-61: sprint 15 scripts pass bash syntax check
+=== IT-62: Sprint 15 runner wires Swingbench and AWR ===
+  [PASS] IT-62: sprint 15 runner wires Swingbench and AWR
+=== IT-63: Sprint 15 HTML report exists and contains benchmark sections ===
+  [PASS] IT-63: sprint 15 HTML report exists and contains benchmark sections
+=== IT-64: Sprint 15 uses a project-owned Swingbench config file ===
+  [PASS] IT-64: sprint 15 uses a project-owned Swingbench config file
+
+Results: 6 passed, 0 failed
+
+--- integration:test_oracle_db_sprint16.sh ---
+
+=== BV4DB Integration Tests — Sprint 16 ===
+
+=== IT-69: Sprint 16 documentation exists ===
+  [PASS] IT-69: sprint 16 documentation exists
+=== IT-70: Sprint 16 analysis references required source evidence ===
+  [PASS] IT-70: sprint 16 analysis references required source evidence
+=== IT-71: Sprint 16 required source artifacts exist ===
+  [PASS] IT-71: sprint 16 required source artifacts exist
+
+Results: 3 passed, 0 failed
+
+--- integration:test_oracle_db_sprint17.sh ---
+
+=== BV4DB Integration Tests — Sprint 17 ===
+
+=== IT-65: Sprint 17 documentation exists ===
+  [PASS] IT-65: sprint 17 documentation exists
+=== IT-66: Sprint 17 scripts exist and are executable ===
+  [PASS] IT-66: sprint 17 scripts exist and are executable
+=== IT-67: Sprint 17 runner wires both phases and metrics ===
+  [PASS] IT-67: sprint 17 runner wires both phases and metrics
+=== IT-68: Sprint 17 report artifacts exist ===
+  [PASS] IT-68: sprint 17 report artifacts exist
+
+Results: 4 passed, 0 failed
+
+--- integration:test_oracle_db_sprint18.sh ---
+
+=== BV4DB Integration Tests — Sprint 18 ===
+
+=== IT-72: Sprint 18 documentation exists ===
+  [PASS] IT-72: sprint 18 documentation exists
+=== IT-73: Sprint 18 wrapper enforces mirror-run parameters ===
+  [PASS] IT-73: sprint 18 wrapper enforces mirror-run parameters
+=== IT-74: Sprint 18 report artifacts exist ===
+  [PASS] IT-74: sprint 18 report artifacts exist
+=== IT-75: Oracle DB install enforces project storage layout ===
+  [PASS] IT-75: Oracle DB install enforces project storage layout
+=== IT-76: metrics path includes boot volume ===
+  [PASS] IT-76: metrics path includes boot volume
+
+Results: 5 passed, 0 failed
+
+--- integration:test_sprint20_multipath_ab.sh ---
+
+=== BV4DB Integration Tests — Sprint 20/21 ===
+
+=== IT-1: Sprint 20/21 scripts exist and are executable ===
+  [PASS] IT-1: scripts present
+=== IT-2: Diagnostics artifacts exist (if run has been executed) ===
+  [PASS] IT-2: found diagnostics artifact: diag_multipath_20260424_192428.txt
+=== IT-3: fio results + comparison exist (if run has been executed) ===
+  [PASS] IT-3: found fio artifacts: fio_multipath_20260424_194104.json, fio_compare_20260424_194737.md
+
+Results: 3 passed, 0 failed
+
+--- integration:test_sprint22_fstab.sh ---
+
+========================================
+=== BV4DB Integration Tests - Sprint 22 ===
+========================================
+
+=== IT-1: Sprint 22 scripts exist and are executable ===
+    OK: run_bv4db_multipath_diag_sprint22.sh
+    OK: run_bv4db_fio_multipath_ab_sprint22.sh
+    OK: bv4db_sprint22_fstab.sh
+  [PASS] IT-1: all scripts present and executable
+=== IT-2: Sprint 22 progress directory structure ===
+    OK: sprint_22_setup.md
+    OK: sprint_22_design.md
+    OK: sprint_22_implementation.md
+    OK: sprint22_manual.md
+  [PASS] IT-2: progress directory complete
+=== IT-3: Guest fstab script syntax validation ===
+  [PASS] IT-3: fstab script syntax OK
+=== IT-4: Guest fstab script help output ===
+  [PASS] IT-4: fstab script help contains expected commands
+=== IT-5: Manual contains all required sections ===
+    OK: Step 1 - Run Diagnostics
+    OK: Step 2 - Run A/B Performance Test
+    OK: Step 3 - SSH Access
+    OK: Step 4 - fstab Workflow
+    OK: View Current fstab Entry
+    OK: Verify Mount Status
+    OK: Disable Multipath
+    OK: Enable Multipath
+    OK: Remove fstab Entry
+    OK: Test Reboot Persistence
+    OK: Switch Between Multipath and Single-Path
+    OK: Collect Diagnostics
+    OK: Teardown
+    OK: Quick Reference
+  [PASS] IT-5: manual contains all required sections
+=== IT-6: Manual snippets syntax validation ===
+  [PASS] IT-6: manual contains expected bash patterns
+=== IT-7: Sprint 20 scripts exist (dependency check) ===
+    OK: run_bv4db_multipath_diag_sprint20.sh
+    OK: run_bv4db_fio_multipath_ab_sprint20.sh
+    OK: bv4db_sprint20_load.sh
+  [PASS] IT-7: Sprint 20 dependencies present
+=== IT-8: Sprint 1 infrastructure state exists ===
+  [PASS] IT-8: Sprint 1 infrastructure state valid
+=== IT-9: PLAN.md contains Sprint 22 ===
+  [PASS] IT-9: Sprint 22 in PLAN.md with YOLO mode
+=== IT-10: PROGRESS_BOARD.md contains Sprint 22 ===
+  [PASS] IT-10: Sprint 22 in PROGRESS_BOARD.md
+=== IT-11: Sprint 21 marked as failed ===
+  [PASS] IT-11: Sprint 21 correctly marked as Failed
+=== IT-12: oci_scaffold ensure_* scripts not modified ===
+  [SKIP] IT-12: oci_scaffold not a git repo
+=== IT-13: Scripts validate without actual execution ===
+  [PASS] IT-13: Sprint 22 scripts parse without errors
+
+========================================
+Results: 12 passed, 0 failed, 1 skipped
+========================================
+
+--- integration:test_sprint24_oci_agent_multipath.sh ---
+
+=== BV4DB Integration Tests — Sprint 24 OCI Agent Multipath ===
+
+=== IT-1: Sprint 24 runner exists and is executable ===
+  [PASS] runner is executable
+=== IT-2: Sprint 24 runner syntax ===
+  [PASS] runner syntax OK
+=== IT-3: Runner uses OCI agent-managed multipath path ===
+  [PASS] runner relies on agent-managed setup and evidence collection
+=== IT-4: Sprint 24 docs contain evidence checklist and troubleshooting ===
+  [PASS] documentation includes checklist and troubleshooting
+=== IT-5: Sprint 24 new tests manifest ===
+  [PASS] new tests manifest registers Sprint 24 integration test
+
+Results: 5 passed, 0 failed
+
+--- integration:test_sprint25_terraform_agent_multipath.sh ---
+=== Sprint 25 Terraform agent-managed multipath integration ===
+PASS: file exists: terraform/sprint25-agent-multipath/versions.tf
+PASS: file exists: terraform/sprint25-agent-multipath/variables.tf
+PASS: file exists: terraform/sprint25-agent-multipath/main.tf
+PASS: file exists: terraform/sprint25-agent-multipath/outputs.tf
+PASS: file exists: terraform/sprint25-agent-multipath/terraform.tfvars.example
+PASS: file exists: terraform/sprint25-agent-multipath/README.md
+PASS: file exists: terraform/sprint25-agent-multipath/scripts/create_multipath_attachment.sh
+PASS: file exists: terraform/sprint25-agent-multipath/scripts/detach_multipath_attachment.sh
+PASS: helper scripts are executable
+PASS: instance enables Block Volume Management plugin
+PASS: UHP volume performance is Terraform-configured
+PASS: Terraform owns multipath attachment helper lifecycle
+PASS: attachment helper requests isMultipath true
+PASS: attachment helper sanitizes CHAP fields
+PASS: README documents OCI provider multipath limitation
+PASS: README links Terraform example to Sprint 24 validation
+PASS: no custom guest multipath setup in terraform/sprint25-agent-multipath/main.tf
+PASS: no custom guest multipath setup in terraform/sprint25-agent-multipath/scripts/create_multipath_attachment.sh
+PASS: terraform fmt check
+
+[0m[1mInitializing provider plugins...[0m
+- terraform.io/builtin/terraform is built in to Terraform
+- Reusing previous version of oracle/oci from the dependency lock file
+- Using previously-installed oracle/oci v8.13.0
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+PASS: terraform init
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+PASS: terraform validate
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # oci_core_instance.agent_multipath[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_instance" "agent_multipath" {
+      [32m+[0m[0m availability_domain                 = "example:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m boot_volume_id                      = (known after apply)
+      [32m+[0m[0m capacity_reservation_id             = (known after apply)
+      [32m+[0m[0m compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      [32m+[0m[0m compute_cluster_id                  = (known after apply)
+      [32m+[0m[0m dedicated_vm_host_id                = (known after apply)
+      [32m+[0m[0m defined_tags                        = (known after apply)
+      [32m+[0m[0m display_name                        = "bv4db-tf-agent-instance"
+      [32m+[0m[0m extended_metadata                   = (known after apply)
+      [32m+[0m[0m fault_domain                        = (known after apply)
+      [32m+[0m[0m freeform_tags                       = (known after apply)
+      [32m+[0m[0m hostname_label                      = (known after apply)
+      [32m+[0m[0m id                                  = (known after apply)
+      [32m+[0m[0m image                               = (known after apply)
+      [32m+[0m[0m instance_configuration_id           = (known after apply)
+      [32m+[0m[0m ipxe_script                         = (known after apply)
+      [32m+[0m[0m is_ai_enterprise_enabled            = (known after apply)
+      [32m+[0m[0m is_cross_numa_node                  = (known after apply)
+      [32m+[0m[0m is_pv_encryption_in_transit_enabled = (known after apply)
+      [32m+[0m[0m launch_mode                         = (known after apply)
+      [32m+[0m[0m metadata                            = {
+          [32m+[0m[0m "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7 sprint25@example
+            EOT
+        }
+      [32m+[0m[0m preserve_boot_volume                = false
+      [32m+[0m[0m private_ip                          = (known after apply)
+      [32m+[0m[0m public_ip                           = (known after apply)
+      [32m+[0m[0m region                              = (known after apply)
+      [32m+[0m[0m security_attributes                 = (known after apply)
+      [32m+[0m[0m security_attributes_state           = (known after apply)
+      [32m+[0m[0m shape                               = "VM.Standard.E5.Flex"
+      [32m+[0m[0m state                               = (known after apply)
+      [32m+[0m[0m subnet_id                           = (known after apply)
+      [32m+[0m[0m system_tags                         = (known after apply)
+      [32m+[0m[0m time_created                        = (known after apply)
+      [32m+[0m[0m time_maintenance_reboot_due         = (known after apply)
+
+      [32m+[0m[0m agent_config {
+          [32m+[0m[0m are_all_plugins_disabled = false
+          [32m+[0m[0m is_management_disabled   = false
+          [32m+[0m[0m is_monitoring_disabled   = false
+
+          [32m+[0m[0m plugins_config {
+              [32m+[0m[0m desired_state = "ENABLED"
+              [32m+[0m[0m name          = "Block Volume Management"
+            }
+        }
+
+      [32m+[0m[0m create_vnic_details {
+          [32m+[0m[0m assign_ipv6ip          = (known after apply)
+          [32m+[0m[0m assign_public_ip       = "true"
+          [32m+[0m[0m defined_tags           = (known after apply)
+          [32m+[0m[0m display_name           = "bv4db-tf-agent-vnic"
+          [32m+[0m[0m freeform_tags          = (known after apply)
+          [32m+[0m[0m hostname_label         = (known after apply)
+          [32m+[0m[0m nsg_ids                = (known after apply)
+          [32m+[0m[0m private_ip             = (known after apply)
+          [32m+[0m[0m private_ip_id          = (known after apply)
+          [32m+[0m[0m security_attributes    = (known after apply)
+          [32m+[0m[0m skip_source_dest_check = (known after apply)
+          [32m+[0m[0m subnet_cidr            = (known after apply)
+          [32m+[0m[0m subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          [32m+[0m[0m vlan_id                = (known after apply)
+        }
+
+      [32m+[0m[0m shape_config {
+          [32m+[0m[0m baseline_ocpu_utilization     = (known after apply)
+          [32m+[0m[0m gpu_description               = (known after apply)
+          [32m+[0m[0m gpus                          = (known after apply)
+          [32m+[0m[0m local_disk_description        = (known after apply)
+          [32m+[0m[0m local_disks                   = (known after apply)
+          [32m+[0m[0m local_disks_total_size_in_gbs = (known after apply)
+          [32m+[0m[0m max_vnic_attachments          = (known after apply)
+          [32m+[0m[0m memory_in_gbs                 = 64
+          [32m+[0m[0m networking_bandwidth_in_gbps  = (known after apply)
+          [32m+[0m[0m nvmes                         = (known after apply)
+          [32m+[0m[0m ocpus                         = 16
+          [32m+[0m[0m processor_description         = (known after apply)
+          [32m+[0m[0m resource_management           = (known after apply)
+          [32m+[0m[0m vcpus                         = (known after apply)
+        }
+
+      [32m+[0m[0m source_details {
+          [32m+[0m[0m boot_volume_size_in_gbs = (known after apply)
+          [32m+[0m[0m boot_volume_vpus_per_gb = (known after apply)
+          [32m+[0m[0m source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          [32m+[0m[0m source_type             = "image"
+        }
+    }
+
+[1m  # oci_core_volume.uhp[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_volume" "uhp" {
+      [32m+[0m[0m auto_tuned_vpus_per_gb     = (known after apply)
+      [32m+[0m[0m availability_domain        = "example:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m backup_policy_id           = (known after apply)
+      [32m+[0m[0m cluster_placement_group_id = (known after apply)
+      [32m+[0m[0m compartment_id             = "ocid1.compartment.oc1..aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      [32m+[0m[0m defined_tags               = (known after apply)
+      [32m+[0m[0m display_name               = "bv4db-tf-agent-uhp"
+      [32m+[0m[0m freeform_tags              = (known after apply)
+      [32m+[0m[0m id                         = (known after apply)
+      [32m+[0m[0m is_auto_tune_enabled       = (known after apply)
+      [32m+[0m[0m is_hydrated                = (known after apply)
+      [32m+[0m[0m is_reservations_enabled    = (known after apply)
+      [32m+[0m[0m kms_key_id                 = (known after apply)
+      [32m+[0m[0m size_in_gbs                = "1500"
+      [32m+[0m[0m size_in_mbs                = (known after apply)
+      [32m+[0m[0m state                      = (known after apply)
+      [32m+[0m[0m system_tags                = (known after apply)
+      [32m+[0m[0m time_created               = (known after apply)
+      [32m+[0m[0m volume_backup_id           = (known after apply)
+      [32m+[0m[0m volume_group_id            = (known after apply)
+      [32m+[0m[0m vpus_per_gb                = "120"
+      [32m+[0m[0m xrc_kms_key_id             = (known after apply)
+    }
+
+[1m  # terraform_data.multipath_attachment[0m will be created
+[0m  [32m+[0m[0m resource "terraform_data" "multipath_attachment" {
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m input            = {
+          [32m+[0m[0m attachment_state_file = "/Users/rstyczynski/projects/oci_bv4db_arch/terraform/sprint25-agent-multipath/multipath_attachment.json"
+        }
+      [32m+[0m[0m output           = (known after apply)
+      [32m+[0m[0m triggers_replace = {
+          [32m+[0m[0m device_path = "/dev/oracleoci/oraclevdb"
+          [32m+[0m[0m instance_id = (known after apply)
+          [32m+[0m[0m region      = "eu-zurich-1"
+          [32m+[0m[0m volume_id   = (known after apply)
+        }
+    }
+
+[1mPlan:[0m 3 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m attachment_state_file = "/Users/rstyczynski/projects/oci_bv4db_arch/terraform/sprint25-agent-multipath/multipath_attachment.json"
+  [32m+[0m[0m device_path           = "/dev/oracleoci/oraclevdb"
+  [32m+[0m[0m instance_id           = (known after apply)
+  [32m+[0m[0m volume_id             = (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+PASS: terraform structural plan
+Results: 22 passed, 0 failed
+
+Results: 21 passed, 0 failed

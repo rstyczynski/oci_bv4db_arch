@@ -1,0 +1,200 @@
+
+=== Running integration tests (1 selected) ===
+
+--- integration:test_sprint25_terraform_agent_multipath.sh ---
+=== Sprint 25 Terraform agent-managed multipath integration ===
+PASS: file exists: terraform/sprint25-agent-multipath/versions.tf
+PASS: file exists: terraform/sprint25-agent-multipath/variables.tf
+PASS: file exists: terraform/sprint25-agent-multipath/main.tf
+PASS: file exists: terraform/sprint25-agent-multipath/outputs.tf
+PASS: file exists: terraform/sprint25-agent-multipath/terraform.tfvars.example
+PASS: file exists: terraform/sprint25-agent-multipath/README.md
+PASS: file exists: terraform/sprint25-agent-multipath/scripts/create_multipath_attachment.sh
+PASS: file exists: terraform/sprint25-agent-multipath/scripts/detach_multipath_attachment.sh
+PASS: helper scripts are executable
+PASS: instance enables Block Volume Management plugin
+PASS: UHP volume performance is Terraform-configured
+FAIL: Terraform owns multipath attachment helper lifecycle
+PASS: attachment helper requests isMultipath true
+PASS: attachment helper sanitizes CHAP fields
+PASS: README documents OCI provider multipath limitation
+PASS: README links Terraform example to Sprint 24 validation
+PASS: no custom guest multipath setup in terraform/sprint25-agent-multipath/main.tf
+PASS: no custom guest multipath setup in terraform/sprint25-agent-multipath/scripts/create_multipath_attachment.sh
+PASS: terraform fmt check
+
+[0m[1mInitializing provider plugins...[0m
+- terraform.io/builtin/terraform is built in to Terraform
+- Reusing previous version of oracle/oci from the dependency lock file
+- Using previously-installed oracle/oci v8.13.0
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+PASS: terraform init
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+PASS: terraform validate
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # oci_core_instance.agent_multipath[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_instance" "agent_multipath" {
+      [32m+[0m[0m availability_domain                 = "example:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m boot_volume_id                      = (known after apply)
+      [32m+[0m[0m capacity_reservation_id             = (known after apply)
+      [32m+[0m[0m compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      [32m+[0m[0m compute_cluster_id                  = (known after apply)
+      [32m+[0m[0m dedicated_vm_host_id                = (known after apply)
+      [32m+[0m[0m defined_tags                        = (known after apply)
+      [32m+[0m[0m display_name                        = "bv4db-tf-agent-instance"
+      [32m+[0m[0m extended_metadata                   = (known after apply)
+      [32m+[0m[0m fault_domain                        = (known after apply)
+      [32m+[0m[0m freeform_tags                       = (known after apply)
+      [32m+[0m[0m hostname_label                      = (known after apply)
+      [32m+[0m[0m id                                  = (known after apply)
+      [32m+[0m[0m image                               = (known after apply)
+      [32m+[0m[0m instance_configuration_id           = (known after apply)
+      [32m+[0m[0m ipxe_script                         = (known after apply)
+      [32m+[0m[0m is_ai_enterprise_enabled            = (known after apply)
+      [32m+[0m[0m is_cross_numa_node                  = (known after apply)
+      [32m+[0m[0m is_pv_encryption_in_transit_enabled = (known after apply)
+      [32m+[0m[0m launch_mode                         = (known after apply)
+      [32m+[0m[0m metadata                            = {
+          [32m+[0m[0m "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7 sprint25@example
+            EOT
+        }
+      [32m+[0m[0m preserve_boot_volume                = false
+      [32m+[0m[0m private_ip                          = (known after apply)
+      [32m+[0m[0m public_ip                           = (known after apply)
+      [32m+[0m[0m region                              = (known after apply)
+      [32m+[0m[0m security_attributes                 = (known after apply)
+      [32m+[0m[0m security_attributes_state           = (known after apply)
+      [32m+[0m[0m shape                               = "VM.Standard.E5.Flex"
+      [32m+[0m[0m state                               = (known after apply)
+      [32m+[0m[0m subnet_id                           = (known after apply)
+      [32m+[0m[0m system_tags                         = (known after apply)
+      [32m+[0m[0m time_created                        = (known after apply)
+      [32m+[0m[0m time_maintenance_reboot_due         = (known after apply)
+
+      [32m+[0m[0m agent_config {
+          [32m+[0m[0m are_all_plugins_disabled = false
+          [32m+[0m[0m is_management_disabled   = false
+          [32m+[0m[0m is_monitoring_disabled   = false
+
+          [32m+[0m[0m plugins_config {
+              [32m+[0m[0m desired_state = "ENABLED"
+              [32m+[0m[0m name          = "Block Volume Management"
+            }
+        }
+
+      [32m+[0m[0m create_vnic_details {
+          [32m+[0m[0m assign_ipv6ip          = (known after apply)
+          [32m+[0m[0m assign_public_ip       = "true"
+          [32m+[0m[0m defined_tags           = (known after apply)
+          [32m+[0m[0m display_name           = "bv4db-tf-agent-vnic"
+          [32m+[0m[0m freeform_tags          = (known after apply)
+          [32m+[0m[0m hostname_label         = (known after apply)
+          [32m+[0m[0m nsg_ids                = (known after apply)
+          [32m+[0m[0m private_ip             = (known after apply)
+          [32m+[0m[0m private_ip_id          = (known after apply)
+          [32m+[0m[0m security_attributes    = (known after apply)
+          [32m+[0m[0m skip_source_dest_check = (known after apply)
+          [32m+[0m[0m subnet_cidr            = (known after apply)
+          [32m+[0m[0m subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          [32m+[0m[0m vlan_id                = (known after apply)
+        }
+
+      [32m+[0m[0m shape_config {
+          [32m+[0m[0m baseline_ocpu_utilization     = (known after apply)
+          [32m+[0m[0m gpu_description               = (known after apply)
+          [32m+[0m[0m gpus                          = (known after apply)
+          [32m+[0m[0m local_disk_description        = (known after apply)
+          [32m+[0m[0m local_disks                   = (known after apply)
+          [32m+[0m[0m local_disks_total_size_in_gbs = (known after apply)
+          [32m+[0m[0m max_vnic_attachments          = (known after apply)
+          [32m+[0m[0m memory_in_gbs                 = 64
+          [32m+[0m[0m networking_bandwidth_in_gbps  = (known after apply)
+          [32m+[0m[0m nvmes                         = (known after apply)
+          [32m+[0m[0m ocpus                         = 16
+          [32m+[0m[0m processor_description         = (known after apply)
+          [32m+[0m[0m resource_management           = (known after apply)
+          [32m+[0m[0m vcpus                         = (known after apply)
+        }
+
+      [32m+[0m[0m source_details {
+          [32m+[0m[0m boot_volume_size_in_gbs = (known after apply)
+          [32m+[0m[0m boot_volume_vpus_per_gb = (known after apply)
+          [32m+[0m[0m source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          [32m+[0m[0m source_type             = "image"
+        }
+    }
+
+[1m  # oci_core_volume.uhp[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_volume" "uhp" {
+      [32m+[0m[0m auto_tuned_vpus_per_gb     = (known after apply)
+      [32m+[0m[0m availability_domain        = "example:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m backup_policy_id           = (known after apply)
+      [32m+[0m[0m cluster_placement_group_id = (known after apply)
+      [32m+[0m[0m compartment_id             = "ocid1.compartment.oc1..aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      [32m+[0m[0m defined_tags               = (known after apply)
+      [32m+[0m[0m display_name               = "bv4db-tf-agent-uhp"
+      [32m+[0m[0m freeform_tags              = (known after apply)
+      [32m+[0m[0m id                         = (known after apply)
+      [32m+[0m[0m is_auto_tune_enabled       = (known after apply)
+      [32m+[0m[0m is_hydrated                = (known after apply)
+      [32m+[0m[0m is_reservations_enabled    = (known after apply)
+      [32m+[0m[0m kms_key_id                 = (known after apply)
+      [32m+[0m[0m size_in_gbs                = "1500"
+      [32m+[0m[0m size_in_mbs                = (known after apply)
+      [32m+[0m[0m state                      = (known after apply)
+      [32m+[0m[0m system_tags                = (known after apply)
+      [32m+[0m[0m time_created               = (known after apply)
+      [32m+[0m[0m volume_backup_id           = (known after apply)
+      [32m+[0m[0m volume_group_id            = (known after apply)
+      [32m+[0m[0m vpus_per_gb                = "120"
+      [32m+[0m[0m xrc_kms_key_id             = (known after apply)
+    }
+
+[1m  # terraform_data.multipath_attachment[0m will be created
+[0m  [32m+[0m[0m resource "terraform_data" "multipath_attachment" {
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m input            = {
+          [32m+[0m[0m attachment_state_file = "/Users/rstyczynski/projects/oci_bv4db_arch/terraform/sprint25-agent-multipath/multipath_attachment.json"
+        }
+      [32m+[0m[0m output           = (known after apply)
+      [32m+[0m[0m triggers_replace = {
+          [32m+[0m[0m device_path = "/dev/oracleoci/oraclevdb"
+          [32m+[0m[0m instance_id = (known after apply)
+          [32m+[0m[0m region      = "eu-zurich-1"
+          [32m+[0m[0m volume_id   = (known after apply)
+        }
+    }
+
+[1mPlan:[0m 3 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m attachment_state_file = "/Users/rstyczynski/projects/oci_bv4db_arch/terraform/sprint25-agent-multipath/multipath_attachment.json"
+  [32m+[0m[0m device_path           = "/dev/oracleoci/oraclevdb"
+  [32m+[0m[0m instance_id           = (known after apply)
+  [32m+[0m[0m volume_id             = (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
+PASS: terraform structural plan
+Results: 21 passed, 1 failed
+
+Results: 0 passed, 1 failed

@@ -385,3 +385,16 @@ Backlog Items:
 
 * BV4DB-56. Validate simplified multipath setup fully managed by OCI Block Volume Management plugin
 * BV4DB-57. Define and validate evidence checklist for OCI agent-managed multipath
+
+## Sprint 25 - Minimal Terraform for OCI agent-managed UHP multipath
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 25 creates a minimal Terraform example that reflects the Sprint 24 OCI agent-managed multipath approach. The Terraform should be intentionally small, operator-readable, and comparable to the Sprint 24 manual.
+
+Backlog Items:
+
+* BV4DB-58. Minimal Terraform setup for OCI agent-managed UHP multipath
