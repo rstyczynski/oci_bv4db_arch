@@ -15,17 +15,88 @@ Oracle references used by this manual:
 - Supported image where Oracle Cloud Agent + Block Volume Management plugin is supported.
 - You understand the cost implications of running UHP block volumes.
 
+## CLI environment (copy/paste)
+
+Set the following variables (replace values):
+
+```bash
+export COMPARTMENT_ID="<compartment_ocid>"
+export INSTANCE_ID="<instance_ocid>"
+export AVAILABILITY_DOMAIN="<ad_name>" # example: kIdk:EU-ZURICH-1-AD-1
+export VOLUME_ID="<uhp_volume_ocid>"   # pre-created UHP volume to attach
+```
+
 ## Step 1 - Enable the Block Volume Management plugin
 
-Follow Oracle’s instructions to enable the plugin on the instance:
+This step uses OCI CLI to enable the plugin for an existing instance via `agentConfig.pluginsConfig` (see the Oracle reference below).
+
+Oracle reference:
 
 - `https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm`
 
+### 1.1 Inspect current plugin status
+
+```bash
+oci instance-agent plugin list \
+  --compartment-id "$COMPARTMENT_ID" \
+  --instanceagent-id "$INSTANCE_ID" \
+  --all \
+  --query "data[?name=='Block Volume Management']"
+```
+
+### 1.2 Enable the plugin
+
+```bash
+oci compute instance update \
+  --instance-id "$INSTANCE_ID" \
+  --agent-config '{"pluginsConfig":[{"name":"Block Volume Management","desiredState":"ENABLED"}]}'
+```
+
+### 1.3 Re-check that the plugin is enabled/running
+
+```bash
+oci instance-agent plugin list \
+  --compartment-id "$COMPARTMENT_ID" \
+  --instanceagent-id "$INSTANCE_ID" \
+  --all \
+  --query "data[?name=='Block Volume Management']"
+```
+
 ## Step 2 - Create a multipath-enabled iSCSI attachment (UHP)
 
-Follow Oracle’s instructions for creating a multipath-enabled attachment to an Ultra High Performance volume:
+For Ultra High Performance volumes, multipath enablement is determined by prerequisites (supported shape, supported image, plugin enabled, consistent device paths) and the Block Volume service attempts to enable multipath during attach.
+
+Oracle reference:
 
 - `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/configuringmultipathattachments.htm`
+
+### 2.1 Attach the UHP volume (iSCSI)
+
+```bash
+oci compute volume-attachment attach-iscsi-volume \
+  --instance-id "$INSTANCE_ID" \
+  --volume-id "$VOLUME_ID" \
+  --wait-for-state ATTACHED
+```
+
+Capture the resulting **volume attachment OCID** from the command output into:
+
+```bash
+export VOLUME_ATTACHMENT_ID="<volume_attachment_ocid>"
+```
+
+### 2.2 Verify whether the attachment is multipath-enabled (provider-side)
+
+```bash
+oci compute volume-attachment get \
+  --volume-attachment-id "$VOLUME_ATTACHMENT_ID" \
+  --query "data.{id:id,lifecycleState:lifecycle-state,isMultipath:is-multipath,iqn:iqn,ipv4:ipv4,port:port}"
+```
+
+If `isMultipath` is not `true`, use Oracle’s verification and troubleshooting references:
+
+- `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/multipathcheck.htm`
+- `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/troubleshootingmultipathattachments.htm`
 
 ## Step 3 - Evidence checklist (ground truth)
 
