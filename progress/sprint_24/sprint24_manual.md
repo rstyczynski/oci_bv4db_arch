@@ -141,6 +141,16 @@ Capture the following into a timestamped artifact bundle under `progress/sprint_
 - output of `findmnt` for the target mount
 - relevant Oracle Cloud Agent plugin logs (if accessible)
 
+### 4.1 Required filenames for integration gate
+
+The Sprint 24 integration test requires the following files to exist under `progress/sprint_24/` after a live run:
+
+- `live_instance_agent_plugins.json` - output of the plugin list query (Step 1.1 / 1.3)
+- `live_volume_attachment.json` - output of `oci compute volume-attachment get ...` (Step 2.2)
+- `live_iscsiadm_session.txt` - output of `iscsiadm -m session` (Step 3.1)
+- `live_multipath_ll.txt` - output of `multipath -ll` (Step 3.2)
+- `live_findmnt.txt` - output of `findmnt` for the mountpoint (Step 3.3)
+
 ## Step 5 - Troubleshooting
 
 Use Oracle’s official troubleshooting and verification guidance:

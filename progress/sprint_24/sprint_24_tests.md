@@ -30,7 +30,7 @@ These tests require OCI infrastructure and SSH access.
 
 Local/offline gates:
 
-- A3 integration: PASS - `progress/sprint_24/test_run_A3_integration_20260507_102205.log`
+- A3 integration: FAIL - `progress/sprint_24/test_run_A3_integration_20260507_102905.log` (missing required live evidence bundle)
 - B3 integration: PASS - `progress/sprint_24/test_run_B3_integration_20260507_102214.log`
 
 Live/OCI:

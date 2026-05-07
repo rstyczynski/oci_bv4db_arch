@@ -99,6 +99,41 @@ test_IT2403_scripts_parse_if_present() {
   return 0
 }
 
+test_IT2404_live_evidence_bundle_present() {
+  echo "=== IT-24-04: Live OCI evidence bundle present (required for sprint goal) ==="
+
+  # Sprint 24 goals BV4DB-56/57 require a real OCI run with:
+  # - OCI CLI evidence (plugin enabled; attachment multipath-enabled)
+  # - guest evidence (iscsi sessions; multipath mapping; mount source)
+  #
+  # This test is intentionally FAILING until the operator performs a live run
+  # and archives the required artifacts under progress/sprint_24/.
+
+  local required=(
+    "live_instance_agent_plugins.json"
+    "live_volume_attachment.json"
+    "live_iscsiadm_session.txt"
+    "live_multipath_ll.txt"
+    "live_findmnt.txt"
+  )
+
+  local all_ok=1
+  for f in "${required[@]}"; do
+    if [ -f "$SPRINT24_DIR/$f" ]; then
+      echo "    OK: $f"
+    else
+      _fail "IT-24-04: missing live evidence artifact: $SPRINT24_DIR/$f"
+      all_ok=0
+    fi
+  done
+
+  # Hard fail if evidence is missing: sprint goal not validated.
+  if [ "$all_ok" -eq 1 ]; then
+    _pass "IT-24-04: live evidence bundle present"
+  fi
+  return 0
+}
+
 run_all() {
   echo ""
   echo "=== BV4DB Integration Tests - Sprint 24 ==="
@@ -107,6 +142,7 @@ run_all() {
   test_IT2401_progress_artifacts_exist || true
   test_IT2402_manual_has_required_sections_and_refs || true
   test_IT2403_scripts_parse_if_present || true
+  test_IT2404_live_evidence_bundle_present || true
 
   echo ""
   echo "Results: $PASS passed, $FAIL failed"
