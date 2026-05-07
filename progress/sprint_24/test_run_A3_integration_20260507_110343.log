@@ -1,0 +1,21 @@
+
+=== Running integration tests (1 selected) ===
+
+--- integration:test_sprint24_oci_agent_multipath.sh ---
+
+=== BV4DB Integration Tests — Sprint 24 OCI Agent Multipath ===
+
+=== IT-1: Sprint 24 runner exists and is executable ===
+  [PASS] runner is executable
+=== IT-2: Sprint 24 runner syntax ===
+  [PASS] runner syntax OK
+=== IT-3: Runner uses OCI agent-managed multipath path ===
+  [PASS] runner relies on agent-managed setup and evidence collection
+=== IT-4: Sprint 24 docs contain evidence checklist and troubleshooting ===
+  [PASS] documentation includes checklist and troubleshooting
+=== IT-5: Sprint 24 new tests manifest ===
+  [PASS] new tests manifest registers Sprint 24 integration test
+
+Results: 5 passed, 0 failed
+
+Results: 1 passed, 0 failed
