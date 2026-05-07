@@ -1,0 +1,8 @@
+{
+  "areAllPluginsDisabled": false,
+  "isManagementDisabled": false,
+  "isMonitoringDisabled": false,
+  "pluginsConfig": [
+    { "name": "Block Volume Management", "desiredState": "ENABLED" }
+  ]
+}

@@ -18,11 +18,17 @@ The OCI attachment must still be created as multipath-enabled and verified throu
 
 - Add `tools/run_bv4db_oci_agent_multipath_sprint24.sh`.
 - Reuse existing scaffold provisioning for compute and block volume lifecycle.
+- Reuse Sprint 1 shared infrastructure only for compartment, subnet, SSH key material, and region autodiscovery.
+- Create or adopt a Sprint 24-specific compute instance from `NAME_PREFIX=bv4db-s24-agent`; do not reuse a previous sprint compute by default.
 - Enable `Block Volume Management` on the instance before volume attachment.
 - Create a UHP iSCSI attachment with `isMultipath:true` and a consistent device path.
 - Do not run custom `iscsiadm --login`, `mpathconf --enable`, or custom `multipath.conf` policy writes.
 - Wait for plugin-created iSCSI sessions and dm-multipath mapper.
 - Mount the agent-managed device and capture evidence.
+
+### Clean Instance Rationale
+
+`progress/sprint_1/state-bv4db.json` is the shared infrastructure source for region, compartment, subnet, SSH key secret, and public key, but it does not carry a reusable compute or block volume baseline. Sprint 24 intentionally uses a Sprint 24-specific compute instance so the Oracle Cloud Agent Block Volume Management plugin is validated on a clean guest state. Reusing an older sprint instance could leave pre-existing iSCSI sessions, `/etc/multipath.conf`, `multipathd` state, or mounted filesystems that would weaken the plugin-managed validation.
 
 ### Testing Strategy
 

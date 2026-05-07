@@ -11,8 +11,8 @@
 
 | Gate | Log File |
 | ---- | -------- |
-| A3 Integration | `test_run_A3_integration_20260507_110620.log` |
-| B3 Integration | `test_run_B3_integration_20260507_110628.log` |
+| A3 Integration | `test_run_A3_integration_20260507_112419.log` |
+| B3 Integration | `test_run_B3_integration_20260507_112409.log` |
 
 ## Functional Test Documentation
 
@@ -58,3 +58,20 @@ None.
 | ----- | -------------- | -------------- | ------ |
 | New-code integration | 1 | 0 | PASS |
 | Regression integration | 20 | 0 | PASS |
+
+## Live OCI Evidence
+
+| Artifact | Result |
+| -------- | ------ |
+| `oci_agent_multipath_evidence_20260507_111415.txt` | `RESULT=PASS` |
+| `volume_attachment_20260507_111415.json` | sanitized attachment JSON: `is-multipath=true`, `multipath-devices=4` |
+| `state-bv4db-s24-agent_20260507_111415.json` | archived live run state |
+
+Observed guest evidence:
+
+```text
+sessions=5
+maps=1
+active_ready_running_paths=5
+RESULT=PASS
+```

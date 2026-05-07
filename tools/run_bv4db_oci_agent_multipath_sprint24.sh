@@ -205,7 +205,7 @@ TIMEOUT="$2"
 elapsed=0
 
 while true; do
-  sessions="$(iscsiadm -m session 2>/dev/null | wc -l | tr -d ' ')"
+  sessions="$( { iscsiadm -m session 2>/dev/null || true; } | wc -l | tr -d ' ')"
   mpath_ll="$(multipath -ll 2>/dev/null || true)"
   mapper="$(echo "$mpath_ll" | awk '/^mpath/{print "/dev/mapper/" $1; exit}')"
   if [ -n "$mapper" ] && [ -b "$mapper" ] && [ "${sessions:-0}" -ge 2 ] && [ -b "$EXPECTED_PATH" ]; then
@@ -345,7 +345,8 @@ main() {
   expected_path=$(_state_get '.blockvolume.device_path')
   expected_path="${expected_path:-/dev/oracleoci/oraclevdb}"
 
-  oci compute volume-attachment get --volume-attachment-id "$volume_attach_id" >"$attach_out"
+  oci compute volume-attachment get --volume-attachment-id "$volume_attach_id" \
+    | jq 'del(.data."chap-secret", .data."chap-username")' >"$attach_out"
   if [ "$(jq -r '.data."is-multipath" // empty' "$attach_out")" != "true" ]; then
     echo "  [ERROR] OCI control plane does not report is-multipath=true for $volume_attach_id" >&2
     exit 1

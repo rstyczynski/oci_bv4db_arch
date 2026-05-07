@@ -55,12 +55,12 @@ Expected output includes teardown progress and final evidence paths.
 #### Evidence Files
 
 - `progress/sprint_24/oci_agent_multipath_evidence_<timestamp>.txt`
-- `progress/sprint_24/volume_attachment_<timestamp>.json`
+- `progress/sprint_24/volume_attachment_<timestamp>.json` (sanitized; CHAP fields removed)
 - `progress/sprint_24/state-bv4db-s24-agent_<timestamp>.json`
 
 ### Known Issues
 
-Live validation depends on OCI credentials, quota, supported shape/image availability, network reachability to Oracle services, and the Sprint 1 shared infrastructure state.
+Live validation depends on OCI credentials, quota, supported shape/image availability, network reachability to Oracle services, and the Sprint 1 shared infrastructure state. The wait loop treats missing iSCSI sessions as a normal transient state because `iscsiadm -m session` can return a non-zero code before the OCI agent finishes logging in.
 
 ## BV4DB-57. Define and validate evidence checklist for OCI agent-managed multipath
 

@@ -1,0 +1,48 @@
+{
+  "data": {
+    "attachment-type": "iscsi",
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "device": "/dev/oracleoci/oraclevdb",
+    "display-name": "volumeattachment20260507110919",
+    "encryption-in-transit-type": "NONE",
+    "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyichwuihwuv2f42vqk7d23bfmpgfdh6mtv2qk76tguisfoa",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicscgdgy3lu2j3vwrco3quyn7k36sht7767ly5a3nclg4a",
+    "ipv4": "169.254.2.2",
+    "iqn": "iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c",
+    "is-agent-auto-iscsi-login-enabled": true,
+    "is-multipath": true,
+    "is-pv-encryption-in-transit-enabled": false,
+    "is-read-only": false,
+    "is-shareable": false,
+    "is-volume-created-during-launch": false,
+    "iscsi-login-state": "UNKNOWN",
+    "lifecycle-state": "ATTACHED",
+    "multipath-devices": [
+      {
+        "ipv4": "169.254.2.3",
+        "iqn": "iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.4",
+        "iqn": "iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.5",
+        "iqn": "iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.6",
+        "iqn": "iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c",
+        "port": 3260
+      }
+    ],
+    "port": 3260,
+    "time-created": "2026-05-07T11:09:20.245000+00:00",
+    "volume-id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrmp2tonzi33veolimxwd6ikjhobfznis3ahogltcvsigjfpd2rexq"
+  },
+  "etag": "092fe4528163cde6f5cbd5e4706c4f3be7b726fc2d847b85adb3bf16408b498a"
+}

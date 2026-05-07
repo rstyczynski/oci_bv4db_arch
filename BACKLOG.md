@@ -498,3 +498,9 @@ Test: a clean instance run produces evidence that the plugin provisions multipat
 To avoid false positives and “plugin vs reality” contradictions, define a single evidence checklist for confirming that the Oracle Cloud Agent Block Volume Management plugin is correctly managing multipath-enabled iSCSI block volume attachments on a supported image. The checklist must be validated on a real run and document how to troubleshoot common failure modes (for example missing sessions, missing mapper device, or plugin warnings) using Oracle’s official guidance.
 
 Test: the repo contains a validated operator-facing verification procedure with captured run evidence and references to `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/troubleshootingmultipathattachments.htm` and `https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/multipathcheck.htm`.
+
+### BV4DB-58. Minimal Terraform setup for OCI agent-managed UHP multipath
+
+The Sprint 24 validation proves a simplified OCI agent-managed multipath path, but it is still expressed through project shell runners. Add a minimal Terraform example that creates the same essential infrastructure shape for a clean instance with Oracle Cloud Agent Block Volume Management enabled and a multipath-enabled UHP iSCSI block volume attachment.
+
+Test: `terraform plan` succeeds with documented variables, and the resulting configuration is small enough for an operator to compare directly with the Sprint 24 manual and evidence checklist.

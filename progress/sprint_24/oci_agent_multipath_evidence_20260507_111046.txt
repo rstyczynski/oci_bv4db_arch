@@ -1,0 +1,716 @@
+=== sprint24 evidence timestamp ===
+Thu May  7 11:11:06 UTC 2026
+
+=== oracle-cloud-agent package ===
+oracle-cloud-agent-1.57.0-2.el8.x86_64
+
+=== oracle-cloud-agent service ===
+● oracle-cloud-agent.service - Oracle Cloud Infrastructure agent for management and monitoring
+   Loaded: loaded (/etc/systemd/system/oracle-cloud-agent.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2026-05-07 11:08:55 GMT; 2min 15s ago
+     Docs: https://docs.cloud.oracle.com/iaas/
+ Main PID: 2617 (agent)
+    Tasks: 92 (limit: 408909)
+   Memory: 157.2M
+      CPU: 1.829s
+   CGroup: /oca.slice/oracle-cloud-agent.service
+           ├─2617 /usr/libexec/oracle-cloud-agent/agent
+           ├─3004 /usr/libexec/oracle-cloud-agent/plugins/gomon/gomon
+           ├─3157 /usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig
+           ├─3485 /usr/libexec/oracle-cloud-agent/plugins/oci-wlp/oci-wlp
+           └─4956 /usr/libexec/oracle-cloud-agent/plugins/unifiedmonitoring/unifiedmonitoring
+
+May 07 11:10:00 bv4db-s24-agent-instance sudo[12183]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdc/device/scsi_disk/8:0:0:2/max_retries
+May 07 11:10:00 bv4db-s24-agent-instance sudo[12192]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdd/device/scsi_disk/9:0:0:2/max_retries
+May 07 11:10:00 bv4db-s24-agent-instance sudo[12215]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sde/device/scsi_disk/10:0:0:2/max_retries
+May 07 11:10:00 bv4db-s24-agent-instance sudo[12239]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdf/device/scsi_disk/11:0:0:2/max_retries
+May 07 11:10:00 bv4db-s24-agent-instance sudo[12272]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdf/queue/scheduler
+May 07 11:10:01 bv4db-s24-agent-instance sudo[12456]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdb/queue/scheduler
+May 07 11:10:01 bv4db-s24-agent-instance sudo[12463]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdc/queue/scheduler
+May 07 11:10:01 bv4db-s24-agent-instance sudo[12474]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sdd/queue/scheduler
+May 07 11:10:01 bv4db-s24-agent-instance sudo[12481]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/tee /sys/block/sde/queue/scheduler
+May 07 11:10:03 bv4db-s24-agent-instance sudo[12489]: oracle-cloud-agent : PWD=/var/lib/oracle-cloud-agent ; USER=root ; COMMAND=/usr/bin/ln -fs /dev/mapper/mpatha /dev/oracleoci/oraclevdb
+
+=== block volume plugin config ===
+      cpu: "1"
+      memory: "1"
+  oci-blockautoconfig:
+    exec: /usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig
+    winexec: ""
+    args: []
+    elevated: false
+    runas: ""
+    disabled: false
+    disableByOs:
+
+=== block volume plugin log tail ===
+2026/05/07 11:09:59.891655 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.3:3260 -l
+2026/05/07 11:10:00.039422 login_.go:377: CombinedOutput：Login to [iface: default, target: iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c, portal: 169.254.2.3,3260] successful.
+
+2026/05/07 11:10:00.039444 iscsi_commands_helper.go:296: Successfully login the iscsi path 169.254.2.3:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.039454 login_.go:219: Running Iscsi commands for the attachment 169.254.2.4:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.039457 login_.go:221: Login iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c:169.254.2.4 attachment
+2026/05/07 11:10:00.039471 login_.go:207: The iscsi node /var/lib/iscsi/nodes/iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c/169.254.2.4,3260 does not exist.
+2026/05/07 11:10:00.039483 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260
+2026/05/07 11:10:00.058138 login_.go:377: CombinedOutput：New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.4,3260,-1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c] added
+
+2026/05/07 11:10:00.058154 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.startup -v manual
+2026/05/07 11:10:00.075918 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.075932 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.session.initial_login_retry_max -v 2
+2026/05/07 11:10:00.093278 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.093295 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.conn[0].timeo.login_timeout -v 10
+2026/05/07 11:10:00.115216 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.115234 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.conn[0].timeo.logout_timeout -v 3
+2026/05/07 11:10:00.133786 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.133806 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.session.timeo.replacement_timeout -v -1
+2026/05/07 11:10:00.151726 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.151754 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -o update -n node.session.queue_depth -v 128
+2026/05/07 11:10:00.169202 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.169229 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.4:3260 -l
+2026/05/07 11:10:00.329177 login_.go:377: CombinedOutput：Login to [iface: default, target: iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c, portal: 169.254.2.4,3260] successful.
+
+2026/05/07 11:10:00.329201 iscsi_commands_helper.go:296: Successfully login the iscsi path 169.254.2.4:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.329215 login_.go:219: Running Iscsi commands for the attachment 169.254.2.5:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.329219 login_.go:221: Login iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c:169.254.2.5 attachment
+2026/05/07 11:10:00.329233 login_.go:207: The iscsi node /var/lib/iscsi/nodes/iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c/169.254.2.5,3260 does not exist.
+2026/05/07 11:10:00.329244 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260
+2026/05/07 11:10:00.348175 login_.go:377: CombinedOutput：New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.5,3260,-1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c] added
+
+2026/05/07 11:10:00.348193 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.startup -v manual
+2026/05/07 11:10:00.366460 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.366474 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.session.initial_login_retry_max -v 2
+2026/05/07 11:10:00.383138 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.383165 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.conn[0].timeo.login_timeout -v 10
+2026/05/07 11:10:00.400315 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.400337 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.conn[0].timeo.logout_timeout -v 3
+2026/05/07 11:10:00.417472 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.417485 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.session.timeo.replacement_timeout -v -1
+2026/05/07 11:10:00.434156 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.434170 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -o update -n node.session.queue_depth -v 128
+2026/05/07 11:10:00.451403 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.451418 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.5:3260 -l
+2026/05/07 11:10:00.571013 login_.go:377: CombinedOutput：Login to [iface: default, target: iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c, portal: 169.254.2.5,3260] successful.
+
+2026/05/07 11:10:00.571037 iscsi_commands_helper.go:296: Successfully login the iscsi path 169.254.2.5:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.571045 login_.go:219: Running Iscsi commands for the attachment 169.254.2.6:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.571050 login_.go:221: Login iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c:169.254.2.6 attachment
+2026/05/07 11:10:00.571063 login_.go:207: The iscsi node /var/lib/iscsi/nodes/iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c/169.254.2.6,3260 does not exist.
+2026/05/07 11:10:00.571074 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260
+2026/05/07 11:10:00.588952 login_.go:377: CombinedOutput：New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.6,3260,-1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c] added
+
+2026/05/07 11:10:00.588968 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.startup -v manual
+2026/05/07 11:10:00.607259 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.607273 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.session.initial_login_retry_max -v 2
+2026/05/07 11:10:00.623869 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.623880 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.conn[0].timeo.login_timeout -v 10
+2026/05/07 11:10:00.640469 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.640484 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.conn[0].timeo.logout_timeout -v 3
+2026/05/07 11:10:00.657585 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.657600 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.session.timeo.replacement_timeout -v -1
+2026/05/07 11:10:00.674224 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.674237 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -o update -n node.session.queue_depth -v 128
+2026/05/07 11:10:00.690611 login_.go:377: CombinedOutput：
+2026/05/07 11:10:00.690624 executor.go:79: executing command: /usr/bin/sudo -n iscsiadm -m node -T iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c -p 169.254.2.6:3260 -l
+2026/05/07 11:10:00.851986 login_.go:377: CombinedOutput：Login to [iface: default, target: iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c, portal: 169.254.2.6,3260] successful.
+
+2026/05/07 11:10:00.852008 iscsi_commands_helper.go:296: Successfully login the iscsi path 169.254.2.6:iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c
+2026/05/07 11:10:00.852016 iscsi_commands_helper.go:305: Successfully login the attachment ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyichwuihwuv2f42vqk7d23bfmpgfdh6mtv2qk76tguisfoa
+2026/05/07 11:10:00.852993 file.go:60: Perisisting attachments in /var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/blockstorage.yml
+2026/05/07 11:10:00.853010 compute_client_command.go:265: Updating volume attachment ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyichwuihwuv2f42vqk7d23bfmpgfdh6mtv2qk76tguisfoa to the state LOGIN_SUCCEEDED ...
+2026/05/07 11:10:00.853181 compute_client_command.go:270: user agent can not be blank
+2026/05/07 11:10:00.853186 iscsi_commands_helper.go:758: user agent can not be blank
+2026/05/07 11:10:00.853191 iscsi_commands_helper.go:766: user agent can not be blank
+2026/05/07 11:10:00.853354 login_.go:132: Total files: 1
+2026/05/07 11:10:00.853426 login_.go:135: CombinedOutput：../../sdb
+2026/05/07 11:10:00.853431 login_.go:293: Walking into the path /sys/block/sdb/device/scsi_disk/
+2026/05/07 11:10:00.853610 executor.go:79: executing command: echo -1 | sudo tee /sys/block/sdb/device/scsi_disk/7:0:0:2/max_retries
+2026/05/07 11:10:00.868850 login_.go:307: CombinedOutput：-1
+
+2026/05/07 11:10:00.869002 login_.go:132: Total files: 1
+2026/05/07 11:10:00.869009 login_.go:135: CombinedOutput：../../sdc
+2026/05/07 11:10:00.869013 login_.go:293: Walking into the path /sys/block/sdc/device/scsi_disk/
+2026/05/07 11:10:00.869220 executor.go:79: executing command: echo -1 | sudo tee /sys/block/sdc/device/scsi_disk/8:0:0:2/max_retries
+2026/05/07 11:10:00.883672 login_.go:307: CombinedOutput：-1
+
+2026/05/07 11:10:00.883824 login_.go:132: Total files: 1
+2026/05/07 11:10:00.883834 login_.go:135: CombinedOutput：../../sdd
+2026/05/07 11:10:00.883838 login_.go:293: Walking into the path /sys/block/sdd/device/scsi_disk/
+2026/05/07 11:10:00.884029 executor.go:79: executing command: echo -1 | sudo tee /sys/block/sdd/device/scsi_disk/9:0:0:2/max_retries
+2026/05/07 11:10:00.899752 login_.go:307: CombinedOutput：-1
+
+2026/05/07 11:10:00.899912 login_.go:132: Total files: 1
+2026/05/07 11:10:00.899921 login_.go:135: CombinedOutput：../../sde
+2026/05/07 11:10:00.899925 login_.go:293: Walking into the path /sys/block/sde/device/scsi_disk/
+2026/05/07 11:10:00.900125 executor.go:79: executing command: echo -1 | sudo tee /sys/block/sde/device/scsi_disk/10:0:0:2/max_retries
+2026/05/07 11:10:00.915023 login_.go:307: CombinedOutput：-1
+
+2026/05/07 11:10:00.915195 login_.go:132: Total files: 1
+2026/05/07 11:10:00.915203 login_.go:135: CombinedOutput：../../sdf
+2026/05/07 11:10:00.915207 login_.go:293: Walking into the path /sys/block/sdf/device/scsi_disk/
+2026/05/07 11:10:00.915419 executor.go:79: executing command: echo -1 | sudo tee /sys/block/sdf/device/scsi_disk/11:0:0:2/max_retries
+2026/05/07 11:10:00.930847 login_.go:307: CombinedOutput：-1
+
+2026/05/07 11:10:00.930863 login_.go:452: Started running post-attachment tuning steps for multipath attachment
+2026/05/07 11:10:00.931102 login_.go:132: Total files: 1
+2026/05/07 11:10:00.931110 login_.go:135: CombinedOutput：../../sdf
+2026/05/07 11:10:00.931114 login_.go:461: Tuning device: sdf
+2026/05/07 11:10:00.931118 login_.go:505: IO Scheduler None value for OS: Oracle Linux Server, Version: 8.10 is 'none'
+2026/05/07 11:10:00.931167 executor.go:79: executing command: echo none | sudo tee /sys/block/sdf/queue/scheduler
+2026/05/07 11:10:01.064160 login_.go:486: Successfully updated file: /sys/block/sdf/queue/scheduler
+2026/05/07 11:10:01.064188 login_.go:465: Successfully tuned scheduler for the device sdf
+2026/05/07 11:10:01.064437 login_.go:132: Total files: 1
+2026/05/07 11:10:01.064447 login_.go:135: CombinedOutput：../../sdb
+2026/05/07 11:10:01.064451 login_.go:461: Tuning device: sdb
+2026/05/07 11:10:01.064455 login_.go:505: IO Scheduler None value for OS: Oracle Linux Server, Version: 8.10 is 'none'
+2026/05/07 11:10:01.064473 executor.go:79: executing command: echo none | sudo tee /sys/block/sdb/queue/scheduler
+2026/05/07 11:10:01.098558 login_.go:486: Successfully updated file: /sys/block/sdb/queue/scheduler
+2026/05/07 11:10:01.098579 login_.go:465: Successfully tuned scheduler for the device sdb
+2026/05/07 11:10:01.098789 login_.go:132: Total files: 1
+2026/05/07 11:10:01.098801 login_.go:135: CombinedOutput：../../sdc
+2026/05/07 11:10:01.098805 login_.go:461: Tuning device: sdc
+2026/05/07 11:10:01.098809 login_.go:505: IO Scheduler None value for OS: Oracle Linux Server, Version: 8.10 is 'none'
+2026/05/07 11:10:01.098830 executor.go:79: executing command: echo none | sudo tee /sys/block/sdc/queue/scheduler
+2026/05/07 11:10:01.131646 login_.go:486: Successfully updated file: /sys/block/sdc/queue/scheduler
+2026/05/07 11:10:01.131670 login_.go:465: Successfully tuned scheduler for the device sdc
+2026/05/07 11:10:01.131871 login_.go:132: Total files: 1
+2026/05/07 11:10:01.131881 login_.go:135: CombinedOutput：../../sdd
+2026/05/07 11:10:01.131884 login_.go:461: Tuning device: sdd
+2026/05/07 11:10:01.131889 login_.go:505: IO Scheduler None value for OS: Oracle Linux Server, Version: 8.10 is 'none'
+2026/05/07 11:10:01.131905 executor.go:79: executing command: echo none | sudo tee /sys/block/sdd/queue/scheduler
+2026/05/07 11:10:01.164569 login_.go:486: Successfully updated file: /sys/block/sdd/queue/scheduler
+2026/05/07 11:10:01.164585 login_.go:465: Successfully tuned scheduler for the device sdd
+2026/05/07 11:10:01.164758 login_.go:132: Total files: 1
+2026/05/07 11:10:01.164767 login_.go:135: CombinedOutput：../../sde
+2026/05/07 11:10:01.164771 login_.go:461: Tuning device: sde
+2026/05/07 11:10:01.164775 login_.go:505: IO Scheduler None value for OS: Oracle Linux Server, Version: 8.10 is 'none'
+2026/05/07 11:10:01.164794 executor.go:79: executing command: echo none | sudo tee /sys/block/sde/queue/scheduler
+2026/05/07 11:10:01.201997 login_.go:486: Successfully updated file: /sys/block/sde/queue/scheduler
+2026/05/07 11:10:01.202021 login_.go:465: Successfully tuned scheduler for the device sde
+2026/05/07 11:10:01.202027 login_.go:476: Completed running post-attachment tuning steps for multipath attachment
+2026/05/07 11:10:01.202032 iscsi_commands_helper.go:1129: Walking into the path /sys/devices/virtual/block
+2026/05/07 11:10:01.202592 login_.go:132: Total files: 1
+2026/05/07 11:10:01.202606 login_.go:135: CombinedOutput：../../../../pci0000:00/0000:00:04.7/0000:18:00.0/virtio1/host0/target0:0:1/0:0:1:1/block/sda/sda3
+2026/05/07 11:10:01.203171 login_.go:132: Total files: 1
+2026/05/07 11:10:01.203183 login_.go:135: CombinedOutput：../../../../pci0000:00/0000:00:04.7/0000:18:00.0/virtio1/host0/target0:0:1/0:0:1:1/block/sda/sda3
+2026/05/07 11:10:01.203916 login_.go:132: Total files: 1
+2026/05/07 11:10:01.203926 login_.go:135: CombinedOutput：../../../../platform/host7/session1/target7:0:0/7:0:0:2/block/sdb
+2026/05/07 11:10:01.203936 iscsi_commands_helper.go:1177: Got the device path: /dev/oracleoci/oraclevdb
+2026/05/07 11:10:01.203970 iscsi_commands_helper.go:1186: Got the device name: /dev/mapper/mpatha
+2026/05/07 11:10:01.203979 login_.go:128: The symbolic link /dev/oracleoci/oraclevdb is not found
+2026/05/07 11:10:02.204037 login_.go:403: retrying after error: The symbolic link /dev/oracleoci/oraclevdb is not found
+2026/05/07 11:10:02.204133 login_.go:128: The symbolic link /dev/oracleoci/oraclevdb is not found
+2026/05/07 11:10:03.204193 login_.go:403: retrying after error: The symbolic link /dev/oracleoci/oraclevdb is not found
+2026/05/07 11:10:03.204258 login_.go:128: The symbolic link /dev/oracleoci/oraclevdb is not found
+2026/05/07 11:10:03.204265 iscsi_commands_helper.go:1193: Checking if the symbolic link /dev/oracleoci/oraclevdb has set to /dev/mapper/mpatha
+2026/05/07 11:10:03.204271 executor.go:79: executing command: sudo ln -fs /dev/mapper/mpatha /dev/oracleoci/oraclevdb
+2026/05/07 11:10:03.221010 iscsi_commands_helper.go:1197: CombinedOutput：
+2026/05/07 11:10:03.221049 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221061 login_.go:135: CombinedOutput：../../../../platform/host8/session2/target8:0:0/8:0:0:2/block/sdc
+2026/05/07 11:10:03.221085 iscsi_commands_helper.go:1177: Got the device path: /dev/oracleoci/oraclevdb
+2026/05/07 11:10:03.221119 iscsi_commands_helper.go:1186: Got the device name: /dev/mapper/mpatha
+2026/05/07 11:10:03.221126 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221133 login_.go:135: CombinedOutput：/dev/mapper/mpatha
+2026/05/07 11:10:03.221136 iscsi_commands_helper.go:1193: Checking if the symbolic link /dev/oracleoci/oraclevdb has set to /dev/mapper/mpatha
+2026/05/07 11:10:03.221151 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221159 login_.go:135: CombinedOutput：../../../../platform/host9/session3/target9:0:0/9:0:0:2/block/sdd
+2026/05/07 11:10:03.221170 iscsi_commands_helper.go:1177: Got the device path: /dev/oracleoci/oraclevdb
+2026/05/07 11:10:03.221190 iscsi_commands_helper.go:1186: Got the device name: /dev/mapper/mpatha
+2026/05/07 11:10:03.221195 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221200 login_.go:135: CombinedOutput：/dev/mapper/mpatha
+2026/05/07 11:10:03.221203 iscsi_commands_helper.go:1193: Checking if the symbolic link /dev/oracleoci/oraclevdb has set to /dev/mapper/mpatha
+2026/05/07 11:10:03.221217 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221225 login_.go:135: CombinedOutput：../../../../platform/host10/session4/target10:0:0/10:0:0:2/block/sde
+2026/05/07 11:10:03.221233 iscsi_commands_helper.go:1177: Got the device path: /dev/oracleoci/oraclevdb
+2026/05/07 11:10:03.221251 iscsi_commands_helper.go:1186: Got the device name: /dev/mapper/mpatha
+2026/05/07 11:10:03.221256 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221261 login_.go:135: CombinedOutput：/dev/mapper/mpatha
+2026/05/07 11:10:03.221264 iscsi_commands_helper.go:1193: Checking if the symbolic link /dev/oracleoci/oraclevdb has set to /dev/mapper/mpatha
+2026/05/07 11:10:03.221277 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221295 login_.go:135: CombinedOutput：../../../../platform/host11/session5/target11:0:0/11:0:0:2/block/sdf
+2026/05/07 11:10:03.221303 iscsi_commands_helper.go:1177: Got the device path: /dev/oracleoci/oraclevdb
+2026/05/07 11:10:03.221323 iscsi_commands_helper.go:1186: Got the device name: /dev/mapper/mpatha
+2026/05/07 11:10:03.221330 login_.go:132: Total files: 1
+2026/05/07 11:10:03.221334 login_.go:135: CombinedOutput：/dev/mapper/mpatha
+2026/05/07 11:10:03.221337 iscsi_commands_helper.go:1193: Checking if the symbolic link /dev/oracleoci/oraclevdb has set to /dev/mapper/mpatha
+2026/05/07 11:10:03.221432 iscsi_commands_helper.go:83: Done handling volume attachment changes.
+2026/05/07 11:10:55.070186 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/07 11:10:55.070267 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/07 11:10:55.073877 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/07 11:10:55.073910 volume_attachments_metadata_client.go:138: fetched volumeAttachments from http://169.254.169.254/opc/v2/volumeAttachments/, status 200 OK
+2026/05/07 11:10:55.073967 volume_attachments_metadata_client.go:153: Got volume attachment: 0 ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyichwuihwuv2f42vqk7d23bfmpgfdh6mtv2qk76tguisfoa ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicscgdgy3lu2j3vwrco3quyn7k36sht7767ly5a3nclg4a ocid1.volume.oc1.eu-zurich-1.ab5heljrmp2tonzi33veolimxwd6ikjhobfznis3ahogltcvsigjfpd2rexq   iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c 169.254.2.2 3260 
+2026/05/07 11:10:55.073975 volume_attachments_metadata_client.go:157: Got multipath device: 0 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c 169.254.2.3 3260
+2026/05/07 11:10:55.073978 volume_attachments_metadata_client.go:157: Got multipath device: 1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c 169.254.2.4 3260
+2026/05/07 11:10:55.073981 volume_attachments_metadata_client.go:157: Got multipath device: 2 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c 169.254.2.5 3260
+2026/05/07 11:10:55.073983 volume_attachments_metadata_client.go:157: Got multipath device: 3 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c 169.254.2.6 3260
+2026/05/07 11:10:55.073991 instance_metadata_helper.go:84: There is not change in the volume attachments.
+2026/05/07 11:10:55.073995 instance_metadata_helper.go:57: Skipping since the volume attachments don't change.
+
+=== iscsi sessions ===
+tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c (non-flash)
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:a3eec5f1-6942-4009-8004-9c266d91978c (non-flash)
+
+=== iscsi node startup values ===
+/var/lib/iscsi/nodes/iqn.2015-02.oracle.boot:uefi/169.254.0.2,3260,1/default:node.startup = onboot
+/var/lib/iscsi/nodes/iqn.2015-02.oracle.boot:uefi/fd00:00c1:0000:0000:0000:0000:a9fe:0002,3260,1/default:node.startup = onboot
+
+=== multipath -ll ===
+mpatha (360fb705a79c841a2b9e51fa29824006f) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+
+=== multipathd show paths ===
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check        
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan            
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXXXX. 110/120
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXXXX. 110/120
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXXXX. 111/120
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXXXX. 111/120
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXXXX. 111/120
+
+=== multipathd show maps ===
+name   sysfs uuid                             
+mpatha dm-2  360fb705a79c841a2b9e51fa29824006f
+
+=== multipathd show config subset ===
+7:	path_selector "queue-length 0"
+8:	path_grouping_policy "multibus"
+10:	prio "const"
+11:	prio_args ""
+15:	failback "immediate"
+16:	rr_min_io 1
+17:	rr_min_io_rq 1
+19:	rr_weight "uniform"
+20:	no_path_retry "queue"
+25:	fast_io_fail_tmo "off"
+26:	dev_loss_tmo 9000
+33:	detect_prio "yes"
+134:		path_grouping_policy "multibus"
+139:		path_grouping_policy "group_by_prio"
+141:		prio "alua"
+142:		failback "immediate"
+143:		no_path_retry 18
+144:		fast_io_fail_tmo 10
+145:		dev_loss_tmo "infinity"
+151:		path_grouping_policy "group_by_prio"
+154:		prio "hp_sw"
+155:		no_path_retry "queue"
+160:		path_grouping_policy "multibus"
+161:		no_path_retry 12
+166:		path_grouping_policy "group_by_prio"
+169:		prio "hp_sw"
+170:		no_path_retry 12
+175:		path_grouping_policy "group_by_prio"
+176:		prio "alua"
+177:		failback "immediate"
+178:		no_path_retry 12
+183:		path_grouping_policy "group_by_prio"
+184:		prio "alua"
+185:		failback "immediate"
+186:		no_path_retry 12
+191:		path_grouping_policy "multibus"
+192:		no_path_retry 18
+197:		path_grouping_policy "group_by_prio"
+198:		prio "alua"
+199:		failback "immediate"
+200:		no_path_retry 18
+205:		path_grouping_policy "group_by_prio"
+206:		prio "alua"
+207:		failback "immediate"
+208:		no_path_retry 18
+213:		path_grouping_policy "group_by_prio"
+215:		prio "alua"
+216:		failback "immediate"
+217:		no_path_retry 12
+222:		path_grouping_policy "multibus"
+223:		no_path_retry 12
+228:		path_grouping_policy "group_by_prio"
+229:		prio "alua"
+230:		failback "immediate"
+231:		no_path_retry 18
+236:		path_grouping_policy "group_by_prio"
+237:		prio "alua"
+238:		failback "immediate"
+239:		no_path_retry 18
+244:		path_grouping_policy "group_by_prio"
+246:		prio "alua"
+247:		failback "immediate"
+248:		no_path_retry "queue"
+253:		path_grouping_policy "multibus"
+259:		path_grouping_policy "group_by_prio"
+263:		prio "rdac"
+264:		failback "immediate"
+265:		no_path_retry 30
+271:		path_grouping_policy "group_by_prio"
+275:		prio "rdac"
+276:		failback "immediate"
+277:		no_path_retry 30
+282:		path_grouping_policy "group_by_prio"
+283:		prio "alua"
+284:		failback "immediate"
+285:		no_path_retry 30
+290:		path_grouping_policy "multibus"
+295:		path_grouping_policy "multibus"
+296:		no_path_retry 30
+301:		path_grouping_policy "group_by_prio"
+302:		prio "alua"
+303:		failback "immediate"
+304:		no_path_retry 30
+309:		path_grouping_policy "group_by_serial"
+310:		no_path_retry 30
+315:		path_grouping_policy "group_by_prio"
+317:		prio "alua"
+318:		failback "immediate"
+319:		no_path_retry 10
+324:		path_grouping_policy "multibus"
+325:		no_path_retry 6
+331:		path_grouping_policy "group_by_prio"
+334:		prio "emc"
+335:		failback "immediate"
+336:		no_path_retry 60
+343:		path_grouping_policy "multibus"
+344:		no_path_retry 5
+349:		path_grouping_policy "multibus"
+354:		path_grouping_policy "multibus"
+355:		no_path_retry "queue"
+361:		path_grouping_policy "group_by_prio"
+365:		prio "rdac"
+366:		failback "immediate"
+367:		no_path_retry 30
+372:		path_grouping_policy "multibus"
+377:		path_grouping_policy "group_by_serial"
+382:		path_grouping_policy "group_by_prio"
+383:		prio "alua"
+384:		failback "immediate"
+385:		no_path_retry 10
+390:		path_grouping_policy "multibus"
+395:		path_grouping_policy "group_by_prio"
+396:		prio "alua"
+397:		failback "immediate"
+398:		no_path_retry 10
+403:		path_grouping_policy "multibus"
+404:		no_path_retry 10
+410:		path_grouping_policy "group_by_prio"
+414:		prio "rdac"
+415:		failback "immediate"
+416:		no_path_retry 30
+421:		path_grouping_policy "multibus"
+426:		path_grouping_policy "group_by_prio"
+427:		prio "hds"
+428:		failback "immediate"
+429:		no_path_retry "queue"
+434:		path_grouping_policy "multibus"
+439:		path_grouping_policy "multibus"
+445:		path_grouping_policy "group_by_prio"
+449:		prio "rdac"
+450:		failback "immediate"
+451:		no_path_retry 30
+457:		path_grouping_policy "group_by_prio"
+461:		prio "rdac"
+462:		failback "immediate"
+463:		no_path_retry 30
+469:		path_grouping_policy "group_by_prio"
+473:		prio "rdac"
+474:		failback "immediate"
+475:		no_path_retry 30
+481:		path_grouping_policy "group_by_prio"
+485:		prio "rdac"
+486:		failback "immediate"
+487:		no_path_retry 30
+493:		path_grouping_policy "group_by_prio"
+497:		prio "rdac"
+498:		failback "immediate"
+499:		no_path_retry 30
+505:		path_grouping_policy "group_by_prio"
+509:		prio "rdac"
+510:		failback "immediate"
+511:		no_path_retry 30
+517:		path_grouping_policy "group_by_prio"
+521:		prio "rdac"
+522:		failback "immediate"
+523:		no_path_retry 30
+529:		path_grouping_policy "group_by_prio"
+533:		prio "rdac"
+534:		failback "immediate"
+535:		no_path_retry 30
+541:		path_grouping_policy "group_by_prio"
+545:		prio "rdac"
+546:		failback "immediate"
+547:		no_path_retry 30
+553:		path_grouping_policy "group_by_prio"
+557:		prio "rdac"
+558:		failback "immediate"
+559:		no_path_retry 30
+565:		path_grouping_policy "group_by_prio"
+569:		prio "rdac"
+570:		failback "immediate"
+571:		no_path_retry 30
+576:		path_grouping_policy "multibus"
+577:		no_path_retry "queue"
+582:		path_grouping_policy "group_by_prio"
+583:		prio "alua"
+584:		failback "immediate"
+585:		no_path_retry "queue"
+590:		path_grouping_policy "multibus"
+591:		no_path_retry "queue"
+596:		path_grouping_policy "group_by_prio"
+597:		prio "alua"
+598:		failback "immediate"
+599:		no_path_retry "queue"
+605:		path_grouping_policy "multibus"
+608:		no_path_retry "queue"
+614:		path_grouping_policy "multibus"
+617:		no_path_retry "queue"
+622:		path_grouping_policy "group_by_prio"
+624:		prio "alua"
+625:		failback "immediate"
+626:		no_path_retry "queue"
+631:		path_grouping_policy "group_by_prio"
+632:		prio "alua"
+633:		failback "immediate"
+634:		no_path_retry "queue"
+639:		path_grouping_policy "multibus"
+640:		no_path_retry "queue"
+645:		path_grouping_policy "multibus"
+650:		path_grouping_policy "group_by_prio"
+651:		prio "alua"
+652:		failback "immediate"
+653:		no_path_retry 30
+658:		path_grouping_policy "multibus"
+659:		no_path_retry 60
+664:		no_path_retry 60
+669:		path_grouping_policy "group_by_prio"
+671:		prio "alua"
+672:		failback "immediate"
+673:		no_path_retry 60
+679:		path_grouping_policy "group_by_prio"
+683:		prio "rdac"
+684:		failback "immediate"
+685:		no_path_retry 30
+690:		path_grouping_policy "group_by_prio"
+692:		prio "ontap"
+693:		failback "immediate"
+694:		no_path_retry "queue"
+696:		dev_loss_tmo "infinity"
+703:		path_grouping_policy "group_by_prio"
+707:		prio "rdac"
+708:		failback "immediate"
+709:		no_path_retry 30
+714:		path_grouping_policy "multibus"
+715:		no_path_retry 24
+720:		path_grouping_policy "multibus"
+721:		no_path_retry "queue"
+726:		path_grouping_policy "group_by_prio"
+728:		prio "alua"
+729:		failback "immediate"
+734:		path_grouping_policy "group_by_prio"
+735:		prio "alua"
+736:		failback "immediate"
+741:		path_grouping_policy "group_by_prio"
+742:		prio "alua"
+743:		failback "immediate"
+749:		path_grouping_policy "group_by_prio"
+753:		prio "rdac"
+754:		failback "immediate"
+755:		no_path_retry 30
+761:		path_grouping_policy "group_by_prio"
+765:		prio "rdac"
+766:		failback "immediate"
+767:		no_path_retry 30
+773:		path_grouping_policy "group_by_prio"
+777:		prio "rdac"
+778:		failback "immediate"
+779:		no_path_retry 30
+784:		path_grouping_policy "multibus"
+790:		path_grouping_policy "group_by_prio"
+794:		prio "rdac"
+795:		failback "immediate"
+796:		no_path_retry 30
+802:		path_grouping_policy "group_by_prio"
+806:		prio "rdac"
+807:		failback "immediate"
+808:		no_path_retry 30
+814:		path_grouping_policy "group_by_prio"
+818:		prio "rdac"
+819:		failback "immediate"
+820:		no_path_retry 30
+826:		path_grouping_policy "group_by_prio"
+830:		prio "rdac"
+831:		failback "immediate"
+832:		no_path_retry 30
+838:		path_grouping_policy "group_by_prio"
+842:		prio "rdac"
+843:		failback "immediate"
+844:		no_path_retry 30
+849:		path_grouping_policy "group_by_prio"
+850:		prio "alua"
+851:		failback "immediate"
+852:		no_path_retry 30
+857:		path_grouping_policy "multibus"
+858:		no_path_retry "queue"
+863:		path_grouping_policy "group_by_prio"
+864:		prio "alua"
+865:		failback "immediate"
+866:		no_path_retry "queue"
+872:		path_grouping_policy "group_by_prio"
+874:		prio "alua"
+875:		failback "immediate"
+876:		no_path_retry "queue"
+881:		path_grouping_policy "group_by_prio"
+883:		prio "alua"
+884:		failback "immediate"
+885:		no_path_retry 12
+890:		path_grouping_policy "group_by_prio"
+891:		prio "alua"
+892:		failback "immediate"
+893:		no_path_retry "queue"
+898:		path_grouping_policy "group_by_prio"
+899:		prio "alua"
+900:		failback "immediate"
+901:		no_path_retry "queue"
+906:		path_grouping_policy "group_by_prio"
+908:		prio "alua"
+909:		failback "immediate"
+910:		fast_io_fail_tmo 10
+915:		path_grouping_policy "group_by_prio"
+916:		prio "alua"
+921:		path_grouping_policy "multibus"
+926:		path_grouping_policy "group_by_prio"
+927:		path_selector "round-robin 0"
+928:		prio "alua"
+929:		failback 30
+930:		rr_weight "priorities"
+931:		no_path_retry "fail"
+932:		rr_min_io 1
+933:		rr_min_io_rq 1
+935:		fast_io_fail_tmo 15
+936:		dev_loss_tmo 15
+941:		path_grouping_policy "multibus"
+946:		path_grouping_policy "group_by_prio"
+947:		prio "alua"
+948:		failback "immediate"
+949:		no_path_retry 15
+954:		path_grouping_policy "group_by_prio"
+955:		prio "alua"
+956:		failback "immediate"
+957:		no_path_retry 15
+962:		path_grouping_policy "group_by_prio"
+964:		prio "alua"
+965:		failback "immediate"
+966:		no_path_retry 30
+971:		path_grouping_policy "group_by_serial"
+972:		no_path_retry 30
+977:		path_grouping_policy "group_by_prio"
+979:		prio "alua"
+980:		failback "immediate"
+981:		no_path_retry 30
+986:		path_grouping_policy "multibus"
+987:		no_path_retry 30
+992:		path_grouping_policy "multibus"
+993:		no_path_retry 12
+998:		path_grouping_policy "multibus"
+999:		no_path_retry 30
+1004:		path_grouping_policy "multibus"
+1005:		no_path_retry 30
+1011:		path_grouping_policy "group_by_prio"
+1013:		prio "alua"
+1014:		failback "immediate"
+1015:		no_path_retry 30
+1021:		path_grouping_policy "group_by_prio"
+1023:		prio "alua"
+1024:		failback "immediate"
+1025:		no_path_retry 30
+1030:		path_grouping_policy "group_by_prio"
+1031:		prio "alua"
+1032:		failback "immediate"
+1033:		no_path_retry 30
+1038:		path_grouping_policy "multibus"
+1039:		no_path_retry 30
+1044:		path_grouping_policy "group_by_prio"
+1045:		prio "alua"
+1046:		failback "immediate"
+1047:		no_path_retry 30
+1052:		path_grouping_policy "group_by_prio"
+1053:		prio "alua"
+1054:		failback "immediate"
+1055:		no_path_retry 30
+1060:		path_grouping_policy "multibus"
+1061:		no_path_retry 30
+1066:		path_grouping_policy "group_by_prio"
+1067:		prio "alua"
+1068:		failback "immediate"
+
+=== /etc/multipath.conf ===
+defaults {
+  user_friendly_names yes
+  find_multipaths yes
+  rr_weight uniform
+  path_selector "queue-length 0"
+  path_grouping_policy multibus
+  polling_interval 30
+  path_checker tur
+  checker_timeout 300
+  failback immediate
+  verbosity 2
+  rr_min_io 1
+  rr_min_io_rq 1
+  dev_loss_tmo 9000
+  fast_io_fail_tmo off
+  no_path_retry queue
+  skip_kpartx no
+  features "2 queue_mode bio"
+}
+
+=== expected path ===
+lrwxrwxrwx. 1 root root 18 May  7 11:10 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+/dev/dm-2
+
+=== lsblk ===
+NAME               TYPE   SIZE MODEL            WWN                                FSTYPE       MOUNTPOINT
+sda                disk  46.6G BlockVolume      0x60255d94402d407993193d56069baaea              
+├─sda1             part   100M                  0x60255d94402d407993193d56069baaea vfat         /boot/efi
+├─sda2             part     1G                  0x60255d94402d407993193d56069baaea xfs          /boot
+└─sda3             part  45.5G                  0x60255d94402d407993193d56069baaea LVM2_member  
+  ├─ocivolume-root lvm   35.5G                                                     xfs          /
+  └─ocivolume-oled lvm     10G                                                     xfs          /var/oled
+sdb                disk   1.5T BlockVolume      0x60fb705a79c841a2b9e51fa29824006f mpath_member 
+└─mpatha           mpath  1.5T                                                     xfs          /mnt/sprint24-agent
+sdc                disk   1.5T BlockVolume      0x60fb705a79c841a2b9e51fa29824006f mpath_member 
+└─mpatha           mpath  1.5T                                                     xfs          /mnt/sprint24-agent
+sdd                disk   1.5T BlockVolume      0x60fb705a79c841a2b9e51fa29824006f mpath_member 
+└─mpatha           mpath  1.5T                                                     xfs          /mnt/sprint24-agent
+sde                disk   1.5T BlockVolume      0x60fb705a79c841a2b9e51fa29824006f mpath_member 
+└─mpatha           mpath  1.5T                                                     xfs          /mnt/sprint24-agent
+sdf                disk   1.5T BlockVolume      0x60fb705a79c841a2b9e51fa29824006f mpath_member 
+└─mpatha           mpath  1.5T                                                     xfs          /mnt/sprint24-agent
+
+=== dmsetup tree ===
+mpatha (252:2)
+ ├─ (8:80)
+ ├─ (8:64)
+ ├─ (8:48)
+ ├─ (8:32)
+ └─ (8:16)
+ocivolume-oled (252:1)
+ └─ (8:3)
+ocivolume-root (252:0)
+ └─ (8:3)
+
+=== mount verification ===
+MOUNTED /mnt/sprint24-agent
+/dev/mapper/mpatha on /mnt/sprint24-agent type xfs (rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota)
+Filesystem          Size  Used Avail Use% Mounted on
+/dev/mapper/mpatha  1.5T   11G  1.5T   1% /mnt/sprint24-agent
+
+=== checklist ===
+sessions=5
+maps=1
+active_ready_running_paths=5
+RESULT=PASS

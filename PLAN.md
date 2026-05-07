@@ -374,7 +374,7 @@ Backlog Items:
 
 ## Sprint 24 - OCI agent-managed multipath configuration validation
 
-Status: Failed
+Status: Done
 Mode: YOLO
 Test: integration
 Regression: integration

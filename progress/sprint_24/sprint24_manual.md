@@ -83,7 +83,18 @@ evidence="progress/sprint_24/oci_agent_multipath_evidence_latest.txt"
 attachment="progress/sprint_24/volume_attachment_latest.json"
 
 grep -E 'sessions=|maps=|active_ready_running_paths=|RESULT=' "$evidence"
-jq -r '.data.id, .data."is-multipath", (.data."multipath-devices" // []) | tostring' "$attachment"
+jq -r '
+  .data as $a |
+  "attachment_id=" + ($a.id // "(missing)"),
+  "is_multipath=" + (($a."is-multipath" // false) | tostring),
+  "primary_device=ipv4=" + ($a.ipv4 // "(missing)") + " port=" + (($a.port // "") | tostring) + " iqn=" + ($a.iqn // "(missing)"),
+  "multipath_devices:",
+  (
+    $a."multipath-devices" // []
+    | to_entries[]
+    | "  [" + (.key | tostring) + "] ipv4=" + (.value.ipv4 // "(missing)") + " port=" + ((.value.port // "") | tostring) + " iqn=" + (.value.iqn // "(missing)")
+  )
+' "$attachment"
 ```
 
 Expected output:
@@ -93,9 +104,14 @@ sessions=2
 maps=1
 active_ready_running_paths=2
 RESULT=PASS
-ocid1.volumeattachment...
-true
-...
+attachment_id=ocid1.volumeattachment...
+is_multipath=true
+primary_device=ipv4=169.254.2.2 port=3260 iqn=iqn.2015-12.com.oracleiaas:...
+multipath_devices:
+  [0] ipv4=169.254.2.3 port=3260 iqn=iqn.2015-12.com.oracleiaas:...
+  [1] ipv4=169.254.2.4 port=3260 iqn=iqn.2015-12.com.oracleiaas:...
+  [2] ipv4=169.254.2.5 port=3260 iqn=iqn.2015-12.com.oracleiaas:...
+  [3] ipv4=169.254.2.6 port=3260 iqn=iqn.2015-12.com.oracleiaas:...
 ```
 
 ### Step 5 - SSH to the Kept Instance
@@ -160,7 +176,7 @@ Use the generated `oci_agent_multipath_evidence_<timestamp>.txt` file and confir
 | ----- | -------- |
 | Plugin enabled | `block volume plugin config` shows `oci-blockautoconfig` enabled or not disabled |
 | Plugin active | `oracle-cloud-agent service` is running and plugin log has current activity |
-| Control plane multipath | `volume_attachment_<timestamp>.json` has `data.is-multipath` set to `true` |
+| Control plane multipath | sanitized `volume_attachment_<timestamp>.json` has `data.is-multipath` set to `true` |
 | iSCSI sessions | `iscsiadm -m session` lists at least two sessions for the volume |
 | Mapper device | `multipath -ll` shows an `mpath*` map |
 | Path state | `multipath -ll` and `multipathd show paths` show at least two active ready paths |

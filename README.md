@@ -23,6 +23,7 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
   - [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity)
     - [Single-path vs multipath (HA) vs multipath (load balancing)](#single-path-vs-multipath-ha-vs-multipath-load-balancing)
     - [Multipath HA vs. load balancing sprint summary](#multipath-ha-vs-load-balancing-sprint-summary)
+    - [OCI agent-managed multipath configuration](#oci-agent-managed-multipath-configuration)
   - [What To Use In Practice](#what-to-use-in-practice)
   - [RMAN and FRA During Production](#rman-and-fra-during-production)
   - [Relevant Project Artifacts](#relevant-project-artifacts)
@@ -64,7 +65,7 @@ Oracle also recommends placing the Fast Recovery Area on separate storage from t
 
 Because this repository is specifically about OCI, the practical conclusions also depend on OCI block volume performance levels, UHP attachment behavior, multipath, and instance-side block volume limits.
 
-Sprints **22**, **23**, and **24** document how this project actually exercises **UHP iSCSI multipath on the instance**: Sprint 22 establishes **HA-correct** multipath (paths aggregated via dm-multipath, mount on the mapper device), optional **`/etc/fstab`** persistence with `_netdev` and `nofail`, and a reproducible **multipath versus single-path** A/B benchmark with **OCI Monitoring** reports and timestamps aligned to fio. Sprint 23 keeps that baseline and adds an **explicit `multipath.conf`** load-balancing policy for the multipath phase (multibus + round-robin intent), richer **before/after configuration** captures, and **bounded `iostat`** during fio so path-level behavior is visible in artifacts. Sprint 24 adds the simplified **OCI Block Volume Management plugin-managed** path and a single evidence checklist for avoiding control-plane versus guest-reality contradictions. Details and runbooks are in [UHP iSCSI multipath evidence](#uhp-iscsi-multipath-evidence).
+Sprints **22**, **23**, and **24** document how this project actually exercises **UHP iSCSI multipath on the instance**: Sprint 22 establishes **HA-correct** multipath (paths aggregated via dm-multipath, mount on the mapper device), optional **`/etc/fstab`** persistence with `_netdev` and `nofail`, and a reproducible **multipath versus single-path** A/B benchmark with **OCI Monitoring** reports and timestamps aligned to fio. Sprint 23 keeps that baseline and adds an **explicit `multipath.conf`** load-balancing policy for the multipath phase (multibus + round-robin intent), richer **before/after configuration** captures, and **bounded `iostat`** during fio so path-level behavior is visible in artifacts. Sprint 24 adds the simplified **OCI Block Volume Management plugin-managed** path and a single evidence checklist for avoiding control-plane versus guest-reality contradictions. Details and runbooks are in [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity).
 
 ## The Three Layouts
 
@@ -134,7 +135,7 @@ Relevant OCI references:
 - <a href="https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm" target="_blank" rel="noopener noreferrer">OCI Working with Multipath-Enabled iSCSI-Attached Volumes</a>
 - <a href="https://docs.oracle.com/iaas/Content/Block/Tasks/enablingblockvolumemanagementplugin.htm" target="_blank" rel="noopener noreferrer">OCI Enabling the Block Volume Management Plugin</a>
 
-The tier numbers above assume a healthy attachment stack on the instance. For **how this repository validates multipath, fstab, single-path fallback, and optional load balancing** on UHP iSCSI, see [UHP iSCSI multipath evidence (Sprints 22 and 23)](#uhp-iscsi-multipath-evidence-sprints-22-and-23).
+The tier numbers above assume a healthy attachment stack on the instance. For **how this repository validates multipath, fstab, single-path fallback, optional load balancing, and OCI agent-managed configuration** on UHP iSCSI, see [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity).
 
 ### 3. Multiple Volumes With Storage-Domain Separation
 
@@ -177,7 +178,7 @@ Relevant OCI references:
 
 The most important comparison in the repository is now the OCI tier matrix from Sprint 10, with Sprint 9 retained as the UHP reference.
 
-That matrix varies **OCI tier and volume topology** while holding the Oracle-style fio layout model steady. It does not, by itself, prove how multipathed UHP iSCSI behaves on the Linux instance; for **multipath versus single-path** and **host-side policy** evidence on a database-class guest, use the **UHP iSCSI multipath evidence** section below alongside the tier numbers.
+That matrix varies **OCI tier and volume topology** while holding the Oracle-style fio layout model steady. It does not, by itself, prove how multipathed UHP iSCSI behaves on the Linux instance; for **multipath versus single-path**, **host-side policy**, and **OCI agent-managed setup** evidence on a database-class guest, use the **UHP iSCSI multipath connectivity** section below alongside the tier numbers.
 
 The Sprint 9 and Sprint 10 runs keep the same Oracle fio workload and guest-visible Oracle layout model. The variables are:
 
@@ -221,7 +222,7 @@ That is the central OCI Oracle result of this repository.
 
 ## UHP iSCSI multipath connectivity
 
-Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22** and **23** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, and **what changes when we deliberately run single-path instead of multipath** on the same workflow?
+Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22**, **23**, and **24** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, **what changes when we deliberately run single-path instead of multipath**, and **can the OCI agent manage the multipath setup cleanly without project guest-side connection scripts**?
 
 ### Single-path vs multipath (HA) vs multipath (load balancing)
 
@@ -260,6 +261,32 @@ Optimal performance configuration is presented on below diagram. REDO volume get
 
 **Sprint 24 — OCI agent-managed multipath path.** This sprint validates the simpler operational path where the Oracle Cloud Agent Block Volume Management plugin owns iSCSI login and multipath setup for the UHP attachment. The runner is [tools/run_bv4db_oci_agent_multipath_sprint24.sh](tools/run_bv4db_oci_agent_multipath_sprint24.sh), and the operator checklist is [progress/sprint_24/sprint24_manual.md](progress/sprint_24/sprint24_manual.md).
 
+### OCI agent-managed multipath configuration
+
+Sprint 24 is the preferred configuration path for operators who want OCI to manage UHP iSCSI multipath connection mechanics. The repository still creates the OCI resources, but the guest-side storage configuration is intentionally delegated to the Oracle Cloud Agent **Block Volume Management** plugin. The Sprint 24 runner enables that plugin before the UHP multipath volume is attached, then waits for the plugin-created iSCSI sessions and dm-multipath mapper instead of issuing custom `iscsiadm --login`, `mpathconf --enable`, or hand-written `multipath.conf` commands.
+
+The workflow reuses Sprint 1 shared infrastructure only for tenancy context: region, compartment, subnet, SSH key secret, and SSH public key. It creates or adopts a Sprint 24-specific compute instance because the validation must start from a clean guest state. Reusing an older sprint instance would risk carrying stale iSCSI sessions, pre-existing multipath policy, mounted filesystems, or Oracle Cloud Agent plugin state into the evidence.
+
+The operator path is:
+
+```bash
+KEEP_INFRA=true ./tools/run_bv4db_oci_agent_multipath_sprint24.sh
+```
+
+The runner autodiscovers OCI context from `OCI_REGION`, `progress/sprint_1/state-bv4db.json`, or the active OCI CLI profile. The expected evidence is a local text report and attachment JSON under `progress/sprint_24/`, with symlinks named `oci_agent_multipath_evidence_latest.txt`, `volume_attachment_latest.json`, and `state-bv4db-s24-agent-latest.json` for the newest run.
+
+Accept the run only when the checklist proves both control-plane intent and guest reality:
+
+| Layer | Required evidence |
+| --- | --- |
+| OCI control plane | attachment JSON has `is-multipath=true` and lists multipath devices |
+| OCI agent | Oracle Cloud Agent is active and the block volume plugin log shows current work |
+| iSCSI | at least two sessions exist for the attached volume |
+| dm-multipath | `multipath -ll` shows an `mpath*` mapper with multiple active ready paths |
+| Filesystem | the Sprint 24 mountpoint is mounted on the agent-managed device |
+
+For the full copy/paste walkthrough, device-list formatting, SSH inspection commands, and troubleshooting flow, use [progress/sprint_24/sprint24_manual.md](progress/sprint_24/sprint24_manual.md).
+
 ## What To Use In Practice
 
 Use entry-level block volume when:
@@ -273,7 +300,7 @@ Use single UHP volume when:
 - the database is still fairly small
 - more headroom is needed than a basic entry-level volume can provide
 - one shared contention domain is acceptable
-- you care about **iSCSI multipath on the instance** (HA vs deliberate single-path, optional load balancing, and the OCI agent-managed path); see **UHP iSCSI multipath evidence** below
+- you care about **iSCSI multipath on the instance** (HA vs deliberate single-path, optional load balancing, and the OCI agent-managed path); see **UHP iSCSI multipath connectivity** above
 
 Use multiple separated volumes when:
 

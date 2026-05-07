@@ -21,6 +21,7 @@
 - [x] Evidence checklist covers plugin state, control-plane multipath, iSCSI sessions, mapper, path state, mount, and final result.
 - [x] Troubleshooting covers missing sessions, missing mapper, missing mount, and plugin warnings.
 - [x] Integration logs are listed in `sprint_24_tests.md`.
+- [x] Live OCI evidence is archived and summarized in `sprint_24_tests.md`.
 
 ### Backlog Traceability
 
@@ -38,4 +39,4 @@
 
 ## Status
 
-Documentation phase complete.
+Documentation phase complete. Sprint 24 is ready to close.
