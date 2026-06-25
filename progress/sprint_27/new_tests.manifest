@@ -1,0 +1,6 @@
+# Sprint 27 new tests - used by tests/run.sh --new-only
+
+integration:test_sprint27_tc1_inplace_negative.sh
+integration:test_sprint27_tc2_detach_positive.sh
+integration:test_sprint27_tc3_linux_unsafe_negative.sh
+integration:test_sprint27_tc4_linux_clean_device_path.sh

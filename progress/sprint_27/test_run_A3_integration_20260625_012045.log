@@ -1,0 +1,1811 @@
+=== Sprint 27 non-UHP to UHP VPU update integration ===
+PASS: file exists: terraform/sprint27-vpu-upgrade-multipath/versions.tf
+PASS: file exists: terraform/sprint27-vpu-upgrade-multipath/variables.tf
+PASS: file exists: terraform/sprint27-vpu-upgrade-multipath/main.tf
+PASS: file exists: terraform/sprint27-vpu-upgrade-multipath/outputs.tf
+PASS: file exists: terraform/sprint27-vpu-upgrade-multipath/README.md
+PASS: file exists: tests/integration/sprint27/remote/baseline_iscsi_helpers.sh
+PASS: file exists: tests/integration/sprint27/remote/assert_uhp_consistent_path.sh
+PASS: file exists: tests/integration/sprint27/remote/tc3_setup_unsafe_writer.sh
+PASS: file exists: tests/integration/sprint27/remote/tc3_collect_after_unsafe_detach.sh
+PASS: file exists: tests/integration/sprint27/remote/tc3_check_after_reattach.sh
+PASS: file exists: tests/integration/sprint27/remote/tc4_prepare_clean_release.sh
+PASS: file exists: tests/integration/sprint27/remote/tc4_check_after_reattach.sh
+PASS: file exists: tests/integration/sprint27/remote/wait_for_agent_multipath_login.sh
+PASS: module enables Block Volume Management plugin
+PASS: module uses native Terraform attachment
+PASS: module sets persistent device path
+PASS: module validates non-UHP baseline
+PASS: module has no helper, auto-login flag, or guest setup
+PASS: module tree has no bypass/setup commands
+TC1 start: in-place update keeps the original attachment active.
+Initializing provider plugins found in the configuration...
+- Finding oracle/oci versions matching ">= 7.7.0"...
+- Installing oracle/oci v8.19.0...
+- Installed oracle/oci v8.19.0 (signed by a HashiCorp partner, key ID 1533A49284137CEB)
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://developer.hashicorp.com/terraform/cli/plugins/signing
+
+Initializing the backend...
+
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.vpu_upgrade will be created
+  + resource "oci_core_instance" "vpu_upgrade" {
+      + availability_domain                 = "jJRq:EU-ZURICH-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = "bv4db-s27-tc1-inplace-negative-instance"
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = {
+          + "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtg49wjqLHkg6pfvasAjzVwQsc0xf6WNAiCRc+A2HHdTmLbhNgqLd2x4ibbWJVUAv/O3LtqV682AMhALpEuV6E7SlWnDDIKxSeNLqQCs6MmAMZFvTf3TYkN99OL48kxw++ra3wgiNRh8KNpI30LJ+slzuS70oW8c6W5t4ke4AO8AA0LdNdzhtF81x3L3VkJpn/nH+W34TZWQffx4hYooCT5zdmdm0Yqp4iw9SGGwzlBSNiQn/2eF/pr4F4upCCPka+9SeBVlg4II444boPjrNuOb7dC5fWrToCj35NBbNUtIqCl7YYu1Y6DK5a+drkvWHE8oJOcrEGgjCohmKvH9Ydsp/z9jAV2M18XdoBkQFJAKBW/v/dCLIs/j7vMCEnsgdH6T8r5IqMZFXpFObzRE/5Q6I3TaUOA0aGeOxHBXxi4fpmRamsLUMF/IYSRt0WfruAFaFPMefTpJ0sRrEJjHBxPMWlTWeoCVkkisIPNGsCN77SS/jIuKEvNWWUt9P13t8= rstyczynski@Ryszards-MacBook-Pro.local
+            EOT
+        }
+      + preserve_boot_volume                = false
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E5.Flex"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + agent_config {
+          + are_all_plugins_disabled = false
+          + is_management_disabled   = false
+          + is_monitoring_disabled   = false
+
+          + plugins_config {
+              + desired_state = "ENABLED"
+              + name          = "Block Volume Management"
+            }
+        }
+
+      + availability_config (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = "bv4db-s27-tc1-inplace-negative-vnic"
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+          + vlan_id                = (known after apply)
+
+          + ipv6address_ipv6subnet_cidr_pair_details (known after apply)
+        }
+
+      + instance_options {
+          + are_legacy_imds_endpoints_disabled = true
+        }
+
+      + launch_options (known after apply)
+
+      + launch_volume_attachments (known after apply)
+
+      + licensing_configs (known after apply)
+
+      + placement_constraint_details (known after apply)
+
+      + platform_config (known after apply)
+
+      + preemptible_instance_config (known after apply)
+
+      + shape_config {
+          + baseline_ocpu_utilization     = (known after apply)
+          + gpu_description               = (known after apply)
+          + gpus                          = (known after apply)
+          + local_disk_description        = (known after apply)
+          + local_disks                   = (known after apply)
+          + local_disks_total_size_in_gbs = (known after apply)
+          + local_volume_size_in_gbs      = (known after apply)
+          + max_vnic_attachments          = (known after apply)
+          + memory_in_gbs                 = 64
+          + networking_bandwidth_in_gbps  = (known after apply)
+          + nvmes                         = (known after apply)
+          + ocpus                         = 16
+          + processor_description         = (known after apply)
+          + resource_management           = (known after apply)
+          + vcpus                         = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaj4hbqrxfogjhixt4ojtzhwp7pqphzrv2jqo7cfkzegvgk7zxtzda"
+          + source_type             = "image"
+
+          + instance_source_image_filter_details (known after apply)
+        }
+    }
+
+  # oci_core_volume.test will be created
+  + resource "oci_core_volume" "test" {
+      + auto_tuned_vpus_per_gb     = (known after apply)
+      + availability_domain        = "jJRq:EU-ZURICH-1-AD-1"
+      + backup_policy_id           = (known after apply)
+      + cluster_placement_group_id = (known after apply)
+      + compartment_id             = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + defined_tags               = (known after apply)
+      + display_name               = "bv4db-s27-tc1-inplace-negative-volume"
+      + freeform_tags              = (known after apply)
+      + id                         = (known after apply)
+      + is_auto_tune_enabled       = (known after apply)
+      + is_hydrated                = (known after apply)
+      + is_reservations_enabled    = (known after apply)
+      + kms_key_id                 = (known after apply)
+      + size_in_gbs                = "1500"
+      + size_in_mbs                = (known after apply)
+      + state                      = (known after apply)
+      + system_tags                = (known after apply)
+      + time_created               = (known after apply)
+      + volume_backup_id           = (known after apply)
+      + volume_group_id            = (known after apply)
+      + vpus_per_gb                = "20"
+      + xrc_kms_key_id             = (known after apply)
+
+      + autotune_policies (known after apply)
+
+      + block_volume_replicas (known after apply)
+
+      + source_details (known after apply)
+    }
+
+  # oci_core_volume_attachment.test will be created
+  + resource "oci_core_volume_attachment" "test" {
+      + attachment_type                     = "iscsi"
+      + availability_domain                 = (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + device                              = "/dev/oracleoci/oraclevdb"
+      + display_name                        = "bv4db-s27-tc1-inplace-negative-attachment"
+      + encryption_in_transit_type          = (known after apply)
+      + id                                  = (known after apply)
+      + instance_id                         = (known after apply)
+      + ipv4                                = (known after apply)
+      + ipv6                                = (known after apply)
+      + iqn                                 = (known after apply)
+      + is_agent_auto_iscsi_login_enabled   = (known after apply)
+      + is_multipath                        = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + is_read_only                        = (known after apply)
+      + is_shareable                        = (known after apply)
+      + is_volume_created_during_launch     = (known after apply)
+      + iscsi_login_state                   = (known after apply)
+      + multipath_devices                   = (known after apply)
+      + port                                = (known after apply)
+      + state                               = (known after apply)
+      + time_created                        = (known after apply)
+      + use_chap                            = (known after apply)
+      + volume_id                           = (known after apply)
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + device_path          = "/dev/oracleoci/oraclevdb"
+  + instance_id          = (known after apply)
+  + instance_public_ip   = (known after apply)
+  + is_multipath         = (known after apply)
+  + iscsi_login_state    = (known after apply)
+  + multipath_devices    = (known after apply)
+  + volume_attachment_id = (known after apply)
+  + volume_id            = (known after apply)
+oci_core_volume.test: Creating...
+oci_core_instance.vpu_upgrade: Creating...
+oci_core_volume.test: Still creating... [00m10s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m10s elapsed]
+oci_core_volume.test: Still creating... [00m20s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m20s elapsed]
+oci_core_volume.test: Creation complete after 24s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrw5oitkoyhfs32px4hogyukxkadpc3wqtcoo5hxzl6kkkbtuiw2da]
+oci_core_instance.vpu_upgrade: Still creating... [00m30s elapsed]
+oci_core_instance.vpu_upgrade: Creation complete after 35s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyich6l3jwo5ycjileeazo5k6anclmhezuau4jvpvfdn5lia]
+oci_core_volume_attachment.test: Creating...
+oci_core_volume_attachment.test: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.test: Creation complete after 14s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyich6z7mwviuabfjfwzs6ro5433eyzzdvi26w675w5p24sq]
+
+Warning: Argument is deprecated
+
+  with oci_core_volume_attachment.test,
+  on main.tf line 66, in resource "oci_core_volume_attachment" "test":
+  66:   compartment_id  = var.compartment_id
+
+The 'compartment_id' field has been deprecated and may be removed in a future
+version. Do not use this field.
+
+(and one more similar warning elsewhere)
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyich6l3jwo5ycjileeazo5k6anclmhezuau4jvpvfdn5lia"
+instance_public_ip = "140.238.174.119"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyich6z7mwviuabfjfwzs6ro5433eyzzdvi26w675w5p24sq"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrw5oitkoyhfs32px4hogyukxkadpc3wqtcoo5hxzl6kkkbtuiw2da"
+baseline-non-uhp expected-non-multipath is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+tc1-after-inplace-vpu-100 expected-non-multipath is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+PASS: TC1 in-place 20 to 100 without detach stayed non-multipath
+TC2 start: detach, update, reattach should enable multipath.
+Initializing provider plugins found in the configuration...
+- Finding oracle/oci versions matching ">= 7.7.0"...
+- Installing oracle/oci v8.19.0...
+- Installed oracle/oci v8.19.0 (signed by a HashiCorp partner, key ID 1533A49284137CEB)
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://developer.hashicorp.com/terraform/cli/plugins/signing
+
+Initializing the backend...
+
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.vpu_upgrade will be created
+  + resource "oci_core_instance" "vpu_upgrade" {
+      + availability_domain                 = "jJRq:EU-ZURICH-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = "bv4db-s27-tc2-detach-positive-instance"
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = {
+          + "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtg49wjqLHkg6pfvasAjzVwQsc0xf6WNAiCRc+A2HHdTmLbhNgqLd2x4ibbWJVUAv/O3LtqV682AMhALpEuV6E7SlWnDDIKxSeNLqQCs6MmAMZFvTf3TYkN99OL48kxw++ra3wgiNRh8KNpI30LJ+slzuS70oW8c6W5t4ke4AO8AA0LdNdzhtF81x3L3VkJpn/nH+W34TZWQffx4hYooCT5zdmdm0Yqp4iw9SGGwzlBSNiQn/2eF/pr4F4upCCPka+9SeBVlg4II444boPjrNuOb7dC5fWrToCj35NBbNUtIqCl7YYu1Y6DK5a+drkvWHE8oJOcrEGgjCohmKvH9Ydsp/z9jAV2M18XdoBkQFJAKBW/v/dCLIs/j7vMCEnsgdH6T8r5IqMZFXpFObzRE/5Q6I3TaUOA0aGeOxHBXxi4fpmRamsLUMF/IYSRt0WfruAFaFPMefTpJ0sRrEJjHBxPMWlTWeoCVkkisIPNGsCN77SS/jIuKEvNWWUt9P13t8= rstyczynski@Ryszards-MacBook-Pro.local
+            EOT
+        }
+      + preserve_boot_volume                = false
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E5.Flex"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + agent_config {
+          + are_all_plugins_disabled = false
+          + is_management_disabled   = false
+          + is_monitoring_disabled   = false
+
+          + plugins_config {
+              + desired_state = "ENABLED"
+              + name          = "Block Volume Management"
+            }
+        }
+
+      + availability_config (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = "bv4db-s27-tc2-detach-positive-vnic"
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+          + vlan_id                = (known after apply)
+
+          + ipv6address_ipv6subnet_cidr_pair_details (known after apply)
+        }
+
+      + instance_options {
+          + are_legacy_imds_endpoints_disabled = true
+        }
+
+      + launch_options (known after apply)
+
+      + launch_volume_attachments (known after apply)
+
+      + licensing_configs (known after apply)
+
+      + placement_constraint_details (known after apply)
+
+      + platform_config (known after apply)
+
+      + preemptible_instance_config (known after apply)
+
+      + shape_config {
+          + baseline_ocpu_utilization     = (known after apply)
+          + gpu_description               = (known after apply)
+          + gpus                          = (known after apply)
+          + local_disk_description        = (known after apply)
+          + local_disks                   = (known after apply)
+          + local_disks_total_size_in_gbs = (known after apply)
+          + local_volume_size_in_gbs      = (known after apply)
+          + max_vnic_attachments          = (known after apply)
+          + memory_in_gbs                 = 64
+          + networking_bandwidth_in_gbps  = (known after apply)
+          + nvmes                         = (known after apply)
+          + ocpus                         = 16
+          + processor_description         = (known after apply)
+          + resource_management           = (known after apply)
+          + vcpus                         = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaj4hbqrxfogjhixt4ojtzhwp7pqphzrv2jqo7cfkzegvgk7zxtzda"
+          + source_type             = "image"
+
+          + instance_source_image_filter_details (known after apply)
+        }
+    }
+
+  # oci_core_volume.test will be created
+  + resource "oci_core_volume" "test" {
+      + auto_tuned_vpus_per_gb     = (known after apply)
+      + availability_domain        = "jJRq:EU-ZURICH-1-AD-1"
+      + backup_policy_id           = (known after apply)
+      + cluster_placement_group_id = (known after apply)
+      + compartment_id             = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + defined_tags               = (known after apply)
+      + display_name               = "bv4db-s27-tc2-detach-positive-volume"
+      + freeform_tags              = (known after apply)
+      + id                         = (known after apply)
+      + is_auto_tune_enabled       = (known after apply)
+      + is_hydrated                = (known after apply)
+      + is_reservations_enabled    = (known after apply)
+      + kms_key_id                 = (known after apply)
+      + size_in_gbs                = "1500"
+      + size_in_mbs                = (known after apply)
+      + state                      = (known after apply)
+      + system_tags                = (known after apply)
+      + time_created               = (known after apply)
+      + volume_backup_id           = (known after apply)
+      + volume_group_id            = (known after apply)
+      + vpus_per_gb                = "20"
+      + xrc_kms_key_id             = (known after apply)
+
+      + autotune_policies (known after apply)
+
+      + block_volume_replicas (known after apply)
+
+      + source_details (known after apply)
+    }
+
+  # oci_core_volume_attachment.test will be created
+  + resource "oci_core_volume_attachment" "test" {
+      + attachment_type                     = "iscsi"
+      + availability_domain                 = (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + device                              = "/dev/oracleoci/oraclevdb"
+      + display_name                        = "bv4db-s27-tc2-detach-positive-attachment"
+      + encryption_in_transit_type          = (known after apply)
+      + id                                  = (known after apply)
+      + instance_id                         = (known after apply)
+      + ipv4                                = (known after apply)
+      + ipv6                                = (known after apply)
+      + iqn                                 = (known after apply)
+      + is_agent_auto_iscsi_login_enabled   = (known after apply)
+      + is_multipath                        = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + is_read_only                        = (known after apply)
+      + is_shareable                        = (known after apply)
+      + is_volume_created_during_launch     = (known after apply)
+      + iscsi_login_state                   = (known after apply)
+      + multipath_devices                   = (known after apply)
+      + port                                = (known after apply)
+      + state                               = (known after apply)
+      + time_created                        = (known after apply)
+      + use_chap                            = (known after apply)
+      + volume_id                           = (known after apply)
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + device_path          = "/dev/oracleoci/oraclevdb"
+  + instance_id          = (known after apply)
+  + instance_public_ip   = (known after apply)
+  + is_multipath         = (known after apply)
+  + iscsi_login_state    = (known after apply)
+  + multipath_devices    = (known after apply)
+  + volume_attachment_id = (known after apply)
+  + volume_id            = (known after apply)
+oci_core_volume.test: Creating...
+oci_core_instance.vpu_upgrade: Creating...
+oci_core_volume.test: Still creating... [00m10s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m10s elapsed]
+oci_core_volume.test: Creation complete after 13s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljruk5b25hkoxtiuu4joqinwoejlgp4azy4jktrta23gbyexnouodoa]
+oci_core_instance.vpu_upgrade: Still creating... [00m20s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m30s elapsed]
+oci_core_instance.vpu_upgrade: Creation complete after 34s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyiccjj7fc5rjwb7csqffhixp6nreqyzpjp3zhi4al226lwq]
+oci_core_volume_attachment.test: Creating...
+oci_core_volume_attachment.test: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.test: Creation complete after 14s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicrcj35gmnzynjle6i3mdjuj3dmctfrpghrzc4vtran77a]
+
+Warning: Argument is deprecated
+
+  with oci_core_volume_attachment.test,
+  on main.tf line 66, in resource "oci_core_volume_attachment" "test":
+  66:   compartment_id  = var.compartment_id
+
+The 'compartment_id' field has been deprecated and may be removed in a future
+version. Do not use this field.
+
+(and one more similar warning elsewhere)
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyiccjj7fc5rjwb7csqffhixp6nreqyzpjp3zhi4al226lwq"
+instance_public_ip = "140.238.170.87"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicrcj35gmnzynjle6i3mdjuj3dmctfrpghrzc4vtran77a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljruk5b25hkoxtiuu4joqinwoejlgp4azy4jktrta23gbyexnouodoa"
+tc2-baseline-non-uhp expected-non-multipath is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+TC2 detach before update: detach_before_update=true old_volume_attachment_id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicrcj35gmnzynjle6i3mdjuj3dmctfrpghrzc4vtran77a
+TC2 update action: detach_before_update=true attachment_lifecycle=detached_before_vpu_update
+TC2 attach after update: attach_after_update=true
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+tc2-after-attach-vpu-100 poll is_multipath=true multipath_devices=4 iscsi_login_state=UNKNOWN
+=== tc2-after-attach-vpu-100: passive wait for OCI agent iSCSI/multipath login ===
+owner=Oracle Cloud Agent Block Volume Management plugin
+policy=diagnostics_only_no_mpathconf_no_modprobe_no_service_mutation
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- agent multipath wait poll=1/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:26 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:26 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+iscsiadm: No active sessions.
+--- agent multipath wait: multipath -ll ---
+89.715273 | /etc/multipath.conf does not exist, blacklisting all devices.
+89.715291 | You can run "/sbin/mpathconf --enable" to create
+89.715293 | /etc/multipath.conf. See man mpathconf(8) for more details
+89.722614 | DM multipath kernel driver not loaded
+--- agent multipath wait: multipathd paths ---
+89.738812 | /etc/multipath.conf does not exist, blacklisting all devices.
+89.738827 | You can run "/sbin/mpathconf --enable" to create
+89.738830 | /etc/multipath.conf. See man mpathconf(8) for more details
+--- agent multipath wait: oracle agent state ---
+active
+inactive
+--- agent multipath wait poll=2/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:26 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:26 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:26 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [1] 169.254.2.3:3260,0 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+--- agent multipath wait: multipath -ll ---
+--- agent multipath wait: multipathd paths ---
+hcil    dev dev_t pri dm_st chk_st dev_st  next_check
+0:0:1:1 sda 8:0   50  undef undef  unknown orphan    
+--- agent multipath wait: oracle agent state ---
+active
+active
+--- agent multipath wait poll=3/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:28 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:26 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:28 oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:26 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:28 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [1] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+tcp: [2] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+tcp: [3] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+tcp: [4] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+tcp: [5] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:670eed5b-1bca-412b-b6fc-092afeb33c1f (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (360e8abb16a2b42b3aa5593176c0632a0) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXX... 46/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXX... 46/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXX... 47/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXX... 47/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXX.... 18/30
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+agent_multipath_wait_result=PASS mapper=/dev/mapper/mpatha
+=== tc2-after-attach-vpu-100: UHP consistent device path validation ===
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm
+expected=the configured OCI consistent device path exists and resolves to the multipath friendly device
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- consistent path validation: block layout ---
+NAME               PATH                       TYPE   SIZE MODEL       WWN                                FSTYPE       UUID                                   MOUNTPOINT
+sda                /dev/sda                   disk  46.6G BlockVolume 0x60b76df67a874ae48c02e5e07ccfe980                                                     
+├─sda1             /dev/sda1                  part   100M             0x60b76df67a874ae48c02e5e07ccfe980 vfat         90CB-E99D                              /boot/efi
+├─sda2             /dev/sda2                  part     2G             0x60b76df67a874ae48c02e5e07ccfe980 xfs          7eb9440a-cb64-4a9a-b727-241049bbfbae   /boot
+└─sda3             /dev/sda3                  part  44.5G             0x60b76df67a874ae48c02e5e07ccfe980 LVM2_member  6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI 
+  ├─ocivolume-root /dev/mapper/ocivolume-root lvm   29.5G                                                xfs          c0ceedb9-fa05-47c6-a82b-2fc6888232a5   /
+  └─ocivolume-oled /dev/mapper/ocivolume-oled lvm     15G                                                xfs          53b9e180-591a-4c85-95d6-951c8f8af04f   /var/oled
+sdb                /dev/sdb                   disk   1.5T BlockVolume 0x60e8abb16a2b42b3aa5593176c0632a0 mpath_member                                        
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                                                                    
+sdc                /dev/sdc                   disk   1.5T BlockVolume 0x60e8abb16a2b42b3aa5593176c0632a0 mpath_member                                        
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                                                                    
+sdd                /dev/sdd                   disk   1.5T BlockVolume 0x60e8abb16a2b42b3aa5593176c0632a0 mpath_member                                        
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                                                                    
+sde                /dev/sde                   disk   1.5T BlockVolume 0x60e8abb16a2b42b3aa5593176c0632a0 mpath_member                                        
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                                                                    
+sdf                /dev/sdf                   disk   1.5T BlockVolume 0x60e8abb16a2b42b3aa5593176c0632a0 mpath_member                                        
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                                                                    
+--- consistent path validation: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:26 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:26 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:28 oraclevdb -> /dev/mapper/mpatha
+--- consistent path validation: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:26 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:28 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:26 ocivolume-root -> ../dm-0
+--- consistent path validation: multipath -ll ---
+mpatha (360e8abb16a2b42b3aa5593176c0632a0) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:28 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+consistent_path_mapper=/dev/mapper/mpatha
+consistent_path_friendly_name=mpatha
+mpatha (360e8abb16a2b42b3aa5593176c0632a0) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_result=PASS
+PASS: TC2 detach-update-reattach enabled multipath
+TC3 start: unsafe Linux procedure uses disposable mounted data and a writer process.
+Initializing provider plugins found in the configuration...
+- Finding oracle/oci versions matching ">= 7.7.0"...
+- Installing oracle/oci v8.19.0...
+- Installed oracle/oci v8.19.0 (signed by a HashiCorp partner, key ID 1533A49284137CEB)
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://developer.hashicorp.com/terraform/cli/plugins/signing
+
+Initializing the backend...
+
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.vpu_upgrade will be created
+  + resource "oci_core_instance" "vpu_upgrade" {
+      + availability_domain                 = "jJRq:EU-ZURICH-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = "bv4db-s27-tc3-linux-unsafe-instance"
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = {
+          + "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtg49wjqLHkg6pfvasAjzVwQsc0xf6WNAiCRc+A2HHdTmLbhNgqLd2x4ibbWJVUAv/O3LtqV682AMhALpEuV6E7SlWnDDIKxSeNLqQCs6MmAMZFvTf3TYkN99OL48kxw++ra3wgiNRh8KNpI30LJ+slzuS70oW8c6W5t4ke4AO8AA0LdNdzhtF81x3L3VkJpn/nH+W34TZWQffx4hYooCT5zdmdm0Yqp4iw9SGGwzlBSNiQn/2eF/pr4F4upCCPka+9SeBVlg4II444boPjrNuOb7dC5fWrToCj35NBbNUtIqCl7YYu1Y6DK5a+drkvWHE8oJOcrEGgjCohmKvH9Ydsp/z9jAV2M18XdoBkQFJAKBW/v/dCLIs/j7vMCEnsgdH6T8r5IqMZFXpFObzRE/5Q6I3TaUOA0aGeOxHBXxi4fpmRamsLUMF/IYSRt0WfruAFaFPMefTpJ0sRrEJjHBxPMWlTWeoCVkkisIPNGsCN77SS/jIuKEvNWWUt9P13t8= rstyczynski@Ryszards-MacBook-Pro.local
+            EOT
+        }
+      + preserve_boot_volume                = false
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E5.Flex"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + agent_config {
+          + are_all_plugins_disabled = false
+          + is_management_disabled   = false
+          + is_monitoring_disabled   = false
+
+          + plugins_config {
+              + desired_state = "ENABLED"
+              + name          = "Block Volume Management"
+            }
+        }
+
+      + availability_config (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = "bv4db-s27-tc3-linux-unsafe-vnic"
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+          + vlan_id                = (known after apply)
+
+          + ipv6address_ipv6subnet_cidr_pair_details (known after apply)
+        }
+
+      + instance_options {
+          + are_legacy_imds_endpoints_disabled = true
+        }
+
+      + launch_options (known after apply)
+
+      + launch_volume_attachments (known after apply)
+
+      + licensing_configs (known after apply)
+
+      + placement_constraint_details (known after apply)
+
+      + platform_config (known after apply)
+
+      + preemptible_instance_config (known after apply)
+
+      + shape_config {
+          + baseline_ocpu_utilization     = (known after apply)
+          + gpu_description               = (known after apply)
+          + gpus                          = (known after apply)
+          + local_disk_description        = (known after apply)
+          + local_disks                   = (known after apply)
+          + local_disks_total_size_in_gbs = (known after apply)
+          + local_volume_size_in_gbs      = (known after apply)
+          + max_vnic_attachments          = (known after apply)
+          + memory_in_gbs                 = 64
+          + networking_bandwidth_in_gbps  = (known after apply)
+          + nvmes                         = (known after apply)
+          + ocpus                         = 16
+          + processor_description         = (known after apply)
+          + resource_management           = (known after apply)
+          + vcpus                         = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaj4hbqrxfogjhixt4ojtzhwp7pqphzrv2jqo7cfkzegvgk7zxtzda"
+          + source_type             = "image"
+
+          + instance_source_image_filter_details (known after apply)
+        }
+    }
+
+  # oci_core_volume.test will be created
+  + resource "oci_core_volume" "test" {
+      + auto_tuned_vpus_per_gb     = (known after apply)
+      + availability_domain        = "jJRq:EU-ZURICH-1-AD-1"
+      + backup_policy_id           = (known after apply)
+      + cluster_placement_group_id = (known after apply)
+      + compartment_id             = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + defined_tags               = (known after apply)
+      + display_name               = "bv4db-s27-tc3-linux-unsafe-volume"
+      + freeform_tags              = (known after apply)
+      + id                         = (known after apply)
+      + is_auto_tune_enabled       = (known after apply)
+      + is_hydrated                = (known after apply)
+      + is_reservations_enabled    = (known after apply)
+      + kms_key_id                 = (known after apply)
+      + size_in_gbs                = "1500"
+      + size_in_mbs                = (known after apply)
+      + state                      = (known after apply)
+      + system_tags                = (known after apply)
+      + time_created               = (known after apply)
+      + volume_backup_id           = (known after apply)
+      + volume_group_id            = (known after apply)
+      + vpus_per_gb                = "20"
+      + xrc_kms_key_id             = (known after apply)
+
+      + autotune_policies (known after apply)
+
+      + block_volume_replicas (known after apply)
+
+      + source_details (known after apply)
+    }
+
+  # oci_core_volume_attachment.test will be created
+  + resource "oci_core_volume_attachment" "test" {
+      + attachment_type                     = "iscsi"
+      + availability_domain                 = (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + device                              = "/dev/oracleoci/oraclevdb"
+      + display_name                        = "bv4db-s27-tc3-linux-unsafe-attachment"
+      + encryption_in_transit_type          = (known after apply)
+      + id                                  = (known after apply)
+      + instance_id                         = (known after apply)
+      + ipv4                                = (known after apply)
+      + ipv6                                = (known after apply)
+      + iqn                                 = (known after apply)
+      + is_agent_auto_iscsi_login_enabled   = (known after apply)
+      + is_multipath                        = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + is_read_only                        = (known after apply)
+      + is_shareable                        = (known after apply)
+      + is_volume_created_during_launch     = (known after apply)
+      + iscsi_login_state                   = (known after apply)
+      + multipath_devices                   = (known after apply)
+      + port                                = (known after apply)
+      + state                               = (known after apply)
+      + time_created                        = (known after apply)
+      + use_chap                            = (known after apply)
+      + volume_id                           = (known after apply)
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + device_path          = "/dev/oracleoci/oraclevdb"
+  + instance_id          = (known after apply)
+  + instance_public_ip   = (known after apply)
+  + is_multipath         = (known after apply)
+  + iscsi_login_state    = (known after apply)
+  + multipath_devices    = (known after apply)
+  + volume_attachment_id = (known after apply)
+  + volume_id            = (known after apply)
+oci_core_volume.test: Creating...
+oci_core_instance.vpu_upgrade: Creating...
+oci_core_volume.test: Still creating... [00m10s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m10s elapsed]
+oci_core_volume.test: Creation complete after 14s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrifqdiaqu74mr7dujq24lobgessf5lorxolr5gkzdal7piwsfsn2a]
+oci_core_instance.vpu_upgrade: Still creating... [00m20s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m30s elapsed]
+oci_core_instance.vpu_upgrade: Creation complete after 35s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqspnhbzdzr25vqmbmhxmhcfbkzpq4cwgdrikljbt5swq]
+oci_core_volume_attachment.test: Creating...
+oci_core_volume_attachment.test: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.test: Creation complete after 14s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic3treg7dj3rn3kxywuhhrdibhofednjxibgmb65n3sppa]
+
+Warning: Argument is deprecated
+
+  with oci_core_volume_attachment.test,
+  on main.tf line 66, in resource "oci_core_volume_attachment" "test":
+  66:   compartment_id  = var.compartment_id
+
+The 'compartment_id' field has been deprecated and may be removed in a future
+version. Do not use this field.
+
+(and one more similar warning elsewhere)
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqspnhbzdzr25vqmbmhxmhcfbkzpq4cwgdrikljbt5swq"
+instance_public_ip = "140.238.170.87"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic3treg7dj3rn3kxywuhhrdibhofednjxibgmb65n3sppa"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrifqdiaqu74mr7dujq24lobgessf5lorxolr5gkzdal7piwsfsn2a"
+tc3-baseline-non-uhp expected-non-multipath is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+=== TC3 Linux setup: mounted filesystem and active writer ===
+intent=prove unsafe detach can cause application I/O errors or disposable data inconsistency
+guardrail=disposable volume and disposable test data only
+linux_release_procedure=false
+steps=manual iscsi register/login,mkfs,mount,write checksum data,start writer,detach without umount/logout
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+iscsi_connect_start=true iqn=iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f portal=169.254.2.2:3260
+New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.2,3260,-1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f] added
+Login to [iface: default, target: iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f, portal: 169.254.2.2,3260] successful.
+iscsi_connect_complete=true
+tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+tc3_baseline_device_ready=true path=/dev/sdb poll=1
+brw-------. 1 root root 8, 16 Jun 24 23:32 /dev/sdb
+tc3_baseline_device_realpath=/dev/sdb
+--- tc3_baseline: /dev/oracleoci links at baseline ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:32 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda3 -> ../sda3
+tc3_baseline_consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+tc3_baseline_device=/dev/sdb
+/dev/sdb: UUID="9f9808b4-74f9-468c-9d4c-dd6ea12f6adc" TYPE="ext4"
+5701f9ae56ab3429f64a54b2956855de149a4b29c7856d70d519e3add19e91d6  /mnt/s27unsafe/stable.bin
+10085
+linux_unsafe_setup=mounted_writer_active
+writer_pid_file=/tmp/s27unsafe-writer.pid
+writer_stdout_file=/tmp/s27unsafe-writer.stdout
+writer_stderr_file=/tmp/s27unsafe-writer.stderr
+TARGET         SOURCE   FSTYPE OPTIONS
+/mnt/s27unsafe /dev/sdb ext4   rw,relatime,seclabel,stripe=256
+=== TC3 action: OCI force detach while writer is active ===
+expected_failure_modes=writer_io_error,busy_or_forced_detach,stale_device,fs_inconsistency,checksum_mismatch
+data_loss_assertion=not_guaranteed; this test captures unsafe exposure and verifies disposable data outcome
+TC3 force detach while mounted writer is active.
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- TC3 post-detach Linux process status ---
+writer_pid=10085
+UID          PID    PPID  C STIME TTY          TIME CMD
+opc        10085       1  0 23:32 ?        00:00:00 bash -s
+--- TC3 post-detach kernel log tail ---
+--- TC3 post-detach mount state ---
+TARGET         SOURCE   FSTYPE OPTIONS
+/mnt/s27unsafe /dev/sdb ext4   rw,relatime,seclabel,stripe=256
+--- TC3 post-detach writer stderr from safe path ---
+tc3_stale_mount_direct_reads=skipped
+dmesg: read kernel buffer failed: Operation not permitted
+tc3_stale_mount_reason=after force-detach, stat/read/checksum operations under the mounted detached filesystem can block indefinitely; this is the unsafe behavior being isolated
+--- TC3 post-detach lazy unmount attempt ---
+iscsi_disconnect_start=true iqn=iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f portal=169.254.2.2:3260
+Logging out of session [sid: 1, target: iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f, portal: 169.254.2.2,3260]
+Logout of [sid: 1, target: iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f, portal: 169.254.2.2,3260] successful.
+iscsiadm: No active sessions.
+iscsi_disconnect_complete=true
+linux_unsafe_post_detach_collected=true
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+tc3-after-unsafe-reattach-vpu-100 poll is_multipath=true multipath_devices=4 iscsi_login_state=UNKNOWN
+=== tc3-after-unsafe-reattach-vpu-100: passive wait for OCI agent iSCSI/multipath login ===
+owner=Oracle Cloud Agent Block Volume Management plugin
+policy=diagnostics_only_no_mpathconf_no_modprobe_no_service_mutation
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- agent multipath wait poll=1/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:32 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:32 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+iscsiadm: No active sessions.
+--- agent multipath wait: multipath -ll ---
+81.422338 | /etc/multipath.conf does not exist, blacklisting all devices.
+81.422353 | You can run "/sbin/mpathconf --enable" to create
+81.422355 | /etc/multipath.conf. See man mpathconf(8) for more details
+81.429169 | DM multipath kernel driver not loaded
+--- agent multipath wait: multipathd paths ---
+81.445507 | /etc/multipath.conf does not exist, blacklisting all devices.
+81.445527 | You can run "/sbin/mpathconf --enable" to create
+81.445530 | /etc/multipath.conf. See man mpathconf(8) for more details
+--- agent multipath wait: oracle agent state ---
+active
+inactive
+--- agent multipath wait poll=2/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:32 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:32 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:32 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+iscsiadm: No active sessions.
+--- agent multipath wait: multipath -ll ---
+96.493560 | /etc/multipath.conf does not exist, blacklisting all devices.
+96.493582 | You can run "/sbin/mpathconf --enable" to create
+96.493585 | /etc/multipath.conf. See man mpathconf(8) for more details
+96.496594 | DM multipath kernel driver not loaded
+--- agent multipath wait: multipathd paths ---
+96.511781 | /etc/multipath.conf does not exist, blacklisting all devices.
+96.511797 | You can run "/sbin/mpathconf --enable" to create
+96.511799 | /etc/multipath.conf. See man mpathconf(8) for more details
+--- agent multipath wait: oracle agent state ---
+active
+inactive
+--- agent multipath wait poll=3/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:33 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:32 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:33 oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:32 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:33 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [2] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+tcp: [3] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+tcp: [4] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+tcp: [5] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+tcp: [6] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:867881c0-72f8-48b5-8679-2b41def7759f (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (36022a089749b4921bd60f91b48f568ce) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXXXX. 54/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXXXX. 54/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXXXX. 54/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXXXX. 55/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXXXX. 55/60
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+agent_multipath_wait_result=PASS mapper=/dev/mapper/mpatha
+=== tc3-after-unsafe-reattach-vpu-100: UHP consistent device path validation ===
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm
+expected=the configured OCI consistent device path exists and resolves to the multipath friendly device
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- consistent path validation: block layout ---
+NAME               PATH                       TYPE   SIZE MODEL       WWN                                FSTYPE       UUID                                   MOUNTPOINT
+sda                /dev/sda                   disk  46.6G BlockVolume 0x6060edbbf22e4320876a22a789d3df23                                                     
+├─sda1             /dev/sda1                  part   100M             0x6060edbbf22e4320876a22a789d3df23 vfat         90CB-E99D                              /boot/efi
+├─sda2             /dev/sda2                  part     2G             0x6060edbbf22e4320876a22a789d3df23 xfs          7eb9440a-cb64-4a9a-b727-241049bbfbae   /boot
+└─sda3             /dev/sda3                  part  44.5G             0x6060edbbf22e4320876a22a789d3df23 LVM2_member  6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI 
+  ├─ocivolume-root /dev/mapper/ocivolume-root lvm   29.5G                                                xfs          c0ceedb9-fa05-47c6-a82b-2fc6888232a5   /
+  └─ocivolume-oled /dev/mapper/ocivolume-oled lvm     15G                                                xfs          53b9e180-591a-4c85-95d6-951c8f8af04f   /var/oled
+sdb                /dev/sdb                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdc                /dev/sdc                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdd                /dev/sdd                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sde                /dev/sde                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdf                /dev/sdf                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+--- consistent path validation: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:32 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:32 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:33 oraclevdb -> /dev/mapper/mpatha
+--- consistent path validation: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:32 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:33 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:32 ocivolume-root -> ../dm-0
+--- consistent path validation: multipath -ll ---
+mpatha (36022a089749b4921bd60f91b48f568ce) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:33 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+consistent_path_mapper=/dev/mapper/mpatha
+consistent_path_friendly_name=mpatha
+mpatha (36022a089749b4921bd60f91b48f568ce) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_result=PASS
+Warning: Permanently added '140.238.170.87' (ED25519) to the list of known hosts.
+--- TC3 filesystem check after unsafe detach/reattach ---
+--- TC3 discovery: block layout ---
+NAME               PATH                       TYPE   SIZE MODEL       WWN                                FSTYPE       UUID                                   MOUNTPOINT
+sda                /dev/sda                   disk  46.6G BlockVolume 0x6060edbbf22e4320876a22a789d3df23                                                     
+├─sda1             /dev/sda1                  part   100M             0x6060edbbf22e4320876a22a789d3df23 vfat         90CB-E99D                              /boot/efi
+├─sda2             /dev/sda2                  part     2G             0x6060edbbf22e4320876a22a789d3df23 xfs          7eb9440a-cb64-4a9a-b727-241049bbfbae   /boot
+└─sda3             /dev/sda3                  part  44.5G             0x6060edbbf22e4320876a22a789d3df23 LVM2_member  6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI 
+  ├─ocivolume-root /dev/mapper/ocivolume-root lvm   29.5G                                                xfs          c0ceedb9-fa05-47c6-a82b-2fc6888232a5   /
+  └─ocivolume-oled /dev/mapper/ocivolume-oled lvm     15G                                                xfs          53b9e180-591a-4c85-95d6-951c8f8af04f   /var/oled
+sdb                /dev/sdb                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdc                /dev/sdc                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdd                /dev/sdd                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sde                /dev/sde                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+sdf                /dev/sdf                   disk   1.5T BlockVolume 0x6022a089749b4921bd60f91b48f568ce mpath_member 9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         9f9808b4-74f9-468c-9d4c-dd6ea12f6adc   
+--- TC3 discovery: multipath -ll ---
+mpatha (36022a089749b4921bd60f91b48f568ce) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- TC3 discovery: requested consistent path resolution ---
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:33 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+--- TC3 discovery: candidate=/dev/oracleoci/oraclevdb real=/dev/dm-2 ---
+candidate_fstype=ext4
+e2fsck 1.47.1 (20-May-2024)
+Warning: skipping journal recovery because doing a read-only filesystem check.
+Pass 1: Checking inodes, blocks, and sizes
+Inode 14, i_size is 15728640, should be 16777216.  Fix? no
+
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong (386762802, counted=386725937).
+Fix? no
+
+Free inodes count wrong (98303989, counted=98303986).
+Fix? no
+
+
+/dev/oracleoci/oraclevdb: ********** WARNING: Filesystem still has errors **********
+
+/dev/oracleoci/oraclevdb: 11/98304000 files (9.1% non-contiguous), 6453198/393216000 blocks
+TARGET         SOURCE             FSTYPE OPTIONS
+/mnt/s27unsafe /dev/mapper/mpatha ext4   ro,relatime,seclabel,stripe=256
+/mnt/s27unsafe/stable.bin: OK
+total 147484
+drwxr-xr-x. 3 opc  opc       4096 Jun 24 23:32 .
+drwxr-xr-x. 3 root root        23 Jun 24 23:32 ..
+-rw-r--r--. 1 opc  opc   16777216 Jun 24 23:32 live-writer.bin
+drwx------. 2 root root     16384 Jun 24 23:32 lost+found
+-rw-r--r--. 1 opc  opc  134217728 Jun 24 23:32 stable.bin
+-rw-r--r--. 1 opc  opc         92 Jun 24 23:32 stable.sha256
+-rw-r--r--. 1 opc  opc          3 Jun 24 23:32 writer.count
+tc3_checksum_result=PASS_NO_DATA_LOSS_OBSERVED_FOR_STABLE_FILE
+PASS: TC3 unsafe Linux procedure evidence captured on disposable data
+TC4 start: clean Linux release with checksum validation.
+Initializing provider plugins found in the configuration...
+- Finding oracle/oci versions matching ">= 7.7.0"...
+- Installing oracle/oci v8.19.0...
+- Installed oracle/oci v8.19.0 (signed by a HashiCorp partner, key ID 1533A49284137CEB)
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://developer.hashicorp.com/terraform/cli/plugins/signing
+
+Initializing the backend...
+
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.vpu_upgrade will be created
+  + resource "oci_core_instance" "vpu_upgrade" {
+      + availability_domain                 = "jJRq:EU-ZURICH-1-AD-1"
+      + boot_volume_id                      = (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      + defined_tags                        = (known after apply)
+      + display_name                        = "bv4db-s27-tc4-linux-clean-instance"
+      + extended_metadata                   = (known after apply)
+      + fault_domain                        = (known after apply)
+      + freeform_tags                       = (known after apply)
+      + hostname_label                      = (known after apply)
+      + id                                  = (known after apply)
+      + image                               = (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      + is_cross_numa_node                  = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + launch_mode                         = (known after apply)
+      + metadata                            = {
+          + "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtg49wjqLHkg6pfvasAjzVwQsc0xf6WNAiCRc+A2HHdTmLbhNgqLd2x4ibbWJVUAv/O3LtqV682AMhALpEuV6E7SlWnDDIKxSeNLqQCs6MmAMZFvTf3TYkN99OL48kxw++ra3wgiNRh8KNpI30LJ+slzuS70oW8c6W5t4ke4AO8AA0LdNdzhtF81x3L3VkJpn/nH+W34TZWQffx4hYooCT5zdmdm0Yqp4iw9SGGwzlBSNiQn/2eF/pr4F4upCCPka+9SeBVlg4II444boPjrNuOb7dC5fWrToCj35NBbNUtIqCl7YYu1Y6DK5a+drkvWHE8oJOcrEGgjCohmKvH9Ydsp/z9jAV2M18XdoBkQFJAKBW/v/dCLIs/j7vMCEnsgdH6T8r5IqMZFXpFObzRE/5Q6I3TaUOA0aGeOxHBXxi4fpmRamsLUMF/IYSRt0WfruAFaFPMefTpJ0sRrEJjHBxPMWlTWeoCVkkisIPNGsCN77SS/jIuKEvNWWUt9P13t8= rstyczynski@Ryszards-MacBook-Pro.local
+            EOT
+        }
+      + preserve_boot_volume                = false
+      + private_ip                          = (known after apply)
+      + public_ip                           = (known after apply)
+      + region                              = (known after apply)
+      + security_attributes                 = (known after apply)
+      + security_attributes_state           = (known after apply)
+      + shape                               = "VM.Standard.E5.Flex"
+      + state                               = (known after apply)
+      + subnet_id                           = (known after apply)
+      + system_tags                         = (known after apply)
+      + time_created                        = (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+
+      + agent_config {
+          + are_all_plugins_disabled = false
+          + is_management_disabled   = false
+          + is_monitoring_disabled   = false
+
+          + plugins_config {
+              + desired_state = "ENABLED"
+              + name          = "Block Volume Management"
+            }
+        }
+
+      + availability_config (known after apply)
+
+      + create_vnic_details {
+          + assign_ipv6ip          = (known after apply)
+          + assign_public_ip       = "true"
+          + defined_tags           = (known after apply)
+          + display_name           = "bv4db-s27-tc4-linux-clean-vnic"
+          + freeform_tags          = (known after apply)
+          + hostname_label         = (known after apply)
+          + nsg_ids                = (known after apply)
+          + private_ip             = (known after apply)
+          + private_ip_id          = (known after apply)
+          + security_attributes    = (known after apply)
+          + skip_source_dest_check = (known after apply)
+          + subnet_cidr            = (known after apply)
+          + subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+          + vlan_id                = (known after apply)
+
+          + ipv6address_ipv6subnet_cidr_pair_details (known after apply)
+        }
+
+      + instance_options {
+          + are_legacy_imds_endpoints_disabled = true
+        }
+
+      + launch_options (known after apply)
+
+      + launch_volume_attachments (known after apply)
+
+      + licensing_configs (known after apply)
+
+      + placement_constraint_details (known after apply)
+
+      + platform_config (known after apply)
+
+      + preemptible_instance_config (known after apply)
+
+      + shape_config {
+          + baseline_ocpu_utilization     = (known after apply)
+          + gpu_description               = (known after apply)
+          + gpus                          = (known after apply)
+          + local_disk_description        = (known after apply)
+          + local_disks                   = (known after apply)
+          + local_disks_total_size_in_gbs = (known after apply)
+          + local_volume_size_in_gbs      = (known after apply)
+          + max_vnic_attachments          = (known after apply)
+          + memory_in_gbs                 = 64
+          + networking_bandwidth_in_gbps  = (known after apply)
+          + nvmes                         = (known after apply)
+          + ocpus                         = 16
+          + processor_description         = (known after apply)
+          + resource_management           = (known after apply)
+          + vcpus                         = (known after apply)
+        }
+
+      + source_details {
+          + boot_volume_size_in_gbs = (known after apply)
+          + boot_volume_vpus_per_gb = (known after apply)
+          + source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaj4hbqrxfogjhixt4ojtzhwp7pqphzrv2jqo7cfkzegvgk7zxtzda"
+          + source_type             = "image"
+
+          + instance_source_image_filter_details (known after apply)
+        }
+    }
+
+  # oci_core_volume.test will be created
+  + resource "oci_core_volume" "test" {
+      + auto_tuned_vpus_per_gb     = (known after apply)
+      + availability_domain        = "jJRq:EU-ZURICH-1-AD-1"
+      + backup_policy_id           = (known after apply)
+      + cluster_placement_group_id = (known after apply)
+      + compartment_id             = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + defined_tags               = (known after apply)
+      + display_name               = "bv4db-s27-tc4-linux-clean-volume"
+      + freeform_tags              = (known after apply)
+      + id                         = (known after apply)
+      + is_auto_tune_enabled       = (known after apply)
+      + is_hydrated                = (known after apply)
+      + is_reservations_enabled    = (known after apply)
+      + kms_key_id                 = (known after apply)
+      + size_in_gbs                = "1500"
+      + size_in_mbs                = (known after apply)
+      + state                      = (known after apply)
+      + system_tags                = (known after apply)
+      + time_created               = (known after apply)
+      + volume_backup_id           = (known after apply)
+      + volume_group_id            = (known after apply)
+      + vpus_per_gb                = "20"
+      + xrc_kms_key_id             = (known after apply)
+
+      + autotune_policies (known after apply)
+
+      + block_volume_replicas (known after apply)
+
+      + source_details (known after apply)
+    }
+
+  # oci_core_volume_attachment.test will be created
+  + resource "oci_core_volume_attachment" "test" {
+      + attachment_type                     = "iscsi"
+      + availability_domain                 = (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      + compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      + device                              = "/dev/oracleoci/oraclevdb"
+      + display_name                        = "bv4db-s27-tc4-linux-clean-attachment"
+      + encryption_in_transit_type          = (known after apply)
+      + id                                  = (known after apply)
+      + instance_id                         = (known after apply)
+      + ipv4                                = (known after apply)
+      + ipv6                                = (known after apply)
+      + iqn                                 = (known after apply)
+      + is_agent_auto_iscsi_login_enabled   = (known after apply)
+      + is_multipath                        = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + is_read_only                        = (known after apply)
+      + is_shareable                        = (known after apply)
+      + is_volume_created_during_launch     = (known after apply)
+      + iscsi_login_state                   = (known after apply)
+      + multipath_devices                   = (known after apply)
+      + port                                = (known after apply)
+      + state                               = (known after apply)
+      + time_created                        = (known after apply)
+      + use_chap                            = (known after apply)
+      + volume_id                           = (known after apply)
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + device_path          = "/dev/oracleoci/oraclevdb"
+  + instance_id          = (known after apply)
+  + instance_public_ip   = (known after apply)
+  + is_multipath         = (known after apply)
+  + iscsi_login_state    = (known after apply)
+  + multipath_devices    = (known after apply)
+  + volume_attachment_id = (known after apply)
+  + volume_id            = (known after apply)
+oci_core_volume.test: Creating...
+oci_core_instance.vpu_upgrade: Creating...
+oci_core_volume.test: Still creating... [00m10s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m10s elapsed]
+oci_core_volume.test: Creation complete after 14s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrb5elosgvcal4zxg6hujfhsl7hxuzlmpk2kvcj4tcwxfesxwfmkla]
+oci_core_instance.vpu_upgrade: Still creating... [00m20s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m30s elapsed]
+oci_core_instance.vpu_upgrade: Still creating... [00m40s elapsed]
+oci_core_instance.vpu_upgrade: Creation complete after 45s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqp7imql5e5cqqesiyjjjfaietharvbw2o5it47oegtpa]
+oci_core_volume_attachment.test: Creating...
+oci_core_volume_attachment.test: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.test: Still creating... [00m20s elapsed]
+oci_core_volume_attachment.test: Creation complete after 24s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicaojgshm6nw4nvsc25qmjma75lujzlfqogochhtvdikiq]
+
+Warning: Argument is deprecated
+
+  with oci_core_volume_attachment.test,
+  on main.tf line 66, in resource "oci_core_volume_attachment" "test":
+  66:   compartment_id  = var.compartment_id
+
+The 'compartment_id' field has been deprecated and may be removed in a future
+version. Do not use this field.
+
+(and one more similar warning elsewhere)
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqp7imql5e5cqqesiyjjjfaietharvbw2o5it47oegtpa"
+instance_public_ip = "152.67.81.218"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicaojgshm6nw4nvsc25qmjma75lujzlfqogochhtvdikiq"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrb5elosgvcal4zxg6hujfhsl7hxuzlmpk2kvcj4tcwxfesxwfmkla"
+tc4-baseline-non-uhp expected-non-multipath is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+=== TC4 Linux setup and clean release ===
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtoavolume.htm
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtoavolume_topic-Connecting_to_iSCSIAttached_Volumes.htm
+oracle_validation=non-UHP iSCSI attachment requires explicit Linux iSCSI connect/login unless auto-connect was selected
+linux_release_procedure=true
+steps=manual iscsi register/login,mkfs,mount,write checksum data,sync,stop I/O,umount,iscsi logout,detach
+Warning: Permanently added '152.67.81.218' (ED25519) to the list of known hosts.
+iscsi_connect_start=true iqn=iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb portal=169.254.2.2:3260
+New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.2,3260,-1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb] added
+Login to [iface: default, target: iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb, portal: 169.254.2.2,3260] successful.
+iscsi_connect_complete=true
+tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tc4_baseline_device_ready=true path=/dev/sdb poll=1
+brw-------. 1 root root 8, 16 Jun 24 23:38 /dev/sdb
+tc4_baseline_device_realpath=/dev/sdb
+--- tc4_baseline: /dev/oracleoci links at baseline ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda3 -> ../sda3
+tc4_baseline_consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+tc4_baseline_device=/dev/sdb
+/dev/sdb: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+9c9948fa8cee67c17789c7042bacbf239de695f7fba10e2710c8c8ce623f4d33  /mnt/s27clean/stable.bin
+/mnt/s27clean/stable.bin: OK
+iscsi_disconnect_start=true iqn=iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb portal=169.254.2.2:3260
+Logging out of session [sid: 1, target: iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb, portal: 169.254.2.2,3260]
+Logout of [sid: 1, target: iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb, portal: 169.254.2.2,3260] successful.
+iscsiadm: No active sessions.
+iscsi_disconnect_complete=true
+linux_clean_release=complete
+=== TC4 action: detach after clean Linux release ===
+oci_detach_cli_confirmation=skipped_with_force_flag
+oci_force_flag_meaning=OCI CLI confirmation bypass; Linux clean release was already completed before detach
+detach_precondition=filesystem unmounted and manual iscsi session logged out
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+tc4-after-clean-reattach-vpu-100 poll is_multipath=true multipath_devices=4 iscsi_login_state=UNKNOWN
+=== tc4-after-clean-reattach-vpu-100: passive wait for OCI agent iSCSI/multipath login ===
+owner=Oracle Cloud Agent Block Volume Management plugin
+policy=diagnostics_only_no_mpathconf_no_modprobe_no_service_mutation
+Warning: Permanently added '152.67.81.218' (ED25519) to the list of known hosts.
+--- agent multipath wait poll=1/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:37 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+iscsiadm: No active sessions.
+--- agent multipath wait: multipath -ll ---
+93.031931 | /etc/multipath.conf does not exist, blacklisting all devices.
+93.031952 | You can run "/sbin/mpathconf --enable" to create
+93.031955 | /etc/multipath.conf. See man mpathconf(8) for more details
+93.038353 | DM multipath kernel driver not loaded
+--- agent multipath wait: multipathd paths ---
+93.054376 | /etc/multipath.conf does not exist, blacklisting all devices.
+93.054391 | You can run "/sbin/mpathconf --enable" to create
+93.054394 | /etc/multipath.conf. See man mpathconf(8) for more details
+--- agent multipath wait: oracle agent state ---
+active
+inactive
+--- agent multipath wait poll=2/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Jun 24 23:37 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:37 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:39 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [6] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (36012aab8c60b42609a024156b63a8848) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXXXX. 58/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXXXX. 58/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXXXX. 59/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXXXX. 59/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXXXX. 59/60
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+--- agent multipath wait poll=3/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:37 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:39 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-root -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+tcp: [6] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:0120ad7d-e854-4821-a273-0d5317b0daeb (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (36012aab8c60b42609a024156b63a8848) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXX... 43/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXX... 43/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXX... 44/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXX... 44/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXX... 44/60
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+agent_multipath_wait_result=PASS mapper=/dev/mapper/mpatha
+=== tc4-after-clean-reattach-vpu-100: UHP consistent device path validation ===
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm
+expected=the configured OCI consistent device path exists and resolves to the multipath friendly device
+Warning: Permanently added '152.67.81.218' (ED25519) to the list of known hosts.
+--- consistent path validation: block layout ---
+NAME               PATH                       TYPE   SIZE MODEL       WWN                                FSTYPE       UUID                                   MOUNTPOINT
+sda                /dev/sda                   disk  46.6G BlockVolume 0x606384549c30451eb06d7d96b58f8620                                                     
+├─sda1             /dev/sda1                  part   100M             0x606384549c30451eb06d7d96b58f8620 vfat         90CB-E99D                              /boot/efi
+├─sda2             /dev/sda2                  part     2G             0x606384549c30451eb06d7d96b58f8620 xfs          7eb9440a-cb64-4a9a-b727-241049bbfbae   /boot
+└─sda3             /dev/sda3                  part  44.5G             0x606384549c30451eb06d7d96b58f8620 LVM2_member  6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI 
+  ├─ocivolume-root /dev/mapper/ocivolume-root lvm   29.5G                                                xfs          c0ceedb9-fa05-47c6-a82b-2fc6888232a5   /
+  └─ocivolume-oled /dev/mapper/ocivolume-oled lvm     15G                                                xfs          53b9e180-591a-4c85-95d6-951c8f8af04f   /var/oled
+sdb                /dev/sdb                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdc                /dev/sdc                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdd                /dev/sdd                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sde                /dev/sde                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdf                /dev/sdf                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+--- consistent path validation: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 oraclevdb -> /dev/mapper/mpatha
+--- consistent path validation: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:37 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:39 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-root -> ../dm-0
+--- consistent path validation: multipath -ll ---
+mpatha (36012aab8c60b42609a024156b63a8848) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+consistent_path_mapper=/dev/mapper/mpatha
+consistent_path_friendly_name=mpatha
+mpatha (36012aab8c60b42609a024156b63a8848) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_result=PASS
+=== TC4 post-reattach Linux device discovery ===
+goal=validate the configured OCI consistent path, then verify the preserved filesystem data
+Warning: Permanently added '152.67.81.218' (ED25519) to the list of known hosts.
+--- TC4 discovery: block layout ---
+NAME               PATH                       TYPE   SIZE MODEL       WWN                                FSTYPE       UUID                                   MOUNTPOINT
+sda                /dev/sda                   disk  46.6G BlockVolume 0x606384549c30451eb06d7d96b58f8620                                                     
+├─sda1             /dev/sda1                  part   100M             0x606384549c30451eb06d7d96b58f8620 vfat         90CB-E99D                              /boot/efi
+├─sda2             /dev/sda2                  part     2G             0x606384549c30451eb06d7d96b58f8620 xfs          7eb9440a-cb64-4a9a-b727-241049bbfbae   /boot
+└─sda3             /dev/sda3                  part  44.5G             0x606384549c30451eb06d7d96b58f8620 LVM2_member  6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI 
+  ├─ocivolume-root /dev/mapper/ocivolume-root lvm   29.5G                                                xfs          c0ceedb9-fa05-47c6-a82b-2fc6888232a5   /
+  └─ocivolume-oled /dev/mapper/ocivolume-oled lvm     15G                                                xfs          53b9e180-591a-4c85-95d6-951c8f8af04f   /var/oled
+sdb                /dev/sdb                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdc                /dev/sdc                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdd                /dev/sdd                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sde                /dev/sde                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+sdf                /dev/sdf                   disk   1.5T BlockVolume 0x6012aab8c60b42609a024156b63a8848 mpath_member ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+└─mpatha           /dev/mapper/mpatha         mpath  1.5T                                                ext4         ef2276d8-e579-4525-8eb2-7af5bc55c27f   
+--- TC4 discovery: blkid ---
+/dev/mapper/ocivolume-oled: UUID="53b9e180-591a-4c85-95d6-951c8f8af04f" TYPE="xfs"
+/dev/sda3: UUID="6916ZO-rFUS-Qqv2-ZjLo-MGNP-yZg8-VBQ2lI" TYPE="LVM2_member" PARTUUID="ac33a4ad-ad63-4db5-a0db-09b6733fd659"
+/dev/sdb: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/sdf: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/sdd: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/mapper/mpatha: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/mapper/ocivolume-root: UUID="c0ceedb9-fa05-47c6-a82b-2fc6888232a5" TYPE="xfs"
+/dev/sde: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/sdc: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+/dev/sda2: UUID="7eb9440a-cb64-4a9a-b727-241049bbfbae" TYPE="xfs" PARTUUID="4940139e-4ecc-4d67-bfd3-aff5fb5cea80"
+/dev/sda1: SEC_TYPE="msdos" UUID="90CB-E99D" TYPE="vfat" PARTLABEL="EFI System Partition" PARTUUID="3104eaf1-9d91-457f-8116-32fb7dfb0cba"
+--- TC4 discovery: multipath -ll ---
+mpatha (36012aab8c60b42609a024156b63a8848) dm-2 ORACLE,BlockVolume
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- TC4 discovery: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+0:0:1:1  sda 8:0   50  undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXX.... 41/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXX.... 41/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXX... 42/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXX... 42/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXX... 42/60
+--- TC4 discovery: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Jun 24 23:37 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Jun 24 23:37 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 oraclevdb -> /dev/mapper/mpatha
+--- TC4 discovery: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Jun 24 23:37 control
+lrwxrwxrwx. 1 root root       7 Jun 24 23:39 mpatha -> ../dm-2
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-oled -> ../dm-1
+lrwxrwxrwx. 1 root root       7 Jun 24 23:37 ocivolume-root -> ../dm-0
+--- TC4 discovery: requested consistent path resolution ---
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-2
+lrwxrwxrwx. 1 root root 18 Jun 24 23:39 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-2
+--- TC4 discovery: candidate=/dev/oracleoci/oraclevdb real=/dev/dm-2 ---
+/dev/oracleoci/oraclevdb: UUID="ef2276d8-e579-4525-8eb2-7af5bc55c27f" TYPE="ext4"
+e2fsck 1.47.1 (20-May-2024)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/oracleoci/oraclevdb: 13/98304000 files (0.0% non-contiguous), 6518735/393216000 blocks
+TARGET        SOURCE             FSTYPE OPTIONS
+/mnt/s27clean /dev/mapper/mpatha ext4   ro,relatime,seclabel,stripe=256
+/mnt/s27clean/stable.bin: OK
+tc4_discovered_device=/dev/oracleoci/oraclevdb
+checksum_after_reattach=PASS
+PASS: TC4 clean Linux procedure preserved data after post-reattach device discovery
+Evidence: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_27/vpu_upgrade_multipath_evidence_20260624_232047.txt
+Results: 23 passed, 0 failed
