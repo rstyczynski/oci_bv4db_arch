@@ -510,3 +510,51 @@ Test: `terraform plan` succeeds with documented variables, and the resulting con
 Sprint 25 currently uses a small OCI raw API helper because the Terraform provider exposes the attachment `is_multipath` property as computed-only. Oracle documentation states that, for UHP volumes, the Block Volume service attempts to enable multipath during attachment when prerequisites are met, and the Block Volume Management plugin then performs the guest iSCSI and multipath setup from instance metadata. Validate whether a normal Terraform `oci_core_volume_attachment` with a UHP volume, supported shape/image, enabled Block Volume Management plugin, network access, IAM permissions, and a consistent device path is sufficient to produce `is-multipath=true` without the raw API helper.
 
 Test: a live OCI Terraform run using only native Terraform OCI resources creates an attachment that reports `is-multipath=true`, the guest shows agent-created iSCSI sessions and an `mpath*` mapper, and the result is documented. If the provider/native path cannot produce a multipath-enabled attachment, keep the helper and document the provider limitation with exact evidence.
+
+### BV4DB-60. Vanilla Oracle-documented Terraform UHP attachment probe
+
+The failed native Sprint 25 probe accumulated several experimental toggles while investigating OCI agent-managed multipath. Add a fresh vanilla validation that follows Oracle documentation strictly: a supported shape large enough for UHP load generation, a UHP block volume, an enabled Block Volume Management plugin, network access to Oracle services, IAM prerequisites, and an explicit persistent device path on the attachment. The validation must avoid raw API helpers, guest-side iSCSI or multipath commands, and Terraform attachment flags that bypass the plugin's documented discovery flow.
+
+Test: a live OCI run from a clean state either produces `is-multipath=true` plus guest agent-managed multipath evidence, or records a negative result showing which documented prerequisite or provider behavior prevented vanilla success.
+
+### BV4DB-61. Multipath behavior after upgrading attached non-UHP volume to UHP
+
+The project needs to validate whether an OCI block volume attached while using a non-UHP performance level gains multipath configuration after its VPU setting is later changed to `100`. This scenario matters because operators can create a system before choosing UHP and later raise the volume performance tier, so the repository must distinguish in-place VPU update behavior from behavior that requires detach, reattach, reboot, or recreation. The result must archive enough OCI metadata, instance metadata, Oracle Cloud Agent, iSCSI, and dm-multipath evidence to explain exactly when multipath does or does not appear.
+
+Test: a live OCI run creates and attaches a non-UHP block volume, changes it to `100` VPUs/GB, and documents whether multipath appears in place, only after reattach or reboot, or not at all.
+
+### BV4DB-62. Linux-level clean procedure for non-UHP to UHP reattach operation
+
+Sprint 27 proved that an attached non-UHP block volume does not gain UHP multipath in place, and that the working path is detach, update to `100` VPUs/GB, and reattach with a consistent device path. The project now needs to validate the Linux operating procedure that makes this change safe for a mounted filesystem or database-like workload. The procedure must define how to stop I/O, flush writes, unmount or deactivate the storage stack, detach in OCI, update the VPU setting, reattach, verify multipath, and remount or reactivate the workload using the correct multipath-backed device.
+
+The sprint must include both positive and negative validation on disposable test data. The positive path should create a filesystem on the non-UHP attachment, write verifiable data, stop I/O cleanly, run the detach/update/reattach flow, verify multipath after reattach, remount the filesystem, and confirm the data checksum still matches. The negative path should intentionally skip one or more Linux release steps against disposable data only, capture the observed failure mode, and determine whether the risk is clean detach failure, busy device errors, stale device references, filesystem inconsistency, application I/O errors, or data loss/corruption. If destructive behavior is possible, the test must isolate it to disposable volumes and document the exact guardrails required for production.
+
+Test: an integration run archives evidence for a clean Linux-level procedure that preserves checksum-verified test data across the non-UHP to UHP reattach operation, plus a controlled negative test that records what happens when the procedure is not followed and converts the observed risk into explicit operator guidance.
+
+### BV4DB-63. Idempotent Linux block-volume preparation script for iSCSI and multipath transitions
+
+The project needs a reusable Linux-side script that replaces the current ad hoc Oracle block-volume preparation fragment with an idempotent and data-safe implementation. The script must support normal non-multipath iSCSI volumes, volumes that are later moved from non-multipath to multipath/UHP attachment, and volumes that have been resized to add storage. It must distinguish first-time initialization of a known-empty volume from reconnect, reattach, resize, and migration handling so that existing PV, VG, LV, filesystem, and mount data are preserved.
+
+The current as-is solution below is the operator fragment to correct. It mixes first-time initialization with reconnect behavior and can be unsafe if a missing or changed device path causes `pvs` to fail and destructive initialization commands run against an existing data volume.
+
+```bash
+      # ── AIO (ACP only; same gate as volumes.tf local.instance_sids_aio) ───────
+      # ── AIO volume for canprd ─────────────────────────────────────────────────
+#sudo iscsiadm -m node -o new -T iqn.2015-12.com.oracleiaas:ffd96cb6-e65d-4dcf-befe-a60d9e6f8925 -p 169.254.2.12:3260 2>/dev/null || true
+#sudo iscsiadm -m node -o update -T iqn.2015-12.com.oracleiaas:ffd96cb6-e65d-4dcf-befe-a60d9e6f8925 -n node.startup -v automatic
+#sudo iscsiadm -m node -T iqn.2015-12.com.oracleiaas:ffd96cb6-e65d-4dcf-befe-a60d9e6f8925 -p 169.254.2.12:3260 -l 2>/dev/null || true
+      _DEV=/dev/oracleoci/oraclevdf
+      sudo pvs "$_DEV" &>/dev/null || { sudo wipefs -a "$_DEV" 2>/dev/null; sudo pvcreate -ff --yes "$_DEV"; }
+      sudo vgs oraaio_canprd_vg &>/dev/null || { sudo vgscan --cache 2>/dev/null; sudo vgchange -ay oraaio_canprd_vg 2>/dev/null || true; }
+      sudo vgs oraaio_canprd_vg &>/dev/null || sudo vgcreate oraaio_canprd_vg "$_DEV" 2>/dev/null || true
+      sudo vgchange -ay oraaio_canprd_vg
+      sudo lvs oraaio_canprd_vg/oraaio_canprd_lv &>/dev/null || sudo lvcreate -L 154GB -n oraaio_canprd_lv oraaio_canprd_vg
+      sudo blkid /dev/oraaio_canprd_vg/oraaio_canprd_lv &>/dev/null || sudo mkfs.xfs /dev/oraaio_canprd_vg/oraaio_canprd_lv
+      sudo mkdir -p /software/oracle/admin/canprd/aaa/io
+      sudo sed -i "\|/software/oracle/admin/canprd/aaa/io|d" /etc/fstab
+      grep -qsF '/dev/oraaio_canprd_vg/oraaio_canprd_lv' /etc/fstab || echo "/dev/oraaio_canprd_vg/oraaio_canprd_lv /software/oracle/admin/canprd/aaa/io xfs defaults 0 0" | sudo tee -a /etc/fstab >/dev/null
+      sudo systemctl daemon-reload
+      sudo mount /software/oracle/admin/canprd/aaa/io || true
+```
+
+Test: repeated runs against a fresh non-multipath iSCSI volume, an existing non-multipath volume, a volume reattached as UHP multipath, and a resized volume all complete without destroying existing data; evidence proves correct iSCSI connection, device discovery, LVM activation or extension, filesystem growth when needed, stable fstab handling, successful mount, and checksum preservation.

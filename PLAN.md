@@ -399,3 +399,29 @@ Backlog Items:
 
 * BV4DB-58. Minimal Terraform setup for OCI agent-managed UHP multipath
 * BV4DB-59. Validate Terraform UHP attachment without raw API multipath helper
+
+## Sprint 26 - Vanilla Oracle-documented Terraform UHP attachment
+
+Status: Progress
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 26 executes a clean vanilla Terraform probe for OCI UHP attachment behavior following Oracle documentation strictly. It starts from fresh state and avoids Sprint 25 investigation toggles, raw API helpers, and guest-side iSCSI or multipath setup.
+
+Backlog Items:
+
+* BV4DB-60. Vanilla Oracle-documented Terraform UHP attachment probe
+
+## Sprint 27 - Multipath behavior after non-UHP to UHP VPU update
+
+Status: Done
+Mode: YOLO
+Test: integration
+Regression: integration
+
+Sprint 27 validates whether multipath appears when a volume is first created and attached below UHP level, then updated to `100` VPUs/GB. The sprint distinguishes in-place update behavior from detach-update-reattach behavior, and extends the test plan to cover Linux-level clean release versus unsafe detach attempts on disposable data.
+
+Backlog Items:
+
+* BV4DB-61. Multipath behavior after upgrading attached non-UHP volume to UHP

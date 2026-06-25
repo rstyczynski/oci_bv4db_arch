@@ -14,6 +14,10 @@ Welcome! This document is your starting point after checking out this project.
 - `RUPStrikesBack/` is strictly read-only. Never modify any file inside it. If a change is needed, stop and inform the user.
 - `oci_scaffold/` submodule has its own branch `oci_bv4db_arch` for changes needed by this project. Commits to oci_scaffold go to that branch only — never to oci_scaffold main. This parent project (`oci_bv4db_arch`) always stays on its own `main` branch. Merging oci_scaffold branch to its main is a separate task.
 
+**Execution log rules:**
+
+- Commands that write persistent test or evidence logs must use plain ASCII output. Terraform commands in scripts must run with color disabled, for example by exporting `TF_CLI_ARGS="-no-color ${TF_CLI_ARGS:-}"` or passing `-no-color`, so logs do not contain ANSI escape sequences.
+
 ## Quick Start
 
 To execute a complete development cycle automatically:
