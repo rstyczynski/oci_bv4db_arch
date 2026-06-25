@@ -244,33 +244,7 @@ append_guest_evidence() {
     sleep 10
   done
 
-  ssh -i "$key_path" \
-    -o BatchMode=yes \
-    -o StrictHostKeyChecking=no \
-    -o UserKnownHostsFile=/dev/null \
-    -o ConnectTimeout=20 \
-    "opc@$public_ip" 'bash -s' >> "$EVIDENCE" 2>&1 <<'REMOTE'
-set -o pipefail
-echo "--- oracle-cloud-agent ---"
-systemctl is-active oracle-cloud-agent || true
-systemctl is-enabled oracle-cloud-agent || true
-rpm -q oracle-cloud-agent device-mapper-multipath || true
-echo "--- IMDS volume attachments ---"
-curl -sS -H "Authorization: Bearer Oracle" http://169.254.169.254/opc/v2/volumeAttachments/ 2>&1 || true
-echo
-echo "--- block plugin log tail ---"
-sudo tail -220 /var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig.log 2>&1 || true
-echo "--- iscsi sessions ---"
-sudo iscsiadm -m session 2>&1 || true
-echo "--- multipath -ll ---"
-sudo multipath -ll 2>&1 || true
-echo "--- multipathd paths ---"
-sudo multipathd show paths 2>&1 || true
-echo "--- multipath.conf ---"
-sudo sed -n '1,220p' /etc/multipath.conf 2>&1 || true
-echo "--- lsblk ---"
-lsblk -o NAME,TYPE,SIZE,MODEL,WWN,FSTYPE,MOUNTPOINT 2>&1 || true
-REMOTE
+  remote_exec_file "$(remote_script_path "guest_evidence.sh")" >> "$EVIDENCE" 2>&1
 }
 
 attachment_state_line() {
@@ -342,11 +316,28 @@ refresh_and_poll() {
   return 1
 }
 
-remote_exec() {
-  local script="$1"
+remote_script_path() {
+  local script_name="$1"
+  local path="$REMOTE_SCRIPT_DIR/$script_name"
+  if [ ! -f "$path" ]; then
+    echo "missing remote script: $path" >&2
+    return 1
+  fi
+  printf '%s\n' "$path"
+}
+
+remote_exec_file() {
+  local script_path="$1"
+  local env_file="${2:-}"
+  local include_iscsi_helpers="${3:-false}"
   local public_ip key_path
+  local remote_dir runner_base script_base env_base helper_base
   public_ip="$(terraform -chdir="$WORKDIR" output -raw instance_public_ip 2>/dev/null || true)"
   key_path="$TMPDIR/sprint27.key"
+  runner_base="run_with_optional_helpers.sh"
+  script_base="$(basename "$script_path")"
+  env_base=""
+  helper_base=""
 
   for _ in $(seq 1 30); do
     if ssh -i "$key_path" \
@@ -360,28 +351,70 @@ remote_exec() {
     sleep 10
   done
 
+  remote_dir="$(ssh -i "$key_path" \
+    -o BatchMode=yes \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o ConnectTimeout=30 \
+    "opc@$public_ip" 'mktemp -d /tmp/sprint27-remote.XXXXXX')"
+
+  scp -i "$key_path" \
+    -o BatchMode=yes \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o ConnectTimeout=30 \
+    "$REMOTE_SCRIPT_DIR/$runner_base" \
+    "$script_path" \
+    "opc@$public_ip:$remote_dir/" >/dev/null
+
+  if [ -n "$env_file" ]; then
+    env_base="$(basename "$env_file")"
+    scp -i "$key_path" \
+      -o BatchMode=yes \
+      -o StrictHostKeyChecking=no \
+      -o UserKnownHostsFile=/dev/null \
+      -o ConnectTimeout=30 \
+      "$env_file" \
+      "opc@$public_ip:$remote_dir/$env_base" >/dev/null
+  fi
+
+  if [ "$include_iscsi_helpers" = "true" ]; then
+    helper_base="baseline_iscsi_helpers.sh"
+    scp -i "$key_path" \
+      -o BatchMode=yes \
+      -o StrictHostKeyChecking=no \
+      -o UserKnownHostsFile=/dev/null \
+      -o ConnectTimeout=30 \
+      "$REMOTE_SCRIPT_DIR/$helper_base" \
+      "opc@$public_ip:$remote_dir/" >/dev/null
+  fi
+
   ssh -i "$key_path" \
     -o BatchMode=yes \
     -o StrictHostKeyChecking=no \
     -o UserKnownHostsFile=/dev/null \
     -o ConnectTimeout=30 \
-	    "opc@$public_ip" 'bash -s' <<< "$script"
+    "opc@$public_ip" "cd $(shell_quote "$remote_dir") && bash ./$(shell_quote "$runner_base") $(shell_quote "$env_base") $(shell_quote "$helper_base") $(shell_quote "$script_base")"
 }
 
-run_remote_trace() {
-  local script="$1"
+run_remote_trace_file() {
+  local script_path="$1"
+  local env_file="${2:-}"
+  local include_iscsi_helpers="${3:-false}"
   set +e
-  remote_exec "$script" 2>&1 | tee -a "$EVIDENCE"
+  remote_exec_file "$script_path" "$env_file" "$include_iscsi_helpers" 2>&1 | tee -a "$EVIDENCE"
   local rc=${PIPESTATUS[0]}
   set -e
   return "$rc"
 }
 
-run_remote_capture_trace() {
-  local script="$1"
+run_remote_capture_trace_file() {
+  local script_path="$1"
   local output_file="$2"
+  local env_file="${3:-}"
+  local include_iscsi_helpers="${4:-false}"
   set +e
-  remote_exec "$script" 2>&1 | tee "$output_file" | tee -a "$EVIDENCE"
+  remote_exec_file "$script_path" "$env_file" "$include_iscsi_helpers" 2>&1 | tee "$output_file" | tee -a "$EVIDENCE"
   local rc=${PIPESTATUS[0]}
   set -e
   return "$rc"
@@ -391,24 +424,12 @@ shell_quote() {
   printf '%q' "$1"
 }
 
-remote_script_file() {
-  local script_name="$1"
-  local path="$REMOTE_SCRIPT_DIR/$script_name"
-  if [ ! -f "$path" ]; then
-    echo "missing remote script: $path" >&2
-    return 1
-  fi
-  cat "$path"
-}
-
-remote_script_with_iscsi_helpers() {
-  local script_name="$1"
-  local env_block="${2:-}"
-  {
-    remote_script_file "baseline_iscsi_helpers.sh"
-    printf '%s\n' "$env_block"
-    remote_script_file "$script_name"
-  }
+write_remote_env_file() {
+  local name="$1"
+  local env_block="$2"
+  local path="$TMPDIR/$name"
+  printf '%s\n' "$env_block" > "$path"
+  printf '%s\n' "$path"
 }
 
 assert_uhp_consistent_path() {
@@ -417,7 +438,7 @@ assert_uhp_consistent_path() {
   trace "=== ${label}: UHP consistent device path validation ==="
   trace "oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm"
   trace "expected=the configured OCI consistent device path exists and resolves to the multipath friendly device"
-  run_remote_capture_trace "$(remote_script_file "assert_uhp_consistent_path.sh")" "$output_file"
+  run_remote_capture_trace_file "$(remote_script_path "assert_uhp_consistent_path.sh")" "$output_file"
 }
 
 wait_for_agent_multipath_login() {
@@ -426,7 +447,7 @@ wait_for_agent_multipath_login() {
   trace "=== ${label}: passive wait for OCI agent iSCSI/multipath login ==="
   trace "owner=Oracle Cloud Agent Block Volume Management plugin"
   trace "policy=diagnostics_only_no_mpathconf_no_modprobe_no_service_mutation"
-  run_remote_capture_trace "$(remote_script_file "wait_for_agent_multipath_login.sh")" "$output_file"
+  run_remote_capture_trace_file "$(remote_script_path "wait_for_agent_multipath_login.sh")" "$output_file"
 }
 
 begin_case() {
@@ -434,24 +455,24 @@ begin_case() {
   WORKDIR="$TMPDIR/$case_id"
   cp -R "$MODULE_DIR" "$WORKDIR"
   SCENARIO_WORKDIRS="$SCENARIO_WORKDIRS $WORKDIR"
-  cat > "$WORKDIR/terraform.tfvars" <<EOF
-region = "$REGION"
-oci_profile = "$OCI_PROFILE"
-compartment_id = "$COMPARTMENT_ID"
-availability_domain = "$AVAILABILITY_DOMAIN"
-subnet_id = "$SUBNET_ID"
-image_id = "$IMAGE_ID"
-ssh_public_key_path = "$TMPDIR/sprint27.key.pub"
-
-name_prefix = "bv4db-s27-$case_id"
-compute_shape = "VM.Standard.E5.Flex"
-compute_ocpus = 16
-compute_memory_gb = 64
-assign_public_ip = true
-volume_size_gbs = 1500
-initial_volume_vpus_per_gb = 20
-device_path = "/dev/oracleoci/oraclevdb"
-EOF
+  {
+    printf 'region = "%s"\n' "$REGION"
+    printf 'oci_profile = "%s"\n' "$OCI_PROFILE"
+    printf 'compartment_id = "%s"\n' "$COMPARTMENT_ID"
+    printf 'availability_domain = "%s"\n' "$AVAILABILITY_DOMAIN"
+    printf 'subnet_id = "%s"\n' "$SUBNET_ID"
+    printf 'image_id = "%s"\n' "$IMAGE_ID"
+    printf 'ssh_public_key_path = "%s"\n' "$TMPDIR/sprint27.key.pub"
+    printf '\n'
+    printf 'name_prefix = "bv4db-s27-%s"\n' "$case_id"
+    printf 'compute_shape = "VM.Standard.E5.Flex"\n'
+    printf 'compute_ocpus = 16\n'
+    printf 'compute_memory_gb = 64\n'
+    printf 'assign_public_ip = true\n'
+    printf 'volume_size_gbs = 1500\n'
+    printf 'initial_volume_vpus_per_gb = 20\n'
+    printf 'device_path = "/dev/oracleoci/oraclevdb"\n'
+  } > "$WORKDIR/terraform.tfvars"
 
   terraform -chdir="$WORKDIR" init -input=false || return 1
   terraform -chdir="$WORKDIR" validate || return 1
@@ -612,7 +633,7 @@ tc3_linux_unsafe_negative() {
   local volume_id instance_id old_attachment_id new_attachment_id result
   local old_attachment_json old_iqn old_ip old_port old_chap_user old_chap_secret
   local old_iqn_q old_ip_q old_port_q old_chap_user_q old_chap_secret_q
-  local remote_iscsi_env
+  local remote_iscsi_env remote_iscsi_env_file
   volume_id="$(terraform -chdir="$WORKDIR" output -raw volume_id)"
   instance_id="$(terraform -chdir="$WORKDIR" output -raw instance_id)"
   old_attachment_id="$(terraform -chdir="$WORKDIR" output -raw volume_attachment_id)"
@@ -644,13 +665,14 @@ tc3_linux_unsafe_negative() {
   old_chap_secret_q="$(shell_quote "$old_chap_secret")"
   remote_iscsi_env="$(printf 'IQN=%s\nIP=%s\nPORT=%s\nCHAP_USER=%s\nCHAP_SECRET=%s\n' \
     "$old_iqn_q" "$old_ip_q" "$old_port_q" "$old_chap_user_q" "$old_chap_secret_q")"
+  remote_iscsi_env_file="$(write_remote_env_file "tc3-iscsi.env" "$remote_iscsi_env")"
 
   trace "=== TC3 Linux setup: mounted filesystem and active writer ==="
   trace "intent=prove unsafe detach can cause application I/O errors or disposable data inconsistency"
   trace "guardrail=disposable volume and disposable test data only"
   trace "linux_release_procedure=false"
   trace "steps=manual iscsi register/login,mkfs,mount,write checksum data,start writer,detach without umount/logout"
-  if ! run_remote_trace "$(remote_script_with_iscsi_helpers "tc3_setup_unsafe_writer.sh" "$remote_iscsi_env")"; then
+  if ! run_remote_trace_file "$(remote_script_path "tc3_setup_unsafe_writer.sh")" "$remote_iscsi_env_file" true; then
     result="INCONCLUSIVE_TC3_BASELINE_ISCSI_CONNECT_OR_WRITER_SETUP_FAILED"
     {
       echo "TC3_RESULT=$result"
@@ -675,7 +697,7 @@ tc3_linux_unsafe_negative() {
     --max-wait-seconds 900 \
     --wait-interval-seconds 15 >> "$EVIDENCE" 2>&1 || true
 
-  run_remote_trace "$(remote_script_with_iscsi_helpers "tc3_collect_after_unsafe_detach.sh" "$remote_iscsi_env")" || true
+  run_remote_trace_file "$(remote_script_path "tc3_collect_after_unsafe_detach.sh")" "$remote_iscsi_env_file" true || true
 
   oci bv volume update --volume-id "$volume_id" --vpus-per-gb 100 --force >> "$EVIDENCE" 2>&1
   wait_volume_available "$volume_id" >> "$EVIDENCE" 2>&1 || true
@@ -694,7 +716,7 @@ tc3_linux_unsafe_negative() {
   append_oci_evidence "tc3-after-unsafe-reattach-vpu-100" "$new_attachment_id"
   wait_for_agent_multipath_login "tc3-after-unsafe-reattach-vpu-100" || true
   assert_uhp_consistent_path "tc3-after-unsafe-reattach-vpu-100" || true
-  run_remote_trace "$(remote_script_file "tc3_check_after_reattach.sh")" || true
+  run_remote_trace_file "$(remote_script_path "tc3_check_after_reattach.sh")" || true
   result="NEGATIVE_UNSAFE_LINUX_PROCEDURE_OBSERVED"
   echo "TC3_RESULT=$result" >> "$EVIDENCE"
   finish_case "$new_attachment_id"
@@ -712,7 +734,7 @@ tc4_linux_clean_positive() {
   local volume_id instance_id old_attachment_id new_attachment_id result checksum_result multipath_ok consistent_path_ok agent_wait_ok
   local old_attachment_json old_iqn old_ip old_port old_chap_user old_chap_secret
   local old_iqn_q old_ip_q old_port_q old_chap_user_q old_chap_secret_q
-  local remote_iscsi_env
+  local remote_iscsi_env remote_iscsi_env_file
   volume_id="$(terraform -chdir="$WORKDIR" output -raw volume_id)"
   instance_id="$(terraform -chdir="$WORKDIR" output -raw instance_id)"
   old_attachment_id="$(terraform -chdir="$WORKDIR" output -raw volume_attachment_id)"
@@ -751,8 +773,9 @@ tc4_linux_clean_positive() {
   old_chap_secret_q="$(shell_quote "$old_chap_secret")"
   remote_iscsi_env="$(printf 'IQN=%s\nIP=%s\nPORT=%s\nCHAP_USER=%s\nCHAP_SECRET=%s\n' \
     "$old_iqn_q" "$old_ip_q" "$old_port_q" "$old_chap_user_q" "$old_chap_secret_q")"
+  remote_iscsi_env_file="$(write_remote_env_file "tc4-iscsi.env" "$remote_iscsi_env")"
 
-  if ! run_remote_trace "$(remote_script_with_iscsi_helpers "tc4_prepare_clean_release.sh" "$remote_iscsi_env")"; then
+  if ! run_remote_trace_file "$(remote_script_path "tc4_prepare_clean_release.sh")" "$remote_iscsi_env_file" true; then
     result="INCONCLUSIVE_TC4_BASELINE_ISCSI_CONNECT_OR_DEVICE_DISCOVERY_FAILED"
     {
       echo "TC4_RESULT=$result"
@@ -818,7 +841,7 @@ tc4_linux_clean_positive() {
   checksum_output_file="$TMPDIR/tc4-checksum-discovery.txt"
   trace "=== TC4 post-reattach Linux device discovery ==="
   trace "goal=validate the configured OCI consistent path, then verify the preserved filesystem data"
-  run_remote_capture_trace "$(remote_script_file "tc4_check_after_reattach.sh")" "$checksum_output_file"
+  run_remote_capture_trace_file "$(remote_script_path "tc4_check_after_reattach.sh")" "$checksum_output_file"
   checksum_status=$?
   checksum_result="$(cat "$checksum_output_file" 2>/dev/null || true)"
 
@@ -920,6 +943,8 @@ require_file "$MODULE_DIR/README.md"
 for remote_script in \
   baseline_iscsi_helpers.sh \
   assert_uhp_consistent_path.sh \
+  guest_evidence.sh \
+  run_with_optional_helpers.sh \
   tc3_setup_unsafe_writer.sh \
   tc3_collect_after_unsafe_detach.sh \
   tc3_check_after_reattach.sh \
