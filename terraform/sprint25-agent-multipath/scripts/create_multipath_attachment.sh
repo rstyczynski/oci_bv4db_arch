@@ -9,6 +9,19 @@ set -euo pipefail
 : "${OCI_REGION:?OCI_REGION is required}"
 : "${ATTACHMENT_STATE_FILE:?ATTACHMENT_STATE_FILE is required}"
 
+case "$DEVICE_PATH" in
+  /dev/oracleoci/oraclevd[a-z])
+    if [ "$DEVICE_PATH" = "/dev/oracleoci/oraclevda" ]; then
+      echo "DEVICE_PATH must not target the boot volume path /dev/oracleoci/oraclevda" >&2
+      exit 1
+    fi
+    ;;
+  *)
+    echo "DEVICE_PATH must be an OCI consistent device path such as /dev/oracleoci/oraclevdb" >&2
+    exit 1
+    ;;
+esac
+
 request_body="$(jq -n \
   --arg instanceId "$INSTANCE_ID" \
   --arg volumeId "$VOLUME_ID" \

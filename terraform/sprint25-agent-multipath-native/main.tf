@@ -59,11 +59,10 @@ resource "oci_core_volume" "uhp" {
 # documents that Block Volume attempts to enable UHP multipath at attach time
 # when prerequisites are met; a live apply must verify attachment.is_multipath.
 resource "oci_core_volume_attachment" "uhp_native" {
-  attachment_type                   = "iscsi"
-  compartment_id                    = var.compartment_id
-  device                            = var.device_path
-  display_name                      = "${local.display_name}-attachment"
-  instance_id                       = oci_core_instance.agent_multipath.id
-  is_agent_auto_iscsi_login_enabled = var.enable_agent_auto_iscsi_login
-  volume_id                         = oci_core_volume.uhp.id
+  attachment_type = "iscsi"
+  compartment_id  = var.compartment_id
+  device          = var.device_path
+  display_name    = "${local.display_name}-attachment"
+  instance_id     = oci_core_instance.agent_multipath.id
+  volume_id       = oci_core_volume.uhp.id
 }

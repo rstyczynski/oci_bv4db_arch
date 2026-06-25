@@ -128,11 +128,11 @@ native_live_validation() {
     return 1
   }
 
-  terraform -chdir="$NATIVE_MODULE_DIR" init -input=false
-  terraform -chdir="$NATIVE_MODULE_DIR" validate
-  terraform -chdir="$NATIVE_MODULE_DIR" plan -input=false
-  terraform -chdir="$NATIVE_MODULE_DIR" apply -auto-approve -input=false
-  terraform -chdir="$NATIVE_MODULE_DIR" apply -refresh-only -auto-approve -input=false
+  terraform -chdir="$NATIVE_MODULE_DIR" init -input=false || return 1
+  terraform -chdir="$NATIVE_MODULE_DIR" validate || return 1
+  terraform -chdir="$NATIVE_MODULE_DIR" plan -input=false || return 1
+  terraform -chdir="$NATIVE_MODULE_DIR" apply -auto-approve -input=false || return 1
+  terraform -chdir="$NATIVE_MODULE_DIR" apply -refresh-only -auto-approve -input=false || return 1
 
   local attachment_json is_multipath multipath_count iscsi_state
   attachment_json="$(native_attachment_json)"
@@ -177,12 +177,18 @@ fi
 require_contains "$MODULE_DIR/main.tf" 'Block Volume Management' "instance enables Block Volume Management plugin"
 require_contains "$MODULE_DIR/main.tf" 'vpus_per_gb' "UHP volume performance is Terraform-configured"
 require_contains "$MODULE_DIR/main.tf" 'resource[[:space:]]+"terraform_data"[[:space:]]+"multipath_attachment"' "Terraform owns multipath attachment helper lifecycle"
+require_contains "$MODULE_DIR/variables.tf" '/dev/oracleoci/oraclevd\[b-z\]' "helper module validates OCI persistent device path"
+require_contains "$NATIVE_MODULE_DIR/variables.tf" '/dev/oracleoci/oraclevd\[b-z\]' "native module validates OCI persistent device path"
 require_contains "$MODULE_DIR/scripts/create_multipath_attachment.sh" 'isMultipath:[[:space:]]+true' "attachment helper requests isMultipath true"
+require_contains "$MODULE_DIR/scripts/create_multipath_attachment.sh" 'DEVICE_PATH must be an OCI consistent device path' "attachment helper rejects non-persistent paths"
 require_contains "$MODULE_DIR/scripts/create_multipath_attachment.sh" 'del\(\.data\."chap-secret", \.data\."chap-username"\)' "attachment helper sanitizes CHAP fields"
 require_contains "$MODULE_DIR/README.md" 'computed-only' "README documents OCI provider multipath limitation"
 require_contains "$MODULE_DIR/README.md" 'Sprint 24' "README links Terraform example to Sprint 24 validation"
+require_contains "$MODULE_DIR/README.md" 'pvscan' "README documents LVM rediscovery instead of recreation"
+require_contains "$MODULE_DIR/README.md" 'sha256sum -c' "README documents sentinel checksum verification"
 require_contains "$NATIVE_MODULE_DIR/main.tf" 'resource[[:space:]]+"oci_core_volume_attachment"[[:space:]]+"uhp_native"' "native module uses OCI Terraform volume attachment"
-require_contains "$NATIVE_MODULE_DIR/main.tf" 'is_agent_auto_iscsi_login_enabled' "native module enables agent auto iSCSI login option"
+require_not_contains "$NATIVE_MODULE_DIR/main.tf" 'is_agent_auto_iscsi_login_enabled' "native module leaves iSCSI login to Block Volume Management plugin"
+require_not_contains "$NATIVE_MODULE_DIR/variables.tf" 'enable_agent_auto_iscsi_login' "native module removes auto iSCSI login variable"
 require_contains "$NATIVE_MODULE_DIR/outputs.tf" 'is_multipath' "native module exposes computed is_multipath output"
 require_contains "$NATIVE_MODULE_DIR/README.md" 'no-helper probe' "native README explains no-helper purpose"
 require_contains "$NATIVE_MODULE_DIR/README.md" 'is_multipath.*true|is-multipath=true' "native README defines live multipath pass condition"
@@ -197,6 +203,12 @@ require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'terr
 require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'cat > terraform\.tfvars <<EOF' "native manual writes terraform.tfvars directly"
 require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'oci iam availability-domain list' "native manual autodiscovers availability domain"
 require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'oci compute image list' "native manual autodiscovers image"
+require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'sha256sum -c /tmp/bv4db-sentinel\.sha256' "native manual verifies sentinel after LVM reactivation"
+require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'vgchange -ay' "native manual reactivates existing LVM"
+require_contains "$REPO_ROOT/progress/sprint_25/sprint25_native_manual.md" 'destructive reinitialization' "native manual warns against destructive LVM recreation"
+require_file "$REPO_ROOT/progress/sprint_25/sprint_25_bugs.md"
+require_contains "$REPO_ROOT/progress/sprint_25/sprint_25_bugs.md" 'BUG-1: Persistent path and LVM migration safety must be explicit' "Sprint 25 bug registered"
+require_contains "$REPO_ROOT/progress/sprint_25/sprint_25_bugs.md" 'BUG-2: Native probe must not force agent auto iSCSI login flag' "Sprint 25 auto-login bug registered"
 
 for path in "$MODULE_DIR/main.tf" "$MODULE_DIR/scripts/create_multipath_attachment.sh"; do
   require_not_contains "$path" 'iscsiadm[[:space:]]+--login|mpathconf[[:space:]]+--enable|multipath\.conf' "no custom guest multipath setup in ${path#$REPO_ROOT/}"

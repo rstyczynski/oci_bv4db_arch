@@ -9,6 +9,12 @@ Oracle documents two important behaviors that this module tests:
 
 The OCI Terraform provider still exposes `is_multipath` as computed state only. This module therefore cannot force multipath in HCL. A live apply is the test: after apply, the `is_multipath` output must be `true`, `multipath_devices` must be populated, and the guest must pass the Sprint 24 evidence checklist.
 
+The attachment still declares a required OCI consistent device path through `device_path`, defaulting to `/dev/oracleoci/oraclevdb`. Oracle documents that device paths are required for Ultra High Performance volume attachments. The live BV4DB-59 failure is therefore a native attachment multipath metadata failure, not an omitted persistent-path configuration.
+
+The native probe intentionally does not set `is_agent_auto_iscsi_login_enabled`. For this test, the Block Volume Management plugin must discover the persistent-path attachment metadata and perform the guest iSCSI and multipath setup itself.
+
+For existing data volumes, use LVM rediscovery/reactivation after reattach. Do not recreate PVs, VGs, LVs, or filesystems on existing data volumes. Create a sentinel file and checksum before the change, then verify the checksum after `pvscan`, `vgscan`, `vgchange -ay`, and remount.
+
 ## Usage
 
 ```bash

@@ -200,7 +200,61 @@ Expected result:
 /mnt/sprint25-native is mounted
 ```
 
-## Step 8 - Capture Evidence
+## Step 8 - Existing LVM Data Preservation Check
+
+Use this step only when migrating existing data volumes that already contain filesystems or LVM metadata. This step is not for a fresh empty Sprint 25 volume.
+
+Before OCI detach/reattach, create a sentinel file and capture the current LVM identity:
+
+```bash
+mount_point="/u02/oradata"
+sentinel="${mount_point}/.bv4db-persistent-path-sentinel"
+
+sudo test -d "$mount_point"
+sudo sh -c "date -u > '$sentinel'"
+sudo sha256sum "$sentinel" | tee /tmp/bv4db-sentinel.sha256
+sudo lsblk -f | tee /tmp/bv4db-lsblk.before
+sudo blkid | tee /tmp/bv4db-blkid.before
+sudo pvs -o+pv_uuid,devices | tee /tmp/bv4db-pvs.before
+sudo vgs | tee /tmp/bv4db-vgs.before
+sudo lvs -a -o+devices | tee /tmp/bv4db-lvs.before
+```
+
+After OCI detach/reattach with `/dev/oracleoci/oraclevd*` device paths, rediscover and reactivate existing LVM metadata:
+
+```bash
+sudo pvscan
+sudo vgscan
+sudo vgchange -ay
+sudo lsblk -f | tee /tmp/bv4db-lsblk.after
+sudo blkid | tee /tmp/bv4db-blkid.after
+sudo pvs -o+pv_uuid,devices | tee /tmp/bv4db-pvs.after
+sudo vgs | tee /tmp/bv4db-vgs.after
+sudo lvs -a -o+devices | tee /tmp/bv4db-lvs.after
+sudo mount -a
+sha256sum -c /tmp/bv4db-sentinel.sha256
+```
+
+Pass criteria:
+
+```text
+PV UUIDs from /tmp/bv4db-pvs.before are present after reattach
+VGs and LVs activate without recreation
+sha256sum reports OK for .bv4db-persistent-path-sentinel
+```
+
+Do not run these commands on existing data volumes unless the intent is destructive reinitialization:
+
+```text
+pvcreate
+vgcreate
+lvcreate
+mkfs
+```
+
+The migration goal is to reattach the same OCI volumes with persistent paths and reactivate existing LVM metadata, not to recreate logical volumes.
+
+## Step 9 - Capture Evidence
 
 ```bash
 cd ../..
@@ -218,7 +272,7 @@ evidence="progress/sprint_25/native_terraform_multipath_evidence_${ts}.txt"
 
 Replace `RESULT=MANUAL_REVIEW` with `RESULT=PASS` only after Step 4 and Step 6 both satisfy the pass criteria.
 
-## Step 9 - Destroy Native Terraform Resources
+## Step 10 - Destroy Native Terraform Resources
 
 ```bash
 cd terraform/sprint25-agent-multipath-native

@@ -26,6 +26,9 @@
 | A3 Integration BV4DB-59 Structural Latest | `test_run_A3_integration_20260507_131647.log` |
 | Live OCI BV4DB-59 Native Refresh | existing Terraform state refreshed 2026-05-07 |
 | A3 Integration BV4DB-59 Live Gate | `test_run_A3_integration_20260507_132029.log` |
+| A3 Integration BUG-1 Persistent Path Safety Gate | `test_run_A3_integration_20260508_112519.log` |
+| A3 Integration OCI Access Fixed Rerun | `test_run_A3_integration_20260508_113338.log` |
+| A3 Integration BUG-2 Auto Login Removal Rerun | `test_run_A3_integration_20260508_121839.log` |
 | B3 Integration BV4DB-59 Addendum | Pending |
 
 ## Failures
@@ -149,6 +152,67 @@ native live iscsi_login_state=UNKNOWN
 ```
 
 Conclusion: BV4DB-59 fails the RUP live integration gate. Sprint 25 cannot be marked fully tested while BV4DB-59 remains in the sprint.
+
+## BUG-1 Persistent Path and LVM Preservation Fix
+
+BUG-1 was recorded in `progress/sprint_25/sprint_25_bugs.md` after review of existing-volume migration risk. Oracle documents that consistent device paths are required when attaching Ultra High Performance volumes, and the UHP multipath prerequisites explicitly include configuring the attachment to use a consistent device path.
+
+The fix adds:
+
+- Terraform variable validation requiring `/dev/oracleoci/oraclevd[b-z]` for both Sprint 25 modules.
+- Helper-side validation rejecting non-OCI persistent paths and the boot-volume path `/dev/oracleoci/oraclevda`.
+- README guidance that existing LVM stacks must be rediscovered/reactivated, not recreated.
+- Manual data-preservation steps that create a sentinel file, capture LVM identity, run `pvscan`, `vgscan`, `vgchange -ay`, remount, and verify `sha256sum -c`.
+
+The current environment could not execute a live sentinel-file test on an existing data LV because OCI authentication failed with `401-NotAuthenticated` during the native live gate, and the active Sprint 25 native host has no proven multipath/LVM data volume to migrate. No destructive LVM commands were run.
+
+Latest verification:
+
+```text
+Log: progress/sprint_25/test_run_A3_integration_20260508_112519.log
+Persistent-path checks: PASS
+Sentinel/LVM preservation documentation checks: PASS
+Sprint 25 bug registration check: PASS
+Final gate result: FAIL at native live Terraform OCI multipath validation due 401-NotAuthenticated
+```
+
+After OCI access was fixed, the A3 gate was rerun:
+
+```text
+Log: progress/sprint_25/test_run_A3_integration_20260508_113338.log
+Persistent-path checks: PASS
+Sentinel/LVM preservation documentation checks: PASS
+Terraform live native plan/apply/refresh: PASS, no infrastructure changes
+native live is_multipath=null
+native live multipath_devices=0
+native live iscsi_login_state=UNKNOWN
+Final gate result: FAIL at native live Terraform OCI multipath validation
+```
+
+## BUG-2 Auto Login Removal Rerun
+
+BUG-2 removed `is_agent_auto_iscsi_login_enabled` from the native module so the no-helper test keeps only the persistent `device` path and leaves guest login/multipath work to the Block Volume Management plugin.
+
+Verification:
+
+```text
+Log: progress/sprint_25/test_run_A3_integration_20260508_121839.log
+Native module auto-login field removed: PASS
+Native module auto-login variable removed: PASS
+Terraform live native plan/apply/refresh: PASS, no infrastructure changes
+native live is_multipath=null
+native live multipath_devices=0
+native live iscsi_login_state=UNKNOWN
+Final gate result: FAIL at native live Terraform OCI multipath validation
+```
+
+Important caveat: Terraform reported no infrastructure changes for the existing native attachment after removing `is_agent_auto_iscsi_login_enabled`, so this rerun did not create a fresh attachment. A clean recreate may still be needed to prove whether the absence of the auto-login flag changes attach-time OCI behavior.
+
+## BV4DB-60 Follow-Up
+
+BV4DB-60 was added to the backlog and Sprint 25 tracking after the BUG-2 rerun. Its purpose is a clean, vanilla run from fresh state that follows Oracle documentation strictly: UHP volume, capable shape, enabled Block Volume Management plugin, network/IAM prerequisites, and a persistent `device` path on the attachment. It must avoid the raw API helper, guest-side iSCSI or multipath setup, and Terraform attachment flags that bypass the plugin's documented discovery flow.
+
+This is tracked separately because the current BV4DB-59 state contains investigation history and Terraform reported no attachment recreation after removing the auto-login flag.
 
 ## BV4DB-59 Failure Analysis
 

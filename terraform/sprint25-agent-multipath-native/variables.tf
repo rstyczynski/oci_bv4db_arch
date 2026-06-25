@@ -71,13 +71,12 @@ variable "volume_vpus_per_gb" {
 }
 
 variable "device_path" {
-  description = "Consistent OCI device path required for UHP multipath enablement."
+  description = "Required OCI consistent device path requested for the UHP attachment, for example /dev/oracleoci/oraclevdb."
   type        = string
   default     = "/dev/oracleoci/oraclevdb"
-}
 
-variable "enable_agent_auto_iscsi_login" {
-  description = "Ask OCI to use Oracle Cloud Agent for iSCSI login. UHP multipath still depends on OCI marking the attachment is_multipath."
-  type        = bool
-  default     = true
+  validation {
+    condition     = can(regex("^/dev/oracleoci/oraclevd[b-z]$", var.device_path))
+    error_message = "device_path must be an OCI consistent device path such as /dev/oracleoci/oraclevdb. UHP attachments require a device path."
+  }
 }

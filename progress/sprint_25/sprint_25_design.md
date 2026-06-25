@@ -103,13 +103,14 @@ Add a second Sprint 25 Terraform module that uses only native OCI Terraform reso
 
 Oracle documentation states that the Block Volume service attempts to enable multipath while a UHP volume is being attached when prerequisites are met. It also states that the Block Volume Management plugin discovers multipath-enabled UHP attachments from instance metadata, installs/configures multipath when needed, and performs iSCSI login commands.
 
-The Terraform OCI provider supports `oci_core_volume_attachment`, `is_agent_auto_iscsi_login_enabled`, and computed outputs including `is_multipath` and `multipath_devices`. It does not provide an argument to force `is_multipath`, so the native module can only prove success through a live apply and post-apply evidence.
+The Terraform OCI provider supports `oci_core_volume_attachment` and computed outputs including `is_multipath` and `multipath_devices`. It does not provide an argument to force `is_multipath`, so the native module can only prove success through a live apply and post-apply evidence.
 
 ### Design Overview
 
 - Add `terraform/sprint25-agent-multipath-native/`.
 - Reuse the same compute, UHP volume, plugin, and variable model as the helper-based module.
-- Use native `oci_core_volume_attachment` with `attachment_type = "iscsi"`, a consistent device path, and `is_agent_auto_iscsi_login_enabled = true`.
+- Use native `oci_core_volume_attachment` with `attachment_type = "iscsi"` and a consistent device path.
+- Do not set `is_agent_auto_iscsi_login_enabled`; the Block Volume Management plugin must perform login and multipath setup from attachment metadata.
 - Expose computed `is_multipath` and `multipath_devices` outputs.
 - Do not use `terraform_data`, `oci raw-request`, or guest-side custom setup commands.
 - Document the live pass criteria and fallback in both module README and an operator manual: if the native path does not produce `is_multipath=true`, keep the helper module and record the evidence as provider/native-path limitation.
