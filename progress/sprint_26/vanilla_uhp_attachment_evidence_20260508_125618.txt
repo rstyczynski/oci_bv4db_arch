@@ -1,0 +1,172 @@
+=== Sprint 26 vanilla UHP attachment evidence ===
+timestamp_utc=20260508_125618
+workdir=/var/folders/rt/g188dkwx2rl25f2xnjnqv8hr0000gn/T/tmp.O3zjeioP6b/module
+region=eu-zurich-1
+compartment_id=ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a
+subnet_id=ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka
+availability_domain=jJRq:EU-ZURICH-1-AD-1
+image_id=ocid1.image.oc1.eu-zurich-1.aaaaaaaaoemfouok765vcoecfoa2y2hgr5grchimyi2ccnvifsqzktn2advq
+
+=== terraform outputs ===
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja"
+instance_public_ip = "140.238.223.102"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq5nscijsbedhnew4lo2aikw65kfcsukzshurlza3wc3a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq"
+
+=== attachment state json ===
+{
+  "attachment_type": "iscsi",
+  "availability_domain": "jJRq:EU-ZURICH-1-AD-1",
+  "chap_secret": null,
+  "chap_username": null,
+  "compartment_id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+  "device": "/dev/oracleoci/oraclevdb",
+  "display_name": "bv4db-s26-vanilla-attachment",
+  "encryption_in_transit_type": "NONE",
+  "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq5nscijsbedhnew4lo2aikw65kfcsukzshurlza3wc3a",
+  "instance_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja",
+  "ipv4": "169.254.2.2",
+  "ipv6": "fd00:c1::a9fe:202",
+  "iqn": "iqn.2015-12.com.oracleiaas:b017621f-7e60-4529-b6e5-8f30d8b220e9",
+  "is_agent_auto_iscsi_login_enabled": null,
+  "is_multipath": null,
+  "is_pv_encryption_in_transit_enabled": false,
+  "is_read_only": false,
+  "is_shareable": false,
+  "is_volume_created_during_launch": false,
+  "iscsi_login_state": "UNKNOWN",
+  "multipath_devices": [],
+  "port": 3260,
+  "state": "ATTACHED",
+  "time_created": "2026-05-08 12:57:02.607 +0000 UTC",
+  "timeouts": null,
+  "use_chap": null,
+  "volume_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq"
+}
+
+=== OCI attachment get ===
+ServiceError:
+{
+    "client_version": "Oracle-PythonSDK/2.156.0, Oracle-PythonCLI/3.63.0",
+    "code": "NotAuthorizedOrNotFound",
+    "logging_tips": "Please run the OCI CLI command using --debug flag to find more debug information.",
+    "message": "Authorization failed or requested resource not found.",
+    "opc-request-id": "56C99303A18A49D2A6BB646B93BA04F0/1E69F382A6509B1671E0FD6941565A09/B2FF224FB90F8C06CB1F70D10A7C7331",
+    "operation_name": "get_volume_attachment",
+    "request_endpoint": "GET https://iaas.eu-dcc-zurich-1.oraclecloud24.com/20160918/volumeAttachments/ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq5nscijsbedhnew4lo2aikw65kfcsukzshurlza3wc3a",
+    "status": 404,
+    "target_service": "compute",
+    "timestamp": "2026-05-08T13:09:05.416437+00:00",
+    "troubleshooting_tips": "See [https://docs.oracle.com/iaas/Content/API/References/apierrors.htm] for more information about resolving this error. If you are unable to resolve this issue, run this CLI command with --debug option and contact Oracle support and provide them the full error message."
+}
+
+=== guest evidence ===
+public_ip=140.238.223.102
+Warning: Permanently added '140.238.223.102' (ED25519) to the list of known hosts.
+--- oracle-cloud-agent ---
+active
+enabled
+oracle-cloud-agent-1.57.0-2.el10.x86_64
+device-mapper-multipath-0.9.9-12.el10_1.1.x86_64
+--- block plugin log tail ---
+2026/05/08 12:57:18.056329 logger.go:48: logFilepath: /var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig.log, expanded: /var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig.log
+2026/05/08 12:57:18.056412 service.go:58: starting Block Storage Management 1.57.0-2 with args:[/usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/oci-blockautoconfig]
+2026/05/08 12:57:18.056444 agent.go:70: open /var/log/oracle-cloud-agent/plugins/oci-blockautoconfig/blockstorage.yml: no such file or directory
+2026/05/08 12:57:18.056496 os.go:50: osName:Oracle Linux Server, osVersion:10.1
+2026/05/08 12:57:18.056501 agent.go:74: Got os platform: Oracle Linux Server 10.1
+2026/05/08 12:57:18.056531 client-endpoint-overrides.go:55: client-endpoint-overrides.yml file not at locations: [/etc/oracle-cloud-agent/client-endpoint-overrides.yml /var/lib/oracle-cloud-agent/client-endpoint-overrides.yml /usr/libexec/oracle-cloud-agent/plugins/oci-blockautoconfig/client-endpoint-overrides.yml]. That's fine using the usual default endpoints.
+2026/05/08 12:57:18.056645 service.go:40: running on platform:[linux-systemd] in interactive mode
+2026/05/08 12:57:18.056652 service.go:44: service start args: []
+2026/05/08 12:57:18.056658 service_unix.go:40: setting UnixSocketGroup as 992
+2026/05/08 12:57:18.057959 agent.go:130: starting oci oci-blockautoconfig plugin
+2026/05/08 12:57:18.057976 agent.go:131: current oci-blockautoconfig version 1.57.0-2
+2026/05/08 12:57:18.057982 cron.go:16: Poll IMDS Interval  1m0s
+2026/05/08 12:57:18.058051 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 12:57:18.058060 clients.go:123: Setting OCI_METADATA_BASE_URL= http://169.254.169.254/opc/v2
+2026/05/08 12:57:18.058067 clients.go:104: instance metadata c is null
+2026/05/08 12:57:18.058077 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:57:18.061061 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:57:18.061077 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 12:57:18.061083 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 12:58:18.022812 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 12:58:18.022884 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:58:18.025592 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:58:18.025613 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 12:58:18.025627 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 12:59:18.071848 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 12:59:18.071916 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:59:18.074658 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 12:59:18.074674 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 12:59:18.074680 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:00:18.098355 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:00:18.098425 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:00:18.105839 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:00:18.105881 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:00:18.105889 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:01:18.098938 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:01:18.099011 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:01:18.103981 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:01:18.103995 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:01:18.104002 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:02:18.052285 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:02:18.052362 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:02:18.057047 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:02:18.057086 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:02:18.057094 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:03:18.021787 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:03:18.021869 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:03:18.025844 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:03:18.025861 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:03:18.025868 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:04:18.068968 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:04:18.069060 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:04:18.072302 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:04:18.072319 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:04:18.072326 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:05:18.099436 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:05:18.099506 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:05:18.102282 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:05:18.102325 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:05:18.102333 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:06:18.092292 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:06:18.092385 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:06:18.095058 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:06:18.095096 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:06:18.095103 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:07:18.092128 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:07:18.092192 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:07:18.094987 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:07:18.095004 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:07:18.095011 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+2026/05/08 13:08:18.050360 instance_metadata_helper.go:41: Polling volume attachments metadata from IMDS
+2026/05/08 13:08:18.050431 volume_attachments_metadata_client.go:100: sending the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:08:18.055313 volume_attachments_metadata_client.go:113: completed the request http://169.254.169.254/opc/v2/volumeAttachments/
+2026/05/08 13:08:18.055360 volume_attachments_metadata_client.go:132: the plugin did not find any volume attachments for the instance from http://169.254.169.254/opc/v2/volumeAttachments/, status 404 Not Found
+2026/05/08 13:08:18.055368 instance_metadata_helper.go:118: the plugin did not find any volume attachments for the instance
+--- iscsi sessions ---
+iscsiadm: No active sessions.
+--- multipath -ll ---
+721.922328 | /etc/multipath.conf does not exist, blacklisting all devices.
+721.922343 | You can run "/sbin/mpathconf --enable" to create
+721.922346 | /etc/multipath.conf. See man mpathconf(8) for more details
+721.923676 | _check_bindings_file: failed to read header from /etc/multipath/bindings
+721.925087 | updated bindings file /etc/multipath/bindings
+--- multipathd paths ---
+721.945332 | /etc/multipath.conf does not exist, blacklisting all devices.
+721.945345 | You can run "/sbin/mpathconf --enable" to create
+721.945348 | /etc/multipath.conf. See man mpathconf(8) for more details
+--- multipath.conf ---
+sed: can't read /etc/multipath.conf: No such file or directory
+--- lsblk ---
+NAME               TYPE  SIZE MODEL       WWN                                FSTYPE      MOUNTPOINT
+sda                disk 46.6G BlockVolume 0x608941df976643c5832967d8c61976f7             
+├─sda1             part  100M             0x608941df976643c5832967d8c61976f7 vfat        /boot/efi
+├─sda2             part    2G             0x608941df976643c5832967d8c61976f7 xfs         /boot
+└─sda3             part 44.5G             0x608941df976643c5832967d8c61976f7 LVM2_member 
+  ├─ocivolume-root lvm  24.5G                                                xfs         /
+  └─ocivolume-oled lvm    20G                                                xfs         /var/oled
+RESULT=NEGATIVE
+negative_reason=ATTACHMENT_NOT_MULTIPATH_ENABLED

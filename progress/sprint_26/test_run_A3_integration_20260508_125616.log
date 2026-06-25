@@ -1,0 +1,1194 @@
+
+=== Running integration tests (1 selected) ===
+
+--- integration:test_sprint26_vanilla_uhp_attachment.sh ---
+=== Sprint 26 vanilla Oracle-documented UHP attachment integration ===
+PASS: file exists: terraform/sprint26-vanilla-uhp-attachment/versions.tf
+PASS: file exists: terraform/sprint26-vanilla-uhp-attachment/variables.tf
+PASS: file exists: terraform/sprint26-vanilla-uhp-attachment/main.tf
+PASS: file exists: terraform/sprint26-vanilla-uhp-attachment/outputs.tf
+PASS: file exists: terraform/sprint26-vanilla-uhp-attachment/README.md
+PASS: module enables Block Volume Management plugin
+PASS: module uses native Terraform attachment
+PASS: module sets persistent device path
+PASS: module validates persistent device path
+PASS: module has no helper, auto-login flag, or guest setup
+PASS: module tree has no bypass/setup commands
+
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing provider plugins...[0m
+- Reusing previous version of oracle/oci from the dependency lock file
+- Using previously-installed oracle/oci v8.13.0
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+[32m[1mSuccess![0m The configuration is valid.
+[0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # oci_core_instance.vanilla[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_instance" "vanilla" {
+      [32m+[0m[0m availability_domain                 = "jJRq:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m boot_volume_id                      = (known after apply)
+      [32m+[0m[0m capacity_reservation_id             = (known after apply)
+      [32m+[0m[0m compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      [32m+[0m[0m compute_cluster_id                  = (known after apply)
+      [32m+[0m[0m dedicated_vm_host_id                = (known after apply)
+      [32m+[0m[0m defined_tags                        = (known after apply)
+      [32m+[0m[0m display_name                        = "bv4db-s26-vanilla-instance"
+      [32m+[0m[0m extended_metadata                   = (known after apply)
+      [32m+[0m[0m fault_domain                        = (known after apply)
+      [32m+[0m[0m freeform_tags                       = (known after apply)
+      [32m+[0m[0m hostname_label                      = (known after apply)
+      [32m+[0m[0m id                                  = (known after apply)
+      [32m+[0m[0m image                               = (known after apply)
+      [32m+[0m[0m instance_configuration_id           = (known after apply)
+      [32m+[0m[0m ipxe_script                         = (known after apply)
+      [32m+[0m[0m is_ai_enterprise_enabled            = (known after apply)
+      [32m+[0m[0m is_cross_numa_node                  = (known after apply)
+      [32m+[0m[0m is_pv_encryption_in_transit_enabled = (known after apply)
+      [32m+[0m[0m launch_mode                         = (known after apply)
+      [32m+[0m[0m metadata                            = {
+          [32m+[0m[0m "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsNbdl9FX1Vo0U+tcq1mz5tpyO7MJ7ZtmfAyQr2OUqMVzIQgghAyorSsw4gZs6DzLMKoJM3Az9Uc61e1MED2/rKQasWMLqAfQ8OiNzD2hFkxdinodlLrC9O5mMgloQXLDNinZWn6fFKIaMRcNxEGFpb/GhBKIV+mBs7pGeeotIGVtk+7SamAsgiNCjVSZsu1dxGB0WnjNggv8BgFX158hIW0/Xgbtol/FUxB/rEZjnmX9PiuNcmqYMpt3k68Lu+RmawdVKKSA3hdFhuwrZr5Pj2UEF9aZvCe3UnTdzj4M9Qfx7vJwR9oeKhgGJOI4nvfyZ71lZfsxhsRk6dG4gWOPUYE831TRWR5S5Li+KF/pqzxZrvvQc8JEETlCxQ/2Q97VJLWSq6dT+l1ERPcf/rE8mOYI7v5twGz951RhQO08Z2uBk9UrQp6ebB5BGY4D9N8YBYJM9XSGO5qvjbnZO/YnngXhpnUv/+IEfM66pmbd1dJ9v0uc8Aa/sKz7a35KeES8= rstyczynski@Mac.net
+            EOT
+        }
+      [32m+[0m[0m preserve_boot_volume                = false
+      [32m+[0m[0m private_ip                          = (known after apply)
+      [32m+[0m[0m public_ip                           = (known after apply)
+      [32m+[0m[0m region                              = (known after apply)
+      [32m+[0m[0m security_attributes                 = (known after apply)
+      [32m+[0m[0m security_attributes_state           = (known after apply)
+      [32m+[0m[0m shape                               = "VM.Standard.E5.Flex"
+      [32m+[0m[0m state                               = (known after apply)
+      [32m+[0m[0m subnet_id                           = (known after apply)
+      [32m+[0m[0m system_tags                         = (known after apply)
+      [32m+[0m[0m time_created                        = (known after apply)
+      [32m+[0m[0m time_maintenance_reboot_due         = (known after apply)
+
+      [32m+[0m[0m agent_config {
+          [32m+[0m[0m are_all_plugins_disabled = false
+          [32m+[0m[0m is_management_disabled   = false
+          [32m+[0m[0m is_monitoring_disabled   = false
+
+          [32m+[0m[0m plugins_config {
+              [32m+[0m[0m desired_state = "ENABLED"
+              [32m+[0m[0m name          = "Block Volume Management"
+            }
+        }
+
+      [32m+[0m[0m create_vnic_details {
+          [32m+[0m[0m assign_ipv6ip          = (known after apply)
+          [32m+[0m[0m assign_public_ip       = "true"
+          [32m+[0m[0m defined_tags           = (known after apply)
+          [32m+[0m[0m display_name           = "bv4db-s26-vanilla-vnic"
+          [32m+[0m[0m freeform_tags          = (known after apply)
+          [32m+[0m[0m hostname_label         = (known after apply)
+          [32m+[0m[0m nsg_ids                = (known after apply)
+          [32m+[0m[0m private_ip             = (known after apply)
+          [32m+[0m[0m private_ip_id          = (known after apply)
+          [32m+[0m[0m security_attributes    = (known after apply)
+          [32m+[0m[0m skip_source_dest_check = (known after apply)
+          [32m+[0m[0m subnet_cidr            = (known after apply)
+          [32m+[0m[0m subnet_id              = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+          [32m+[0m[0m vlan_id                = (known after apply)
+        }
+
+      [32m+[0m[0m instance_options {
+          [32m+[0m[0m are_legacy_imds_endpoints_disabled = true
+        }
+
+      [32m+[0m[0m shape_config {
+          [32m+[0m[0m baseline_ocpu_utilization     = (known after apply)
+          [32m+[0m[0m gpu_description               = (known after apply)
+          [32m+[0m[0m gpus                          = (known after apply)
+          [32m+[0m[0m local_disk_description        = (known after apply)
+          [32m+[0m[0m local_disks                   = (known after apply)
+          [32m+[0m[0m local_disks_total_size_in_gbs = (known after apply)
+          [32m+[0m[0m max_vnic_attachments          = (known after apply)
+          [32m+[0m[0m memory_in_gbs                 = 64
+          [32m+[0m[0m networking_bandwidth_in_gbps  = (known after apply)
+          [32m+[0m[0m nvmes                         = (known after apply)
+          [32m+[0m[0m ocpus                         = 16
+          [32m+[0m[0m processor_description         = (known after apply)
+          [32m+[0m[0m resource_management           = (known after apply)
+          [32m+[0m[0m vcpus                         = (known after apply)
+        }
+
+      [32m+[0m[0m source_details {
+          [32m+[0m[0m boot_volume_size_in_gbs = (known after apply)
+          [32m+[0m[0m boot_volume_vpus_per_gb = (known after apply)
+          [32m+[0m[0m source_id               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaaoemfouok765vcoecfoa2y2hgr5grchimyi2ccnvifsqzktn2advq"
+          [32m+[0m[0m source_type             = "image"
+        }
+    }
+
+[1m  # oci_core_volume.uhp[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_volume" "uhp" {
+      [32m+[0m[0m auto_tuned_vpus_per_gb     = (known after apply)
+      [32m+[0m[0m availability_domain        = "jJRq:EU-ZURICH-1-AD-1"
+      [32m+[0m[0m backup_policy_id           = (known after apply)
+      [32m+[0m[0m cluster_placement_group_id = (known after apply)
+      [32m+[0m[0m compartment_id             = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      [32m+[0m[0m defined_tags               = (known after apply)
+      [32m+[0m[0m display_name               = "bv4db-s26-vanilla-uhp"
+      [32m+[0m[0m freeform_tags              = (known after apply)
+      [32m+[0m[0m id                         = (known after apply)
+      [32m+[0m[0m is_auto_tune_enabled       = (known after apply)
+      [32m+[0m[0m is_hydrated                = (known after apply)
+      [32m+[0m[0m is_reservations_enabled    = (known after apply)
+      [32m+[0m[0m kms_key_id                 = (known after apply)
+      [32m+[0m[0m size_in_gbs                = "1500"
+      [32m+[0m[0m size_in_mbs                = (known after apply)
+      [32m+[0m[0m state                      = (known after apply)
+      [32m+[0m[0m system_tags                = (known after apply)
+      [32m+[0m[0m time_created               = (known after apply)
+      [32m+[0m[0m volume_backup_id           = (known after apply)
+      [32m+[0m[0m volume_group_id            = (known after apply)
+      [32m+[0m[0m vpus_per_gb                = "120"
+      [32m+[0m[0m xrc_kms_key_id             = (known after apply)
+    }
+
+[1m  # oci_core_volume_attachment.uhp[0m will be created
+[0m  [32m+[0m[0m resource "oci_core_volume_attachment" "uhp" {
+      [32m+[0m[0m attachment_type                     = "iscsi"
+      [32m+[0m[0m availability_domain                 = (known after apply)
+      [32m+[0m[0m chap_secret                         = (known after apply)
+      [32m+[0m[0m chap_username                       = (known after apply)
+      [32m+[0m[0m compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a"
+      [32m+[0m[0m device                              = "/dev/oracleoci/oraclevdb"
+      [32m+[0m[0m display_name                        = "bv4db-s26-vanilla-attachment"
+      [32m+[0m[0m encryption_in_transit_type          = (known after apply)
+      [32m+[0m[0m id                                  = (known after apply)
+      [32m+[0m[0m instance_id                         = (known after apply)
+      [32m+[0m[0m ipv4                                = (known after apply)
+      [32m+[0m[0m ipv6                                = (known after apply)
+      [32m+[0m[0m iqn                                 = (known after apply)
+      [32m+[0m[0m is_agent_auto_iscsi_login_enabled   = (known after apply)
+      [32m+[0m[0m is_multipath                        = (known after apply)
+      [32m+[0m[0m is_pv_encryption_in_transit_enabled = (known after apply)
+      [32m+[0m[0m is_read_only                        = (known after apply)
+      [32m+[0m[0m is_shareable                        = (known after apply)
+      [32m+[0m[0m is_volume_created_during_launch     = (known after apply)
+      [32m+[0m[0m iscsi_login_state                   = (known after apply)
+      [32m+[0m[0m multipath_devices                   = (known after apply)
+      [32m+[0m[0m port                                = (known after apply)
+      [32m+[0m[0m state                               = (known after apply)
+      [32m+[0m[0m time_created                        = (known after apply)
+      [32m+[0m[0m use_chap                            = (known after apply)
+      [32m+[0m[0m volume_id                           = (known after apply)
+    }
+
+[1mPlan:[0m 3 to add, 0 to change, 0 to destroy.
+[0m
+Changes to Outputs:
+  [32m+[0m[0m device_path          = "/dev/oracleoci/oraclevdb"
+  [32m+[0m[0m instance_id          = (known after apply)
+  [32m+[0m[0m instance_public_ip   = (known after apply)
+  [32m+[0m[0m is_multipath         = (known after apply)
+  [32m+[0m[0m iscsi_login_state    = (known after apply)
+  [32m+[0m[0m multipath_devices    = (known after apply)
+  [32m+[0m[0m volume_attachment_id = (known after apply)
+  [32m+[0m[0m volume_id            = (known after apply)
+[0m[1moci_core_volume.uhp: Creating...[0m[0m
+[0m[1moci_core_instance.vanilla: Creating...[0m[0m
+[0m[1moci_core_volume.uhp: Still creating... [10s elapsed][0m[0m
+[0m[1moci_core_instance.vanilla: Still creating... [10s elapsed][0m[0m
+[0m[1moci_core_volume.uhp: Creation complete after 14s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq][0m
+[0m[1moci_core_instance.vanilla: Still creating... [20s elapsed][0m[0m
+[0m[1moci_core_instance.vanilla: Still creating... [30s elapsed][0m[0m
+[0m[1moci_core_instance.vanilla: Creation complete after 36s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja][0m
+[0m[1moci_core_volume_attachment.uhp: Creating...[0m[0m
+[0m[1moci_core_volume_attachment.uhp: Still creating... [10s elapsed][0m[0m
+[0m[1moci_core_volume_attachment.uhp: Still creating... [20s elapsed][0m[0m
+[0m[1moci_core_volume_attachment.uhp: Creation complete after 25s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq5nscijsbedhnew4lo2aikw65kfcsukzshurlza3wc3a][0m
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mArgument is deprecated[0m
+[33m│[0m [0m
+[33m│[0m [0m[0m  with oci_core_volume_attachment.uhp,
+[33m│[0m [0m  on main.tf line 66, in resource "oci_core_volume_attachment" "uhp":
+[33m│[0m [0m  66:   compartment_id  = [4mvar.compartment_id[0m[0m
+[33m│[0m [0m
+[33m│[0m [0mThe 'compartment_id' field has been deprecated and may be removed in a
+[33m│[0m [0mfuture version. Do not use this field.
+[33m│[0m [0m
+[33m│[0m [0m(and one more similar warning elsewhere)
+[33m╵[0m[0m
+[0m[1m[32m
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+[0m[0m[1m[32m
+Outputs:
+
+[0mdevice_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja"
+instance_public_ip = "140.238.223.102"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq5nscijsbedhnew4lo2aikw65kfcsukzshurlza3wc3a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq"
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: c49fc6d46d37dae248c640956a17db68/B1E69CD3FD3BC9DF01DEFD695A524874/71657EC46915E1BB1B39472FE1973888 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: e6dac9176c151fa94f6b9d65dfc43f9a/55B9FA1C5426E88F01DEFD695A524896/39CA19143256C34FA875918EB767A1DA 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 352cd9cf65a160cfc0af9cf262e1c90f/62241E442EBB94CE18DEFD695A5248EF/8B54D17D873B981EB45F85B7C5FD2E44 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 3fe04c97851d234f69a53eb1fca36963/BF171D61726394E618DEFD695A5248A3/A5AF5C92425C16E883235C58F6AFBC92 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: e4ffadaa5c95d2d8f21b5bb0f8788242/D0628BFB8EDADC532FDEFD695A52488D/67D3EF359B3C5E4179D6DA5096C72C84 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 3c5dc3780c611140fc5e1551721bbb02/B7CA1A35D3AAA60A2FDEFD695A524837/9F9EEDBD299CA90EF89EECCE1068D50F 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 5428b60740d4704e429d4082794fa297/4CD8C871A518AF7E46DEFD695A524897/FDDCEC7E22BA6BC19BF855F015B0FB17 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: aea45ec2225748be29f1f2b06403a503/4339A548CAE1F3CB46DEFD695A5248FE/2D6827AA33036209DFCBC255426FE7BF 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 58e5eaef2338e73d8940689f8fe69c79/342CF63D0BE0A9BE5DDEFD695A52487D/6C35C4745E255CC941BE8E8D18F58512 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 4fa3a2f20efda003359fb6dddcae9ddf/B3FF445C6435B9EE5DDEFD695A5248E2/35198501CE6309640A02709C455F3358 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 388214b8431d518d437b0a8ed4d3d468/6E8C52FAA8AD2DB074DEFD695A524860/C4DDC28F3298A6460D8FA0B5DC31060C 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 5936f3135fc609b6755bf56272746657/F8442C879DE6BE5A74DEFD695A524895/809D3E961516CAEBD42BC69196451388 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: d619588adbca9bc571be647a55e41e1b/5F45A673D6436E258CDEFD695A524837/D9855D8FCADD90FA72C830934FEDE333 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: b962e389379b16066f759112b344dbb7/53953C69992766898CDEFD695A524830/3F8A173D010BE89FDCE6572755426701 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: c8f470dcc87c68af2622a081723ef501/F3E0762383AB3598A3DEFD695A52480C/8C0A0339A4CF1974A80B17505E77864A 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 01f86409e77b52a99d54b382d70943f4/D8B846CEA9682DC0A3DEFD695A524879/BE2D94FD0D907D9904A0755DA76CCD67 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 83cf10687d374b611eda74c29a4f65e8/93F741DB1B54C253BADEFD695A524869/9183D4FDBE5D660981202DFC24228552 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 9088147ac8652d8cbc0e0f27e10a0acd/4E474B47670B6699BADEFD695A524876/B42310649A6A60F57A65A78450718A06 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: d903d3d61d401b92621a54ea4635e650/8C04C5C5EA8572CDD1DEFD695A5248F2/BF829E71EAC31D588BCEA663EFA50864 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 66e7307aeb3aebf1d5f53aa4186e03c8/8E9CD2A18C7A4C11D1DEFD695A524888/A1ECAA397E5F4E01286C18F4D1587641 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 64272bace90d15dadb1c527bd90f5bea/D83E4A5F9A858C5EE8DEFD695A5248DA/9643F3299276DC87220FCD5B5B0BBB62 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: c5f4fb5a8ab0bcc0a826a168e3e9f3a9/CD872BA043C6E35BE8DEFD695A5248A0/896007C66752079CB943C90DCF6D6A71 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 3d3bbdd774ae092e015fd4366be1b605/7F918ECF6BD063A9FFDEFD695A52488E/0FC8B612AB139F4A70594082FE45A2AE 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 047abbd4572b9b8446d99743e445e929/32A55D2E14834905FFDEFD695A5248E7/9251EA9A6B7C6F859D5CD3754F5508D8 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 24ea4f3c10185ddf72699abe4831f242/89AAF457EF5543DD16DFFD695A524892/428CB56BC7402E08187A79233D57A442 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 027ccf86c2465e750c799c4669b7f9cf/9A1D5E495ABB3CB816DFFD695A5248C6/24BDCE1940F96DD5FC845C3170AD909E 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 53202fac2f3cfb91118612eabb434033/8F393D89D447F1B72DDFFD695A5248CB/E4BBD2A5427386FEFCE5C53DEC40D02F 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: a1ed7fc18b50959722aeb8c15ad9ed39/5BE497FA56298A3A2DDFFD695A524868/A3F079CDAD41DA07A134E672ED147055 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: bee2ad19b7708adecff2fac71fe4309f/DEC14094E9944B7544DFFD695A52489E/C3880C9BDE29BAF2F9174B9BB29BD0F3 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 89934a35d069f365784611f467137382/C1C3A95FF3DAA8EA44DFFD695A52485B/A6EAC57DBA476135B5A0E08B8F016B79 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 9b18679bf1c19edb5c13b20e4fd79ec2/414BAA982166B9925BDFFD695A524867/B1589F56C60D86AED8826B6FACEB5F8D 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: d2cabca5aefc3dae2be44ccf26f213f6/E490DC337E59697D5BDFFD695A524870/B4005A3FD8E8B9462D57DBDFF2ADE7EB 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: f6cb93a8adca5c92716b7b5064142fb5/82A5472F5760AD4673DFFD695A52484E/8253210E5D8C8A1E84B53BA3731C1190 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 6896fdc361a16e49f018b46b597a5a70/3322462A85DF11B873DFFD695A5248B7/E2CBE29266EF113C025298C2EF24974A 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: e76cb761becb64e70b81bdce64b061c0/9F7C5D526365A83E8ADFFD695A5248D0/15BE42C5943F84F2AF1C0653F18F5749 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: b8ec877809c26d8f58e34fa8c5793420/54D31E0BDB1E17C48ADFFD695A5248CA/3576C9F919F087CA4BAB2D317ADE2764 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: be82931fd54827c8b10834552fbb1315/14415D7B2B04F6B3A1DFFD695A524808/832AB639E45995F2C9F089829FF9D7F3 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 9b2f72e453ebfbcc100eb91397d355ed/1A262E7028804385A1DFFD695A5248F3/5C7A8473177F76A97FF9F7829D75E547 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 29eb9a047192e91efc2dbd31f6162f5a/066378FB9C01C12FB8DFFD695A52486D/C5B9D010F160DA1B3E3A2E89F0C4EC47 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: bb35ab8e2c82cde68b70a710dc08ea2c/0A121C1211F598E2B8DFFD695A52480E/E6C707E46998FE1789F23ED0BA72643D 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 5fe9eae2f2ecd6c24d93f56719c3dbf3/57380F30FE99543DCFDFFD695A5248DE/BD0B0ADCFDDC0954A7036C83569FD7D3 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 12cc4a998a564acec4076c295e9fd3ad/D2608408D633B736CFDFFD695A5248F2/DFAE9F81BF62884E9B5E7A0E191C4635 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: bbeb5dced1deaf8c0b759f52be661e9a/697DBEC0F33EEE97E6DFFD695A524863/E5BF644D9E61A48EDF08B712E5E1F547 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: b8d5d9ea827a8b84e0d52974ba88e0a9/DB83594D1920526DE6DFFD695A524813/09296F19CD56C4CFC9612EB84FAE2600 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: d9bb320f7ca5bdf04325d48584624fd4/1C72775B7ABA7509FDDFFD695A524861/0289963018BF009C786D729C45C23488 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: a10afca0c5d3df7dcfd8d4d2e6408a11/5D9E38BC56F4A546FDDFFD695A524848/DBA1F7792F9F3CDC0D04B67240D51DD0 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 94795c91cfaf88d93de1fd46649318a1/1AE1349B6A855E4D14E0FD695A5248FC/CE2EC21FF3BCF2B3783D80259CDF86BE 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 7b49b11b4cee5604e8b7e1dae101d25b/3DE53F809224B49614E0FD695A5248CD/FB92D1D7C7FB7B49594B637CD03A795D 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 9e5af708a359057b386c0d96b94d142e/FE849165607B7B252BE0FD695A524881/985AF94EB2276915C0A413D51AE22844 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: 5b30a39a3885cc25125ab0150dace994/CDDBE1A16E1857252BE0FD695A5248F5/E22C9C4B738F73293B5F7C257EE56131 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: cb6b5de134462ca5a1fbdc18f6825982/8A2DB49C6022D89F42E0FD695A52484D/1880513D46056F8522A208B193AC56A5 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: f7810108a86b2e1b20127d74c0d62b32/1EB667DA6083902A42E0FD695A52480F/5E9CC648DB2527D466A70469F9A83654 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Instance
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/GetInstance 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/instances/ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicxnzr34uztrrqnmn5wb4emuxvctz4x5bojztufczlb2ja 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Instance 
+[31m│[0m [0mOperation Name: GetInstance 
+[31m│[0m [0mOPC request ID: 179bb6a463b5e320918f19c1fd03a565/5603CC4CB87C2E9459E0FD695A5248C3/F9AD01DEE5EA499930EBAC4664910550 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_instance.vanilla,
+[31m│[0m [0m  on main.tf line 9, in resource "oci_core_instance" "vanilla":
+[31m│[0m [0m   9: resource "oci_core_instance" "vanilla" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1m401-NotAuthenticated, The required information to complete authentication was not provided or was incorrect.
+[31m│[0m [0mSuggestion: Please retry or contact support for help with service: Core Volume
+[31m│[0m [0mDocumentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_volume 
+[31m│[0m [0mAPI Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Volume/GetVolume 
+[31m│[0m [0mRequest Target: GET https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes/ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq 
+[31m│[0m [0mProvider version: 8.13.0, released on 2026-05-05.  
+[31m│[0m [0mService: Core Volume 
+[31m│[0m [0mOperation Name: GetVolume 
+[31m│[0m [0mOPC request ID: a0ba5d12226b173152c2bdc1b4b202c8/6F6B47B3F9399DCE59E0FD695A524825/1CCD814D3DDAA9260D93792D47384DE5 
+[31m│[0m [0m[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with oci_core_volume.uhp,
+[31m│[0m [0m  on main.tf line 53, in resource "oci_core_volume" "uhp":
+[31m│[0m [0m  53: resource "oci_core_volume" "uhp" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+poll is_multipath=null multipath_devices=0 iscsi_login_state=UNKNOWN
+Evidence: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_26/vanilla_uhp_attachment_evidence_20260508_125618.txt
+PASS: live vanilla probe recorded RESULT=NEGATIVE
+Results: 12 passed, 0 failed
+
+Results: 1 passed, 0 failed

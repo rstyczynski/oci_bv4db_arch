@@ -1,0 +1,15 @@
+region              = "eu-zurich-1"
+compartment_id      = "ocid1.compartment.oc1..example"
+availability_domain = "example:EU-ZURICH-1-AD-1"
+subnet_id           = "ocid1.subnet.oc1.eu-zurich-1.example"
+image_id            = "ocid1.image.oc1.eu-zurich-1.example"
+ssh_public_key_path = "./sprint26.pub"
+
+name_prefix        = "bv4db-s26-vanilla"
+compute_shape      = "VM.Standard.E5.Flex"
+compute_ocpus      = 16
+compute_memory_gb  = 64
+assign_public_ip   = true
+volume_size_gbs    = 1500
+volume_vpus_per_gb = 120
+device_path        = "/dev/oracleoci/oraclevdb"
