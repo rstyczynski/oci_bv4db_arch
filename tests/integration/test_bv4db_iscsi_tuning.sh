@@ -495,6 +495,7 @@ test_IT4_restore_resume_state_machine() {
   rg -q 'heartbeat_elapsed.*-ge 30' "$RUNNER" || { fail "controller lease heartbeat is not 30 seconds"; return 1; }
   rg -q 'lease_renewals.log' "$RUNNER" || { fail "controller lease renewal evidence is not archived"; return 1; }
   rg -q 'ssh_job_running' "$RUNNER" || { fail "controller does not distinguish a running SSH job from a zombie"; return 1; }
+  rg -q 'ssh -n -i' "$RUNNER" || { fail "SSH can consume the experiment-plan stream"; return 1; }
   rg -q -- '--on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s .* lease-check' "$GUEST" || return 1
   awk '/emergency_restore\(\)/{inside=1} inside&&/pkill -TERM -x fio/{kill=NR} inside&&/flock -w 180 8/{lock=NR; exit} END{exit !(kill && lock && kill<lock)}' "$GUEST" || return 1
   awk '/emergency_restore\(\)/{inside=1} inside&&/verify_tuned_settled/{tuned=NR} inside&&/commit_emergency_restoration/{commit=NR; exit} END{exit !(tuned && commit && tuned<commit)}' "$GUEST" || return 1

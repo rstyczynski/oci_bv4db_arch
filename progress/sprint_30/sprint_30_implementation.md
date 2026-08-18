@@ -217,6 +217,15 @@ replacement, so any future expiry is attributable rather than inferred. A
 failed/nonzero FIO attempt is rejected before report rendering, preventing an
 invalid interrupted FIO document from obscuring the authoritative failure.
 
+Attempt `20260818_211430` then proved three healthy regular-baseline runs and
+continuous audited lease renewal, but no candidate ran. The background SSH
+measurement inherited the process-substitution stream feeding the plan loop
+and consumed every remaining plan row after the first row; the controller
+therefore reached the final-baseline drift gate with no final baseline and
+failed closed. Cleanup proved zero exact-tag resources. All SSH commands now
+use OpenSSH `-n`, preventing them from reading controller stdin; the static
+contract test requires that isolation before another live run.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
