@@ -95,6 +95,45 @@ exercise_controller_lock() {
   find "$root" -maxdepth 1 -type d -name 'controller_lock_stale_*' | grep -q .
 }
 
+# Production recovery functions call these bounded shims indirectly.
+# shellcheck disable=SC2034,SC2329
+exercise_failure_recovery_poll() {
+  local root="$1" mode="$2"
+  (
+    set -- --plan --output-dir "$root/source"
+    export BV4DB_CONTROLLER_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$RUNNER"
+    OUTPUT_DIR="$root"; SC_DIR="$root/scaffold"; RUN_TAG=unit-recovery; INFRA_STATE="$root/infra.json"
+    mkdir -p "$SC_DIR"; jq -n '{compartment:{ocid:"compartment-test"}}' > "$INFRA_STATE"
+    SPRINT30_CLEANUP_POLL_SECONDS=1; SPRINT30_CLEANUP_QUIET_SECONDS=2; SPRINT30_CLEANUP_HORIZON_SECONDS=3; SPRINT30_CLEANUP_EXTENSION_SECONDS=4
+    [ "$mode" != bad_timing ] || SPRINT30_CLEANUP_POLL_SECONDS=0
+    oci() {
+      local count=0
+      if [[ " $* " == *" bv volume list "* ]]; then
+        [ "$mode" != query_failure ] || return 1
+        [ -f "$root/volume.calls" ] && count=$(cat "$root/volume.calls"); count=$((count+1)); echo "$count" > "$root/volume.calls"
+        if [ "$mode" = multiple ]; then
+          jq -n '{data:[{id:"volume-1","display-name":"unit-recovery-data1-bv","lifecycle-state":"AVAILABLE"},{id:"volume-2","display-name":"unit-recovery-data1-bv","lifecycle-state":"AVAILABLE"}]}'
+        elif { [ "$mode" = delayed ] && [ "$count" -ge 3 ]; } || { [ "$mode" = late ] && [ "$count" -ge 9 ]; }; then
+          if [ -f "$root/deleted" ]; then jq -n '{data:[]}'; else
+          jq -n '{data:[{id:"other","display-name":"unit-recovery-data10-bv","lifecycle-state":"AVAILABLE"},{id:"volume-1","display-name":"unit-recovery-data1-bv","lifecycle-state":"AVAILABLE"}]}'
+          fi
+        else jq -n '{data:[]}'; fi
+      elif [[ " $* " == *" compute instance list "* ]]; then jq -n '{data:[]}'
+      elif [[ " $* " == *" compute volume-attachment list "* ]]; then jq -n '{data:[{id:"attachment-1","lifecycle-state":"ATTACHED"}]}'
+      else return 1; fi
+    }
+    cleanup_volume_states_once() {
+      local state="$SC_DIR/state-$RUN_TAG-data1.json"
+      if [ -s "$state" ] && jq -e '.blockvolume.created==true' "$state" >/dev/null; then cp "$state" "$root/recovered-state.json"; touch "$root/deleted"; mv "$state" "$state.deleted"; fi
+    }
+    cleanup_compute_state_once() { :; }
+    sleep() { :; }
+    poll_uncertain_volume_cleanup
+  )
+}
+
 write_valid_fixture() {
   jq -n '{compute:{shape:"VM.Standard.E5.Flex",ocpus:4,memory_gb:32,image_pinned:true,architecture:"x86_64"},volumes:[range(0;5)|{vpu:50,is_multipath:false,multipath_devices:0,sessions:1,device_id:("device-"+tostring),volume_id:("volume-"+tostring),expected_volume_id:("volume-"+tostring),instance_id:"instance-1",expected_instance_id:"instance-1"}],layout:{data_stripes:2,redo_stripes:2,stripe_kib:256,fra_direct:true,mounts:["/u02/oradata","/u03/redo","/u04/fra"]},route:{same_interface:true},sentinels:{valid:true},credentials:{valid:true}}' > "$1"
 }
@@ -180,6 +219,16 @@ test_IT4_restore_resume_state_machine() {
   if exercise_real_resume_proof "$tmp/stop-failure" "$tmp/current.json" 0 stop_failure >/dev/null 2>&1; then fail "real resume proof swallowed stale-unit stop failure"; return 1; fi
   if exercise_real_resume_proof "$tmp/still-active" "$tmp/current.json" 0 active >/dev/null 2>&1; then fail "real resume proof accepted an active stale unit"; return 1; fi
   exercise_controller_lock "$tmp/controller-lock" || { fail "controller-lifetime lock failed"; return 1; }
+  exercise_failure_recovery_poll "$tmp/recovery-delayed" delayed || { fail "delayed OCI appearance was not recovered"; return 1; }
+  jq -e '.blockvolume.ocid=="volume-1" and .blockvolume.attachment_ocid=="attachment-1" and .meta.recovered_for_failure_cleanup==true' "$tmp/recovery-delayed/recovered-state.json" >/dev/null || return 1
+  [ "$(cat "$tmp/recovery-delayed/volume.calls")" -ge 8 ] || { fail "stable-zero horizon was not polled"; return 1; }
+  exercise_failure_recovery_poll "$tmp/recovery-late" late || { fail "post-horizon OCI appearance was not stabilized"; return 1; }
+  [ "$(cat "$tmp/recovery-late/volume.calls")" -ge 14 ] || { fail "post-horizon discovery did not restart the quiet interval"; return 1; }
+  if exercise_failure_recovery_poll "$tmp/recovery-query-failure" query_failure >/dev/null 2>&1; then fail "cleanup accepted OCI inventory failure"; return 1; fi
+  if exercise_failure_recovery_poll "$tmp/recovery-multiple" multiple >/dev/null 2>&1; then fail "cleanup accepted multiple exact-name resources"; return 1; fi
+  if exercise_failure_recovery_poll "$tmp/recovery-bad-timing" bad_timing >/dev/null 2>&1; then fail "cleanup accepted invalid timing"; return 1; fi
+  exercise_failure_recovery_poll "$tmp/recovery-zero" zero || return 1
+  [ "$(cat "$tmp/recovery-zero/volume.calls")" -ge 8 ] || { fail "zero-active state was not stabilized over the horizon"; return 1; }
   pass IT-4
 }
 

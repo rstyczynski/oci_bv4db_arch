@@ -74,6 +74,20 @@ production-function command-shim coverage. The local pre-live gate passed
 Bash syntax, ShellCheck, Python compilation, `git diff --check`, and IT-1
 through IT-4.
 
+The first post-review provisioning launch (`20260818_165450`) was deliberately
+interrupted before guest preparation or FIO when scaffold progress output was
+found to contain ANSI cursor controls in the persistent A3 log. The one owned
+DATA1 volume and compute instance were deleted and independently observed as
+`TERMINATED`; the failed log was converted to plain ASCII and the directory is
+never reused. That interruption exposed an asynchronous-create cleanup race,
+so failure recovery now polls exact run-tag names through a bounded OCI
+creation/visibility horizon, reconstructs incomplete states, tears down only
+unique exact-name resources through the scaffold, and requires a full stable
+zero-resource interval after the horizon. IT-4 covers delayed visibility,
+attached-volume state recovery, exact-name decoys, duplicate matches, query
+failure, and zero-state stabilization. A later A3 launch uses an inline ANSI
+filter before `tee` so persistent logs remain plain ASCII from creation.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

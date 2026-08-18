@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCAFFOLD_DIR="$REPO_DIR/oci_scaffold"
 DEFAULT_OUTPUT="$REPO_DIR/progress/sprint_30/results/$(date -u +%Y%m%dT%H%M%SZ)"
 MODE=plan
@@ -21,6 +21,8 @@ RESUME_RUN=""
 KEEP_INFRA=false
 FIXTURE=""
 STATE_FAULT=""
+BV4DB_CONTROLLER_TEST_MODE=false
+RECOVERY_OBSERVED_ACTIVE=false
 
 # shellcheck disable=SC1091
 source "$REPO_DIR/tools/oci_bv_controller_lock.sh"
@@ -209,24 +211,107 @@ set_prefix() {
   source "$SCAFFOLD_DIR/do/oci_scaffold.sh"
 }
 
-cleanup_owned_resources() {
-  local role prefix state failed=0
-  [ "$OWNERSHIP_ACTIVE" = true ] || return 0
-  if [ -n "$TMPKEY" ] && [ -n "$PUBLIC_IP" ]; then
-    ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest restore" >/dev/null 2>&1 || true
-    ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest quiesce" >/dev/null 2>&1 || true
+recover_incomplete_scaffold_states() {
+  local compartment role prefix state display row count ocid attachment_json attachment_ocid volumes compute display_compute
+  compartment=$(jq -r '.compartment.ocid' "$INFRA_STATE")
+  RECOVERY_OBSERVED_ACTIVE=false
+  volumes=$(oci bv volume list --compartment-id "$compartment" --all) || return 1
+  compute=$(oci compute instance list --compartment-id "$compartment" --all) || return 1
+  printf '%s\n' "$volumes" > "$OUTPUT_DIR/failure_cleanup_volume_discovery.json"
+  printf '%s\n' "$compute" > "$OUTPUT_DIR/failure_cleanup_compute_discovery.json"
+  for role in data1 data2 redo1 redo2 fra; do
+    prefix="$RUN_TAG-$role"; state="$SC_DIR/state-$prefix.json"
+    display="$prefix-bv"
+    count=$(jq --arg display "$display" '[.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")]|length' <<<"$volumes")
+    [ "$count" -le 1 ] || { echo "multiple exact-name volumes found during failure recovery: $display" >&2; return 1; }
+    [ "$count" -eq 0 ] || RECOVERY_OBSERVED_ACTIVE=true
+    row=$(jq -c --arg display "$display" '.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")' <<<"$volumes")
+    if [ -s "$state" ] && jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then
+      [ "$count" -eq 1 ] && [ "$(jq -r .blockvolume.ocid "$state")" = "$(jq -r .id <<<"$row")" ] || { echo "complete scaffold state does not match exact active volume: $display" >&2; return 1; }
+      continue
+    fi
+    [ -n "$row" ] || continue
+    ocid=$(jq -r .id <<<"$row")
+    attachment_json=$(oci compute volume-attachment list --compartment-id "$compartment" --volume-id "$ocid" --all) || return 1
+    attachment_ocid=$(jq -r '[.data[]|select(."lifecycle-state"!="DETACHED")]|if length<=1 then (.[0].id//"") else error("multiple active attachments") end' <<<"$attachment_json") || return 1
+    jq -n --arg prefix "$prefix" --arg compartment "$compartment" --arg ocid "$ocid" --arg attachment "$attachment_ocid" '{inputs:{name_prefix:$prefix,oci_compartment:$compartment},blockvolume:{created:true,ocid:$ocid,attachment_ocid:$attachment},meta:{creation_order:["blockvolume"],recovered_for_failure_cleanup:true}}' > "$state"
+  done
+  prefix="$RUN_TAG-compute"; state="$SC_DIR/state-$prefix.json"
+  display_compute="$prefix-instance"
+  count=$(jq --arg display "$display_compute" '[.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")]|length' <<<"$compute")
+  [ "$count" -le 1 ] || { echo "multiple exact-name instances found during failure recovery: $display_compute" >&2; return 1; }
+  [ "$count" -eq 0 ] || RECOVERY_OBSERVED_ACTIVE=true
+  row=$(jq -c --arg display "$display_compute" '.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")' <<<"$compute")
+  if [ -s "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; then
+    [ "$count" -eq 1 ] && [ "$(jq -r .compute.ocid "$state")" = "$(jq -r .id <<<"$row")" ] || { echo "complete scaffold state does not match exact active instance: $display_compute" >&2; return 1; }
+  elif [ -n "$row" ]; then ocid=$(jq -r .id <<<"$row"); jq -n --arg prefix "$prefix" --arg compartment "$compartment" --arg ocid "$ocid" '{inputs:{name_prefix:$prefix,oci_compartment:$compartment},compute:{created:true,ocid:$ocid},meta:{creation_order:["compute"],recovered_for_failure_cleanup:true}}' > "$state"
   fi
-  cd "$SC_DIR" 2>/dev/null || return 1
+}
+
+cleanup_volume_states_once() {
+  local role prefix state failed=0
+  cd "$SC_DIR" || return 1
   for role in fra redo2 redo1 data2 data1; do
     prefix="$RUN_TAG-$role"; state="$SC_DIR/state-$prefix.json"
     if [ -f "$state" ]; then
       if jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then
         export NAME_PREFIX="$prefix"; unset STATE_FILE || true; "$SCAFFOLD_DIR/do/teardown.sh" >/dev/null 2>&1 || failed=1
-      else
-        failed=1
-      fi
+      elif [ -n "$(jq -r '.blockvolume.ocid // empty' "$state")" ]; then failed=1; fi
     fi
   done
+  cd "$REPO_DIR" || return 1
+  [ "$failed" -eq 0 ]
+}
+
+cleanup_compute_state_once() {
+  local prefix="$RUN_TAG-compute" state="$SC_DIR/state-$RUN_TAG-compute.json"
+  [ -f "$state" ] || return 0
+  jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null || { [ -z "$(jq -r '.compute.ocid // empty' "$state")" ] && return 0; return 1; }
+  cd "$SC_DIR" || return 1
+  export NAME_PREFIX="$prefix"; unset STATE_FILE || true
+  "$SCAFFOLD_DIR/do/teardown.sh" >/dev/null 2>&1
+  cd "$REPO_DIR" || return 1
+}
+
+poll_uncertain_volume_cleanup() {
+  local compartment elapsed=0 last_active required_end hard_end poll_seconds=15 quiet_seconds=60 horizon_seconds=300 extension_seconds=120 inventory compute_inventory active
+  if [ "$BV4DB_CONTROLLER_TEST_MODE" = true ]; then
+    poll_seconds="${SPRINT30_CLEANUP_POLL_SECONDS:-15}"; quiet_seconds="${SPRINT30_CLEANUP_QUIET_SECONDS:-60}"; horizon_seconds="${SPRINT30_CLEANUP_HORIZON_SECONDS:-300}"; extension_seconds="${SPRINT30_CLEANUP_EXTENSION_SECONDS:-120}"
+  fi
+  for active in "$poll_seconds" "$quiet_seconds" "$horizon_seconds" "$extension_seconds"; do [[ "$active" =~ ^[1-9][0-9]*$ ]] || { echo "invalid failure-cleanup timing" >&2; return 1; }; done
+  [ "$quiet_seconds" -le "$horizon_seconds" ] && [ "$quiet_seconds" -le "$extension_seconds" ] || { echo "invalid failure-cleanup timing relationship" >&2; return 1; }
+  compartment=$(jq -r '.compartment.ocid' "$INFRA_STATE")
+  last_active="$horizon_seconds"
+  required_end=$((last_active+quiet_seconds)); hard_end=$((horizon_seconds+extension_seconds))
+  while [ "$elapsed" -le "$hard_end" ]; do
+    recover_incomplete_scaffold_states || return 1
+    if [ "$RECOVERY_OBSERVED_ACTIVE" = true ]; then last_active="$elapsed"; required_end=$((last_active+quiet_seconds)); fi
+    cleanup_volume_states_once || return 1
+    cleanup_compute_state_once || return 1
+    inventory=$(oci bv volume list --compartment-id "$compartment" --all) || return 1
+    compute_inventory=$(oci compute instance list --compartment-id "$compartment" --all) || return 1
+    active=$(jq -n --arg run_tag "$RUN_TAG" --argjson volumes "$inventory" --argjson compute "$compute_inventory" '([$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length) + ([$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length)')
+    if [ "$active" -gt 0 ]; then last_active="$elapsed"; required_end=$((last_active+quiet_seconds)); fi
+    if [ "$required_end" -gt "$hard_end" ]; then echo "resource appeared too late to prove the required quiet interval within the cleanup bound" >&2; return 1; fi
+    if [ "$elapsed" -ge "$horizon_seconds" ] && [ "$active" -eq 0 ] && [ "$elapsed" -ge "$required_end" ]; then return 0; fi
+    sleep "$poll_seconds"; elapsed=$((elapsed+poll_seconds))
+  done
+  echo "failure cleanup did not observe a stable zero-volume interval" >&2
+  return 1
+}
+
+cleanup_owned_resources() {
+  local role prefix state failed=0 compartment volume_inventory compute_inventory uncertain=false volume_query_ok=true compute_query_ok=true
+  [ "$OWNERSHIP_ACTIVE" = true ] || return 0
+  if [ -n "$TMPKEY" ] && [ -n "$PUBLIC_IP" ]; then
+    ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest restore" >/dev/null 2>&1 || true
+    ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest quiesce" >/dev/null 2>&1 || true
+  fi
+  for role in data1 data2 redo1 redo2 fra; do state="$SC_DIR/state-$RUN_TAG-$role.json"; if [ -f "$state" ] && ! jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then uncertain=true; fi; done
+  state="$SC_DIR/state-$RUN_TAG-compute.json"; if ! { [ -f "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; }; then uncertain=true; fi
+  if [ "$uncertain" = true ]; then poll_uncertain_volume_cleanup || failed=1
+  else recover_incomplete_scaffold_states || failed=1; cleanup_volume_states_once || failed=1; fi
+  cd "$SC_DIR" 2>/dev/null || return 1
   prefix="$RUN_TAG-compute"; state="$SC_DIR/state-$prefix.json"
   if [ "$failed" -eq 0 ] && [ -f "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; then
     export NAME_PREFIX="$prefix"; unset STATE_FILE || true
@@ -234,6 +319,11 @@ cleanup_owned_resources() {
     [ "$failed" -ne 0 ] || "$SCAFFOLD_DIR/do/teardown.sh" >/dev/null 2>&1 || failed=1
   fi
   cd "$REPO_DIR" || true
+  compartment=$(jq -r '.compartment.ocid' "$INFRA_STATE")
+  if ! volume_inventory=$(oci bv volume list --compartment-id "$compartment" --all); then volume_query_ok=false; volume_inventory='{"data":[]}'; failed=1; fi
+  if ! compute_inventory=$(oci compute instance list --compartment-id "$compartment" --all); then compute_query_ok=false; compute_inventory='{"data":[]}'; failed=1; fi
+  jq -n --arg run_tag "$RUN_TAG" --argjson volume_query_ok "$volume_query_ok" --argjson compute_query_ok "$compute_query_ok" --argjson volumes "$volume_inventory" --argjson compute "$compute_inventory" '{run_tag:$run_tag,inventory_queries_succeeded:($volume_query_ok and $compute_query_ok),active_volumes:[$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")],active_instances:[$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]}' > "$OUTPUT_DIR/failure_cleanup_inventory.json"
+  if ! jq -e '(.active_volumes|length)==0 and (.active_instances|length)==0' "$OUTPUT_DIR/failure_cleanup_inventory.json" >/dev/null; then failed=1; fi
   jq -n --argjson failed "$failed" '{failure_cleanup_attempted:true,cleanup_failed:($failed!=0)}' > "$OUTPUT_DIR/failure_cleanup.json" 2>/dev/null || true
   [ "$failed" -eq 0 ]
 }
@@ -692,6 +782,12 @@ live_execute() {
   RUN_COMPLETE=true
   log "COMPLETE: $OUTPUT_DIR"
 }
+
+if [ "${BASH_SOURCE[0]}" != "$0" ]; then
+  [ "${BV4DB_CONTROLLER_SOURCE_ONLY:-0}" = 1 ] || return 2
+  BV4DB_CONTROLLER_TEST_MODE=true
+  return 0
+fi
 
 if [ "$MODE" = execute ]; then
   bv_controller_lock_acquire "$OUTPUT_DIR" || die "could not acquire the Sprint 30 controller-lifetime lock"
