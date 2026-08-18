@@ -1,0 +1,335 @@
+[
+  {
+    "name": "apigw-apigw-fn-policy",
+    "statements": [
+      "ALLOW any-user to use functions-family in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha where ALL {request.principal.type= 'ApiGateway', request.resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha'}"
+    ]
+  },
+  {
+    "name": "CloudGuardPolicies",
+    "statements": [
+      "allow service cloudguard to manage cloudevents-rules in tenancy where target.rule.type='managed'",
+      "allow service cloudguard to read vaults in tenancy",
+      "allow service cloudguard to read keys in tenancy",
+      "allow service cloudguard to read compartments in tenancy",
+      "allow service cloudguard to read tenancies in tenancy",
+      "allow service cloudguard to read audit-events in tenancy",
+      "allow service cloudguard to read compute-management-family in tenancy",
+      "allow service cloudguard to read instance-family in tenancy",
+      "allow service cloudguard to read virtual-network-family in tenancy",
+      "allow service cloudguard to read volume-family in tenancy",
+      "allow service cloudguard to read database-family in tenancy",
+      "allow service cloudguard to read object-family in tenancy",
+      "allow service cloudguard to read load-balancers in tenancy",
+      "allow service cloudguard to read users in tenancy",
+      "allow service cloudguard to read groups in tenancy",
+      "allow service cloudguard to read policies in tenancy",
+      "allow service cloudguard to read dynamic-groups in tenancy",
+      "allow service cloudguard to read authentication-policies in tenancy",
+      "allow service cloudguard to use network-security-groups in tenancy",
+      "allow service cloudguard to read data-safe-family in tenancy",
+      "allow service cloudguard to read autonomous-database-family in tenancy",
+      "allow service cloudguard to read log-groups in tenancy",
+      "allow group Administrators to manage cloud-guard-family in tenancy",
+      "Allow any-user to { WLP_BOM_READ } in tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent'}",
+      "Allow any-user to { WLP_CONFIG_READ } in tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent'}",
+      "Endorse any-user to { WLP_LOG_CREATE } in any-tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent' }",
+      "Endorse any-user to { WLP_METRICS_CREATE } in any-tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent' }",
+      "Endorse any-user to { WLP_ADHOC_QUERY_READ } in any-tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent' }",
+      "Endorse any-user to { WLP_ADHOC_RESULTS_CREATE } in any-tenancy where all { request.principal.id = target.agent.id, request.principal.type = 'workloadprotectionagent'}"
+    ]
+  },
+  {
+    "name": "ConnectorPolicy_loggingAnalytics_2026-03-27T09.20.05.566Z",
+    "statements": [
+      "allow any-user to {LOG_ANALYTICS_LOG_GROUP_UPLOAD_LOGS}  in compartment id ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a where all {request.principal.type='serviceconnector',  target.loganalytics-log-group.id='ocid1.loganalyticsloggroup.oc1.eu-zurich-1.amaaaaaaknhfuyia7dui5uqbvkvk6kawmof7dcvtg774xjkop7l7aoyffvqa', request.principal.compartment.id='ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a'}"
+    ]
+  },
+  {
+    "name": "ConnectorPolicy_monitoring_2025-04-24T11.12.41.415Z",
+    "statements": [
+      "allow any-user to use metrics in compartment id ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a where all {request.principal.type='serviceconnector', target.metrics.namespace='test_API', request.principal.compartment.id='ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a'}"
+    ]
+  },
+  {
+    "name": "ConnectorPolicy_monitoring_2026-03-27T14.00.46.299Z",
+    "statements": [
+      "allow any-user to use metrics in compartment id ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a where all {request.principal.type='serviceconnector', target.metrics.namespace='toolchain_stauts_log', request.principal.compartment.id='ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a'}"
+    ]
+  },
+  {
+    "name": "console-iam-policy-20241216-1804",
+    "statements": [
+      "Allow service objectstorage-eu-zurich-1 to manage object-family in tenancy"
+    ]
+  },
+  {
+    "name": "devtst-bucket-policy",
+    "statements": [
+      "Allow group 'Default'/'OS Bucket Admin' to manage buckets in compartment resident-A:devtst",
+      "Allow group 'Default'/'OS Bucket Admin' to manage objects in compartment resident-A:devtst"
+    ]
+  },
+  {
+    "name": "eu-kgltest-pol-fn",
+    "statements": [
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to inspect compartments in tenancy",
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to inspect users in tenancy",
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to manage users in tenancy where any {request.permission = 'USER_UPDATE', request.permission = 'USER_AUTHTOKEN_SET', request.permission = 'USER_AUTHTOKEN_REMOVE', request.permission = 'USER_SECRETKEY_ADD', request.permission = 'USER_SECRETKEY_REMOVE', request.permission = 'USER_UIPASS_SET', request.permission = 'USER_APIKEY_ADD', request.permission = 'USER_APIKEY_REMOVE'}",
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to read repos in compartment resident-kgltest",
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to use secret-family in compartment resident-kgltest where target.secret.id='ocid1.vaultsecret.oc1.eu-zurich-1.amaaaaaaknhfuyiarcjppape6smybr3n52f3nkvhezfbd7e4judb6ved54mq'",
+      "Allow dynamic-group eu-kgltest-acc-dgr-fn to use ons-topics in tenancy"
+    ]
+  },
+  {
+    "name": "eventservice",
+    "statements": [
+      "allow service cloudEvents to use functions-family in tenancy"
+    ]
+  },
+  {
+    "name": "function-kgltest",
+    "statements": [
+      "Allow group 'Default'/'Administrators' to use cloud-shell in tenancy",
+      "Allow group 'Default'/'Administrators' to manage repos in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to read objectstorage-namespaces in tenancy",
+      "Allow group 'Default'/'Administrators' to manage logging-family in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to read metrics in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to manage functions-family in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to use virtual-network-family in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to use apm-domains in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to read vaults in compartment resident-kgltest",
+      "Allow group 'Default'/'Administrators' to use keys in compartment resident-kgltest",
+      "Allow service faas to use apm-domains in compartment resident-kgltest",
+      "Allow service faas to read repos in tenancy where request.operation='ListContainerImageSignatures'",
+      "Allow service faas to {KEY_READ} in compartment resident-kgltest where request.operation='GetKeyVersion'",
+      "Allow service faas to {KEY_VERIFY} in compartment resident-kgltest where request.operation='Verify'"
+    ]
+  },
+  {
+    "name": "gdir_policy",
+    "statements": [
+      "Allow any-user to read objects in tenancy where target.bucket.name = 'gdir_info'"
+    ]
+  },
+  {
+    "name": "gw-apigw-fn-policy",
+    "statements": [
+      "ALLOW any-user to use functions-family in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha where ALL {request.principal.type= 'ApiGateway', request.resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha'}"
+    ]
+  },
+  {
+    "name": "local-fn-dev-policy",
+    "statements": [
+      "Allow service faas to read repos in tenancy where target.repo.id = 'ocid1.containerrepo.oc1.eu-zurich-1.0.zr83uv6vz6na.aaaaaaaaq35ghqbm7uvwelgofbderzqgl7ibkpngqishmvfzdvydbv6x75wq'",
+      "Allow dynamic-group local-fn-dev-dynamic-group to use log-content in tenancy where target.loggroup.id = 'ocid1.loggroup.oc1.eu-zurich-1.amaaaaaaknhfuyiat6uzsown6iedvkrdwfr2hxxphwnjqj3ioczfrkb2zzta'"
+    ]
+  },
+  {
+    "name": "logging_analytics_automatic_service_policies",
+    "statements": [
+      "define tenancy sampledata as ocid1.tenancy.oc1..aaaaaaaabmtv54v5bg45j7zd2eeat4df2bwfqkmxe2yy6ecdfrc36wloe4ia",
+      "endorse group Administrators to read loganalytics-features-family in tenancy sampledata",
+      "endorse group Administrators to read loganalytics-resources-family in tenancy sampledata",
+      "endorse group Administrators to read compartments in tenancy sampledata",
+      "allow service loganalytics to READ loganalytics-features-family in tenancy",
+      "allow service loganalytics to READ compartments in tenancy"
+    ]
+  },
+  {
+    "name": "oci_kv_access",
+    "statements": [
+      "Allow any-user to manage objects in tenancy where all {target.bucket.name = 'kv_store', target.object.name != 'node*'}"
+    ]
+  },
+  {
+    "name": "pcy-fn-csk",
+    "statements": [
+      "Allow any-user to manage all-resources in tenancy where ALL { request.principal.type = 'fnfunc' }"
+    ]
+  },
+  {
+    "name": "pcy_osmh",
+    "statements": [
+      "Allow any-user to {OSMH_MANAGED_INSTANCE_ADD_PROFILE, OSMH_MANAGED_INSTANCE_INSPECT, OSMH_MANAGED_INSTANCE_READ, OSMH_MANAGED_INSTANCE_ACCESS} in tenancy where request.principal.id = target.managed-instance.id",
+      "Allow any-user to {OSMH_PROFILE_READ, OSMH_PROFILE_INSPECT} in tenancy where request.principal.compartment.tag.MainTags.osmh-grp = '*'",
+      "Allow any-user to use osmh-managed-instances in tenancy where request.principal.compartment.tag.MainTags.osmh-grp = '*'",
+      "Allow any-user to use metrics in tenancy where target.metrics.namespace = 'oracle_appmgmt'",
+      "Allow any-user to {MGMT_AGENT_DEPLOY_PLUGIN_CREATE, MGMT_AGENT_INSPECT, MGMT_AGENT_READ} in tenancy",
+      "Allow any-user to {APPMGMT_MONITORED_INSTANCE_READ, APPMGMT_MONITORED_INSTANCE_ACTIVATE} in tenancy where request.instance.id = target.monitored-instance.id",
+      "Allow any-user to {INSTANCE_READ, INSTANCE_UPDATE} in tenancy where request.instance.id = target.instance.id",
+      "Allow any-user to {APPMGMT_WORK_REQUEST_READ, INSTANCE_AGENT_PLUGIN_INSPECT} in tenancy"
+    ]
+  },
+  {
+    "name": "pol-avq3-glb-reader",
+    "statements": [
+      "Allow any-user to manage buckets in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage object-family in tenancy  where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage network-security-groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage vcns in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage virtual-network-family in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage vaults in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage keys in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage secrets in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage instance-images in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "allow any-user to inspect all-resources in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to use key-delegates in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage instance-family  in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage domains in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea', target.domain.name='Default', request.permission!='USER_DELETE', request.permission!='DOMAIN_DELETE'}",
+      "Allow any-user to manage policies in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'}",
+      "allow any-user to manage compartments in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea', request.permission!='COMPARTMENT_DELETE'}",
+      "allow any-user to manage dynamic-groups  in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea', target.domain.name='Default',request.permission!='DYNAMIC_GROUP_DELETE'}",
+      "allow any-user to manage log-groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to read secret-bundles in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'",
+      "Allow any-user to manage users in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea', request.permission!='DOMAIN_DELETE'}",
+      "allow any-user to manage compartments in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'}",
+      "Allow any-user to manage groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaalu3m6kb3cn6koeyzibd4zditienbcdc6b3fckgblmazzlnmbmyea'"
+    ]
+  },
+  {
+    "name": "pol-avq3-runner-creator",
+    "statements": [
+      "Allow any-user to manage buckets in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage object-family in tenancy  where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage network-security-groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage vcns in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage virtual-network-family in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage vaults in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage keys in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage secrets in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage instance-images in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to inspect all-resources in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to use key-delegates in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage instance-family  in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage domains in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq', target.domain.name='Default', request.permission!='USER_DELETE', request.permission!='DOMAIN_DELETE'}",
+      "Allow any-user to manage policies in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'}",
+      "allow any-user to manage compartments in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'}",
+      "allow any-user to manage dynamic-groups  in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq', target.domain.name='Default',request.permission!='DYNAMIC_GROUP_DELETE'}",
+      "allow any-user to manage log-groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to read secret-bundles in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "Allow any-user to manage users in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq', request.permission!='DOMAIN_DELETE'}",
+      "allow any-user to manage compartments in tenancy where all {request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'}",
+      "Allow any-user to manage groups in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage vcns in compartment avq_nwdeplsvc:avq_nwsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage subnets in compartment avq_nwdeplsvc:avq_nwsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage network-security-groups in compartment avq_nwdeplsvc:avq_nwsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage log-groups in compartment avq_nwdeplsvc:avq_nwsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage vcns in compartment avq_automation:avq_github where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage subnets in compartment avq_automation:avq_github where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage network-security-groups in compartment avq_automation:avq_github where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage log-groups in compartment avq_automation:avq_github where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage vcns in compartment avq_automation:avq_terrateam where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage subnets in compartment avq_automation:avq_terrateam where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage network-security-groups in compartment avq_automation:avq_terrateam where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage log-groups in compartment avq_automation:avq_terrateam where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage vcns in compartment avq_automation where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage subnets in compartment avq_automation where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage network-security-groups in compartment avq_automation where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage log-groups in compartment avq_automation where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage vcns in compartment avq_nwdeplsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage subnets in compartment avq_nwdeplsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage network-security-groups in compartment avq_nwdeplsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage log-groups in compartment avq_nwdeplsvc where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow any-user to manage tag-namespaces in tenancy where request.user.id='ocid1.user.oc1..aaaaaaaa5sg6x7sbplm75glainxnda4zt3d4twtlwtffygwbtt3aunpcyneq'",
+      "allow service objectstorage-eu-zurich-1 to use keys in compartment avq_automation",
+      "allow service objectstorage-eu-frankfurt-1 to use keys in compartment avq_automation"
+    ]
+  },
+  {
+    "name": "pol-avq3-srv-main",
+    "statements": [
+      "Allow any-user to use cloud-shell-public-network in tenancy where request.user.name = /*@avaloq.com/",
+      "Allow any-user to use cloud-shell in tenancy where request.user.name = /*@avaloq.com/",
+      "Allow any-user to read cloud-guard-family in tenancy where request.user.name = /*@avaloq.com/",
+      "Allow service oke to manage volume-family in tenancy",
+      "Allow service oke to use key-delegates in tenancy",
+      "Allow service blockstorage to use keys in tenancy",
+      "Allow any-user to use keys in tenancy where request.principal.type = 'cluster'",
+      "Allow service blockstorage, compute, oke to use keys in tenancy",
+      "Allow service blockstorage, compute, oke to use key-delegates in tenancy",
+      "Allow service compute, blockstorage, compute_management to use key-family in tenancy",
+      "Allow service keymanagementservice to manage vaults in tenancy"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410124141-fn-rp-os-policy",
+    "statements": [
+      "ALLOW dynamic-group id ocid1.dynamicgroup.oc1..aaaaaaaat7hd7z2rhe2zogny46hp2ezul5fszs5xilvovhyi67wmado7udkq to manage objects in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410124735-apigw-fn-policy",
+    "statements": [
+      "ALLOW any-user to use functions-family in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha where ALL {request.principal.type= 'ApiGateway', request.resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha'}"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410124735-fn-rp-os-policy",
+    "statements": [
+      "ALLOW dynamic-group id ocid1.dynamicgroup.oc1..aaaaaaaa732vwrf5b77asncyqbej22a2xy3zvatbbk5cpigffsol3hvaanxq to manage objects in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410125056-apigw-fn-policy",
+    "statements": [
+      "ALLOW any-user to use functions-family in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha where ALL {request.principal.type= 'ApiGateway', request.resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha'}"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410125056-fn-rp-os-policy",
+    "statements": [
+      "ALLOW dynamic-group id ocid1.dynamicgroup.oc1..aaaaaaaafybfhtajjb3ka5egq3mft4wdilq4nhohynymqxywoayzqgxqxmia to manage objects in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410125446-apigw-fn-policy",
+    "statements": [
+      "ALLOW any-user to use functions-family in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha where ALL {request.principal.type= 'ApiGateway', request.resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha'}"
+    ]
+  },
+  {
+    "name": "sli-apigw-router-20260410125446-fn-rp-os-policy",
+    "statements": [
+      "ALLOW dynamic-group id ocid1.dynamicgroup.oc1..aaaaaaaal2bgrbnsuq54dn733eutzyceovaknbz7iebd64clcfllfnnclxrq to manage objects in compartment id ocid1.compartment.oc1..aaaaaaaaxsyob4rojty3iqy64tkveltkqbmaos2ngb2ncsvvvexs42bxxqha"
+    ]
+  },
+  {
+    "name": "sprint5-fss-mek-fss-kms-policy",
+    "statements": [
+      "allow dynamic-group sprint5-fss-mek-filesystems-dg to use keys in compartment id ocid1.compartment.oc1..aaaaaaaarg3czmfmagxnchqiaz7cptm4ngxyrlzevngts7lbpyu2pijogx2q",
+      "allow service FssOc1Prod to use keys in compartment id ocid1.compartment.oc1..aaaaaaaarg3czmfmagxnchqiaz7cptm4ngxyrlzevngts7lbpyu2pijogx2q"
+    ]
+  },
+  {
+    "name": "sss",
+    "statements": [
+      "Allow group 'Default'/'resident-A_administrators' to inspect users in compartment resident-A",
+      "Allow group 'Default'/'resident-A_administrators' to inspect groups in compartment resident-A",
+      "Allow group 'Default'/'resident-A_administrators' to use users in compartment resident-A where target.group.name != 'Administrators'",
+      "Allow group 'Default'/'resident-A_administrators' to use groups in compartment resident-A where target.group.name != 'Administrators'"
+    ]
+  },
+  {
+    "name": "tags",
+    "statements": [
+      "Allow group 'Default'/'resident-A_administrators' to inspect tag-namespaces in tenancy"
+    ]
+  },
+  {
+    "name": "Tenant Admin Policy",
+    "statements": [
+      "ALLOW GROUP Administrators to manage all-resources IN TENANCY"
+    ]
+  },
+  {
+    "name": "VNPA-Tenancy-Policy",
+    "statements": [
+      "allow any-user to inspect compartments in tenancy where all { request.principal.type = 'vnpa-service' }",
+      "allow any-user to read instances in tenancy where all { request.principal.type = 'vnpa-service' }",
+      "allow any-user to read virtual-network-family in tenancy where all { request.principal.type = 'vnpa-service' }",
+      "allow any-user to read load-balancers in tenancy where all { request.principal.type = 'vnpa-service' }",
+      "allow any-user to read network-security-group in tenancy where all { request.principal.type = 'vnpa-service' }"
+    ]
+  }
+]

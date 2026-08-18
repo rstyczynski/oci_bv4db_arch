@@ -1,0 +1,13 @@
+oci_identity_dynamic_group.run_command: Modifying... [id=ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq]
+oci_identity_dynamic_group.run_command: Modifications complete after 0s [id=ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq]
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic7or7b4ui3g7473zcvi7assrzc5cnbybnfwyowedaob2q"
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicekhkwrsxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a"
+run_command_dynamic_group_id = "ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq"
+run_command_policy_id = "ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"

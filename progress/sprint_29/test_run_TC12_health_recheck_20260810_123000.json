@@ -1,0 +1,19 @@
+{
+  "data": {
+    "content": {
+      "exit-code": 0,
+      "message": "{\"execExitCode\":0,\"runtime\":\"18ms\"}",
+      "output-type": "TEXT",
+      "text": "Mon Aug 10 10:08:21 UTC 2026\nTARGET        SOURCE   FSTYPE OPTIONS\n/mnt/sprint29 /dev/sdb xfs    rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota\n",
+      "text-sha256": ""
+    },
+    "delivery-state": "ACKED",
+    "display-name": "s29-agent-health-final",
+    "instance-agent-command-id": "ocid1.instanceagentcommand.oc1.eu-zurich-1.amaaaaaaknhfuyiaevjhzym5kgwftx3gkpnzqbqfb3cuqxgrcjqo6rwb7ska",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva",
+    "lifecycle-state": "SUCCEEDED",
+    "sequence-number": 6587744,
+    "time-created": "2026-08-10T10:07:01.805000+00:00",
+    "time-updated": "2026-08-10T10:08:28.603000+00:00"
+  }
+}

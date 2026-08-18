@@ -1,0 +1,28 @@
+oci_identity_dynamic_group.run_command: Refreshing state... [id=ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq]
+oci_core_volume.transition: Refreshing state... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_identity_policy.run_command: Refreshing state... [id=ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a]
+oci_core_instance.transition: Refreshing state... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicekhkwrsxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a]
+oci_core_volume_attachment.transition: Refreshing state... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic7or7b4ui3g7473zcvi7assrzc5cnbybnfwyowedaob2q]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # oci_identity_dynamic_group.run_command will be updated in-place
+  ~ resource "oci_identity_dynamic_group" "run_command" {
+        id             = "ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq"
+      ~ matching_rule  = "ALL {resource.type = 'instance', resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a'}" -> "instance.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a'"
+        name           = "bv4db-s29-run-command-dg"
+        # (6 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: /private/tmp/sprint29-dg-rule.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "/private/tmp/sprint29-dg-rule.tfplan"

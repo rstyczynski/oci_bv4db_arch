@@ -1,0 +1,4 @@
+# Single-path iSCSI FIO tuning domain.
+# The no-argument dispatcher validates completed Sprint 30 evidence in B3
+# without provisioning or mutating OCI or guest state.
+integration:test_bv4db_iscsi_tuning.sh

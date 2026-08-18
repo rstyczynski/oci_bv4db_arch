@@ -1,0 +1,774 @@
+=== Sprint 27 non-UHP to UHP VPU update evidence ===
+timestamp_utc=20260810_094415
+workdir=
+region=eu-zurich-1
+oci_profile=avq3
+compartment_id=ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a
+subnet_id=ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka
+availability_domain=jJRq:EU-ZURICH-1-AD-1
+image_id=ocid1.image.oc1.eu-zurich-1.aaaaaaaagjq6ytiuncfd3d4wckvmpe6o3of3kyrgbsecrawri2cneeld5ewa
+
+=== Test matrix ===
+TC1: 20->100 without detach, expected negative for multipath
+TC2: 20->100 with detach, expected positive for OCI multipath and consistent device path
+TC3: detach/update/reattach without Linux release, expected negative/hazardous on disposable data
+TC4: detach/update/reattach with Linux release, expected positive for checksum, OCI multipath, and consistent device path
+selected_cases=tc3
+
+=== TC3: detach while Linux process writes - expected negative/hazardous ===
+=== tc3-baseline-non-uhp: terraform outputs ===
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja"
+instance_public_ip = "140.238.211.19"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+
+=== tc3-baseline-non-uhp: attachment state json ===
+{
+  "attachment_type": "iscsi",
+  "availability_domain": "jJRq:EU-ZURICH-1-AD-1",
+  "chap_secret": null,
+  "chap_username": null,
+  "compartment_id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+  "device": "/dev/oracleoci/oraclevdb",
+  "display_name": "bv4db-s27-tc3-linux-unsafe-attachment",
+  "encryption_in_transit_type": "NONE",
+  "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq",
+  "instance_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja",
+  "ipv4": "169.254.2.2",
+  "ipv6": "fd00:c1::a9fe:202",
+  "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+  "is_agent_auto_iscsi_login_enabled": null,
+  "is_multipath": null,
+  "is_pv_encryption_in_transit_enabled": false,
+  "is_read_only": false,
+  "is_shareable": false,
+  "is_volume_created_during_launch": false,
+  "iscsi_login_state": "UNKNOWN",
+  "multipath_devices": [],
+  "port": 3260,
+  "state": "ATTACHED",
+  "time_created": "2026-08-10 09:45:03.279 +0000 UTC",
+  "timeouts": null,
+  "use_chap": null,
+  "volume_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+}
+
+=== tc3-baseline-non-uhp: OCI volume get ===
+{
+  "data": {
+    "auto-tuned-vpus-per-gb": null,
+    "autotune-policies": [],
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "block-volume-replicas": null,
+    "cluster-placement-group-id": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "defined-tags": {
+      "Oracle-Tags": {
+        "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+        "CreatedOn": "2026-08-10T09:44:28.597Z"
+      }
+    },
+    "display-name": "bv4db-s27-tc3-linux-unsafe-volume",
+    "freeform-tags": {},
+    "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva",
+    "is-auto-tune-enabled": false,
+    "is-hydrated": true,
+    "is-reservations-enabled": false,
+    "kms-key-id": null,
+    "lifecycle-state": "AVAILABLE",
+    "size-in-gbs": 1500,
+    "size-in-mbs": 1536000,
+    "source-details": null,
+    "system-tags": {},
+    "time-created": "2026-08-10T09:44:28.604000+00:00",
+    "volume-group-id": null,
+    "vpus-per-gb": 20
+  },
+  "etag": "7ad534df0443593e32957e8d0ab30640"
+}
+
+=== tc3-baseline-non-uhp: OCI attachment get ===
+{
+  "data": {
+    "attachment-type": "iscsi",
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "chap-secret": null,
+    "chap-username": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "device": "/dev/oracleoci/oraclevdb",
+    "display-name": "bv4db-s27-tc3-linux-unsafe-attachment",
+    "encryption-in-transit-type": "NONE",
+    "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja",
+    "ipv4": "169.254.2.2",
+    "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+    "is-agent-auto-iscsi-login-enabled": null,
+    "is-multipath": null,
+    "is-pv-encryption-in-transit-enabled": false,
+    "is-read-only": false,
+    "is-shareable": false,
+    "is-volume-created-during-launch": false,
+    "iscsi-login-state": "UNKNOWN",
+    "lifecycle-state": "ATTACHED",
+    "multipath-devices": null,
+    "port": 3260,
+    "time-created": "2026-08-10T09:45:03.279000+00:00",
+    "volume-id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+  },
+  "etag": "98e1f07ae3b2b97a2d251e0df8ae66d26c36ed1b947b10cec4f0fe1979f7ff7c"
+}
+
+=== TC3 Linux setup: mounted filesystem and active writer ===
+intent=prove unsafe detach can cause application I/O errors or disposable data inconsistency
+guardrail=disposable volume and disposable test data only
+linux_release_procedure=false
+steps=manual iscsi register/login,mkfs,mount,write checksum data,start writer,detach without umount/logout
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+iscsi_connect_start=true iqn=iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f portal=169.254.2.2:3260
+New iSCSI node [tcp:[hw=,ip=,net_if=,iscsi_if=default] 169.254.2.2,3260,-1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f] added
+Logging in to [iface: default, target: iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f, portal: 169.254.2.2,3260] (multiple)
+Login to [iface: default, target: iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f, portal: 169.254.2.2,3260] successful.
+iscsi_connect_complete=true
+tcp: [1] 169.254.2.2:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tc3_baseline_consistent_path_wait_start=true path=/dev/oracleoci/oraclevdb max_polls=4 sleep_seconds=15
+tc3_baseline_consistent_path_ready=false path=/dev/oracleoci/oraclevdb poll=1
+tc3_baseline_consistent_path_ready=true path=/dev/oracleoci/oraclevdb real=/dev/sdb poll=2
+lrwxrwxrwx. 1 root root 6 Aug 10 09:47 /dev/oracleoci/oraclevdb -> ../sdb
+--- tc3_baseline: /dev/oracleoci links after consistent path wait ---
+total 0
+lrwxrwxrwx. 1 root root 6 Aug 10 09:45 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 6 Aug 10 09:47 oraclevdb -> ../sdb
+tc3_baseline_device=/dev/oracleoci/oraclevdb
+/dev/oracleoci/oraclevdb: UUID="74d8e1de-6b6f-4ff8-b0e7-50648a6ca463" TYPE="ext4" 
+85ff315c5e268c83e39ae96c294bc1eda8b4277bb0c88f2faf5bacc3c2bcd6ea  /mnt/s27unsafe/stable.bin
+15428
+linux_unsafe_setup=mounted_writer_active
+writer_pid_file=/tmp/s27unsafe-writer.pid
+writer_stdout_file=/tmp/s27unsafe-writer.stdout
+writer_stderr_file=/tmp/s27unsafe-writer.stderr
+TARGET         SOURCE   FSTYPE OPTIONS
+/mnt/s27unsafe /dev/sdb ext4   rw,relatime,seclabel,stripe=256
+=== TC3 action: OCI force detach while writer is active ===
+expected_failure_modes=writer_io_error,busy_or_forced_detach,stale_device,fs_inconsistency,checksum_mismatch
+data_loss_assertion=not_guaranteed; this test captures unsafe exposure and verifies disposable data outcome
+Action completed. Waiting until the resource has entered state: ('DETACHED',)
+{
+  "opc-work-request-id": "ocid1.coreservicesworkrequest.oc1.eu-zurich-1.ab5heljrfzjjb2ikcknfdsh3l2gzszfr2cmmnwdhnklxzihsr4b62yi2elta"
+}
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+--- TC3 post-detach Linux process status ---
+writer_pid=15428
+UID        PID  PPID  C STIME TTY          TIME CMD
+opc      15428     1  0 09:47 ?        00:00:00 bash ./run_with_optional_helpers.sh tc3-iscsi.env baseline_iscsi_helpers.sh tc3_setup_unsafe_writer.sh
+--- TC3 post-detach kernel log tail ---
+[    7.061799] Console: switching to colour dummy device 80x25
+[    7.061843] bochs-drm 0000:00:01.0: vgaarb: deactivate vga console
+[    7.062244] [drm] Found bochs VGA, ID 0xb0c5.
+[    7.062246] [drm] Framebuffer size 16384 kB @ 0xc0000000, mmio @ 0xc824c000.
+[    7.062347] [TTM] Zone  kernel: Available graphics memory: 32652252 KiB
+[    7.062349] [TTM] Zone   dma32: Available graphics memory: 2097152 KiB
+[    7.062350] [TTM] Initializing pool allocator
+[    7.062359] [TTM] Initializing DMA pool allocator
+[    7.063282] [drm] Found EDID data blob.
+[    7.063321] kvm: Nested Virtualization enabled
+[    7.063336] kvm: Nested Paging enabled
+[    7.063456] [drm] Initialized bochs-drm 1.0.0 20130925 for 0000:00:01.0 on minor 0
+[    7.064262] fbcon: bochs-drmdrmfb (fb0) is primary device
+[    7.462518] Console: switching to colour frame buffer device 160x50
+[    7.463257] bochs-drm 0000:00:01.0: fb0: bochs-drmdrmfb frame buffer device
+[    7.464580] random: systemd: uninitialized urandom read (16 bytes read)
+[    7.678709] Adding 8388604k swap on /dev/sda2.  Priority:-2 extents:1 across:8388604k FS
+[    7.847208] fuse: init (API version 7.31)
+[    7.919850] random: crng init done
+[    7.919852] random: 2936 urandom warning(s) missed due to ratelimiting
+[  140.709437] SELinux:  Permission watch in class filesystem not defined in policy.
+[  140.710241] SELinux:  Permission watch in class file not defined in policy.
+[  140.710887] SELinux:  Permission watch_mount in class file not defined in policy.
+[  140.711660] SELinux:  Permission watch_sb in class file not defined in policy.
+[  140.712423] SELinux:  Permission watch_with_perm in class file not defined in policy.
+[  140.713253] SELinux:  Permission watch_reads in class file not defined in policy.
+[  140.713997] SELinux:  Permission watch in class dir not defined in policy.
+[  140.714729] SELinux:  Permission watch_mount in class dir not defined in policy.
+[  140.715521] SELinux:  Permission watch_sb in class dir not defined in policy.
+[  140.716281] SELinux:  Permission watch_with_perm in class dir not defined in policy.
+[  140.717102] SELinux:  Permission watch_reads in class dir not defined in policy.
+[  140.717885] SELinux:  Permission watch in class lnk_file not defined in policy.
+[  140.718519] SELinux:  Permission watch_mount in class lnk_file not defined in policy.
+[  140.719217] SELinux:  Permission watch_sb in class lnk_file not defined in policy.
+[  140.720018] SELinux:  Permission watch_with_perm in class lnk_file not defined in policy.
+[  140.720888] SELinux:  Permission watch_reads in class lnk_file not defined in policy.
+[  140.721707] SELinux:  Permission watch in class chr_file not defined in policy.
+[  140.722459] SELinux:  Permission watch_mount in class chr_file not defined in policy.
+[  140.723292] SELinux:  Permission watch_sb in class chr_file not defined in policy.
+[  140.724073] SELinux:  Permission watch_with_perm in class chr_file not defined in policy.
+[  140.724953] SELinux:  Permission watch_reads in class chr_file not defined in policy.
+[  140.725722] SELinux:  Permission watch in class blk_file not defined in policy.
+[  140.726513] SELinux:  Permission watch_mount in class blk_file not defined in policy.
+[  140.727248] SELinux:  Permission watch_sb in class blk_file not defined in policy.
+[  140.728032] SELinux:  Permission watch_with_perm in class blk_file not defined in policy.
+[  140.728896] SELinux:  Permission watch_reads in class blk_file not defined in policy.
+[  140.729711] SELinux:  Permission watch in class sock_file not defined in policy.
+[  140.730496] SELinux:  Permission watch_mount in class sock_file not defined in policy.
+[  140.731325] SELinux:  Permission watch_sb in class sock_file not defined in policy.
+[  140.732065] SELinux:  Permission watch_with_perm in class sock_file not defined in policy.
+[  140.732959] SELinux:  Permission watch_reads in class sock_file not defined in policy.
+[  140.733710] SELinux:  Permission watch in class fifo_file not defined in policy.
+[  140.734422] SELinux:  Permission watch_mount in class fifo_file not defined in policy.
+[  140.735223] SELinux:  Permission watch_sb in class fifo_file not defined in policy.
+[  140.735999] SELinux:  Permission watch_with_perm in class fifo_file not defined in policy.
+[  140.736845] SELinux:  Permission watch_reads in class fifo_file not defined in policy.
+[  140.737807] SELinux:  Class xdp_socket not defined in policy.
+[  140.738407] SELinux: the above unknown classes and permissions will be allowed
+[  140.739380] SELinux:  Converting 1340 SID table entries...
+[  141.837538] SELinux:  policy capability network_peer_controls=1
+[  141.838143] SELinux:  policy capability open_perms=1
+[  141.838575] SELinux:  policy capability extended_socket_class=1
+[  141.839115] SELinux:  policy capability always_check_network=0
+[  141.839621] SELinux:  policy capability cgroup_seclabel=1
+[  141.840092] SELinux:  policy capability nnp_nosuid_transition=1
+[  145.885621] scsi host7: scsi_eh_7: sleeping
+[  145.885774] scsi host7: iSCSI Initiator over TCP/IP
+[  146.014569] scsi 7:0:0:0: RAID              IET      Controller       0001 PQ: 0 ANSI: 5
+[  146.016683] scsi 7:0:0:0: Attached scsi generic sg1 type 12
+[  146.018296] scsi 7:0:0:2: Direct-Access     ORACLE   BlockVolume      1.0  PQ: 0 ANSI: 7
+[  146.019668] sd 7:0:0:2: Attached scsi generic sg2 type 0
+[  146.020491] sd 7:0:0:2: [sdb] 3145728000 512-byte logical blocks: (1.61 TB/1.46 TiB)
+[  146.021491] sd 7:0:0:2: [sdb] 4096-byte physical blocks
+[  146.022345] sd 7:0:0:2: [sdb] Write Protect is off
+[  146.023103] sd 7:0:0:2: [sdb] Mode Sense: 2b 00 10 08
+[  146.023316] sd 7:0:0:2: [sdb] Write cache: disabled, read cache: enabled, supports DPO and FUA
+[  146.024633] sd 7:0:0:2: [sdb] Optimal transfer size 1048576 bytes
+[  146.202174] sd 7:0:0:2: [sdb] Attached SCSI disk
+[  162.702826] EXT4-fs (sdb): mounted filesystem with ordered data mode. Opts: (null)
+[  178.144589]  connection1:0: detected conn error (1020)
+--- TC3 post-detach mount state ---
+TARGET         SOURCE   FSTYPE OPTIONS
+/mnt/s27unsafe /dev/sdb ext4   rw,relatime,seclabel,stripe=256
+--- TC3 post-detach writer stderr from safe path ---
+tc3_stale_mount_direct_reads=skipped
+tc3_stale_mount_reason=after force-detach, stat/read/checksum operations under the mounted detached filesystem can block indefinitely; this is the unsafe behavior being isolated
+--- TC3 post-detach lazy unmount attempt ---
+iscsi_disconnect_start=true iqn=iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f portal=169.254.2.2:3260
+Logging out of session [sid: 1, target: iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f, portal: 169.254.2.2,3260]
+Logout of [sid: 1, target: iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f, portal: 169.254.2.2,3260] successful.
+iscsiadm: No active sessions.
+iscsi_disconnect_complete=true
+linux_unsafe_post_detach_collected=true
+{
+  "data": {
+    "auto-tuned-vpus-per-gb": null,
+    "autotune-policies": [],
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "block-volume-replicas": null,
+    "cluster-placement-group-id": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "defined-tags": {
+      "Oracle-Tags": {
+        "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+        "CreatedOn": "2026-08-10T09:44:28.597Z"
+      }
+    },
+    "display-name": "bv4db-s27-tc3-linux-unsafe-volume",
+    "freeform-tags": {},
+    "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva",
+    "is-auto-tune-enabled": false,
+    "is-hydrated": true,
+    "is-reservations-enabled": false,
+    "kms-key-id": null,
+    "lifecycle-state": "PROVISIONING",
+    "size-in-gbs": 1500,
+    "size-in-mbs": 1536000,
+    "source-details": null,
+    "system-tags": {},
+    "time-created": "2026-08-10T09:44:28.604000+00:00",
+    "volume-group-id": null,
+    "vpus-per-gb": 100
+  },
+  "etag": "fd905b1d7cefc65ed5a7ffbe9f05769f"
+}
+volume poll lifecycle_state=PROVISIONING
+volume poll lifecycle_state=AVAILABLE
+=== tc3-after-unsafe-reattach-vpu-100: terraform outputs ===
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja"
+instance_public_ip = "140.238.211.19"
+iscsi_login_state = "UNKNOWN"
+multipath_devices = tolist([])
+volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+
+=== tc3-after-unsafe-reattach-vpu-100: attachment state json ===
+{
+  "attachment_type": "iscsi",
+  "availability_domain": "jJRq:EU-ZURICH-1-AD-1",
+  "chap_secret": null,
+  "chap_username": null,
+  "compartment_id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+  "device": "/dev/oracleoci/oraclevdb",
+  "display_name": "bv4db-s27-tc3-linux-unsafe-attachment",
+  "encryption_in_transit_type": "NONE",
+  "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq",
+  "instance_id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja",
+  "ipv4": "169.254.2.2",
+  "ipv6": "fd00:c1::a9fe:202",
+  "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+  "is_agent_auto_iscsi_login_enabled": null,
+  "is_multipath": null,
+  "is_pv_encryption_in_transit_enabled": false,
+  "is_read_only": false,
+  "is_shareable": false,
+  "is_volume_created_during_launch": false,
+  "iscsi_login_state": "UNKNOWN",
+  "multipath_devices": [],
+  "port": 3260,
+  "state": "ATTACHED",
+  "time_created": "2026-08-10 09:45:03.279 +0000 UTC",
+  "timeouts": null,
+  "use_chap": null,
+  "volume_id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+}
+
+=== tc3-after-unsafe-reattach-vpu-100: OCI volume get ===
+{
+  "data": {
+    "auto-tuned-vpus-per-gb": null,
+    "autotune-policies": [],
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "block-volume-replicas": null,
+    "cluster-placement-group-id": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "defined-tags": {
+      "Oracle-Tags": {
+        "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+        "CreatedOn": "2026-08-10T09:44:28.597Z"
+      }
+    },
+    "display-name": "bv4db-s27-tc3-linux-unsafe-volume",
+    "freeform-tags": {},
+    "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva",
+    "is-auto-tune-enabled": false,
+    "is-hydrated": true,
+    "is-reservations-enabled": false,
+    "kms-key-id": null,
+    "lifecycle-state": "AVAILABLE",
+    "size-in-gbs": 1500,
+    "size-in-mbs": 1536000,
+    "source-details": null,
+    "system-tags": {},
+    "time-created": "2026-08-10T09:44:28.604000+00:00",
+    "volume-group-id": null,
+    "vpus-per-gb": 100
+  },
+  "etag": "a4361d0a3b410df51ced480d6789ab72"
+}
+
+=== tc3-after-unsafe-reattach-vpu-100: OCI attachment get ===
+{
+  "data": {
+    "attachment-type": "iscsi",
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "chap-secret": null,
+    "chap-username": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "device": "/dev/oracleoci/oraclevdb",
+    "display-name": "bv4db-s27-tc3-reattachment",
+    "encryption-in-transit-type": "NONE",
+    "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoy6jzhgivo7zdqzmimeqnnv7eqif5hsnxbn47y337whq",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja",
+    "ipv4": "169.254.2.3",
+    "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+    "is-agent-auto-iscsi-login-enabled": true,
+    "is-multipath": true,
+    "is-pv-encryption-in-transit-enabled": false,
+    "is-read-only": false,
+    "is-shareable": false,
+    "is-volume-created-during-launch": false,
+    "iscsi-login-state": "UNKNOWN",
+    "lifecycle-state": "ATTACHED",
+    "multipath-devices": [
+      {
+        "ipv4": "169.254.2.4",
+        "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.5",
+        "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.6",
+        "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+        "port": 3260
+      },
+      {
+        "ipv4": "169.254.2.7",
+        "iqn": "iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f",
+        "port": 3260
+      }
+    ],
+    "port": 3260,
+    "time-created": "2026-08-10T09:48:45.323000+00:00",
+    "volume-id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva"
+  },
+  "etag": "1562678fb8e561b8b798460ab18112d24619995d4266b1dc221f9826c973f32b"
+}
+
+=== tc3-after-unsafe-reattach-vpu-100: passive wait for OCI agent iSCSI/multipath login ===
+owner=Oracle Cloud Agent Block Volume Management plugin
+policy=diagnostics_only_no_mpathconf_no_modprobe_no_service_mutation
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+--- agent multipath wait poll=1/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=false path=/dev/oracleoci/oraclevdb
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root 6 Aug 10 09:45 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root 7 Aug 10 09:45 oraclevda3 -> ../sda3
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Aug 10 09:45 control
+lrwxrwxrwx. 1 root root       7 Aug 10 09:49 mpatha -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [6] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (360ab0122f60348b6bafafce5ac10fb3d) dm-0 ORACLE  ,BlockVolume     
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+6:0:1:1  sda 8:0   1   undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXXXX. 59/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXXXX. 59/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXXXX. 59/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXXXX. 59/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXXXX. 59/60
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-0
+--- agent multipath wait poll=2/8 ---
+consistent_path_probe=/dev/oracleoci/oraclevdb
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-0
+lrwxrwxrwx. 1 root root 18 Aug 10 09:49 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Aug 10 09:45 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Aug 10 09:49 oraclevdb -> /dev/mapper/mpatha
+--- agent multipath wait: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Aug 10 09:45 control
+lrwxrwxrwx. 1 root root       7 Aug 10 09:49 mpatha -> ../dm-0
+--- agent multipath wait: iscsi sessions ---
+tcp: [2] 169.254.2.3:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [3] 169.254.2.4:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [4] 169.254.2.5:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [5] 169.254.2.6:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+tcp: [6] 169.254.2.7:3260,1 iqn.2015-12.com.oracleiaas:13772ce8-dd8b-4b36-b2f4-b86a6f0d050f (non-flash)
+--- agent multipath wait: multipath -ll ---
+mpatha (360ab0122f60348b6bafafce5ac10fb3d) dm-0 ORACLE  ,BlockVolume     
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- agent multipath wait: multipathd paths ---
+hcil     dev dev_t pri dm_st  chk_st dev_st  next_check      
+6:0:1:1  sda 8:0   1   undef  undef  unknown orphan          
+7:0:0:2  sdb 8:16  1   active ready  running XXXXXXX... 44/60
+8:0:0:2  sdc 8:32  1   active ready  running XXXXXXX... 44/60
+9:0:0:2  sdd 8:48  1   active ready  running XXXXXXX... 44/60
+10:0:0:2 sde 8:64  1   active ready  running XXXXXXX... 44/60
+11:0:0:2 sdf 8:80  1   active ready  running XXXXXXX... 44/60
+--- agent multipath wait: oracle agent state ---
+active
+active
+mapper_path=/dev/mapper/mpatha real=/dev/dm-0
+agent_multipath_wait_result=PASS mapper=/dev/mapper/mpatha
+=== tc3-after-unsafe-reattach-vpu-100: UHP consistent device path validation ===
+oracle_reference=https://docs.oracle.com/en-us/iaas/Content/Block/Tasks/connectingtouhpvolumes.htm
+expected=the configured OCI consistent device path exists and resolves to the multipath friendly device
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+--- consistent path validation: block layout ---
+lsblk: unknown column: PATH,TYPE,SIZE,MODEL,WWN,FSTYPE,UUID,MOUNTPOINT
+--- consistent path validation: oracleoci links ---
+total 0
+lrwxrwxrwx. 1 root root  6 Aug 10 09:45 oraclevda -> ../sda
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda1 -> ../sda1
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda2 -> ../sda2
+lrwxrwxrwx. 1 root root  7 Aug 10 09:45 oraclevda3 -> ../sda3
+lrwxrwxrwx. 1 root root 18 Aug 10 09:49 oraclevdb -> /dev/mapper/mpatha
+--- consistent path validation: mapper links ---
+total 0
+crw-------. 1 root root 10, 236 Aug 10 09:45 control
+lrwxrwxrwx. 1 root root       7 Aug 10 09:49 mpatha -> ../dm-0
+--- consistent path validation: multipath -ll ---
+mpatha (360ab0122f60348b6bafafce5ac10fb3d) dm-0 ORACLE  ,BlockVolume     
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-0
+lrwxrwxrwx. 1 root root 18 Aug 10 09:49 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-0
+consistent_path_mapper=/dev/mapper/mpatha
+consistent_path_friendly_name=mpatha
+mpatha (360ab0122f60348b6bafafce5ac10fb3d) dm-0 ORACLE  ,BlockVolume     
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+consistent_path_result=PASS
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+Warning: Permanently added '140.238.211.19' (ED25519) to the list of known hosts.
+--- TC3 filesystem check after unsafe detach/reattach ---
+--- TC3 discovery: block layout ---
+lsblk: unknown column: PATH,TYPE,SIZE,MODEL,WWN,FSTYPE,UUID,MOUNTPOINT
+--- TC3 discovery: multipath -ll ---
+mpatha (360ab0122f60348b6bafafce5ac10fb3d) dm-0 ORACLE  ,BlockVolume     
+size=1.5T features='4 queue_if_no_path retain_attached_hw_handler queue_mode bio' hwhandler='0' wp=rw
+`-+- policy='queue-length 0' prio=1 status=active
+  |- 7:0:0:2  sdb 8:16 active ready running
+  |- 8:0:0:2  sdc 8:32 active ready running
+  |- 9:0:0:2  sdd 8:48 active ready running
+  |- 10:0:0:2 sde 8:64 active ready running
+  `- 11:0:0:2 sdf 8:80 active ready running
+--- TC3 discovery: requested consistent path resolution ---
+consistent_path_exists=true path=/dev/oracleoci/oraclevdb real=/dev/dm-0
+lrwxrwxrwx. 1 root root 18 Aug 10 09:49 /dev/oracleoci/oraclevdb -> /dev/mapper/mpatha
+mapper_path=/dev/mapper/mpatha real=/dev/dm-0
+--- TC3 discovery: candidate=/dev/oracleoci/oraclevdb real=/dev/dm-0 ---
+candidate_fstype=ext4
+e2fsck 1.45.4 (23-Sep-2019)
+Warning: skipping journal recovery because doing a read-only filesystem check.
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong (386766374, counted=386730021).
+Fix? no
+
+Free inodes count wrong (98303989, counted=98303986).
+Fix? no
+
+/dev/oracleoci/oraclevdb: 11/98304000 files (9.1% non-contiguous), 6449626/393216000 blocks
+TARGET         SOURCE             FSTYPE OPTIONS
+/mnt/s27unsafe /dev/mapper/mpatha ext4   ro,relatime,seclabel,stripe=256
+/mnt/s27unsafe/stable.bin: OK
+total 147484
+drwxr-xr-x. 3 opc  opc       4096 Aug 10 09:47 .
+drwxr-xr-x. 3 root root        23 Aug 10 09:47 ..
+-rw-rw-r--. 1 opc  opc   16777216 Aug 10 09:48 live-writer.bin
+drwx------. 2 root root     16384 Aug 10 09:47 lost+found
+-rw-rw-r--. 1 opc  opc  134217728 Aug 10 09:47 stable.bin
+-rw-rw-r--. 1 opc  opc         92 Aug 10 09:47 stable.sha256
+-rw-rw-r--. 1 opc  opc          3 Aug 10 09:48 writer.count
+tc3_checksum_result=PASS_NO_DATA_LOSS_OBSERVED_FOR_STABLE_FILE
+TC3_RESULT=NEGATIVE_UNSAFE_LINUX_PROCEDURE_OBSERVED
+Action completed. Waiting until the resource has entered state: ('DETACHED',)
+{
+  "opc-work-request-id": "ocid1.coreservicesworkrequest.oc1.eu-zurich-1.ab5heljrezert3soasmjsvc735njreu4im3t6mp5foltaksybl3zh7xtt27a"
+}
+oci_core_volume.test: Refreshing state... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva]
+oci_core_instance.vpu_upgrade: Refreshing state... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja]
+oci_core_volume_attachment.test: Refreshing state... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.vpu_upgrade will be destroyed
+  - resource "oci_core_instance" "vpu_upgrade" {
+      - availability_domain         = "jJRq:EU-ZURICH-1-AD-1" -> null
+      - boot_volume_id              = "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljrut6f3ma3iupbmojo2hcj3vs4tsw55q76dgiaz6p7w5kf42g5kwvq" -> null
+      - compartment_id              = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a" -> null
+      - defined_tags                = {
+          - "Oracle-Tags.CreatedBy" = "default/ryszard.styczynski@avaloq.com"
+          - "Oracle-Tags.CreatedOn" = "2026-08-10T09:44:28.685Z"
+        } -> null
+      - display_name                = "bv4db-s27-tc3-linux-unsafe-instance" -> null
+      - extended_metadata           = {} -> null
+      - fault_domain                = "FAULT-DOMAIN-1" -> null
+      - freeform_tags               = {} -> null
+      - id                          = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja" -> null
+      - image                       = "ocid1.image.oc1.eu-zurich-1.aaaaaaaagjq6ytiuncfd3d4wckvmpe6o3of3kyrgbsecrawri2cneeld5ewa" -> null
+      - is_cross_numa_node          = false -> null
+      - launch_mode                 = "PARAVIRTUALIZED" -> null
+      - metadata                    = {
+          - "ssh_authorized_keys" = <<-EOT
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCWEMK+HfYhyBXhwm6jSVICLAt3dzl3RWbZaHTO27VIh4PoLh1vcBPmlAXrklO/vnCGr7tLy/hnHXOrDAD+PmaFgrrlW2nsrsx+mO2VMXqhToIfPH9dxyjmkanZbzZUMeekBwNBWyjpBCjHjDfuVjoXHAMisQRz8BlpOID9/B6rR0cc9YybyQtl15YocwDOnjGoM/esy6kA7fCVC3EQqF/b7L0+j/SsTMpksoXvFwdASFaDZaHOK+IKB1tYqXaCXoXSjPxv9s7VLSDgH+2ooRZRP8q5fC7Dd3JT9fOxEuhHEDhj7LS4ZdnytzjlcWjvAwPkPDfbdk9yyyTZmyRy1t59m9CESvRyM9+xajBoAoFgYyBtD9XjfVJedAfo+dSYV/E/W27x3wAKT0v+mgWDcwu7xcud4T9EM/12tihnqdaT4JZObmNBERE73sSERq4JQiJGVPvhJhz8lLrr0n0q1YlelCVk+vqSoHBXY99BNcqQ1flTeEzcAO7KkKBPwGU9Nyk= rstyczynski@Ryszards-MacBook-Pro.local
+            EOT
+        } -> null
+      - preserve_boot_volume        = false -> null
+      - private_ip                  = "10.0.0.80" -> null
+      - public_ip                   = "140.238.211.19" -> null
+      - region                      = "eu-zurich-1" -> null
+      - security_attributes         = {} -> null
+      - security_attributes_state   = "STABLE" -> null
+      - shape                       = "VM.Standard.E5.Flex" -> null
+      - state                       = "RUNNING" -> null
+      - subnet_id                   = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka" -> null
+      - system_tags                 = {} -> null
+      - time_created                = "2026-08-10 09:44:29.011 +0000 UTC" -> null
+        # (2 unchanged attributes hidden)
+
+      - agent_config {
+          - are_all_plugins_disabled = false -> null
+          - is_management_disabled   = false -> null
+          - is_monitoring_disabled   = false -> null
+
+          - plugins_config {
+              - desired_state = "ENABLED" -> null
+              - name          = "Block Volume Management" -> null
+            }
+        }
+
+      - availability_config {
+          - is_live_migration_preferred = false -> null
+          - recovery_action             = "RESTORE_INSTANCE" -> null
+        }
+
+      - create_vnic_details {
+          - assign_ipv6ip             = false -> null
+          - assign_private_dns_record = false -> null
+          - assign_public_ip          = "true" -> null
+          - defined_tags              = {
+              - "Oracle-Tags.CreatedBy" = "default/ryszard.styczynski@avaloq.com"
+              - "Oracle-Tags.CreatedOn" = "2026-08-10T09:44:28.758Z"
+            } -> null
+          - display_name              = "bv4db-s27-tc3-linux-unsafe-vnic" -> null
+          - freeform_tags             = {} -> null
+          - nsg_ids                   = [] -> null
+          - private_ip                = "10.0.0.80" -> null
+          - security_attributes       = {} -> null
+          - skip_source_dest_check    = false -> null
+          - subnet_id                 = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka" -> null
+            # (4 unchanged attributes hidden)
+        }
+
+      - instance_options {
+          - are_legacy_imds_endpoints_disabled = true -> null
+        }
+
+      - launch_options {
+          - boot_volume_type                    = "PARAVIRTUALIZED" -> null
+          - firmware                            = "UEFI_64" -> null
+          - is_consistent_volume_naming_enabled = true -> null
+          - is_pv_encryption_in_transit_enabled = false -> null
+          - network_type                        = "PARAVIRTUALIZED" -> null
+          - remote_data_volume_type             = "PARAVIRTUALIZED" -> null
+        }
+
+      - shape_config {
+          - gpus                          = 0 -> null
+          - local_disks                   = 0 -> null
+          - local_disks_total_size_in_gbs = 0 -> null
+          - local_volume_size_in_gbs      = 0 -> null
+          - max_vnic_attachments          = 16 -> null
+          - memory_in_gbs                 = 64 -> null
+          - networking_bandwidth_in_gbps  = 16 -> null
+          - nvmes                         = 0 -> null
+          - ocpus                         = 16 -> null
+          - processor_description         = "2.3 GHz AMD EPYC™ 9J14 (Genoa)" -> null
+          - vcpus                         = 32 -> null
+            # (4 unchanged attributes hidden)
+        }
+
+      - source_details {
+          - boot_volume_size_in_gbs         = "47" -> null
+          - boot_volume_vpus_per_gb         = "10" -> null
+          - is_preserve_boot_volume_enabled = false -> null
+          - source_id                       = "ocid1.image.oc1.eu-zurich-1.aaaaaaaagjq6ytiuncfd3d4wckvmpe6o3of3kyrgbsecrawri2cneeld5ewa" -> null
+          - source_type                     = "image" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # oci_core_volume.test will be destroyed
+  - resource "oci_core_volume" "test" {
+      - availability_domain     = "jJRq:EU-ZURICH-1-AD-1" -> null
+      - compartment_id          = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a" -> null
+      - defined_tags            = {
+          - "Oracle-Tags.CreatedBy" = "default/ryszard.styczynski@avaloq.com"
+          - "Oracle-Tags.CreatedOn" = "2026-08-10T09:44:28.597Z"
+        } -> null
+      - display_name            = "bv4db-s27-tc3-linux-unsafe-volume" -> null
+      - freeform_tags           = {} -> null
+      - id                      = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva" -> null
+      - is_auto_tune_enabled    = false -> null
+      - is_hydrated             = true -> null
+      - is_reservations_enabled = false -> null
+      - size_in_gbs             = "1500" -> null
+      - size_in_mbs             = "1536000" -> null
+      - state                   = "AVAILABLE" -> null
+      - system_tags             = {} -> null
+      - time_created            = "2026-08-10 09:44:28.604 +0000 UTC" -> null
+      - vpus_per_gb             = "100" -> null
+    }
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  - device_path          = "/dev/oracleoci/oraclevdb" -> null
+  - instance_id          = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja" -> null
+  - instance_public_ip   = "140.238.211.19" -> null
+  - iscsi_login_state    = "UNKNOWN" -> null
+  - multipath_devices    = [] -> null
+  - volume_attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicc2mvipatfp5knajkbfo77dkgxfrf4svhurxjcxfw6qhq" -> null
+  - volume_id            = "ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva" -> null
+oci_core_volume.test: Destroying... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljr7ewoxegpccpjd3kno2i6in25fjpxkta6nrsjolvacx3pgxwajeva]
+oci_core_instance.vpu_upgrade: Destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicnbwnqyhlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja]
+oci_core_volume.test: Destruction complete after 3s
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 00m10s elapsed]
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 00m20s elapsed]
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 00m30s elapsed]
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 00m40s elapsed]
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 00m50s elapsed]
+oci_core_instance.vpu_upgrade: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...hlwxyrdfaeb25vtlch5fhkbyactw6st5s3fpja, 01m00s elapsed]
+oci_core_instance.vpu_upgrade: Destruction complete after 1m4s
+
+Destroy complete! Resources: 2 destroyed.

@@ -1,0 +1,30 @@
+oci_core_volume.transition: Creating...
+oci_core_instance.transition: Creating...
+oci_core_volume.transition: Still creating... [00m10s elapsed]
+oci_core_instance.transition: Still creating... [00m10s elapsed]
+oci_core_volume.transition: Creation complete after 14s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_core_instance.transition: Still creating... [00m20s elapsed]
+oci_core_instance.transition: Still creating... [00m30s elapsed]
+oci_core_instance.transition: Creation complete after 35s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq]
+oci_core_volume_attachment.transition: Creating...
+oci_core_volume_attachment.transition: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m20s elapsed]
+oci_core_volume_attachment.transition: Creation complete after 24s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyice4gevo6dem7plyc6n5j7nms3m7urt7olhpfcwl76wnra]
+
+Warning: Argument is deprecated
+
+  with oci_core_volume_attachment.transition,
+  on main.tf line 54, in resource "oci_core_volume_attachment" "transition":
+  54:   compartment_id                    = var.compartment_id
+
+The 'compartment_id' field has been deprecated and may be removed in a future
+version. Do not use this field.
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyice4gevo6dem7plyc6n5j7nms3m7urt7olhpfcwl76wnra"
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"

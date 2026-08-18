@@ -1,0 +1,7 @@
+{
+  "device": "/dev/oracleoci/oraclevdb",
+  "login": "UNKNOWN",
+  "multipath": null,
+  "multipath_devices": null,
+  "state": "ATTACHED"
+}

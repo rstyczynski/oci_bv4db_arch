@@ -1,0 +1,79 @@
+{
+  "data": [
+    {
+      "name": "Custom Logs Monitoring",
+      "status": "RUNNING",
+      "time-last-updated-utc": "2026-08-10T09:57:41.387000+00:00"
+    },
+    {
+      "name": "Compute Instance Run Command",
+      "status": "RUNNING",
+      "time-last-updated-utc": "2026-08-10T09:57:41.387000+00:00"
+    },
+    {
+      "name": "Cloud Guard Workload Protection",
+      "status": "RUNNING",
+      "time-last-updated-utc": "2026-08-10T09:57:41.387000+00:00"
+    },
+    {
+      "name": "WebLogic Management Service",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.387000+00:00"
+    },
+    {
+      "name": "Vulnerability Scanning",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.387000+00:00"
+    },
+    {
+      "name": "Compute HPC RDMA Authentication",
+      "status": "NOT_SUPPORTED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.386000+00:00"
+    },
+    {
+      "name": "OS Management Hub Agent",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Management Agent",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Oracle Java Management Service",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Compute RDMA GPU Monitoring",
+      "status": "NOT_SUPPORTED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Compute HPC RDMA Auto-Configuration",
+      "status": "NOT_SUPPORTED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Fleet Application Management Service",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Block Volume Management",
+      "status": "RUNNING",
+      "time-last-updated-utc": "2026-08-10T09:57:41.357000+00:00"
+    },
+    {
+      "name": "Compute Instance Monitoring",
+      "status": "RUNNING",
+      "time-last-updated-utc": "2026-08-10T09:57:41.356000+00:00"
+    },
+    {
+      "name": "Bastion",
+      "status": "STOPPED",
+      "time-last-updated-utc": "2026-08-10T09:57:41.356000+00:00"
+    }
+  ]
+}

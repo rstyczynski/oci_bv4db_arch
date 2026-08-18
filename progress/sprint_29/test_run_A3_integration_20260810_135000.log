@@ -1,0 +1,26 @@
+
+=== Running integration tests (1 selected) ===
+
+--- integration:test_sprint29_multipath_runbook.sh ---
+=== IT-1: Sprint 29 operator runbook ===
+  [FAIL] uses Sprint 24 as the OCI Agent-managed baseline
+  [PASS] uses Terraform for configuration changes
+  [PASS] uses OCI CLI only for approved lifecycle actions
+  [PASS] prohibits Terraform provisioners
+  [FAIL] records the detach–reattach validation outcome
+  [PASS] identifies the OCI Agent plugin
+  [FAIL] requires OCI control-plane multipath confirmation
+  [PASS] records the OCI attach lifecycle prerequisite
+  [PASS] fails closed on stopped-instance attachment creation
+  [FAIL] provides OCI Console activation validation
+  [PASS] provides OCI CLI activation validation
+  [PASS] requires safe storage release before detach
+  [PASS] requires multiple active multipath paths
+  [FAIL] creates the persistent mount configuration on the new compute instance
+  [PASS] defines the persistent filesystem mount
+  [PASS] requires an existing test file after remount
+  [PASS] requires data validation
+  [PASS] includes recovery guidance
+Results: 13 passed, 5 failed
+
+Results: 0 passed, 1 failed

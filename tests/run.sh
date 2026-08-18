@@ -53,6 +53,7 @@ resolve_manifest_tests() {
   [ -f "$manifest" ] || { echo "Manifest not found: $manifest" >&2; exit 2; }
   awk -F: -v s="$suite" '
     $0 ~ /^[[:space:]]*#/ { next }
+    NF >= 3 && $1 == s { print $2 ":" $3; next }
     NF >= 2 && $1 == s { print $2 }
   ' "$manifest"
 }
@@ -62,6 +63,7 @@ resolve_new_only_tests() {
   [ -f "$manifest" ] || { echo "new_tests.manifest not found: $manifest" >&2; exit 2; }
   awk -F: -v s="$suite" '
     $0 ~ /^[[:space:]]*#/ { next }
+    NF >= 3 && $1 == s { print $2 ":" $3; next }
     NF >= 2 && $1 == s { print $2 }
   ' "$manifest"
 }
@@ -95,14 +97,36 @@ echo "=== Running $suite tests (${#tests[@]} selected) ==="
 echo ""
 
 for t in "${tests[@]}"; do
-  path="$REPO_ROOT/tests/${suite}/${t}"
+  script="$t"
+  fn=""
+  if [[ "$t" == *:* ]]; then
+    script="${t%%:*}"
+    fn="${t#*:}"
+  fi
+
+  path="$REPO_ROOT/tests/${suite}/${script}"
   if [ ! -f "$path" ]; then
     echo "[FAIL] missing test script: $path"
     fail=$((fail+1))
     continue
   fi
-  echo "--- $suite:$t ---"
-  if bash "$path"; then
+  label="$suite:$script"
+  [ -z "$fn" ] || label="$label:$fn"
+  echo "--- $label ---"
+  if [ -n "$fn" ]; then
+    if bash "$path" "$fn"; then
+      result=0
+    else
+      result=$?
+    fi
+  else
+    if bash "$path"; then
+      result=0
+    else
+      result=$?
+    fi
+  fi
+  if [ "$result" -eq 0 ]; then
     pass=$((pass+1))
   else
     fail=$((fail+1))
@@ -112,4 +136,3 @@ done
 
 echo "Results: $pass passed, $fail failed"
 [ "$fail" -eq 0 ]
-

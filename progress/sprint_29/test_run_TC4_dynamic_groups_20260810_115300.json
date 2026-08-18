@@ -1,0 +1,42 @@
+[
+  {
+    "description": "SLI_tracker: Fn functions in compartment may use resource principal for OS",
+    "matching_rule": null,
+    "name": "sli-apigw-router-20260410124735-fn-rp-os-dg"
+  },
+  {
+    "description": "Auto generated dynamic group for the os_fileext1 function created from pre-built function. user: ryszard.styczynski@avaloq.com Tenant: avq3",
+    "matching_rule": null,
+    "name": "os_fileext1_dg_1769687598329"
+  },
+  {
+    "description": "SLI_tracker: Fn functions in compartment may use resource principal for OS",
+    "matching_rule": null,
+    "name": "sli-apigw-router-20260410125056-fn-rp-os-dg"
+  },
+  {
+    "description": "Dynamic group for the local-fn-dev function",
+    "matching_rule": null,
+    "name": "local-fn-dev-dynamic-group"
+  },
+  {
+    "description": "Sprint 5 FSS filesystems using customer-managed KMS keys",
+    "matching_rule": null,
+    "name": "sprint5-fss-mek-filesystems-dg"
+  },
+  {
+    "description": "SLI_tracker: Fn functions in compartment may use resource principal for OS",
+    "matching_rule": null,
+    "name": "sli-apigw-router-20260410125446-fn-rp-os-dg"
+  },
+  {
+    "description": "Dynamic Group for eu-kgltest-acc-fn-keyrotate",
+    "matching_rule": null,
+    "name": "eu-kgltest-acc-dgr-fn"
+  },
+  {
+    "description": "SLI_tracker: Fn functions in compartment may use resource principal for OS",
+    "matching_rule": null,
+    "name": "sli-apigw-router-20260410124141-fn-rp-os-dg"
+  }
+]

@@ -1,0 +1,30 @@
+oci_core_volume_attachment.transition: Destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic7or7b4ui3g7473zcvi7assrzc5cnbybnfwyowedaob2q]
+oci_core_volume_attachment.transition: Still destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1....ui3g7473zcvi7assrzc5cnbybnfwyowedaob2q, 00m10s elapsed]
+oci_core_volume_attachment.transition: Still destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1....ui3g7473zcvi7assrzc5cnbybnfwyowedaob2q, 00m20s elapsed]
+oci_core_volume_attachment.transition: Destruction complete after 23s
+oci_core_instance.transition: Destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicekhkwrsxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a]
+oci_core_instance.transition: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...sxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a, 00m10s elapsed]
+oci_core_instance.transition: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...sxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a, 00m20s elapsed]
+oci_core_instance.transition: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...sxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a, 00m30s elapsed]
+oci_core_instance.transition: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...sxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a, 00m40s elapsed]
+oci_core_instance.transition: Still destroying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...sxl66lhvovnuvtilgttdar3uvzkwqj6mjv353a, 00m50s elapsed]
+oci_core_instance.transition: Destruction complete after 55s
+oci_core_instance.transition: Creating...
+oci_core_instance.transition: Still creating... [00m10s elapsed]
+oci_core_instance.transition: Still creating... [00m20s elapsed]
+oci_core_instance.transition: Still creating... [00m30s elapsed]
+oci_core_instance.transition: Creation complete after 34s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva]
+oci_core_volume_attachment.transition: Creating...
+oci_core_volume_attachment.transition: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.transition: Creation complete after 14s [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq]
+
+Apply complete! Resources: 2 added, 0 changed, 2 destroyed.
+
+Outputs:
+
+attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq"
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva"
+run_command_dynamic_group_id = "ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq"
+run_command_policy_id = "ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"

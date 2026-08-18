@@ -1,0 +1,60 @@
+oci_identity_dynamic_group.run_command: Refreshing state... [id=ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq]
+oci_core_volume.transition: Refreshing state... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_identity_policy.run_command: Refreshing state... [id=ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a]
+oci_core_instance.transition: Refreshing state... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva]
+oci_core_volume_attachment.transition: Refreshing state... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.transition will be updated in-place
+  ~ resource "oci_core_instance" "transition" {
+        id                          = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva"
+        # (24 unchanged attributes hidden)
+
+      ~ shape_config {
+          ~ ocpus                         = 8 -> 16
+            # (14 unchanged attributes hidden)
+        }
+
+        # (6 unchanged blocks hidden)
+    }
+
+  # oci_core_volume.transition will be updated in-place
+  ~ resource "oci_core_volume" "transition" {
+        id                      = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"
+      ~ vpus_per_gb             = "20" -> "100"
+        # (13 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 2 to change, 0 to destroy.
+oci_core_volume.transition: Modifying... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_core_instance.transition: Modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva]
+oci_core_volume.transition: Still modifying... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm...xumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq, 00m10s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 00m10s elapsed]
+oci_core_volume.transition: Modifications complete after 13s [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 00m20s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 00m30s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 00m40s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 00m50s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m00s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m10s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m20s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m30s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m40s elapsed]
+oci_core_instance.transition: Still modifying... [id=ocid1.instance.oc1.eu-zurich-1.an5heljr...fcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva, 01m50s elapsed]
+oci_core_instance.transition: Modifications complete after 1m50s [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva]
+
+Apply complete! Resources: 0 added, 2 changed, 0 destroyed.
+
+Outputs:
+
+attachment_id = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq"
+device_path = "/dev/oracleoci/oraclevdb"
+instance_id = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva"
+run_command_dynamic_group_id = "ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq"
+run_command_policy_id = "ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a"
+volume_id = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"

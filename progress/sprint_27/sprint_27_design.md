@@ -8,6 +8,8 @@ Status: Accepted
 
 Validate whether a volume attached while non-UHP gains multipath configuration after its VPU setting is changed to `100`.
 
+BV4DB-62 is covered in the same sprint because the VPU transition cannot be validated safely without the Linux-level release and rediscovery procedure. TC3 and TC4 validate the negative unsafe Linux path and the positive clean Linux path for the non-UHP to UHP reattach operation.
+
 ### Feasibility Analysis
 
 Terraform can create the baseline instance, block volume, and native iSCSI attachment. The OCI CLI can update the volume performance level during the integration test, allowing the test to capture before and after evidence without recreating the baseline resource graph.
@@ -106,3 +108,4 @@ Sprint Test Configuration:
 | Backlog Item | Smoke | Unit Tests | Integration Tests |
 | ------------ | ----- | ---------- | ----------------- |
 | BV4DB-61 | n/a | n/a | IT-1, IT-2, IT-3, IT-4, IT-5, IT-6 |
+| BV4DB-62 | n/a | n/a | IT-5, IT-6 |

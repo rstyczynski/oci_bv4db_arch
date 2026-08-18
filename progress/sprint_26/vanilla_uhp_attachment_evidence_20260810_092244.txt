@@ -1,0 +1,23 @@
+=== Sprint 26 vanilla UHP attachment evidence ===
+timestamp_utc=20260810_092244
+workdir=/var/folders/rt/g188dkwx2rl25f2xnjnqv8hr0000gn/T/tmp.NLv1icONev/module
+region=eu-zurich-1
+compartment_id=ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a
+subnet_id=ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka
+availability_domain=
+image_id=
+
+=== terraform outputs ===
+device_path = "/dev/oracleoci/oraclevdb"
+
+=== attachment state json ===
+jq: error (at <stdin>:1): Cannot iterate over null (null)
+
+=== OCI attachment get ===
+UsageError: Parameter --volume-attachment-id cannot be whitespace or empty string
+
+=== guest evidence ===
+public_ip=
+guest_status=SKIPPED_NO_PUBLIC_IP
+RESULT=NEGATIVE
+negative_reason=ATTACHMENT_NOT_MULTIPATH_ENABLED

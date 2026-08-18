@@ -535,6 +535,8 @@ Test: an integration run archives evidence for a clean Linux-level procedure tha
 
 The project needs a reusable Linux-side script that replaces the current ad hoc Oracle block-volume preparation fragment with an idempotent and data-safe implementation. The script must support normal non-multipath iSCSI volumes, volumes that are later moved from non-multipath to multipath/UHP attachment, and volumes that have been resized to add storage. It must distinguish first-time initialization of a known-empty volume from reconnect, reattach, resize, and migration handling so that existing PV, VG, LV, filesystem, and mount data are preserved.
 
+Use Sprint 27 TC4 as the baseline test flow for the non-MP to MP transition. The evidence collection must be 360-degree diagnostics: IMDS/MDS reachability and volume-attachment metadata, OCI attachment and volume metadata, Oracle Cloud Agent and Block Volume Management plugin status/version/logs, iSCSI sessions and node database, multipath status, consistent-path symlink and realpath mapping, block inventory, LVM/PV/VG/LV state, filesystem identity and growth state, mount/fstab state, kernel/journal errors, and network prerequisites such as public IP or Oracle Services Network access through a service gateway.
+
 The current as-is solution below is the operator fragment to correct. It mixes first-time initialization with reconnect behavior and can be unsafe if a missing or changed device path causes `pvs` to fail and destructive initialization commands run against an existing data volume.
 
 ```bash
@@ -557,4 +559,87 @@ The current as-is solution below is the operator fragment to correct. It mixes f
       sudo mount /software/oracle/admin/canprd/aaa/io || true
 ```
 
-Test: repeated runs against a fresh non-multipath iSCSI volume, an existing non-multipath volume, a volume reattached as UHP multipath, and a resized volume all complete without destroying existing data; evidence proves correct iSCSI connection, device discovery, LVM activation or extension, filesystem growth when needed, stable fstab handling, successful mount, and checksum preservation.
+Test: repeated runs against a fresh non-multipath iSCSI volume, an existing non-multipath volume, a volume reattached as UHP multipath, and a resized volume all complete without destroying existing data; evidence proves correct iSCSI connection, device discovery, LVM activation or extension, filesystem growth when needed, stable fstab handling, successful mount, checksum preservation, and complete IMDS/agent/iSCSI/multipath/LVM/filesystem/network diagnostics.
+
+### BV4DB-64. Config-driven multi-volume block storage orchestrator
+
+After BV4DB-63 delivers a safe one-volume preparation primitive, add a config-driven wrapper that can process a full host inventory: many OCI block volumes, each with its device path, target identity, VG, multiple LVs, mount points, growth policy, and dependency order. The orchestrator must support dry-run planning, per-volume locking, ordered execution, per-volume evidence directories, and a consolidated host-level summary.
+
+Test: a live or simulated run processes at least three volumes with mixed single-LV and multi-LV layouts, proves idempotent repeated execution, and archives a host-level summary plus per-volume evidence without requiring generated inline shell blocks.
+
+### BV4DB-65. Additional storage layout handlers for OCI block volumes
+
+Extend the BV4DB-63 layout-handler design beyond whole-device LVM. Candidate handlers include partitioned LVM, plain filesystem on the whole device, plain filesystem on a partition, ASM-labelled disks, multi-PV VGs, and striped or RAID LVs. Each handler must be explicitly selected by detected layout or configuration and must fail closed when an existing layout does not match the requested one.
+
+Test: each added layout has a dedicated integration or controlled local test that proves detection, idempotent re-run, safe resize behavior where applicable, and fail-closed behavior when the discovered layout does not match the requested configuration.
+
+### BV4DB-66. Application data migration and service orchestration around new mounts
+
+The current generated operator script contains application migration behavior such as copying existing directory contents to `.ori`, stopping and starting services, editing systemd unit dependencies, and replacing existing mount points. Keep that behavior out of BV4DB-63 and implement it as a separate explicit migration workflow with preflight checks, rollback plan, operator confirmation, and application-specific service hooks.
+
+Test: a disposable host with seeded application directories validates stop-service, copy, mount replacement, restore, dependency update, restart, checksum preservation, and rollback or fail-closed behavior on injected failures.
+
+### BV4DB-67. Secure target discovery and secret handling for block-volume preparation
+
+Improve the BV4DB-63 script so operators do not need to pass all target details on the command line. Add supported discovery from IMDS/OCI attachment metadata by consistent device path, volume OCID, or attachment OCID, and add secure CHAP handling through root-only files, environment references, instance principals, or OCI Vault. Logs and diagnostics must redact secrets consistently.
+
+Test: a live run discovers target IQN/portal from metadata, connects without command-line secrets, and archived logs prove that CHAP material is not printed in process arguments, shell traces, summaries, or diagnostics.
+
+### BV4DB-68. Operational health checks and recovery helpers for OCI block-volume mounts
+
+Add production operations around prepared volumes: systemd unit/timer integration, health-check command, alert-friendly exit codes, stale iSCSI node detection, stale multipath map detection, mount drift detection, and guided recovery diagnostics. Recovery helpers must explain actions before mutating state and must not hide destructive or disruptive operations.
+
+Test: controlled failure scenarios produce clear health statuses and evidence for missing consistent path, stale iSCSI session, missing multipath mapper, inactive VG, missing mount, fstab drift, and failed previous run lock.
+
+### BV4DB-69. Validate agentless OCI iSCSI multipath configuration workflow
+
+Validate whether this project can configure and maintain OCI UHP iSCSI multipath without relying on the Oracle Cloud Agent Block Volume Management plugin to perform guest-side setup. Oracle documentation currently describes the plugin as a prerequisite for multipath-enabled iSCSI attachments and states that it installs `device-mapper-multipath`, writes `/etc/multipath.conf` only for multipath-enabled attachments, and performs batch iSCSI login commands for qualifying attachments. Therefore this item must explicitly prove the supported boundary instead of assuming that Linux-only scripting can create UHP multipath.
+
+The target script should autonomously collect the required attachment data from OCI APIs and/or instance metadata, generate or update dm-multipath configuration that mimics the OCI plugin's regular settings, apply optional custom operator hints, perform all required iSCSI node/session setup and login steps, trigger device discovery, validate `/dev/oracleoci` consistent-path mapping, validate `multipath -ll`, and expose a clear final state. The script must not claim success if the OCI volume attachment itself is not `is-multipath=true`; guest-side Linux configuration cannot convert a non-multipath OCI attachment into a multipath-enabled OCI attachment.
+
+This item should test at least these cases:
+
+- UHP volume attachment with Block Volume Management plugin disabled: determine whether OCI still creates `is-multipath=true` and whether the agentless script can complete Linux-side multipath setup.
+- UHP volume attachment with plugin enabled but stopped after attach: determine which parts can be replicated manually after OCI has produced attachment metadata.
+- Non-UHP or UHP attachment reported as `is-multipath=false`: prove the script fails closed and explains that the attachment must be detached/reattached or recreated with prerequisites satisfied.
+- Custom multipath hints: prove that operator-provided path grouping, alias, polling, timeout, or blacklist/whitelist hints are merged safely with the OCI baseline rather than replacing required settings blindly.
+
+Test: a live OCI run archives OCI attachment JSON, IMDS/MDS attachment metadata, generated multipath configuration, iSCSI node/session state, `multipath -ll`, `/dev/oracleoci` symlink and realpath mapping, service/plugin disabled state, and mount/read-write checksum evidence. The result must document whether the agentless workflow is supported, partially possible only after OCI creates an `is-multipath=true` attachment, or not viable under Oracle's documented prerequisites.
+
+### BV4DB-70. Document and validate safe Open-iSCSI node database usage
+
+The block-volume preparation script must explicitly use the Open-iSCSI node database safely because `/etc/iscsi/nodes/` is natively owned and maintained by Open-iSCSI/`iscsiadm`, and controls persistent target startup after reboot. The script must not edit node database files directly. It should invoke `iscsiadm` to create or update only the node record for the requested OCI target IQN and portal, optionally set `node.startup=automatic`, archive sanitized evidence from `iscsiadm -m node` and `/etc/iscsi/nodes/`, and prove it does not delete or rewrite unrelated iSCSI node records.
+
+This item is part of making BV4DB-63 reboot-safe and production-safe. It should also define operator guidance for when startup should be `automatic` versus manual, and how that differs between non-MP iSCSI connections handled by the script and UHP/MP connections handled by the OCI agent.
+
+Test: on a single live OCI compute instance, capture `/etc/iscsi/nodes/` before and after the script run, run the script with persistent iSCSI enabled for a non-MP target, verify only the requested IQN/portal node record changed, verify `node.startup` policy, reboot the instance, and prove the node database participates correctly in reconnect or that the script can safely reconcile after boot.
+
+### BV4DB-71. Operator runbook for single-path to multipath conversion
+
+Provide an operator runbook for safely converting an existing single-path OCI block-volume attachment to an OCI Agent-managed multipath attachment. The runbook must make the required OCI, IAM, network, attachment, and guest-storage prerequisites clear, preserve existing data, and include verification and recovery guidance for the completed transition.
+
+Test: validate the runbook on disposable data by converting a single-path attachment to multipath and confirming preserved data, an OCI `is-multipath=true` attachment, active multipath paths, and restored storage availability.
+
+### BV4DB-72. Tune single-path iSCSI performance on a four-OCPU midrange server
+
+Establish the best supported single-path iSCSI configuration for a midrange OCI server with four OCPUs and block volumes configured at 45 VPUs/GB, where multipath is not used. The benchmark must use the Oracle-style block-volume layout already designed in this project. This item is storage-only: evaluate applicable iSCSI network-path tuning with FIO and do not install or test Oracle Database.
+
+Test: FIO benchmark results compare the baseline with each applicable tuning setting and document throughput, IOPS, latency, CPU use, and the recommended configuration.
+
+### BV4DB-73. Validate single-path iSCSI tuning with Oracle Database workloads
+
+After the FIO-only tuning work establishes a recommended single-path iSCSI configuration, validate its effect with the project’s Oracle Database benchmark path on the same block-volume layout. Keep the database-level results distinct from the storage-only FIO evidence so the project can determine whether a storage improvement translates to the database workload.
+
+Test: an Oracle Database benchmark run compares the approved single-path tuning baseline with the recommended configuration and archives workload, storage, and database evidence for both runs.
+
+### BV4DB-74. Revalidate single-path iSCSI tuning at 30 VPUs/GB
+
+Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 30 VPUs/GB. Keep the results separate from the 45-VPU evidence so operators can determine whether the recommended configuration changes with the volume setting.
+
+Test: FIO results at 30 VPUs/GB reproduce the Sprint 30 method, evaluate every applicable tuning candidate, and produce a setting-specific recommendation with the regular project report.
+
+### BV4DB-75. Revalidate single-path iSCSI tuning at 120 VPUs/GB
+
+Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 120 VPUs/GB. Keep the results separate from the 45-VPU evidence and explicitly report the effective limits of the four-OCPU single-path host.
+
+Test: FIO results at 120 VPUs/GB reproduce the Sprint 30 method, evaluate every applicable tuning candidate, and produce a setting-specific recommendation with the regular project report.

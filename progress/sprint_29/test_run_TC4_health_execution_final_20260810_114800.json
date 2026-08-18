@@ -1,0 +1,13 @@
+{
+  "data": {
+    "content": null,
+    "delivery-state": "VISIBLE",
+    "display-name": "s29-agent-health",
+    "instance-agent-command-id": "ocid1.instanceagentcommand.oc1.eu-zurich-1.amaaaaaaknhfuyiathuy7cl6hifswlng7jjkmoi7pmbsvirs44zxraiyh7ta",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq",
+    "lifecycle-state": "ACCEPTED",
+    "sequence-number": 6587713,
+    "time-created": "2026-08-10T09:44:20.176000+00:00",
+    "time-updated": "2026-08-10T09:44:20.176000+00:00"
+  }
+}

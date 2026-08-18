@@ -22,6 +22,8 @@
 
 The passing full-matrix evidence is `vpu_upgrade_multipath_evidence_20260624_232047.txt`.
 
+BV4DB-61 is covered by the lifecycle and attachment-state cases. BV4DB-62 is covered by TC3 and TC4, which validate the unsafe Linux negative procedure and the clean Linux positive procedure for non-UHP to UHP reattach.
+
 Observed sequence:
 
 - Baseline OCI attachment at `20` VPUs/GB was non-multipath.

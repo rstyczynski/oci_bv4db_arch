@@ -1,0 +1,13 @@
+{
+  "data": {
+    "content": null,
+    "delivery-state": "VISIBLE",
+    "display-name": "s29-create-test-file",
+    "instance-agent-command-id": "ocid1.instanceagentcommand.oc1.eu-zurich-1.amaaaaaaknhfuyiabynutudrdvzxpduhmqgfim7pj2gg4rzlrcqfhfttbzoa",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva",
+    "lifecycle-state": "ACCEPTED",
+    "sequence-number": 6587789,
+    "time-created": "2026-08-10T10:37:37.788000+00:00",
+    "time-updated": "2026-08-10T10:37:37.788000+00:00"
+  }
+}

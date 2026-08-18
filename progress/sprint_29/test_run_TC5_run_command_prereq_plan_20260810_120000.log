@@ -1,0 +1,207 @@
+oci_core_volume.transition: Refreshing state... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_core_instance.transition: Refreshing state... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq]
+oci_core_volume_attachment.transition: Refreshing state... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyice4gevo6dem7plyc6n5j7nms3m7urt7olhpfcwl76wnra]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # oci_core_instance.transition must be replaced
+-/+ resource "oci_core_instance" "transition" {
+      ~ boot_volume_id                      = "ocid1.bootvolume.oc1.eu-zurich-1.ab5heljrhbleseh4x5isa3i7hpbneidopmoz2kkk52cx3usx2yxid5rbzwdq" -> (known after apply)
+      + capacity_reservation_id             = (known after apply)
+      + compute_cluster_id                  = (known after apply)
+      + dedicated_vm_host_id                = (known after apply)
+      ~ defined_tags                        = {
+          - "Oracle-Tags.CreatedBy" = "default/ryszard.styczynski@avaloq.com"
+          - "Oracle-Tags.CreatedOn" = "2026-08-10T09:41:49.003Z"
+        } -> (known after apply)
+      ~ extended_metadata                   = {} -> (known after apply)
+      ~ fault_domain                        = "FAULT-DOMAIN-2" -> (known after apply)
+      ~ freeform_tags                       = {} -> (known after apply)
+      + hostname_label                      = (known after apply)
+      ~ id                                  = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq" -> (known after apply)
+      ~ image                               = "ocid1.image.oc1.eu-zurich-1.aaaaaaaagjq6ytiuncfd3d4wckvmpe6o3of3kyrgbsecrawri2cneeld5ewa" -> (known after apply)
+      + instance_configuration_id           = (known after apply)
+      + ipxe_script                         = (known after apply)
+      + is_ai_enterprise_enabled            = (known after apply)
+      ~ is_cross_numa_node                  = false -> (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      ~ launch_mode                         = "PARAVIRTUALIZED" -> (known after apply)
+      ~ metadata                            = { # forces replacement
+          ~ "user_data"           = "I2Nsb3VkLWNvbmZpZwp3cml0ZV9maWxlczoKICAtIHBhdGg6IC91c3IvbG9jYWwvc2Jpbi9zcHJpbnQyOS1tb3VudC5zaAogICAgcGVybWlzc2lvbnM6ICcwNzU1JwogICAgY29udGVudDogfAogICAgICAjIS91c3IvYmluL2VudiBiYXNoCiAgICAgIHNldCAtZXVvIHBpcGVmYWlsCiAgICAgIHBhdGg9L2Rldi9vcmFjbGVvY2kvb3JhY2xldmRiCiAgICAgIG1vdW50cG9pbnQ9L21udC9zcHJpbnQyOQogICAgICBmb3IgYXR0ZW1wdCBpbiAkKHNlcSAxIDYwKTsgZG8KICAgICAgICB0YXJnZXQ9JChyZWFkbGluayAtZiAiJHBhdGgiIDI+L2Rldi9udWxsIHx8IHRydWUpCiAgICAgICAgaWYgW1sgLWIgIiR0YXJnZXQiIF1dOyB0aGVuIGJyZWFrOyBmaQogICAgICAgIHNsZWVwIDEwCiAgICAgIGRvbmUKICAgICAgdGFyZ2V0PSQocmVhZGxpbmsgLWYgIiRwYXRoIikKICAgICAgbWtkaXIgLXAgIiRtb3VudHBvaW50IgogICAgICBncmVwIC1xRiAiJHBhdGggJG1vdW50cG9pbnQgIiAvZXRjL2ZzdGFiIHx8IGVjaG8gIiRwYXRoICRtb3VudHBvaW50IHhmcyBfbmV0ZGV2LG5vZmFpbCAwIDAiID4+IC9ldGMvZnN0YWIKICAgICAgaWYgISBibGtpZCAiJHRhcmdldCIgPi9kZXYvbnVsbCAyPiYxOyB0aGVuIG1rZnMueGZzIC1mICIkdGFyZ2V0IjsgZmkKICAgICAgbW91bnRwb2ludCAtcSAiJG1vdW50cG9pbnQiIHx8IG1vdW50ICIkbW91bnRwb2ludCIKcnVuY21kOgogIC0gWyBiYXNoLCAvdXNyL2xvY2FsL3NiaW4vc3ByaW50MjktbW91bnQuc2ggXQo=" -> "I2Nsb3VkLWNvbmZpZwp3cml0ZV9maWxlczoKICAtIHBhdGg6IC9ldGMvc3Vkb2Vycy5kLzEwMS1vcmFjbGUtY2xvdWQtYWdlbnQtcnVuLWNvbW1hbmQKICAgIHBlcm1pc3Npb25zOiAnMDQ0MCcKICAgIGNvbnRlbnQ6IHwKICAgICAgb2NhcnVuIEFMTD0oQUxMKSBOT1BBU1NXRDpBTEwKICAtIHBhdGg6IC91c3IvbG9jYWwvc2Jpbi9zcHJpbnQyOS1tb3VudC5zaAogICAgcGVybWlzc2lvbnM6ICcwNzU1JwogICAgY29udGVudDogfAogICAgICAjIS91c3IvYmluL2VudiBiYXNoCiAgICAgIHNldCAtZXVvIHBpcGVmYWlsCiAgICAgIHBhdGg9L2Rldi9vcmFjbGVvY2kvb3JhY2xldmRiCiAgICAgIG1vdW50cG9pbnQ9L21udC9zcHJpbnQyOQogICAgICBmb3IgYXR0ZW1wdCBpbiAkKHNlcSAxIDYwKTsgZG8KICAgICAgICB0YXJnZXQ9JChyZWFkbGluayAtZiAiJHBhdGgiIDI+L2Rldi9udWxsIHx8IHRydWUpCiAgICAgICAgaWYgW1sgLWIgIiR0YXJnZXQiIF1dOyB0aGVuIGJyZWFrOyBmaQogICAgICAgIHNsZWVwIDEwCiAgICAgIGRvbmUKICAgICAgdGFyZ2V0PSQocmVhZGxpbmsgLWYgIiRwYXRoIikKICAgICAgbWtkaXIgLXAgIiRtb3VudHBvaW50IgogICAgICBncmVwIC1xRiAiJHBhdGggJG1vdW50cG9pbnQgIiAvZXRjL2ZzdGFiIHx8IGVjaG8gIiRwYXRoICRtb3VudHBvaW50IHhmcyBfbmV0ZGV2LG5vZmFpbCAwIDAiID4+IC9ldGMvZnN0YWIKICAgICAgaWYgISBibGtpZCAiJHRhcmdldCIgPi9kZXYvbnVsbCAyPiYxOyB0aGVuIG1rZnMueGZzIC1mICIkdGFyZ2V0IjsgZmkKICAgICAgbW91bnRwb2ludCAtcSAiJG1vdW50cG9pbnQiIHx8IG1vdW50ICIkbW91bnRwb2ludCIKcnVuY21kOgogIC0gWyBiYXNoLCAvdXNyL2xvY2FsL3NiaW4vc3ByaW50MjktbW91bnQuc2ggXQo="
+            # (1 unchanged element hidden)
+        }
+      ~ private_ip                          = "10.0.0.129" -> (known after apply)
+      ~ public_ip                           = "144.24.248.4" -> (known after apply)
+      ~ region                              = "eu-zurich-1" -> (known after apply)
+      ~ security_attributes                 = {} -> (known after apply)
+      ~ security_attributes_state           = "STABLE" -> (known after apply)
+      ~ state                               = "RUNNING" -> (known after apply)
+      ~ subnet_id                           = "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka" -> (known after apply)
+      ~ system_tags                         = {} -> (known after apply)
+      ~ time_created                        = "2026-08-10 09:41:49.361 +0000 UTC" -> (known after apply)
+      + time_maintenance_reboot_due         = (known after apply)
+        # (4 unchanged attributes hidden)
+
+      ~ availability_config (known after apply)
+      - availability_config {
+          - is_live_migration_preferred = false -> null
+          - recovery_action             = "RESTORE_INSTANCE" -> null
+        }
+
+      ~ create_vnic_details {
+          ~ assign_ipv6ip             = false -> (known after apply)
+          - assign_private_dns_record = false -> null
+          ~ defined_tags              = {
+              - "Oracle-Tags.CreatedBy" = "default/ryszard.styczynski@avaloq.com"
+              - "Oracle-Tags.CreatedOn" = "2026-08-10T09:41:49.104Z"
+            } -> (known after apply)
+          ~ display_name              = "bv4db-s29-instance" -> (known after apply)
+          ~ freeform_tags             = {} -> (known after apply)
+          + hostname_label            = (known after apply)
+          ~ nsg_ids                   = [] -> (known after apply)
+          ~ private_ip                = "10.0.0.129" -> (known after apply)
+          + private_ip_id             = (known after apply)
+          ~ security_attributes       = {} -> (known after apply)
+          ~ skip_source_dest_check    = false -> (known after apply)
+          + subnet_cidr               = (known after apply)
+          + vlan_id                   = (known after apply)
+            # (2 unchanged attributes hidden)
+
+          ~ ipv6address_ipv6subnet_cidr_pair_details (known after apply)
+        }
+
+      ~ instance_options (known after apply)
+      - instance_options {
+          - are_legacy_imds_endpoints_disabled = false -> null
+        }
+
+      ~ launch_options (known after apply)
+      - launch_options {
+          - boot_volume_type                    = "PARAVIRTUALIZED" -> null
+          - firmware                            = "UEFI_64" -> null
+          - is_consistent_volume_naming_enabled = true -> null
+          - is_pv_encryption_in_transit_enabled = false -> null
+          - network_type                        = "PARAVIRTUALIZED" -> null
+          - remote_data_volume_type             = "PARAVIRTUALIZED" -> null
+        }
+
+      ~ launch_volume_attachments (known after apply)
+
+      ~ licensing_configs (known after apply)
+
+      ~ placement_constraint_details (known after apply)
+
+      ~ platform_config (known after apply)
+
+      ~ preemptible_instance_config (known after apply)
+
+      ~ shape_config {
+          + baseline_ocpu_utilization     = (known after apply)
+          + gpu_description               = (known after apply)
+          ~ gpus                          = 0 -> (known after apply)
+          + local_disk_description        = (known after apply)
+          ~ local_disks                   = 0 -> (known after apply)
+          ~ local_disks_total_size_in_gbs = 0 -> (known after apply)
+          ~ local_volume_size_in_gbs      = 0 -> (known after apply)
+          ~ max_vnic_attachments          = 8 -> (known after apply)
+          ~ networking_bandwidth_in_gbps  = 8 -> (known after apply)
+          ~ nvmes                         = 0 -> (known after apply)
+          ~ processor_description         = "2.3 GHz AMD EPYC™ 9J14 (Genoa)" -> (known after apply)
+          + resource_management           = (known after apply)
+          ~ vcpus                         = 16 -> (known after apply)
+            # (2 unchanged attributes hidden)
+        }
+
+      ~ source_details {
+          ~ boot_volume_size_in_gbs         = "47" -> (known after apply)
+          ~ boot_volume_vpus_per_gb         = "10" -> (known after apply)
+          - is_preserve_boot_volume_enabled = false -> null
+            # (3 unchanged attributes hidden)
+
+          ~ instance_source_image_filter_details (known after apply)
+        }
+
+        # (1 unchanged block hidden)
+    }
+
+  # oci_core_volume_attachment.transition must be replaced
+-/+ resource "oci_core_volume_attachment" "transition" {
+      ~ availability_domain                 = "jJRq:EU-ZURICH-1-AD-1" -> (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      ~ compartment_id                      = "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a" -> (known after apply)
+      ~ display_name                        = "volumeattachment20260810094223" -> (known after apply)
+      ~ encryption_in_transit_type          = "NONE" -> (known after apply)
+      ~ id                                  = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyice4gevo6dem7plyc6n5j7nms3m7urt7olhpfcwl76wnra" -> (known after apply)
+      ~ instance_id                         = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq" -> (known after apply) # forces replacement
+      ~ ipv4                                = "169.254.2.2" -> (known after apply)
+      ~ ipv6                                = "fd00:c1::a9fe:202" -> (known after apply)
+      ~ iqn                                 = "iqn.2015-12.com.oracleiaas:cb3e0733-fa56-47b8-ac23-3405b9b9039f" -> (known after apply)
+      + is_multipath                        = (known after apply)
+      ~ is_pv_encryption_in_transit_enabled = false -> (known after apply)
+      ~ is_read_only                        = false -> (known after apply)
+      ~ is_shareable                        = false -> (known after apply)
+      ~ is_volume_created_during_launch     = false -> (known after apply)
+      ~ iscsi_login_state                   = "UNKNOWN" -> (known after apply)
+      ~ multipath_devices                   = [] -> (known after apply)
+      ~ port                                = 3260 -> (known after apply)
+      ~ state                               = "ATTACHED" -> (known after apply)
+      ~ time_created                        = "2026-08-10 09:42:23.679 +0000 UTC" -> (known after apply)
+      + use_chap                            = (known after apply)
+        # (4 unchanged attributes hidden)
+    }
+
+  # oci_identity_dynamic_group.run_command will be created
+  + resource "oci_identity_dynamic_group" "run_command" {
+      + compartment_id = "ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a"
+      + defined_tags   = (known after apply)
+      + description    = "Sprint 29 instances allowed to poll their own OCI Run Commands."
+      + freeform_tags  = (known after apply)
+      + id             = (known after apply)
+      + inactive_state = (known after apply)
+      + matching_rule  = "ALL {resource.type = 'instance', resource.compartment.id = 'ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a'}"
+      + name           = "bv4db-s29-run-command-dg"
+      + state          = (known after apply)
+      + time_created   = (known after apply)
+    }
+
+  # oci_identity_policy.run_command will be created
+  + resource "oci_identity_policy" "run_command" {
+      + ETag           = (known after apply)
+      + compartment_id = "ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a"
+      + defined_tags   = (known after apply)
+      + description    = "Sprint 29 OCI Run Command execution policy."
+      + freeform_tags  = (known after apply)
+      + id             = (known after apply)
+      + inactive_state = (known after apply)
+      + lastUpdateETag = (known after apply)
+      + name           = "bv4db-s29-run-command-policy"
+      + policyHash     = (known after apply)
+      + state          = (known after apply)
+      + statements     = [
+          + "Allow dynamic-group bv4db-s29-run-command-dg to use instance-agent-command-execution-family in compartment id ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a where request.instance.id=target.instance.id",
+        ]
+      + time_created   = (known after apply)
+      + version_date   = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  ~ attachment_id                = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyice4gevo6dem7plyc6n5j7nms3m7urt7olhpfcwl76wnra" -> (known after apply)
+  ~ instance_id                  = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic7pz6ghlznfz22sj2hg6yucumpqi3ga6id6ihc4tbpooq" -> (known after apply)
+  + is_multipath                 = (known after apply)
+  + run_command_dynamic_group_id = (known after apply)
+  + run_command_policy_id        = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: /private/tmp/sprint29-run-command-prereq.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "/private/tmp/sprint29-run-command-prereq.tfplan"

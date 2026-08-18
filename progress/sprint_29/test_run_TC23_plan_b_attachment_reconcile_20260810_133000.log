@@ -1,0 +1,59 @@
+oci_identity_dynamic_group.run_command: Refreshing state... [id=ocid1.dynamicgroup.oc1..aaaaaaaapdbwhgn2gxisb4zhfi4mvym4t35n63oge4un2prkhyzeekdytrmq]
+oci_core_volume.transition: Refreshing state... [id=ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq]
+oci_identity_policy.run_command: Refreshing state... [id=ocid1.policy.oc1..aaaaaaaajy2hu6wi3xehfjgxfetvqoib6wk4yqefz5ijxjo7e2d6vedhvv2a]
+oci_core_instance.transition: Refreshing state... [id=ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # oci_core_volume_attachment.transition will be created
+  + resource "oci_core_volume_attachment" "transition" {
+      + attachment_type                     = "iscsi"
+      + availability_domain                 = (known after apply)
+      + chap_secret                         = (known after apply)
+      + chap_username                       = (known after apply)
+      + compartment_id                      = (known after apply)
+      + device                              = "/dev/oracleoci/oraclevdb"
+      + display_name                        = (known after apply)
+      + encryption_in_transit_type          = (known after apply)
+      + id                                  = (known after apply)
+      + instance_id                         = "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicqrrvckfcfo2bd2koejvvg77hxokh2ulrvrb6zl23hzva"
+      + ipv4                                = (known after apply)
+      + ipv6                                = (known after apply)
+      + iqn                                 = (known after apply)
+      + is_agent_auto_iscsi_login_enabled   = true
+      + is_multipath                        = (known after apply)
+      + is_pv_encryption_in_transit_enabled = (known after apply)
+      + is_read_only                        = (known after apply)
+      + is_shareable                        = (known after apply)
+      + is_volume_created_during_launch     = (known after apply)
+      + iscsi_login_state                   = (known after apply)
+      + multipath_devices                   = (known after apply)
+      + port                                = (known after apply)
+      + state                               = (known after apply)
+      + time_created                        = (known after apply)
+      + use_chap                            = (known after apply)
+      + volume_id                           = "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq"
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  ~ attachment_id                = "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq" -> (known after apply)
+  + is_multipath                 = (known after apply)
+oci_core_volume_attachment.transition: Creating...
+oci_core_volume_attachment.transition: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m20s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m30s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m40s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m50s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m00s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m10s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m20s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m30s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m40s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m50s elapsed]
+oci_core_volume_attachment.transition: Still creating... [02m00s elapsed]

@@ -1,0 +1,17 @@
+oci_core_volume_attachment.transition: Destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicte7krxujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq]
+oci_core_volume_attachment.transition: Still destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1....ujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq, 00m10s elapsed]
+oci_core_volume_attachment.transition: Still destroying... [id=ocid1.volumeattachment.oc1.eu-zurich-1....ujjq4tf4pf7yztxexerwuhca2jbszbjjz25tnq, 00m20s elapsed]
+oci_core_volume_attachment.transition: Destruction complete after 24s
+oci_core_volume_attachment.transition: Creating...
+oci_core_volume_attachment.transition: Still creating... [00m10s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m20s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m30s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m40s elapsed]
+oci_core_volume_attachment.transition: Still creating... [00m50s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m00s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m10s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m20s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m30s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m40s elapsed]
+oci_core_volume_attachment.transition: Still creating... [01m50s elapsed]
+oci_core_volume_attachment.transition: Still creating... [02m00s elapsed]

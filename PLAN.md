@@ -425,3 +425,43 @@ Sprint 27 validates whether multipath appears when a volume is first created and
 Backlog Items:
 
 * BV4DB-61. Multipath behavior after upgrading attached non-UHP volume to UHP
+* BV4DB-62. Linux-level clean procedure for non-UHP to UHP reattach operation
+
+## Sprint 28 - Idempotent Linux block-volume preparation for iSCSI and multipath
+
+Status: Planned
+Mode: managed
+Test: integration
+Regression: integration
+
+Sprint 28 implements BV4DB-63 using Sprint 27 TC4 as the baseline for the non-MP to MP transition. The sprint must deliver a reusable, production ready, data-safe Linux preparation script and an evidence harness with 360-degree diagnostics covering IMDS/MDS, OCI metadata, Oracle Cloud Agent and Block Volume Management plugin status/version/logs, iSCSI, multipath, consistent paths, LVM, filesystem, fstab, kernel/journal, and network prerequisites.
+
+Backlog Items:
+
+* BV4DB-63. Idempotent Linux block-volume preparation script for iSCSI and multipath transitions
+* BV4DB-70. Document and validate safe Open-iSCSI node database usage
+
+## Sprint 29 - Operator runbook for single-path to multipath conversion
+
+Status: Progress
+Mode: managed
+Test: integration
+Regression: integration
+
+Backlog Items:
+
+* BV4DB-71. Operator runbook for single-path to multipath conversion
+
+## Sprint 30 - Four-OCPU single-path iSCSI tuning on Oracle-style layout
+
+Status: Progress
+Mode: managed
+Test: integration
+Regression: integration
+Regression scope: iscsi_tuning
+
+Sprint 30 evaluates supported iSCSI network-path tuning on a four-OCPU midrange server without multipath, with every test volume configured at 45 VPUs/GB. It uses the established Oracle-style block-volume layout only for FIO file placement and does not install or test Oracle Database. Later backlog items separately revalidate the Sprint 30 method at 30 and 120 VPUs/GB.
+
+Backlog Items:
+
+* BV4DB-72. Tune single-path iSCSI performance on a four-OCPU midrange server

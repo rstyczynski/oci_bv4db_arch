@@ -3,3 +3,12 @@ model/*.bkp
 
 progress/.DS_Store
 .DS_Store
+
+# Local Codex runtime artifacts
+.codex-cli/
+
+# Terraform local caches and sensitive/runtime state
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars

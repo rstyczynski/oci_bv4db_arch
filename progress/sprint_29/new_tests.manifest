@@ -1,0 +1,2 @@
+# Sprint 29 new tests — used by tests/run.sh --new-only
+integration:test_sprint29_multipath_runbook.sh

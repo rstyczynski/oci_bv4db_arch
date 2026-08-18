@@ -1,0 +1,26 @@
+#cloud-config
+# Run Command IAM membership is created by Terraform before this instance.
+write_files:
+  - path: /etc/sudoers.d/101-oracle-cloud-agent-run-command
+    permissions: '0440'
+    content: |
+      ocarun ALL=(ALL) NOPASSWD:ALL
+  - path: /usr/local/sbin/sprint29-mount.sh
+    permissions: '0755'
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+      path=/dev/oracleoci/oraclevdb
+      mountpoint=/mnt/sprint29
+      for attempt in $(seq 1 60); do
+        target=$(readlink -f "$path" 2>/dev/null || true)
+        if [[ -b "$target" ]]; then break; fi
+        sleep 10
+      done
+      target=$(readlink -f "$path")
+      mkdir -p "$mountpoint"
+      grep -qF "$path $mountpoint " /etc/fstab || echo "$path $mountpoint xfs _netdev,nofail 0 0" >> /etc/fstab
+      if ! blkid "$target" >/dev/null 2>&1; then mkfs.xfs -f "$target"; fi
+      mountpoint -q "$mountpoint" || mount "$mountpoint"
+runcmd:
+  - [ bash, /usr/local/sbin/sprint29-mount.sh ]

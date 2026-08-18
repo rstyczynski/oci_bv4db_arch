@@ -1,0 +1,28 @@
+{
+  "device": "/dev/oracleoci/oraclevdb",
+  "is_multipath": true,
+  "iscsi_login_state": "UNKNOWN",
+  "multipath_devices": [
+    {
+      "ipv4": "169.254.2.4",
+      "iqn": "iqn.2015-12.com.oracleiaas:cb3e0733-fa56-47b8-ac23-3405b9b9039f",
+      "port": 3260
+    },
+    {
+      "ipv4": "169.254.2.5",
+      "iqn": "iqn.2015-12.com.oracleiaas:cb3e0733-fa56-47b8-ac23-3405b9b9039f",
+      "port": 3260
+    },
+    {
+      "ipv4": "169.254.2.6",
+      "iqn": "iqn.2015-12.com.oracleiaas:cb3e0733-fa56-47b8-ac23-3405b9b9039f",
+      "port": 3260
+    },
+    {
+      "ipv4": "169.254.2.7",
+      "iqn": "iqn.2015-12.com.oracleiaas:cb3e0733-fa56-47b8-ac23-3405b9b9039f",
+      "port": 3260
+    }
+  ],
+  "state": "ATTACHED"
+}
