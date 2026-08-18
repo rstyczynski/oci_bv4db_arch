@@ -55,17 +55,17 @@ exercise_preformat_single_path_shim() {
     mkdir -p "$root"
     iscsiadm() {
       if [ "$mode" = wrong_portal ]; then
-        printf 'tcp: [1] 169.254.9.9:3260,1 iqn.test:1\n'
+        printf 'tcp: [1] 169.254.9.9:3260,1 iqn.test:1 (non-flash)\n'
       elif [ "$mode" = prefix_iqn ]; then
-        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:10\n'
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:10 (non-flash)\n'
       elif [ "$mode" = duplicate_session ]; then
-        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
-        printf 'tcp: [2] 169.254.2.2:3260,1 iqn.test:1\n'
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1 (non-flash)\n'
+        printf 'tcp: [2] 169.254.2.2:3260,1 iqn.test:1 (non-flash)\n'
       elif [ "$mode" = duplicate_other_portal ]; then
-        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
-        printf 'tcp: [2] 169.254.9.9:3260,1 iqn.test:1\n'
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1 (non-flash)\n'
+        printf 'tcp: [2] 169.254.9.9:3260,1 iqn.test:1 (non-flash)\n'
       else
-        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1 (non-flash)\n'
       fi
     }
     device_leaf() { printf '/dev/leaf-1\n'; }

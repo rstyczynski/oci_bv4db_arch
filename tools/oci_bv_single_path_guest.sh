@@ -349,9 +349,9 @@ capture_attempt_context() {
 preformat_single_path_proof() {
   local role="$1" iqn="$2" ip="$3" port="$4" path="$5" leaf session_all session_text leaf_type
   session_all=$(iscsiadm -m session 2>/dev/null || true)
-  session_text=$(awk -v iqn="$iqn" '$NF==iqn' <<<"$session_all")
+  session_text=$(awk -v iqn="$iqn" '{for(i=1;i<=NF;i++)if($i==iqn){print;break}}' <<<"$session_all")
   if [ -z "$session_text" ] || [ "$(wc -l <<<"$session_text" | tr -d ' ')" -ne 1 ] \
-    || ! awk -v portal="$ip:$port," 'index($(NF-1),portal)==1{found=1} END{exit !found}' <<<"$session_text"; then
+    || ! awk -v iqn="$iqn" -v portal="$ip:$port," '{for(i=2;i<=NF;i++)if($i==iqn && index($(i-1),portal)==1)found=1} END{exit !found}' <<<"$session_text"; then
     die "$role does not have exactly one expected-portal iSCSI session"
   fi
   leaf=$(device_leaf "$path")

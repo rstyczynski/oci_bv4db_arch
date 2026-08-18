@@ -120,6 +120,18 @@ cover wrong portals, IQN prefix collisions, same- and different-portal
 duplicates, and leaf/global multipath; every fault is proven to stop before a
 destructive-command marker. The fresh review returned GO.
 
+The first run after that review (`20260818_174211`) passed the control-plane
+proof for all five attachments and reached guest preparation, then stopped
+before layout initialization because Oracle Linux appends a transport
+annotation such as `(non-flash)` after the IQN in `iscsiadm -m session`
+output. The parser had incorrectly required the IQN to be the final field.
+All five volumes and compute were deleted and exact-tag inventory returned
+zero. The parser now recognizes the expected IQN as an exact whitespace token
+at any field position, counts every exact-IQN row before requiring cardinality
+one, and independently checks the immediately preceding portal token. Test
+fixtures include the real annotated format while retaining prefix-IQN and
+mixed-portal duplicate rejection.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
