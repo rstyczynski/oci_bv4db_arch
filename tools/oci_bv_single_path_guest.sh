@@ -559,7 +559,7 @@ run_attempt() {
   verify_sentinels
   unit="bv4db-s30-restore-$(date +%s)-$$"
   deadline_epoch=$(( $(date +%s) + 180 ))
-  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,expiry_claimed:false,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
+  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,renewal_count:0,expiry_claimed:false,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
   systemd-run --quiet --unit "$unit" --on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s /usr/local/sbin/bv4db-sprint30-guest lease-check
   systemctl is-active --quiet "$unit.timer" || die "rollback watchdog timer did not become active"
   trap 'cleanup_attempt' EXIT
@@ -645,17 +645,18 @@ EOF
 }
 
 renew_rollback_lease() {
-  local unit now deadline tmp
+  local unit now deadline tmp renewed_at
   exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || die "could not acquire rollback lease-state lock"
   jq -e '.rollback_armed==true and (.unit|length)>0' "$STATE_DIR/rollback.json" >/dev/null || die "rollback lease is not armed"
   jq -e '(.expiry_claimed//false)==false' "$STATE_DIR/rollback.json" >/dev/null || die "rollback expiry was already claimed"
   unit=$(jq -r .unit "$STATE_DIR/rollback.json")
   systemctl is-active --quiet "$unit.timer" || die "rollback timer is not active"
-  now=$(date +%s); deadline=$((now + 180)); tmp=$(json_tmp "$STATE_DIR/rollback.json")
-  jq --argjson deadline "$deadline" --arg renewed_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '.deadline_epoch=$deadline | .renewed_at=$renewed_at' "$STATE_DIR/rollback.json" > "$tmp"
+  now=$(date +%s); deadline=$((now + 180)); renewed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ); tmp=$(json_tmp "$STATE_DIR/rollback.json")
+  jq --argjson deadline "$deadline" --arg renewed_at "$renewed_at" '.deadline_epoch=$deadline | .renewed_at=$renewed_at | .renewal_count=((.renewal_count//0)+1)' "$STATE_DIR/rollback.json" > "$tmp"
   mv "$tmp" "$STATE_DIR/rollback.json"
   jq -e --argjson now "$now" '.rollback_armed==true and .deadline_epoch >= ($now+180)' "$STATE_DIR/rollback.json" >/dev/null || die "rollback deadline renewal was not persisted"
   systemctl is-active --quiet "$unit.timer" || die "rollback timer became inactive during renewal"
+  jq -c '{unit,deadline_epoch,renewed_at,renewal_count}' "$STATE_DIR/rollback.json"
   flock -u 6
 }
 
@@ -666,7 +667,7 @@ lease_check() {
   now=$(date +%s); deadline=$(jq -r .deadline_epoch "$STATE_DIR/rollback.json")
   if [ "$now" -lt "$deadline" ]; then flock -u 6; return 0; fi
   claim="expiry-$now-$$"; tmp=$(json_tmp "$STATE_DIR/rollback.json")
-  jq --arg claim "$claim" '.expiry_claimed=true | .expiry_claim=$claim' "$STATE_DIR/rollback.json" > "$tmp"; mv "$tmp" "$STATE_DIR/rollback.json"
+  jq --arg claim "$claim" --argjson observed_now "$now" --argjson observed_deadline "$deadline" '.expiry_claimed=true | .expiry_claim=$claim | .expiry_observed_now_epoch=$observed_now | .expiry_observed_deadline_epoch=$observed_deadline' "$STATE_DIR/rollback.json" > "$tmp"; mv "$tmp" "$STATE_DIR/rollback.json"
   flock -u 6
   emergency_restore "$claim"
 }
@@ -712,9 +713,12 @@ candidate_proposal() {
 }
 
 commit_emergency_restoration() {
-  local unit="$1" canary="$2" evidence_dir="$3" tuned_rc="$4" claim="$5" evidence
+  local unit="$1" canary="$2" evidence_dir="$3" tuned_rc="$4" claim="$5" evidence renewal_count observed_now observed_deadline
   evidence="$evidence_dir/emergency_restore.json"
-  jq -n --arg unit "$unit" --arg claim "$claim" --argjson tuned_rc "$tuned_rc" '{unit:$unit,expiry_claim:$claim,byte_equal:true,tuned_verify_exit_code:$tuned_rc,live_preflight:true,sentinels_valid:true,restoration_state:"restored"}' | atomic_json "$evidence" || return 1
+  renewal_count=$(jq -r '.renewal_count//0' "$STATE_DIR/rollback.json")
+  observed_now=$(jq -r '.expiry_observed_now_epoch//null' "$STATE_DIR/rollback.json")
+  observed_deadline=$(jq -r '.expiry_observed_deadline_epoch//null' "$STATE_DIR/rollback.json")
+  jq -n --arg unit "$unit" --arg claim "$claim" --argjson tuned_rc "$tuned_rc" --argjson renewal_count "$renewal_count" --argjson observed_now "$observed_now" --argjson observed_deadline "$observed_deadline" '{unit:$unit,expiry_claim:$claim,renewal_count:$renewal_count,expiry_observed_now_epoch:$observed_now,expiry_observed_deadline_epoch:$observed_deadline,byte_equal:true,tuned_verify_exit_code:$tuned_rc,live_preflight:true,sentinels_valid:true,restoration_state:"restored"}' | atomic_json "$evidence" || return 1
   jq -e '.byte_equal==true and (.tuned_verify_exit_code==0 or .tuned_verify_exit_code==null) and .live_preflight==true and .sentinels_valid==true and .restoration_state=="restored" and (.unit|length)>0 and (.expiry_claim|length)>0' "$evidence" >/dev/null || return 1
   jq -n --arg unit "$unit" --argjson canary "$canary" --arg evidence_dir "$evidence_dir" --argjson tuned_rc "$tuned_rc" '{rollback_armed:false,unit:$unit,restoration_state:"restored",source:"host_local_lease",canary:$canary,emergency_tuned_verify_exit_code:$tuned_rc} + (if $canary then {canary_observation_pending:true,evidence_dir:$evidence_dir} else {} end)' | atomic_json "$STATE_DIR/rollback.json"
 }
@@ -822,7 +826,7 @@ arm_lease_canary() {
   mkdir -p "$out"; restore_controls; verify_sentinels
   unit="bv4db-sprint30-restore-$$"
   deadline_epoch=$(( $(date +%s) + 180 ))
-  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,expiry_claimed:false,canary:true,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
+  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,renewal_count:0,expiry_claimed:false,canary:true,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
   systemd-run --quiet --unit "$unit" --on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s /usr/local/sbin/bv4db-sprint30-guest lease-check
   systemctl is-active --quiet "$unit.timer" || die "lease canary watchdog timer did not become active"
   exec 8>"$LOCK_FILE"; flock -w 120 8 || die "lease canary could not acquire mutation lock"

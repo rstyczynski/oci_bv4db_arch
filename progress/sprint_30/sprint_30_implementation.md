@@ -204,6 +204,19 @@ The emergency commit writes and validates claim/unit-correlated evidence before
 atomically disarming `rollback.json`; a fault-injection shim proves evidence
 write failure leaves the prior armed/claimed state intact.
 
+Attempt `20260818_203616` exercised that emergency path during the first
+regular baseline. The periodic watchdog claimed expiry 363 seconds after it
+was armed, terminated FIO, restored byte-identical controls, verified TuneD,
+topology, and sentinels, and exact-tag cleanup again proved zero resources.
+The measurement cannot be reused: FIO exited 128 and its interrupted output is
+not valid JSON. The controller now renews every 30 seconds, uses bounded SSH
+server-alive detection, and archives every guest-confirmed deadline plus a
+monotonic renewal count in `lease_renewals.log`. Expiry evidence records the
+observed deadline, observation epoch, and renewal count before terminal state
+replacement, so any future expiry is attributable rather than inferred. A
+failed/nonzero FIO attempt is rejected before report rendering, preventing an
+invalid interrupted FIO document from obscuring the authoritative failure.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

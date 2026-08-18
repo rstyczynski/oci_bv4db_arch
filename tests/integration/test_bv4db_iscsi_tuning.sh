@@ -176,7 +176,7 @@ exercise_lease_deadline_shim() {
     flock() { :; }
     emergency_restore() { touch "$root/emergency-restored"; jq '.rollback_armed=false' "$STATE_DIR/rollback.json" > "$STATE_DIR/rollback.tmp"; mv "$STATE_DIR/rollback.tmp" "$STATE_DIR/rollback.json"; }
     renew_rollback_lease
-    jq -e '.deadline_epoch==280 and .renewed_at=="2026-08-18T00:00:00Z"' "$STATE_DIR/rollback.json" >/dev/null || return 1
+    jq -e '.deadline_epoch==280 and .renewed_at=="2026-08-18T00:00:00Z" and .renewal_count==1' "$STATE_DIR/rollback.json" >/dev/null || return 1
     [ ! -e "$root/systemctl.journal" ] || return 1
     echo 279 > "$root/now"; lease_check; [ ! -e "$root/emergency-restored" ] || return 1
     echo 280 > "$root/now"; lease_check; [ -e "$root/emergency-restored" ] || return 1
@@ -492,6 +492,9 @@ test_IT4_restore_resume_state_machine() {
   exercise_lease_deadline_shim "$tmp/lease-deadline" || { fail "deadline-based lease renewal/check failed"; return 1; }
   exercise_lease_claim_race_shim "$tmp/lease-claim-race" || { fail "lease expiry claim/renewal serialization failed"; return 1; }
   exercise_emergency_commit_shim "$tmp/emergency-commit" || { fail "emergency evidence-first commit failed"; return 1; }
+  rg -q 'heartbeat_elapsed.*-ge 30' "$RUNNER" || { fail "controller lease heartbeat is not 30 seconds"; return 1; }
+  rg -q 'lease_renewals.log' "$RUNNER" || { fail "controller lease renewal evidence is not archived"; return 1; }
+  rg -q 'ssh_job_running' "$RUNNER" || { fail "controller does not distinguish a running SSH job from a zombie"; return 1; }
   rg -q -- '--on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s .* lease-check' "$GUEST" || return 1
   awk '/emergency_restore\(\)/{inside=1} inside&&/pkill -TERM -x fio/{kill=NR} inside&&/flock -w 180 8/{lock=NR; exit} END{exit !(kill && lock && kill<lock)}' "$GUEST" || return 1
   awk '/emergency_restore\(\)/{inside=1} inside&&/verify_tuned_settled/{tuned=NR} inside&&/commit_emergency_restoration/{commit=NR; exit} END{exit !(tuned && commit && tuned<commit)}' "$GUEST" || return 1

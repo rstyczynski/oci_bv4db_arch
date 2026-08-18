@@ -200,9 +200,14 @@ MATRIX_START=""
 MATRIX_END=""
 ACTIVE_SSH_PID=""
 
-ssh_run() { ssh -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
+ssh_run() { ssh -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
 scp_to() { scp -q -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "$1" "opc@$PUBLIC_IP:$2"; }
 scp_from() { scp -q -r -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "opc@$PUBLIC_IP:$1" "$2"; }
+ssh_job_running() {
+  local state
+  state=$(ps -p "$1" -o stat= 2>/dev/null) || return 1
+  case "$state" in *Z*) return 1 ;; *) return 0 ;; esac
+}
 
 set_prefix() {
   export NAME_PREFIX="$1"
@@ -587,7 +592,7 @@ validate_attempt_topology() {
 }
 
 execute_measurement() {
-  local candidate="$1" block="$2" repetition="$3" attempt_type="${4:-measurement}" remote=/var/tmp/bv4db-sprint30 key local_dir status attempt_file row run_rc=0 heartbeat_elapsed=0
+  local candidate="$1" block="$2" repetition="$3" attempt_type="${4:-measurement}" remote=/var/tmp/bv4db-sprint30 key local_dir status attempt_file row renewal run_rc=0 heartbeat_elapsed=0
   key="${candidate}_${block}_${repetition}"; local_dir="$OUTPUT_DIR/attempts/$key"
   if [ -n "$RESUME_RUN" ] && [ -d "$local_dir" ] && find "$local_dir" -mindepth 1 -print -quit | grep -q .; then
     mkdir -p "$OUTPUT_DIR/interrupted"; mv "$local_dir" "$OUTPUT_DIR/interrupted/$key-$(date -u +%Y%m%dT%H%M%SZ)"
@@ -597,20 +602,24 @@ execute_measurement() {
   validate_attempt_topology "$local_dir"
   ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest run '$candidate' '$repetition' '$remote/attempts/$key' 600 60" & ACTIVE_SSH_PID=$!
   status=passed
-  while kill -0 "$ACTIVE_SSH_PID" >/dev/null 2>&1; do
+  while ssh_job_running "$ACTIVE_SSH_PID"; do
     sleep 15; heartbeat_elapsed=$((heartbeat_elapsed+15))
-    if [ "$heartbeat_elapsed" -ge 60 ] && kill -0 "$ACTIVE_SSH_PID" >/dev/null 2>&1 && ! ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest renew"; then
-      sleep 2
-      if kill -0 "$ACTIVE_SSH_PID" >/dev/null 2>&1; then status=failed; kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true; fi
-      break
+    if [ "$heartbeat_elapsed" -ge 30 ] && ssh_job_running "$ACTIVE_SSH_PID"; then
+      if renewal=$(ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest renew"); then
+        printf '%s candidate=%s block=%s repetition=%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$candidate" "$block" "$repetition" "$renewal" >> "$OUTPUT_DIR/lease_renewals.log"
+      else
+        sleep 2
+        if ssh_job_running "$ACTIVE_SSH_PID"; then status=failed; kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true; fi
+        break
+      fi
     fi
-    [ "$heartbeat_elapsed" -lt 60 ] || heartbeat_elapsed=0
+    [ "$heartbeat_elapsed" -lt 30 ] || heartbeat_elapsed=0
   done
   set +e; wait "$ACTIVE_SSH_PID"; run_rc=$?; set -e; ACTIVE_SSH_PID=""
   [ "$run_rc" -eq 0 ] || status=failed
   ssh_run "sudo chmod -R a+rX '$remote/attempts/$key'" >/dev/null 2>&1 || true; scp_from "$remote/attempts/$key/." "$local_dir/" >/dev/null 2>&1 || true
   attempt_file="$local_dir/attempt.json"
-  if [ -s "$attempt_file" ] && jq -e '.restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false' "$attempt_file" >/dev/null; then
+  if [ "$status" = passed ] && [ -s "$attempt_file" ] && jq -e '.restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false and .fio_exit_code==0' "$attempt_file" >/dev/null && jq -e 'type=="object"' "$local_dir/fio.json" >/dev/null 2>&1; then
     [ -x "$FIO_RENDERER" ] || die "per-attempt FIO renderer is missing or not executable"
     "$FIO_RENDERER" "$local_dir/fio.json" "$local_dir/iostat.json" "$local_dir/fio_report.html" "Sprint 30 $candidate block $block repetition $repetition"
     row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg attempt_type "$attempt_type" --arg block "$block" --argjson repetition "$repetition" --arg result "$status" --arg path "attempts/$key" --slurpfile a "$attempt_file" '{run_id:$run_id,candidate_id:$candidate,attempt_type:$attempt_type,block:$block,repetition:$repetition,vpu:50,result:$result,restoration_state:$a[0].restoration_state,sentinels_valid:$a[0].sentinels_valid,started_at:$a[0].started_at,ended_at:$a[0].ended_at,evidence:[$path]}')
