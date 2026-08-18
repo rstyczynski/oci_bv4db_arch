@@ -556,6 +556,18 @@ append_result() {
   jq --argjson row "$row" '. + [$row]' "$file" | atomic_json "$file"
 }
 
+validate_oci_volume_preflight() {
+  jq -e '.data."vpus-per-gb"==50 and .data."lifecycle-state"=="AVAILABLE"' <<<"$1" >/dev/null
+}
+
+validate_resume_volume_preflight() {
+  local role="$1" expected="$2" state="$3" evidence="$4" volume
+  jq -e --arg prefix "$RUN_TAG-$role" --arg expected "$expected" '.inputs.name_prefix==$prefix and .blockvolume.created==true and .blockvolume.ocid==$expected' "$state" >/dev/null || return 1
+  volume=$(oci bv volume get --volume-id "$expected") || return 1
+  printf '%s\n' "$volume" > "$evidence"
+  validate_oci_volume_preflight "$volume"
+}
+
 validate_attempt_topology() {
   local out="$1" row volume_ocid attachment_ocid role volume attachment records='[]'
   mkdir -p "$out"
@@ -563,7 +575,9 @@ validate_attempt_topology() {
     volume_ocid=$(jq -r .volume_ocid <<<"$row"); attachment_ocid=$(jq -r .attachment_ocid <<<"$row"); role=$(jq -r .role <<<"$row")
     volume=$(oci bv volume get --volume-id "$volume_ocid") || die "volume preflight query failed: $role"
     attachment=$(oci compute volume-attachment get --volume-attachment-id "$attachment_ocid") || die "attachment preflight query failed: $role"
-    jq -e '.data."vpus-per-gb"==50 and .data."lifecycle-state"=="IN_USE"' <<<"$volume" >/dev/null || die "volume tier/state drift: $role"
+    printf '%s\n' "$volume" > "$out/oci_volume_$role.json"
+    printf '%s\n' "$attachment" > "$out/oci_attachment_$role.json"
+    validate_oci_volume_preflight "$volume" || die "volume tier/state drift: $role"
     jq -e --arg volume "$volume_ocid" --arg instance "$(jq -r .compute.ocid "$OUTPUT_DIR/target_manifest.json")" --arg iqn "$(jq -r .iqn <<<"$row")" --arg ip "$(jq -r .ipv4 <<<"$row")" --argjson port "$(jq -r .port <<<"$row")" '.data as $d | ($d|has("is-multipath")) and ($d|has("multipath-devices")) and $d."attachment-type"=="iscsi" and $d."lifecycle-state"=="ATTACHED" and ($d."is-multipath"==false or $d."is-multipath"==null) and ($d."multipath-devices"==null or (($d."multipath-devices"|type)=="array" and ($d."multipath-devices"|length)==0)) and $d."volume-id"==$volume and $d."instance-id"==$instance and $d.iqn==$iqn and $d.ipv4==$ip and $d.port==$port' <<<"$attachment" >/dev/null || die "attachment binding/path drift: $role"
     records=$(jq -c --arg role "$role" --argjson volume "$volume" --argjson attachment "$attachment" '. + [{role:$role,volume:$volume.data,attachment:$attachment.data}]' <<<"$records")
   done < <(jq -c '.volumes[]' "$OUTPUT_DIR/target_manifest.json")
@@ -782,8 +796,7 @@ resume_existing_run() {
   PUBLIC_IP=$(jq -r .compute.public_ip "$state"); oci compute instance get --instance-id "$expected" | jq -e '.data."lifecycle-state"=="RUNNING"' >/dev/null || die "resume compute is not running"
   for role in data1 data2 redo1 redo2 fra; do
     state="$SC_DIR/state-$RUN_TAG-$role.json"; expected=$(jq -r --arg role "$role" '.volumes[]|select(.role==$role)|.volume_ocid' "$OUTPUT_DIR/target_manifest.json")
-    jq -e --arg prefix "$RUN_TAG-$role" --arg expected "$expected" '.inputs.name_prefix==$prefix and .blockvolume.created==true and .blockvolume.ocid==$expected' "$state" >/dev/null || die "resume volume ownership proof failed: $role"
-    oci bv volume get --volume-id "$expected" | jq -e '.data."lifecycle-state"=="IN_USE" and .data."vpus-per-gb"==50' >/dev/null || die "resume volume state/tier failed: $role"
+    validate_resume_volume_preflight "$role" "$expected" "$state" "$OUTPUT_DIR/resume_volume_$role.json" || die "resume volume ownership/state/tier failed: $role"
   done
   secret_ocid=$(jq -r '.secret.ocid // empty' "$INFRA_STATE"); [ -n "$secret_ocid" ] || die "Sprint 1 Vault SSH secret is missing"
   TMPKEY=$(mktemp); chmod 600 "$TMPKEY"; oci secrets secret-bundle get --secret-id "$secret_ocid" --query 'data."secret-bundle-content".content' --raw-output | base64 --decode > "$TMPKEY"

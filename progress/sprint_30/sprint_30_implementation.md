@@ -144,6 +144,17 @@ guest discovery on prepare failure before scaffold cleanup. This converts any
 remaining image-specific discovery failure into actionable evidence rather
 than another opaque exit.
 
+Attempt `20260818_180705` proved that guest preparation and initial topology
+evidence were complete, then the first measurement preflight stopped before
+tuning/FIO because the controller required the nonexistent OCI Block Volume
+state `IN_USE`. The live API returned `AVAILABLE` at 50 VPUs/GB while the
+separate attachment remained `ATTACHED`; Oracle's current Volume model lists
+`AVAILABLE` but no `IN_USE` lifecycle enum. Cleanup again proved zero exact-tag
+resources. The production gate now requires volume `AVAILABLE` at 50 plus the
+independent exact attachment `ATTACHED` predicate, archives both raw responses
+before evaluation, and has command-shim tests rejecting provisioning,
+terminating, invented `IN_USE`, and wrong-tier values.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
@@ -175,8 +186,8 @@ comparison or recommendation.
 
 The first attempt to adopt the temporary direct-created volumes with
 `ensure-blockvolume.sh` was stopped. That helper expects a reusable volume to
-be `AVAILABLE`; an attached direct-created volume is `IN_USE`, so it began to
-create a replacement rather than safely adopting it. The unintended 50-GB
+match its full adoption contract; the direct-created resource did not, so it
+began to create a replacement rather than safely adopting it. The unintended 50-GB
 replacement attachment was immediately detached and the replacement volume was
 deleted. This confirms that Sprint 30 must begin with fresh, scaffold-owned
 resources rather than custom adoption of direct-created resources.

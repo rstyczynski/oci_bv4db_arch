@@ -176,6 +176,35 @@ exercise_attachment_convergence() {
   )
 }
 
+# Production OCI volume-state predicate is exercised against API enum values.
+# shellcheck disable=SC2030,SC2031,SC2034
+exercise_volume_preflight() {
+  local root="$1" state="$2" vpu="${3:-50}"
+  (
+    set -- --plan --output-dir "$root/source"
+    export BV4DB_CONTROLLER_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$RUNNER"
+    validate_oci_volume_preflight "$(jq -n --arg state "$state" --argjson vpu "$vpu" '{data:{"lifecycle-state":$state,"vpus-per-gb":$vpu}}')"
+  )
+}
+
+# Production resume ownership/state gate is exercised with an OCI shim.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_resume_volume_preflight() {
+  local root="$1" api_state="$2" api_vpu="${3:-50}" ownership="${4:-valid}"
+  (
+    set -- --plan --output-dir "$root/source"
+    export BV4DB_CONTROLLER_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$RUNNER"
+    RUN_TAG=unit-resume; mkdir -p "$root"
+    jq -n --arg prefix "unit-resume-data1" --arg ocid "$(if [ "$ownership" = valid ]; then printf volume-1; else printf volume-other; fi)" '{inputs:{name_prefix:$prefix},blockvolume:{created:true,ocid:$ocid}}' > "$root/state.json"
+    oci() { jq -n --arg state "$api_state" --argjson vpu "$api_vpu" '{data:{"lifecycle-state":$state,"vpus-per-gb":$vpu}}'; }
+    validate_resume_volume_preflight data1 volume-1 "$root/state.json" "$root/evidence.json"
+  )
+}
+
 # Production recovery functions call these bounded shims indirectly.
 # shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_failure_recovery_poll() {
@@ -314,6 +343,18 @@ test_IT4_restore_resume_state_machine() {
   for fault in multipath false_nonempty wrong_binding false_missing missing_status missing_primary false_object query_failure bad_timing; do
     if exercise_attachment_convergence "$tmp/attachment-$fault" "$fault" >/dev/null 2>&1; then fail "attachment convergence accepted $fault"; return 1; fi
   done
+  exercise_volume_preflight "$tmp/volume-available" AVAILABLE || { fail "OCI AVAILABLE volume was rejected"; return 1; }
+  for fault in IN_USE PROVISIONING TERMINATING; do
+    if exercise_volume_preflight "$tmp/volume-$fault" "$fault" >/dev/null 2>&1; then fail "OCI volume preflight accepted invalid API state $fault"; return 1; fi
+  done
+  if exercise_volume_preflight "$tmp/volume-bad-vpu" AVAILABLE 45 >/dev/null 2>&1; then fail "OCI volume preflight accepted wrong VPU"; return 1; fi
+  exercise_resume_volume_preflight "$tmp/resume-volume-valid" AVAILABLE || { fail "resume volume gate rejected AVAILABLE+50"; return 1; }
+  jq -e '.data."lifecycle-state"=="AVAILABLE" and .data."vpus-per-gb"==50' "$tmp/resume-volume-valid/evidence.json" >/dev/null || return 1
+  for fault in IN_USE PROVISIONING TERMINATING; do
+    if exercise_resume_volume_preflight "$tmp/resume-volume-$fault" "$fault" >/dev/null 2>&1; then fail "resume volume gate accepted $fault"; return 1; fi
+  done
+  if exercise_resume_volume_preflight "$tmp/resume-volume-vpu" AVAILABLE 45 >/dev/null 2>&1; then fail "resume volume gate accepted wrong VPU"; return 1; fi
+  if exercise_resume_volume_preflight "$tmp/resume-volume-owner" AVAILABLE 50 invalid >/dev/null 2>&1; then fail "resume volume gate accepted wrong ownership"; return 1; fi
   exercise_failure_recovery_poll "$tmp/recovery-delayed" delayed || { fail "delayed OCI appearance was not recovered"; return 1; }
   jq -e '.blockvolume.ocid=="volume-1" and .blockvolume.attachment_ocid=="attachment-1" and .meta.recovered_for_failure_cleanup==true' "$tmp/recovery-delayed/recovered-state.json" >/dev/null || return 1
   [ "$(cat "$tmp/recovery-delayed/volume.calls")" -ge 8 ] || { fail "stable-zero horizon was not polled"; return 1; }
