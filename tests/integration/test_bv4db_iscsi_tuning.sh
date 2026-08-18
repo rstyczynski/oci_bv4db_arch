@@ -128,6 +128,34 @@ exercise_real_resume_proof() {
   )
 }
 
+# Production rollback-unit disarm proof with systemd lifecycle shims.
+# shellcheck disable=SC2030,SC2031,SC2329
+exercise_rollback_stop_shim() {
+  local root="$1" mode="$2"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    mkdir -p "$root"
+    systemctl() {
+      case "$1" in
+        stop)
+          case "$mode" in
+            missing|missing_loaded) echo "Failed to stop $2: Unit $2 not loaded." >&2; return 5 ;;
+            mixed) printf 'Failed to stop %s: Unit %s not loaded.\nAccess denied stopping %s\n' "$2" "$2" "$2" >&2; return 5 ;;
+            generic_failure) return 5 ;;
+            *) return 0 ;;
+          esac ;;
+        is-active) [ "$mode" = active ] && { echo active; return 0; }; echo inactive; return 3 ;;
+        show) [ "$mode" = missing ] && echo not-found || echo loaded ;;
+        reset-failed) return 0 ;;
+        *) return 2 ;;
+      esac
+    }
+    stop_rollback_unit_strict test "$root/rollback_unit_stop.txt"
+  )
+}
+
 exercise_controller_lock() {
   local root="$1" holder
   mkdir -p "$root"
@@ -357,12 +385,19 @@ test_IT4_restore_resume_state_machine() {
   exercise_real_resume_proof "$tmp/resume-clean" "$tmp/current.json" || return 1
   cmp "$tmp/baseline.json" "$tmp/resume-clean/proof.json" || return 1
   jq -e '.rollback_armed==false and .unit=="stale-unit" and .source=="resume_baseline_proof"' "$tmp/resume-clean/state/rollback.json" >/dev/null || return 1
-  rg -q '^stop stale-unit.timer stale-unit.service$' "$tmp/resume-clean/systemctl.journal" || return 1
+  rg -q '^stop stale-unit.timer$' "$tmp/resume-clean/systemctl.journal" || return 1
+  rg -q '^stop stale-unit.service$' "$tmp/resume-clean/systemctl.journal" || return 1
   jq -n '{control:"drift"}' > "$tmp/drift.json"
   if exercise_real_resume_proof "$tmp/resume-drift" "$tmp/drift.json" >/dev/null 2>&1; then fail "real resume proof accepted baseline drift"; return 1; fi
   if exercise_real_resume_proof "$tmp/restore-failure" "$tmp/current.json" 1 >/dev/null 2>&1; then fail "real resume proof accepted failed restoration"; return 1; fi
   if exercise_real_resume_proof "$tmp/stop-failure" "$tmp/current.json" 0 stop_failure >/dev/null 2>&1; then fail "real resume proof swallowed stale-unit stop failure"; return 1; fi
   if exercise_real_resume_proof "$tmp/still-active" "$tmp/current.json" 0 active >/dev/null 2>&1; then fail "real resume proof accepted an active stale unit"; return 1; fi
+  exercise_rollback_stop_shim "$tmp/stop-missing" missing || { fail "garbage-collected rollback unit was not proved inactive"; return 1; }
+  [ "$(rg -c '^(timer|service) stop_exit_code=5 missing_unit_only=true load_state=not-found active_state=inactive$' "$tmp/stop-missing/rollback_unit_stop.txt")" -eq 2 ] || return 1
+  if exercise_rollback_stop_shim "$tmp/stop-generic" generic_failure >/dev/null 2>&1; then fail "generic rollback stop failure was accepted"; return 1; fi
+  if exercise_rollback_stop_shim "$tmp/stop-mixed" mixed >/dev/null 2>&1; then fail "mixed missing and generic rollback stop failure was accepted"; return 1; fi
+  if exercise_rollback_stop_shim "$tmp/stop-missing-loaded" missing_loaded >/dev/null 2>&1; then fail "missing-unit text with loaded state was accepted"; return 1; fi
+  if exercise_rollback_stop_shim "$tmp/stop-active" active >/dev/null 2>&1; then fail "active rollback unit was accepted"; return 1; fi
   exercise_controller_lock "$tmp/controller-lock" || { fail "controller-lifetime lock failed"; return 1; }
   exercise_attachment_convergence "$tmp/attachment-eventual" eventual || { fail "attachment false state did not converge"; return 1; }
   [ "$(cat "$tmp/attachment-eventual/attachment.calls")" -eq 3 ] || { fail "attachment convergence was not polled"; return 1; }

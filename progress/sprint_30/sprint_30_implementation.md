@@ -171,6 +171,17 @@ restoration writes `restoration_checks.json` with individual exit codes and
 convergence when a profile is active, all other authoritative checks, and the
 overall restoration result to be zero.
 
+Attempt `20260818_185628` supplied the missing classification. TuneD verified
+successfully on its first post-restore check, the bounded controls were
+byte-identical, and live topology preflight passed. The only failing step was
+`systemctl stop` for the transient rollback timer/service; its output had
+previously been discarded. Cleanup again proved zero exact-tag volumes and
+instances. Disarm now archives the stop response and both units' load/active
+states. It tolerates a nonzero stop only when systemd explicitly identifies a
+garbage-collected/not-loaded transient unit and both postconditions prove no
+active timer or service. Generic stop failure and any active state remain
+fail-closed, with focused production-function shims covering all three cases.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

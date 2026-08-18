@@ -149,6 +149,8 @@ Before a NIC, RPS/RFS/XPS, MTU, offload, coalescing, channel, ring, or TuneD mut
 
 Because TuneD can settle asynchronously after profile restoration, `tuned-adm verify` is retried for a bounded 30-second window and every response is archived as plain-ASCII evidence. It must converge successfully before the rollback lease is disarmed; a persistent mismatch remains fail-closed even when the explicitly captured control bundle is byte-equal. Skipped restoration checks are recorded as `null`, not as successful checks.
 
+Rollback-unit disarm stops and classifies the timer and service independently, archiving each `systemctl stop` response and post-stop load/active state. A nonzero stop for one unit is accepted only when every nonempty diagnostic line exactly identifies that same unit as missing/not loaded, its `LoadState` is `not-found` or `unknown`, and its active state is inactive, failed, or unknown. Mixed/generic errors, missing text paired with a loaded unit, or any active state remain fail-closed.
+
 No candidate may reformat, repartition, detach, recreate, or mount over the established block-volume layout. No tuning state may leak into the next candidate.
 
 ### Regular Project Test Report

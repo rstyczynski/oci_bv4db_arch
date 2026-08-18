@@ -275,10 +275,34 @@ verify_all_iscsi_socket_cc() {
 }
 
 stop_rollback_unit_strict() {
-  local unit="$1" suffix unit_state
-  systemctl stop "$unit.timer" "$unit.service" >/dev/null 2>&1 || return 1
+  local unit="$1" out="${2:-/dev/null}" suffix unit_state load_state stop_rc missing_only line seen raw
   for suffix in timer service; do
+    raw=$(mktemp); stop_rc=0; missing_only=false; seen=false
+    if LC_ALL=C systemctl stop "$unit.$suffix" > "$raw" 2>&1; then stop_rc=0; else stop_rc=$?; fi
+    if [ "$stop_rc" -ne 0 ]; then
+      missing_only=true
+      while IFS= read -r line; do
+        [ -n "$line" ] || continue
+        seen=true
+        case "$line" in
+          "Failed to stop $unit.$suffix: Unit $unit.$suffix not loaded."|"Failed to stop $unit.$suffix: Unit $unit.$suffix not found."|"Unit $unit.$suffix not loaded."|"Unit $unit.$suffix not found.") ;;
+          *) missing_only=false ;;
+        esac
+      done < "$raw"
+      [ "$seen" = true ] || missing_only=false
+    fi
     unit_state=$(systemctl is-active "$unit.$suffix" 2>/dev/null || true)
+    load_state=$(systemctl show --property=LoadState --value "$unit.$suffix" 2>/dev/null || true)
+    [ -n "$load_state" ] || load_state=unknown
+    {
+      printf '%s stop_exit_code=%s missing_unit_only=%s load_state=%s active_state=%s\n' "$suffix" "$stop_rc" "$missing_only" "$load_state" "$unit_state"
+      LC_ALL=C tr -cd '\11\12\40-\176' < "$raw"
+    } >> "$out"
+    rm -f "$raw"
+    if [ "$stop_rc" -ne 0 ]; then
+      [ "$missing_only" = true ] || return 1
+      case "$load_state" in not-found|unknown) ;; *) return 1;; esac
+    fi
     case "$unit_state" in inactive|failed|unknown) ;; *) return 1;; esac
   done
   systemctl reset-failed "$unit.service" >/dev/null 2>&1 || true
@@ -509,7 +533,7 @@ run_attempt() {
       verify_tuned_settled "$out/tuned_verify.txt" 6 5 || { tuned_verify_rc=$?; restore_rc=$tuned_verify_rc; }
     fi
     if [ "$restore_rc" -eq 0 ]; then live_preflight_rc=0; live_preflight "$(jq -r .tcp_congestion_control "$BASELINE")" >/dev/null || { live_preflight_rc=$?; restore_rc=$live_preflight_rc; }; fi
-    if [ "$restore_rc" -eq 0 ]; then stop_unit_rc=0; stop_rollback_unit_strict "$unit" || { stop_unit_rc=$?; restore_rc=$stop_unit_rc; }; fi
+    if [ "$restore_rc" -eq 0 ]; then stop_unit_rc=0; stop_rollback_unit_strict "$unit" "$out/rollback_unit_stop.txt" || { stop_unit_rc=$?; restore_rc=$stop_unit_rc; }; fi
     jq -n --argjson restore_controls_rc "$restore_controls_rc" --argjson capture_rc "$capture_rc" --argjson byte_equal "$byte_equal" --argjson tuned_verify_rc "$tuned_verify_rc" --argjson live_preflight_rc "$live_preflight_rc" --argjson stop_unit_rc "$stop_unit_rc" --argjson restoration_rc "$restore_rc" \
       '{restore_controls_exit_code:$restore_controls_rc,capture_controls_exit_code:$capture_rc,byte_equal:$byte_equal,tuned_verify_exit_code:$tuned_verify_rc,tuned_verify_advisory:false,live_preflight_exit_code:$live_preflight_rc,stop_rollback_unit_exit_code:$stop_unit_rc,restoration_exit_code:$restoration_rc}' > "$out/restoration_checks.json"
     if [ "$restore_rc" -eq 0 ]; then

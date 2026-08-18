@@ -161,7 +161,7 @@ def main() -> int:
         assert start < end and (end - start).total_seconds() >= 600
         for name in (
             "fio.json", "iostat.json", "workload.fio", "controls_before.json", "controls_applied.json",
-            "controls_restored.json", "restoration_checks.json", "errors_before.json", "errors_after.json", "state.json", "attempt.json",
+            "controls_restored.json", "restoration_checks.json", "rollback_unit_stop.txt", "errors_before.json", "errors_after.json", "state.json", "attempt.json",
             "oci_preflight.json", "guest_preflight.json", "fio_report.html",
         ):
             assert (evidence / name).is_file(), f"missing {name} in {evidence}"
@@ -182,6 +182,12 @@ def main() -> int:
             assert restoration.get("tuned_verify_exit_code") == 0
             tuned_log = evidence / "tuned_verify.txt"
             assert tuned_log.is_file() and "exit_code=0" in tuned_log.read_text(encoding="ascii")
+        stop_log = (evidence / "rollback_unit_stop.txt").read_text(encoding="ascii")
+        stop_matches = re.findall(r"^(timer|service) stop_exit_code=(\d+) missing_unit_only=(true|false) load_state=(\S+) active_state=(inactive|failed|unknown)$", stop_log, re.MULTILINE)
+        assert {match[0] for match in stop_matches} == {"timer", "service"} and len(stop_matches) == 2
+        for _, stop_rc, missing_only, load_state, _ in stop_matches:
+            if stop_rc != "0":
+                assert missing_only == "true" and load_state in {"not-found", "unknown"}
         states = [item["state"] for item in load(evidence / "state.json")]
         for state in ("planned", "applying", "active", "measuring", "restoring", "restored", "passed"):
             assert state in states, f"missing {state} transition in {evidence}"
