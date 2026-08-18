@@ -14,7 +14,7 @@ volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
 | --- | --- | --- |
 | Setup / inception | Define the problem, constraints, and feasibility prerequisites. | `sprint_30_setup.md` exists; OCI access verified. |
 | Elaboration / design | Approved design and executable test specification. | `sprint_30_design.md` accepted; tier changed to 50 after the documented 45 failure. |
-| Construction | Implement the approved command, fill the existing test skeletons, and prepare functional test sequences. | Controller, guarded guest executor, and live validators implemented; live validation remains. |
+| Construction | Implement the approved command, fill the existing test skeletons, and prepare functional test sequences. | Complete; final RUP safety re-review returned GO for a fresh live A3. |
 | Quality gates | Run A3 first, then scoped B3, with timestamped logs. | Initial A3 failed before the executor existed; a fresh A3 is pending. |
 | Documentation | Reconcile design, implementation, evidence, test results, and backlog traceability. | Not started; cannot start before construction/gates finish. |
 
@@ -38,6 +38,10 @@ order, and terminates compute only after every volume teardown succeeds.
 | --- | --- | --- | --- |
 | `tools/oci_bv_single_path_tuning.sh` | Deterministic plan, fresh scaffold lifecycle, pinned-image/topology gates, remote orchestration, attempt index, reports, and ordered teardown. | Implemented; live validation pending | IT-1--IT-4 pass locally. |
 | `tools/oci_bv_single_path_guest.sh` | Exact-device iSCSI login, boot-device exclusion, guarded empty-volume layout initialization, baseline capture, reversible candidates, FIO/iostat evidence, rollback canaries, and quiescence. | Implemented; live validation pending | Bash syntax and ShellCheck pass. |
+| `tools/oci_bv_controller_lock.sh` | Atomic controller-lifetime exclusion with fail-closed live-owner handling and auditable stale-lock recovery. | Implemented; live validation pending | Active-owner rejection and stale recovery pass in IT-4. |
+| `tools/analyze_bv_single_path.py` | Primary/per-job statistics, stability/drift gates, error/CPU guards, Pareto ranking, tie-breaking, and Markdown/HTML recommendation reports. | Implemented; live validation pending | Python compilation passes; independent live reconciliation is specified in IT-6/7/9. |
+| `tools/index_oci_attempt_metrics.py` | Reconcile OCI Monitoring datapoints to each exact FIO attempt window. | Implemented; live validation pending | Python compilation passes. |
+| `tools/verify_bv_single_path_results.py` | Independently recompute options, artifacts, timestamps, statistics, thresholds, Pareto choice, restoration, topology, and metric-window indexes. | Implemented; live validation pending | Python compilation passes; invoked by IT-6/7/9. |
 | `tests/integration/test_bv4db_iscsi_tuning.sh` | Ten approved integration-test functions in the `iscsi_tuning` domain, including one-shot live execution and immutable evidence validation. | Implemented; live validation pending | IT-1--IT-4 pass; IT-5--IT-10 require the completed live directory. |
 | `tests/manifests/component_iscsi_tuning.manifest` | Narrow B3 regression group for the changed tuning domain only. | Complete | Manifest/dispatcher checked. |
 
@@ -59,6 +63,16 @@ the five attached Block Volumes only:
 
 The command remains unverified until the fresh A3 live gate completes. No
 performance claim or recommendation is accepted from code inspection alone.
+
+Before live execution, the final read-only RUP safety review confirmed that
+all stop-ship findings were closed. The reviewed controls include exact OCI
+attachment-to-volume/instance binding, `is-multipath=false`, x86-64 guest
+identity, per-socket congestion-control proof, conservative TuneD exclusion,
+controller- and attempt-lifetime exclusion, strict rollback timer/service
+disarm, canary observation-pending state, byte-equal resume proof, and
+production-function command-shim coverage. The local pre-live gate passed
+Bash syntax, ShellCheck, Python compilation, `git diff --check`, and IT-1
+through IT-4.
 
 ## Live environment status
 
