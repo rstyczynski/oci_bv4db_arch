@@ -168,7 +168,8 @@ def main() -> int:
         for context in ("context_before", "context_applied", "context_restored"):
             assert (evidence / context).is_dir() and (evidence / context / "iscsi_sessions.txt").is_file(), f"missing {context} in {evidence}"
         oci_preflight = load(evidence / "oci_preflight.json")
-        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and item["attachment"]["is-multipath"] is False and not (item["attachment"].get("multipath-devices") or []) and item["attachment"]["volume-id"] == manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == manifest["compute"]["ocid"] for item in oci_preflight)
+        manifest_volume_rows = {item["role"]: item for item in manifest["volumes"]}
+        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
         assert all(load(evidence / "guest_preflight.json").get(key) is True for key in ("sessions_valid", "routes_valid", "devices_unique", "boot_excluded", "multipath_absent", "mounts_valid", "lvm_valid", "socket_congestion_control_valid", "sentinels_valid"))
         assert load(evidence / "controls_before.json") == load(evidence / "controls_restored.json"), f"restore drift in {evidence}"
         states = [item["state"] for item in load(evidence / "state.json")]

@@ -346,6 +346,20 @@ capture_attempt_context() {
   tuned-adm verify > "$out/tuned_verify.txt" 2>&1 || true
 }
 
+preformat_single_path_proof() {
+  local role="$1" iqn="$2" ip="$3" port="$4" path="$5" leaf session_all session_text leaf_type
+  session_all=$(iscsiadm -m session 2>/dev/null || true)
+  session_text=$(awk -v iqn="$iqn" '$NF==iqn' <<<"$session_all")
+  if [ -z "$session_text" ] || [ "$(wc -l <<<"$session_text" | tr -d ' ')" -ne 1 ] \
+    || ! awk -v portal="$ip:$port," 'index($(NF-1),portal)==1{found=1} END{exit !found}' <<<"$session_text"; then
+    die "$role does not have exactly one expected-portal iSCSI session"
+  fi
+  leaf=$(device_leaf "$path")
+  leaf_type=$(lsblk -dnro TYPE "$leaf" 2>/dev/null) || die "$role device type inspection failed"
+  [ "$leaf_type" != mpath ] || die "$role resolved to a dm-multipath device"
+  ! lsblk -nro TYPE | grep -Fxq mpath || die "dm-multipath device detected before layout initialization"
+}
+
 prepare() {
   local input="$1" authorization="$2" evidence="$3" role iqn ip port path root_leaf leaf sig manifest_sha run_id bypath candidate mounts observed_size expected_size pvs_output
   local leaves='[]' identities='[]' sent='[]' sentinel digest
@@ -370,7 +384,7 @@ prepare() {
     for _ in $(seq 1 60); do block_device_exists "$path" && break; sleep 2; done
     block_device_exists "$path" || die "$role path did not appear: $path"
     leaf=$(device_leaf "$path"); [ "$leaf" != "$root_leaf" ] || die "boot device selected for $role"
-    [ "$(iscsiadm -m session 2>/dev/null | grep -F -c "$iqn")" -eq 1 ] || die "$role does not have exactly one iSCSI session"
+    preformat_single_path_proof "$role" "$iqn" "$ip" "$port" "$path"
     bypath=$(iscsi_bypath_for "$iqn" "$leaf" || true)
     [ -n "$bypath" ] || die "$role device cannot be bound to its IQN"
     leaves=$(jq -c --arg leaf "$leaf" '. + [$leaf]' <<<"$leaves")

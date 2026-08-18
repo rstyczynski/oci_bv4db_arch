@@ -94,12 +94,31 @@ returned `is-multipath=null` and `multipath-devices=null`; the strict accepted
 single-path gate rejected that non-boolean evidence. Failure cleanup deleted
 the exact owned DATA1 volume and compute instance and proved an empty
 run-tagged inventory. Oracle's current API documentation says the attachment
-GET eventually reports a boolean multipath value, so the controller now waits
-for bounded control-plane convergence while still requiring an explicit
-`is-multipath=false` and an explicitly empty array. It fails closed on wrong
-binding, true/nonempty/non-array values, query errors, or a five-minute
-timeout. Production polling values are fixed; source-only shims cover delayed
-success and all rejection cases. A fresh RUP safety re-review returned GO.
+GET reports a boolean multipath value, so the controller first tried bounded
+control-plane convergence while still requiring an explicit false/empty pair.
+A second fresh attempt proved that the service persistently returns the
+present-but-null pair on this explicitly requested single-path, four-OCPU
+attachment. After the Product Owner directed continuation, the design was
+corrected to use a conjunctive proof: requested false, a shape ineligible for
+multipath, exact iSCSI binding and primary endpoint, no true/nonempty control-
+plane value, and later exactly one guest session with no multipath device
+before layout initialization or FIO. Wrong binding, a secondary endpoint,
+true/nonempty/non-array values, query errors, or guest topology mismatch still
+fail closed.
+
+That attempt also exposed an independent plan-state serialization defect:
+`resume:($resume|select(length>0))` emitted no object for a fresh run and left
+`run_state.json` empty. The expression now records `resume:null`, and IT-1
+requires a nonempty planned run state before any live provisioning.
+
+The final managed-sprint safety review also required the guest's destructive
+boundary to prove the same conjunction independently. Before any `pvcreate`
+or `mkfs`, the guest now parses exact IQN tokens, requires exactly one session
+for that IQN on the expected portal, rejects both leaf and global `mpath`
+device types, and proves the persistent IQN binding. Production-function shims
+cover wrong portals, IQN prefix collisions, same- and different-portal
+duplicates, and leaf/global multipath; every fault is proven to stop before a
+destructive-command marker. The fresh review returned GO.
 
 ## Live environment status
 

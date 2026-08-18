@@ -44,6 +44,44 @@ exercise_guest_preflight_shims() {
   )
 }
 
+# Production pre-format proof is invoked directly with guest-command shims.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_preformat_single_path_shim() {
+  local root="$1" mode="$2"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    mkdir -p "$root"
+    iscsiadm() {
+      if [ "$mode" = wrong_portal ]; then
+        printf 'tcp: [1] 169.254.9.9:3260,1 iqn.test:1\n'
+      elif [ "$mode" = prefix_iqn ]; then
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:10\n'
+      elif [ "$mode" = duplicate_session ]; then
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
+        printf 'tcp: [2] 169.254.2.2:3260,1 iqn.test:1\n'
+      elif [ "$mode" = duplicate_other_portal ]; then
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
+        printf 'tcp: [2] 169.254.9.9:3260,1 iqn.test:1\n'
+      else
+        printf 'tcp: [1] 169.254.2.2:3260,1 iqn.test:1\n'
+      fi
+    }
+    device_leaf() { printf '/dev/leaf-1\n'; }
+    lsblk() {
+      if [[ "$*" == *"-dnro TYPE"* ]]; then
+        if [ "$mode" = mpath_leaf ]; then printf 'mpath\n'; else printf 'disk\n'; fi
+      elif [[ "$*" == *"-nro TYPE"* ]]; then
+        if [ "$mode" = mpath_global ]; then printf 'disk\nmpath\n'; else printf 'disk\n'; fi
+      else return 1; fi
+    }
+    pvcreate() { touch "$root/destructive-command"; }
+    mkfs.ext4() { touch "$root/destructive-command"; }
+    preformat_single_path_proof data1 iqn.test:1 169.254.2.2 3260 /dev/oracleoci/oraclevdb
+  )
+}
+
 # shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_real_resume_proof() {
   local root="$1" current="$2" restore_result="${3:-0}" systemctl_mode="${4:-inactive}"
@@ -114,19 +152,27 @@ exercise_attachment_convergence() {
       [ "$mode" != query_failure ] || return 1
       [ -f "$root/attachment.calls" ] && count=$(cat "$root/attachment.calls")
       count=$((count + 1)); echo "$count" > "$root/attachment.calls"
-      if [ "$mode" = eventual ] && [ "$count" -ge 3 ]; then multipath=false; devices='[]'; fi
+      if [ "$mode" = eventual ]; then
+        if [ "$count" -ge 3 ]; then multipath=false; devices='[]'; else state=ATTACHING; fi
+      fi
       [ "$mode" != multipath ] || { multipath=true; devices='[{"ipv4":"10.0.0.3"}]'; }
       [ "$mode" != false_null ] || multipath=false
       [ "$mode" != false_missing ] || multipath=false
       [ "$mode" != false_object ] || { multipath=false; devices='{}'; }
+      [ "$mode" != false_nonempty ] || { multipath=false; devices='[{"ipv4":"10.0.0.3"}]'; }
       [ "$mode" != wrong_binding ] || volume='volume-2'
       response=$(jq -n --arg state "$state" --arg volume "$volume" --arg instance "$instance" \
         --argjson multipath "$multipath" --argjson devices "$devices" \
-        '{data:{"lifecycle-state":$state,"volume-id":$volume,"instance-id":$instance,"is-multipath":$multipath,"multipath-devices":$devices}}')
-      if [ "$mode" = false_missing ]; then jq 'del(.data."multipath-devices")' <<<"$response"; else printf '%s\n' "$response"; fi
+        '{data:{"attachment-type":"iscsi","lifecycle-state":$state,"volume-id":$volume,"instance-id":$instance,"is-multipath":$multipath,"multipath-devices":$devices,iqn:"iqn.test:1",ipv4:"169.254.2.2",port:3260}}')
+      case "$mode" in
+        false_missing) jq 'del(.data."multipath-devices")' <<<"$response" ;;
+        missing_status) jq 'del(.data."is-multipath")' <<<"$response" ;;
+        missing_primary) jq 'del(.data.iqn)' <<<"$response" ;;
+        *) printf '%s\n' "$response" ;;
+      esac
     }
     sleep() { :; }
-    wait_for_exact_single_path_attachment attachment-1 volume-1 instance-1 "$root/attachment.json"
+    wait_for_single_path_attachment_evidence attachment-1 volume-1 instance-1 iqn.test:1 169.254.2.2 3260 "$root/attachment.json"
   )
 }
 
@@ -195,7 +241,9 @@ test_IT1_static_runner_contract() {
   rg -q 'SPRINT30_AUTHORIZE_FRESH_LAYOUT' "$RUNNER" || return 1
   rg -q 'fresh_layout_authorization|layout_authorization.consumed' "$RUNNER" "$GUEST" || return 1
   rg -q 'ATTEMPT_LOCK_FILE' "$GUEST" || return 1
+  awk '/preformat_single_path_proof "\$role"/{proof=NR} /^[[:space:]]*pvcreate /{if(!first)first=NR} END{exit !(proof && first && proof<first)}' "$GUEST" || return 1
   "$RUNNER" --plan --output-dir "$tmp" --seed 30050 >/dev/null || return 1
+  jq -e '.status=="planned" and .vpu==50 and .resume==null' "$tmp/run_state.json" >/dev/null || return 1
   jq -e '.vpus==[50] and .repeats==3 and .multipath==false and .oracle_database==false and (.layout|length)==5 and ([.layout[].path]|sort)==["/dev/oracleoci/oraclevdb","/dev/oracleoci/oraclevdc","/dev/oracleoci/oraclevdd","/dev/oracleoci/oraclevde","/dev/oracleoci/oraclevdf"] and .fio.global.ioengine=="libaio" and .fio.global.direct==1 and .fio.global.runtime==600 and .fio.global.ramp_time==60 and ([.fio.jobs[].id]|sort)==["data-8k","fra-1m","redo"]' "$tmp/experiment_plan.json" >/dev/null || return 1
   if "$RUNNER" --plan --output-dir "$tmp/rejected" --vpu 45 >/dev/null 2>&1; then fail "runner accepted non-Sprint-30 VPU"; return 1; fi
   if "$RUNNER" --execute --output-dir "$tmp/partial" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted a partial live matrix"; return 1; fi
@@ -231,6 +279,11 @@ test_IT3_fail_closed_preflight_matrix() {
   done
   exercise_guest_preflight_shims "$tmp/guest-valid" || return 1
   if exercise_guest_preflight_shims "$tmp/guest-duplicate" 1 >/dev/null 2>&1; then fail "real guest preflight accepted duplicate iSCSI sessions"; return 1; fi
+  exercise_preformat_single_path_shim "$tmp/preformat-valid" valid || { fail "pre-format proof rejected exact single path"; return 1; }
+  for fault in wrong_portal prefix_iqn duplicate_session duplicate_other_portal mpath_leaf mpath_global; do
+    if exercise_preformat_single_path_shim "$tmp/preformat-$fault" "$fault" >/dev/null 2>&1; then fail "pre-format proof accepted $fault"; return 1; fi
+    [ ! -e "$tmp/preformat-$fault/destructive-command" ] || { fail "pre-format $fault reached a destructive command"; return 1; }
+  done
   pass IT-3
 }
 
@@ -257,7 +310,8 @@ test_IT4_restore_resume_state_machine() {
   exercise_attachment_convergence "$tmp/attachment-eventual" eventual || { fail "attachment false state did not converge"; return 1; }
   [ "$(cat "$tmp/attachment-eventual/attachment.calls")" -eq 3 ] || { fail "attachment convergence was not polled"; return 1; }
   jq -e '.data."is-multipath"==false and .data."multipath-devices"==[]' "$tmp/attachment-eventual/attachment.json" >/dev/null || return 1
-  for fault in multipath wrong_binding timeout false_null false_missing false_object query_failure bad_timing; do
+  exercise_attachment_convergence "$tmp/attachment-null" false_null || { fail "documented single-path request with null control-plane status was rejected"; return 1; }
+  for fault in multipath false_nonempty wrong_binding false_missing missing_status missing_primary false_object query_failure bad_timing; do
     if exercise_attachment_convergence "$tmp/attachment-$fault" "$fault" >/dev/null 2>&1; then fail "attachment convergence accepted $fault"; return 1; fi
   done
   exercise_failure_recovery_poll "$tmp/recovery-delayed" delayed || { fail "delayed OCI appearance was not recovered"; return 1; }
@@ -281,7 +335,7 @@ test_IT5_live_50_vpu_topology() {
   jq -e '(.volumes|length)==5 and all(.volumes[];.vpu==50 and .created==true and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.attachment_ocid|length)>0) and ([.volumes[].path]|unique|length)==5 and .guest_cpus==8 and .guest_architecture=="x86_64" and .layout.data_stripes==2 and .layout.redo_stripes==2 and .layout.stripe_kib==256 and .layout.fra_direct==true and .layout.mounts==["/u02/oradata","/u03/redo","/u04/fra"] and .proof=="discovery/guest_preflight_initial.json" and .sentinels_valid==true' "$dir/live_topology.json" >/dev/null || return 1
   jq -e '.boot_excluded and .multipath_absent and .mounts_valid and .lvm_valid and .socket_congestion_control_valid' "$dir/discovery/guest_preflight_initial.json" >/dev/null || return 1
   jq -e '.compute.shape=="VM.Standard.E5.Flex" and .compute.ocpus==4 and .compute.memory_gb==32 and .compute.architecture=="x86_64" and (.compute.image_ocid|length)>0' "$dir/target_manifest.json" >/dev/null || return 1
-  for role in data1 data2 redo1 redo2 fra; do jq -e --arg role "$role" --slurpfile manifest "$dir/target_manifest.json" '.data."is-multipath"==false and ((.data."multipath-devices"//[])|length)==0 and .data."volume-id"==($manifest[0].volumes[]|select(.role==$role)|.volume_ocid) and .data."instance-id"==$manifest[0].compute.ocid' "$dir/discovery/attachment_$role.json" >/dev/null || return 1; done
+  for role in data1 data2 redo1 redo2 fra; do jq -e --arg role "$role" --slurpfile manifest "$dir/target_manifest.json" '($manifest[0].volumes[]|select(.role==$role)) as $v | .data as $d | ($d|has("is-multipath")) and ($d|has("multipath-devices")) and $d."attachment-type"=="iscsi" and ($d."is-multipath"==false or $d."is-multipath"==null) and ($d."multipath-devices"==null or (($d."multipath-devices"|type)=="array" and ($d."multipath-devices"|length)==0)) and $d."volume-id"==$v.volume_ocid and $d."instance-id"==$manifest[0].compute.ocid and $d.iqn==$v.iqn and $d.ipv4==$v.ipv4 and $d.port==$v.port' "$dir/discovery/attachment_$role.json" >/dev/null || return 1; done
   [ -s "$dir/discovery/lvs.json" ] && [ -s "$dir/discovery/iscsi_sessions.txt" ] || return 1
   pass IT-5
 }

@@ -151,7 +151,7 @@ write_plan() {
     map(if .disposition == "testable" then . + {execution_status:"pending"} else . end)
   ' <<<"$CATALOGUE" | atomic_json "$ledger"
   jq -n --arg status planned --arg vpu "$VPU" --arg output_dir "$OUTPUT_DIR" --arg resume "$RESUME_RUN" \
-    '{status:$status,vpu:($vpu|tonumber),output_dir:$output_dir,resume:($resume|select(length>0))}' | atomic_json "$OUTPUT_DIR/run_state.json"
+    '{status:$status,vpu:($vpu|tonumber),output_dir:$output_dir,resume:(if ($resume|length)>0 then $resume else null end)}' | atomic_json "$OUTPUT_DIR/run_state.json"
   log "PLAN: $plan"
   log "LEDGER: $ledger"
 }
@@ -343,8 +343,8 @@ controller_exit() {
   exit "$ec"
 }
 
-wait_for_exact_single_path_attachment() {
-  local attachment_ocid="$1" volume_ocid="$2" instance_ocid="$3" evidence="$4"
+wait_for_single_path_attachment_evidence() {
+  local attachment_ocid="$1" volume_ocid="$2" instance_ocid="$3" expected_iqn="$4" expected_ip="$5" expected_port="$6" evidence="$7"
   local poll_seconds=5 timeout_seconds=300
   local elapsed=0 state
   if [ "$BV4DB_CONTROLLER_TEST_MODE" = true ]; then
@@ -359,7 +359,7 @@ wait_for_exact_single_path_attachment() {
     jq -e --arg volume "$volume_ocid" --arg instance "$instance_ocid" \
       '.data."volume-id"==$volume and .data."instance-id"==$instance' "$evidence" >/dev/null || return 1
     jq -e '.data."is-multipath"!=true and ((.data."multipath-devices"==null) or ((.data."multipath-devices"|type)=="array" and (.data."multipath-devices"|length)==0))' "$evidence" >/dev/null || return 1
-    if jq -e '.data."lifecycle-state"=="ATTACHED" and .data."is-multipath"==false and (.data."multipath-devices"|type)=="array" and (.data."multipath-devices"|length)==0' "$evidence" >/dev/null; then
+    if jq -e --arg iqn "$expected_iqn" --arg ip "$expected_ip" --argjson port "$expected_port" '.data as $d | ($d|has("is-multipath")) and ($d|has("multipath-devices")) and $d."attachment-type"=="iscsi" and $d."lifecycle-state"=="ATTACHED" and ($d."is-multipath"==false or $d."is-multipath"==null) and ($d."multipath-devices"==null or (($d."multipath-devices"|type)=="array" and ($d."multipath-devices"|length)==0)) and $d.iqn==$iqn and $d.ipv4==$ip and $d.port==$port' "$evidence" >/dev/null; then
       return 0
     fi
     state=$(jq -r '.data."lifecycle-state" // empty' "$evidence")
@@ -416,11 +416,13 @@ provision_fresh_with_scaffold() {
     state="$SC_DIR/state-$prefix.json"
     jq -e '.blockvolume.created==true and .blockvolume.vpus_per_gb==50 and .blockvolume.is_multipath==false and (.meta.creation_order|index("blockvolume")!=null)' "$state" >/dev/null || die "scaffold volume was not freshly created at 50 VPUs: $role"
     attach_json="$OUTPUT_DIR/discovery/attachment_$role.json"
-    wait_for_exact_single_path_attachment \
+    wait_for_single_path_attachment_evidence \
       "$(jq -r '.blockvolume.attachment_ocid' "$state")" \
-      "$(jq -r '.blockvolume.ocid' "$state")" "$compute_ocid" "$attach_json" \
-      || die "attachment did not converge to exactly bound single-path: $role"
-    row=$(jq -n --arg role "$role" --arg path "$path" --argjson size "$size" --arg state "$state" --slurpfile a "$attach_json" --slurpfile s "$state" '{role:$role,path:$path,size_gb:$size,vpu:($s[0].blockvolume.vpus_per_gb|tonumber),created:$s[0].blockvolume.created,volume_ocid:$s[0].blockvolume.ocid,attachment_ocid:$s[0].blockvolume.attachment_ocid,iqn:$s[0].blockvolume.iqn,ipv4:$s[0].blockvolume.ipv4,port:($s[0].blockvolume.port|tonumber),is_multipath:false,multipath_devices:(($a[0].data."multipath-devices"//[])|length),state_file:$state}')
+      "$(jq -r '.blockvolume.ocid' "$state")" "$compute_ocid" \
+      "$(jq -r '.blockvolume.iqn' "$state")" "$(jq -r '.blockvolume.ipv4' "$state")" \
+      "$(jq -r '.blockvolume.port' "$state")" "$attach_json" \
+      || die "attachment did not prove the requested single path: $role"
+    row=$(jq -n --arg role "$role" --arg path "$path" --argjson size "$size" --arg state "$state" --slurpfile a "$attach_json" --slurpfile s "$state" '{role:$role,path:$path,size_gb:$size,vpu:($s[0].blockvolume.vpus_per_gb|tonumber),created:$s[0].blockvolume.created,volume_ocid:$s[0].blockvolume.ocid,attachment_ocid:$s[0].blockvolume.attachment_ocid,iqn:$s[0].blockvolume.iqn,ipv4:$s[0].blockvolume.ipv4,port:($s[0].blockvolume.port|tonumber),single_path_requested:true,is_multipath:false,control_plane_is_multipath:$a[0].data."is-multipath",multipath_devices:(if $a[0].data."multipath-devices"==null then 0 else ($a[0].data."multipath-devices"|length) end),state_file:$state}')
     volumes=$(jq -c --argjson row "$row" '. + [$row]' <<<"$volumes")
   done
   cd "$REPO_DIR"
@@ -556,7 +558,7 @@ validate_attempt_topology() {
     volume=$(oci bv volume get --volume-id "$volume_ocid") || die "volume preflight query failed: $role"
     attachment=$(oci compute volume-attachment get --volume-attachment-id "$attachment_ocid") || die "attachment preflight query failed: $role"
     jq -e '.data."vpus-per-gb"==50 and .data."lifecycle-state"=="IN_USE"' <<<"$volume" >/dev/null || die "volume tier/state drift: $role"
-    jq -e --arg volume "$volume_ocid" --arg instance "$(jq -r .compute.ocid "$OUTPUT_DIR/target_manifest.json")" '.data."lifecycle-state"=="ATTACHED" and .data."is-multipath"==false and ((.data."multipath-devices"//[])|length)==0 and .data."volume-id"==$volume and .data."instance-id"==$instance' <<<"$attachment" >/dev/null || die "attachment binding/path drift: $role"
+    jq -e --arg volume "$volume_ocid" --arg instance "$(jq -r .compute.ocid "$OUTPUT_DIR/target_manifest.json")" --arg iqn "$(jq -r .iqn <<<"$row")" --arg ip "$(jq -r .ipv4 <<<"$row")" --argjson port "$(jq -r .port <<<"$row")" '.data as $d | ($d|has("is-multipath")) and ($d|has("multipath-devices")) and $d."attachment-type"=="iscsi" and $d."lifecycle-state"=="ATTACHED" and ($d."is-multipath"==false or $d."is-multipath"==null) and ($d."multipath-devices"==null or (($d."multipath-devices"|type)=="array" and ($d."multipath-devices"|length)==0)) and $d."volume-id"==$volume and $d."instance-id"==$instance and $d.iqn==$iqn and $d.ipv4==$ip and $d.port==$port' <<<"$attachment" >/dev/null || die "attachment binding/path drift: $role"
     records=$(jq -c --arg role "$role" --argjson volume "$volume" --argjson attachment "$attachment" '. + [{role:$role,volume:$volume.data,attachment:$attachment.data}]' <<<"$records")
   done < <(jq -c '.volumes[]' "$OUTPUT_DIR/target_manifest.json")
   printf '%s\n' "$records" > "$out/oci_preflight.json"
