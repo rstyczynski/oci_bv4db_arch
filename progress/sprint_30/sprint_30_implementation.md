@@ -226,6 +226,17 @@ failed closed. Cleanup proved zero exact-tag resources. All SSH commands now
 use OpenSSH `-n`, preventing them from reading controller stdin; the static
 contract test requires that isolation before another live run.
 
+Attempt `20260818_220616` showed the plan-stream fix in place, but the primary
+measurement SSH connection declared the guest unreachable after only 15
+seconds while independent renewal connections were still succeeding. The
+guest completed FIO with exit zero, restored and verified the baseline, and
+wrote complete attempt evidence, but the controller correctly refused to
+adopt it after losing the primary command channel; cleanup again proved zero
+resources. The SSH server-alive window is now 60 seconds (15 seconds times
+four), still well inside the 180-second host-local deadline and independently
+bounded by the 30-second renewal channel, while tolerating a short OCI network
+pause that must not invalidate an otherwise supervised 660-second attempt.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

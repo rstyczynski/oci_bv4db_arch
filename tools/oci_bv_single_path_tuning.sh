@@ -203,7 +203,7 @@ ACTIVE_SSH_PID=""
 # Never allow SSH to consume the experiment-plan process substitution that
 # feeds execute_matrix. A background measurement otherwise drains the
 # remaining plan rows from the controller's stdin after its first attempt.
-ssh_run() { ssh -n -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
+ssh_run() { ssh -n -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
 scp_to() { scp -q -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "$1" "opc@$PUBLIC_IP:$2"; }
 scp_from() { scp -q -r -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "opc@$PUBLIC_IP:$1" "$2"; }
 ssh_job_running() {
