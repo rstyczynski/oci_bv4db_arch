@@ -132,6 +132,18 @@ one, and independently checks the immediately preceding portal token. Test
 fixtures include the real annotated format while retaining prefix-IQN and
 mixed-portal duplicate rejection.
 
+The next attempt (`20260818_175342`) passed the corrected parser, created the
+authorized disposable layout, and then exited during baseline discovery before
+any tuning or FIO. It produced no remote diagnostic because an unguarded
+post-format discovery command failed under `errexit`; exact-tag cleanup again
+proved zero resources. The most likely host-dependent operation was discovery
+of an optional NIC `msi_irqs` directory, which is now represented as an empty
+inventory when the driver exposes none. Guest preparation now has inherited
+ERR tracing with an exact failing line, and the controller copies partial
+guest discovery on prepare failure before scaffold cleanup. This converts any
+remaining image-specific discovery failure into actionable evidence rather
+than another opaque exit.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

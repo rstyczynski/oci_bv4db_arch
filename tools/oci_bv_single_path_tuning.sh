@@ -448,7 +448,13 @@ provision_fresh_with_scaffold() {
   scp_to "$GUEST_EXECUTOR" /tmp/bv4db-sprint30-guest
   scp_to "$manifest" /tmp/bv4db-sprint30-manifest.json
   scp_to "$authorization" /tmp/bv4db-sprint30-authorization.json
-  ssh_run "sudo install -m 0755 /tmp/bv4db-sprint30-guest /usr/local/sbin/bv4db-sprint30-guest && sudo chmod 0600 /tmp/bv4db-sprint30-authorization.json && sudo /usr/local/sbin/bv4db-sprint30-guest prepare /tmp/bv4db-sprint30-manifest.json /tmp/bv4db-sprint30-authorization.json /var/tmp/bv4db-sprint30/discovery && sudo chmod -R a+rX /var/tmp/bv4db-sprint30"
+  if ! ssh_run "sudo install -m 0755 /tmp/bv4db-sprint30-guest /usr/local/sbin/bv4db-sprint30-guest && sudo chmod 0600 /tmp/bv4db-sprint30-authorization.json && sudo /usr/local/sbin/bv4db-sprint30-guest prepare /tmp/bv4db-sprint30-manifest.json /tmp/bv4db-sprint30-authorization.json /var/tmp/bv4db-sprint30/discovery"; then
+    ssh_run "sudo chmod -R a+rX /var/tmp/bv4db-sprint30" >/dev/null 2>&1 || true
+    mkdir -p "$OUTPUT_DIR/failed_guest_prepare"
+    scp_from /var/tmp/bv4db-sprint30/discovery "$OUTPUT_DIR/failed_guest_prepare/" || true
+    die "guest preparation failed; partial discovery was copied when available"
+  fi
+  ssh_run "sudo chmod -R a+rX /var/tmp/bv4db-sprint30"
   scp_from /var/tmp/bv4db-sprint30/discovery "$OUTPUT_DIR/"
   ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest preflight" > "$OUTPUT_DIR/discovery/guest_preflight_initial.json"
   jq -e '.sessions_valid and .routes_valid and .devices_unique and .boot_excluded and .multipath_absent and .mounts_valid and .lvm_valid and .socket_congestion_control_valid and .sentinels_valid' "$OUTPUT_DIR/discovery/guest_preflight_initial.json" >/dev/null || die "initial guest topology proof failed"

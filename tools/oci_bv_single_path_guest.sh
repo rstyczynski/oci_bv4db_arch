@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Sprint 30 root-side executor. It operates only on the five devices described
 # by a controller-generated manifest and never discovers a formatting target.
-set -euo pipefail
+set -Eeuo pipefail
 
 STATE_DIR=/var/lib/bv4db-sprint30
 BASELINE="$STATE_DIR/baseline.json"
@@ -55,7 +55,7 @@ capture_controls() {
     jq -nc --arg iqn "$iqn" --arg portal "$ip:$port" --arg value "$(iscsiadm -m node -T "$iqn" -p "$ip:$port" -o show | awk -F'= ' '$1 ~ /node.session.queue_depth/{print $2; exit}')" --arg live_value "$(cat "$(device_leaf "$path")/device/queue_depth" 2>/dev/null || cat "/sys/block/$(basename "$(device_leaf "$path")")/device/queue_depth")" '{iqn:$iqn,portal:$portal,value:$value,live_value:$live_value}'
   done < <(jq -r '.volumes[]|[.iqn,.ipv4,(.port|tostring),.path]|@tsv' "$MANIFEST") | jq -s .)
   offloads=$(ethtool -k "$iface" | awk -F': ' '/^(rx-checksumming|tx-checksumming|tcp-segmentation-offload|generic-segmentation-offload|generic-receive-offload):/{print $1"="$2}' | jq -Rsc 'split("\n")|map(select(length>0)|split("=")|{key:.[0],value:(.[1]|split(" ")[0])})|from_entries')
-  irq_vectors=$(find "/sys/class/net/$iface/device/msi_irqs" -maxdepth 1 -type f -exec basename {} \; 2>/dev/null | sort -n | jq -Rsc 'split("\n")|map(select(length>0))')
+  irq_vectors=$({ find "/sys/class/net/$iface/device/msi_irqs" -maxdepth 1 -type f -exec basename {} \; 2>/dev/null || true; } | sort -n | jq -Rsc 'split("\n")|map(select(length>0))')
   ring_rx=$(ethtool -g "$iface" 2>/dev/null | awk '/Current hardware settings:/{s=1;next}s&&$1=="RX:"{print $2;exit}' || true)
   ring_tx=$(ethtool -g "$iface" 2>/dev/null | awk '/Current hardware settings:/{s=1;next}s&&$1=="TX:"{print $2;exit}' || true)
   channel_combined=$(ethtool -l "$iface" 2>/dev/null | awk '/Current hardware settings:/{s=1;next}s&&$1=="Combined:"{print $2;exit}' || true)
@@ -363,6 +363,7 @@ preformat_single_path_proof() {
 prepare() {
   local input="$1" authorization="$2" evidence="$3" role iqn ip port path root_leaf leaf sig manifest_sha run_id bypath candidate mounts observed_size expected_size pvs_output
   local leaves='[]' identities='[]' sent='[]' sentinel digest
+  trap 'die "guest preparation command failed at line $LINENO"' ERR
   need jq; need lsblk; need iscsiadm; need fio; need iostat; need sha256sum; need flock
   [ "$(uname -m)" = x86_64 ] || die "Sprint 30 guest architecture must be x86_64"
   install -d -m 0700 "$STATE_DIR" "$evidence"
@@ -451,6 +452,7 @@ prepare() {
       done
     } > "$evidence/tuned_profile_info/$profile.txt"
   done < <(sed -n 's/^-[[:space:]]*\([^[:space:]]*\).*/\1/p' "$evidence/tuned_profiles.txt")
+  trap - ERR
 }
 
 run_attempt() {
