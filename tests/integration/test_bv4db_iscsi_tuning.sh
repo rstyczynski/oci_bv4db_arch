@@ -95,8 +95,43 @@ exercise_controller_lock() {
   find "$root" -maxdepth 1 -type d -name 'controller_lock_stale_*' | grep -q .
 }
 
+# Production attachment convergence gate is exercised with bounded OCI shims.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_attachment_convergence() {
+  local root="$1" mode="$2"
+  (
+    set -- --plan --output-dir "$root/source"
+    export BV4DB_CONTROLLER_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$RUNNER"
+    mkdir -p "$root"
+    SPRINT30_ATTACHMENT_POLL_SECONDS=1
+    SPRINT30_ATTACHMENT_TIMEOUT_SECONDS=4
+    [ "$mode" != bad_timing ] || SPRINT30_ATTACHMENT_POLL_SECONDS=0
+    oci() {
+      local count=0 multipath=null state=ATTACHED volume=volume-1 instance=instance-1 devices=null
+      local response
+      [ "$mode" != query_failure ] || return 1
+      [ -f "$root/attachment.calls" ] && count=$(cat "$root/attachment.calls")
+      count=$((count + 1)); echo "$count" > "$root/attachment.calls"
+      if [ "$mode" = eventual ] && [ "$count" -ge 3 ]; then multipath=false; devices='[]'; fi
+      [ "$mode" != multipath ] || { multipath=true; devices='[{"ipv4":"10.0.0.3"}]'; }
+      [ "$mode" != false_null ] || multipath=false
+      [ "$mode" != false_missing ] || multipath=false
+      [ "$mode" != false_object ] || { multipath=false; devices='{}'; }
+      [ "$mode" != wrong_binding ] || volume='volume-2'
+      response=$(jq -n --arg state "$state" --arg volume "$volume" --arg instance "$instance" \
+        --argjson multipath "$multipath" --argjson devices "$devices" \
+        '{data:{"lifecycle-state":$state,"volume-id":$volume,"instance-id":$instance,"is-multipath":$multipath,"multipath-devices":$devices}}')
+      if [ "$mode" = false_missing ]; then jq 'del(.data."multipath-devices")' <<<"$response"; else printf '%s\n' "$response"; fi
+    }
+    sleep() { :; }
+    wait_for_exact_single_path_attachment attachment-1 volume-1 instance-1 "$root/attachment.json"
+  )
+}
+
 # Production recovery functions call these bounded shims indirectly.
-# shellcheck disable=SC2034,SC2329
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_failure_recovery_poll() {
   local root="$1" mode="$2"
   (
@@ -219,6 +254,12 @@ test_IT4_restore_resume_state_machine() {
   if exercise_real_resume_proof "$tmp/stop-failure" "$tmp/current.json" 0 stop_failure >/dev/null 2>&1; then fail "real resume proof swallowed stale-unit stop failure"; return 1; fi
   if exercise_real_resume_proof "$tmp/still-active" "$tmp/current.json" 0 active >/dev/null 2>&1; then fail "real resume proof accepted an active stale unit"; return 1; fi
   exercise_controller_lock "$tmp/controller-lock" || { fail "controller-lifetime lock failed"; return 1; }
+  exercise_attachment_convergence "$tmp/attachment-eventual" eventual || { fail "attachment false state did not converge"; return 1; }
+  [ "$(cat "$tmp/attachment-eventual/attachment.calls")" -eq 3 ] || { fail "attachment convergence was not polled"; return 1; }
+  jq -e '.data."is-multipath"==false and .data."multipath-devices"==[]' "$tmp/attachment-eventual/attachment.json" >/dev/null || return 1
+  for fault in multipath wrong_binding timeout false_null false_missing false_object query_failure bad_timing; do
+    if exercise_attachment_convergence "$tmp/attachment-$fault" "$fault" >/dev/null 2>&1; then fail "attachment convergence accepted $fault"; return 1; fi
+  done
   exercise_failure_recovery_poll "$tmp/recovery-delayed" delayed || { fail "delayed OCI appearance was not recovered"; return 1; }
   jq -e '.blockvolume.ocid=="volume-1" and .blockvolume.attachment_ocid=="attachment-1" and .meta.recovered_for_failure_cleanup==true' "$tmp/recovery-delayed/recovered-state.json" >/dev/null || return 1
   [ "$(cat "$tmp/recovery-delayed/volume.calls")" -ge 8 ] || { fail "stable-zero horizon was not polled"; return 1; }

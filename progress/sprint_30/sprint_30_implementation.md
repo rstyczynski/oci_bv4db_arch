@@ -88,6 +88,19 @@ attached-volume state recovery, exact-name decoys, duplicate matches, query
 failure, and zero-state stabilization. A later A3 launch uses an inline ANSI
 filter before `tee` so persistent logs remain plain ASCII from creation.
 
+The next launch (`20260818_170951`) also stopped before guest preparation or
+FIO. Immediately after the first iSCSI attachment reached `ATTACHED`, OCI
+returned `is-multipath=null` and `multipath-devices=null`; the strict accepted
+single-path gate rejected that non-boolean evidence. Failure cleanup deleted
+the exact owned DATA1 volume and compute instance and proved an empty
+run-tagged inventory. Oracle's current API documentation says the attachment
+GET eventually reports a boolean multipath value, so the controller now waits
+for bounded control-plane convergence while still requiring an explicit
+`is-multipath=false` and an explicitly empty array. It fails closed on wrong
+binding, true/nonempty/non-array values, query errors, or a five-minute
+timeout. Production polling values are fixed; source-only shims cover delayed
+success and all rejection cases. A fresh RUP safety re-review returned GO.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
