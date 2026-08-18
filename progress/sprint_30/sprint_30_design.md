@@ -2,17 +2,17 @@
 
 ## BV4DB-72. Tune single-path iSCSI performance on a four-OCPU midrange server
 
-Status: Proposed
+Status: Accepted
 
 ### Requirement Summary
 
-Measure and recommend the best supported iSCSI network-path configuration at exactly 45 VPUs/GB for a four-OCPU midrange OCI server using the project’s established Oracle-style block-volume layout for FIO file placement. This is a FIO-only sprint: it must not install Oracle Database or execute database workloads. The target attachment remains single-path; this sprint must not enable or evaluate dm-multipath as a tuning variant.
+Measure and recommend the best supported iSCSI network-path configuration at exactly 50 VPUs/GB for a four-OCPU midrange OCI server using the project’s established Oracle-style block-volume layout for FIO file placement. This is a FIO-only sprint: it must not install Oracle Database or execute database workloads. The target attachment remains single-path; this sprint must not enable or evaluate dm-multipath as a tuning variant.
 
 ### Feasibility Analysis
 
 OCI documents an iSCSI queue-depth change through `iscsiadm`, while Oracle Linux and the Linux kernel document TCP buffers, backlog, congestion control, RPS/RFS/XPS, NIC controls, and TuneD profiles. Actual availability varies by image, kernel, and driver, so “all possible tunables” means every control discovered on the pinned Sprint 30 host is either tested or recorded in the coverage ledger as read-only, unsupported, unsafe, or not applicable with an evidence-backed reason.
 
-OCI classifies 30–120 VPUs/GB as Ultra High Performance and documents at least 16 OCPUs for multipath support on VM shapes. That requirement does not prohibit requesting 45 VPUs/GB for a volume observed through one path on a four-OCPU VM. Sprint 30 is therefore an intentional 45-VPU characterization outside the supported multipath/UHP performance path: each attachment must show an effective value of exactly 45 VPUs/GB, `is-multipath=false`, an empty multipath-device list, and exactly one live iSCSI session. If OCI rejects 45 VPUs/GB, reports a different effective value, or enables multipath, Sprint 30 fails feasibility and no FIO result is claimed. Revalidation at 30 and 120 VPUs/GB belongs exclusively to future backlog items BV4DB-74 and BV4DB-75.
+OCI classifies 30–120 VPUs/GB as Ultra High Performance and documents at least 16 OCPUs for multipath support on VM shapes. That requirement does not prohibit requesting 50 VPUs/GB for a volume observed through one path on a four-OCPU VM. Sprint 30 is therefore an intentional 50-VPU characterization outside the supported multipath/UHP performance path: each attachment must show an effective value of exactly 50 VPUs/GB, `is-multipath=false`, an empty multipath-device list, and exactly one live iSCSI session. The prior 45-VPU OCI rejection is retained as feasibility evidence; if OCI rejects 50 VPUs/GB, reports a different effective value, or enables multipath, Sprint 30 fails feasibility and no FIO result is claimed. Revalidation at 30 and 120 VPUs/GB belongs exclusively to future backlog items BV4DB-74 and BV4DB-75.
 
 Sources:
 
@@ -36,15 +36,15 @@ Sources:
 
 RPS/XPS masks and NIC channel limits are derived from the online Linux vCPU and queue topology. They must never be hard-coded from the OCPU count. A different image OCID, kernel, shape, memory size, CPU topology, or iSCSI-facing interface starts a different experiment and cannot be merged into the Sprint 30 comparison.
 
-### Fixed 45-VPU Baseline
+### Fixed 50-VPU Baseline
 
-Every Sprint 30 tuning candidate is compared only with the regular OCI/guest-settings baseline at 45 VPUs/GB. All five volumes remain at that value for the entire experiment. The pinned image, compute topology, single-path attachments, volume sizes, filesystems, FIO profile, and collection window remain fixed.
+Every Sprint 30 tuning candidate is compared only with the regular OCI/guest-settings baseline at 50 VPUs/GB. All five volumes remain at that value for the entire experiment. The pinned image, compute topology, single-path attachments, volume sizes, filesystems, FIO profile, and collection window remain fixed.
 
 | VPUs/GB | Attachment | Baseline action | Interpretation |
 | --- | --- | --- | --- |
-| 45 | single-path iSCSI | Run FIO with unchanged OCI and guest settings. | Characterize the 45-VPU volume configuration through the constrained four-OCPU, single-path host. |
+| 50 | single-path iSCSI | Run FIO with unchanged OCI and guest settings. | Characterize the 50-VPU volume configuration through the constrained four-OCPU, single-path host. |
 
-Sprint 30 performs no 30- or 120-VPU run and no VPU transition experiment. An attempt, plan entry, index row, report row, or recommendation containing either value fails the Sprint 30 gate.
+Sprint 30 performs no 30-, 45-, or 120-VPU run and no VPU transition experiment. An attempt, plan entry, index row, report row, or recommendation containing any value other than 50 fails the Sprint 30 gate.
 
 ### Block-Volume Layout
 
@@ -60,13 +60,36 @@ Project sources of truth are `progress/sprint_4/sprint_4_design.md` for the topo
 
 The benchmark runner must verify that each consistent path resolves to a distinct attached block volume, exactly one iSCSI session exists for each target, no device resolves through dm-multipath, both LVM logical volumes have two stripes with a 256 KiB stripe size, and all three filesystems are mounted before FIO starts.
 
-Provision all five volumes at 45 VPUs/GB and keep them at that value. Wait until every volume leaves the provisioning state, confirm the effective value of 45 from OCI, revalidate `is-multipath=false`, one session per target, unchanged device identity, LVM, filesystem, sentinels, and mounts, and only then run FIO. Repeat the effective-value check before every measured run so a mixed or drifted DATA/REDO/FRA tier cannot confound the comparison.
+The boot volume is explicitly out of scope. It must not be an FIO file target,
+an LVM PV, a filesystem initialization target, an iSCSI tuning target, or a
+candidate evidence device. All load generation and storage-layout actions are
+restricted to the five separately attached Block Volumes listed above.
+
+Provision all five volumes at 50 VPUs/GB and keep them at that value. Wait until every volume leaves the provisioning state, confirm the effective value of 50 from OCI, revalidate `is-multipath=false`, one session per target, unchanged device identity, LVM, filesystem, sentinels, and mounts, and only then run FIO. Repeat the effective-value check before every measured run so a mixed or drifted DATA/REDO/FRA tier cannot confound the comparison.
 
 Layout initialization is allowed only on newly provisioned, empty Sprint 30 volumes. A rerun must discover and reuse the existing PV, VG, LV, filesystem, and mount metadata; it must never use a failed discovery check as permission to run `wipefs`, `pvcreate`, `mkfs`, or other initialization commands.
 
 ### Design Overview
 
-The sprint adds one resumable benchmark runner and report renderer. The runner provisions the fixed topology once, captures an immutable baseline, applies exactly one reversible candidate or documented coupled profile, executes the fixed-45-VPU candidate/repetition schedule, restores and verifies baseline state, and then advances. It records raw FIO, CPU, iSCSI, TCP/network, block-device, OCI, integrity, and kernel-counter evidence for every attempt.
+The sprint adds one resumable benchmark runner and report renderer. The runner provisions the fixed topology once, captures an immutable baseline, applies exactly one reversible candidate or documented coupled profile, executes the fixed-50-VPU candidate/repetition schedule, restores and verifies baseline state, and then advances. It records raw FIO, CPU, iSCSI, TCP/network, block-device, OCI, integrity, and kernel-counter evidence for every attempt.
+
+### OCI Resource Lifecycle
+
+All OCI resource creation, adoption, attachment, state recording, and teardown
+must use the repository's `oci_scaffold` tool. Sprint 30's runner sources
+`oci_scaffold/do/oci_scaffold.sh`, uses `ensure-compute.sh` for the pinned
+four-OCPU target, uses one `ensure-blockvolume.sh` state file per DATA/REDO/FRA
+volume, and uses the scaffold teardown path for resources it owns. It must not
+replace this lifecycle with ad-hoc `oci compute instance launch`, `oci bv volume
+create`, or attachment commands.
+
+The runner stores its scaffold state below its own output directory, records
+whether every compute/volume/attachment was created or adopted, and passes
+`bv_is_multipath=false` for every iSCSI attachment. A pre-existing resource may
+be adopted only after its OCID, exact 50-VPU setting, size, target instance,
+single-path attachment state, and ownership/teardown decision are archived.
+The boot volume is never placed in a Sprint 30 scaffold state and is never a
+teardown, layout, or tuning target.
 
 The candidate catalogue must inspect and classify the target’s available controls before execution:
 
@@ -88,13 +111,13 @@ The runner must write a machine-readable `tunable_coverage.json` before changing
 
 ### Runner and State Interface
 
-The implementation entry point is `tools/oci_bv_single_path_tuning.sh`. It supports `--plan`, `--execute`, `--resume <run-id>`, `--candidate <id|all>`, singular `--vpu <integer>`, `--repeats 3`, `--keep-infra`, and `--output-dir`. Defaults are plan-only, all candidates, 45 VPUs/GB, three measured repetitions, teardown after successful evidence copy, and a timestamped Sprint 30 output directory. The singular VPU argument keeps the method reusable, but the Sprint 30 plan profile is locked to 45: its gate rejects a different input or any non-45 plan, attempt, index, report, or recommendation value. BV4DB-74 and BV4DB-75 must approve their own plans before using the interface at 30 or 120.
+The implementation entry point is `tools/oci_bv_single_path_tuning.sh`. It supports `--plan`, `--execute`, `--resume <run-id>`, `--candidate <id|all>`, singular `--vpu <integer>`, `--repeats 3`, `--keep-infra`, and `--output-dir`. Defaults are plan-only, all candidates, 50 VPUs/GB, three measured repetitions, teardown after successful evidence copy, and a timestamped Sprint 30 output directory. The singular VPU argument keeps the method reusable, but the Sprint 30 plan profile is locked to 50: its gate rejects a different input or any non-50 plan, attempt, index, report, or recommendation value. BV4DB-74 and BV4DB-75 must approve their own plans before using the interface at 30 or 120.
 
 OCI profile/region, compartment, subnet, pinned image OCID, and SSH/Run Command prerequisites are explicit inputs; secrets are never written to artifacts. Each run owns `run_state.json`, `tunable_coverage.json`, `experiment_plan.json`, `results_index.json`, and per-attempt evidence directories. State transitions are atomic and record planned, applying, active, measuring, restoring, restored, passed, failed, or interrupted. `--resume` may continue only after it proves baseline configuration, sentinels, topology, and attachments; otherwise it fails closed.
 
 ### FIO Load Generation
 
-Sprint 30 reuses the project’s Sprint 10 Oracle-layout FIO profile without installing Oracle Database. Every 45-VPU baseline and candidate run uses `ioengine=libaio`, `direct=1`, `time_based=1`, `runtime=600`, `ramp_time=60`, `group_reporting=0`, `invalidate=1`, `lat_percentiles=1`, `percentile_list=95:99:99.9`, and `--output-format=json`.
+Sprint 30 reuses the project’s Sprint 10 Oracle-layout FIO profile without installing Oracle Database. Every 50-VPU baseline and candidate run uses `ioengine=libaio`, `direct=1`, `time_based=1`, `runtime=600`, `ramp_time=60`, `group_reporting=0`, `invalidate=1`, `lat_percentiles=1`, `percentile_list=95:99:99.9`, and `--output-format=json`.
 
 | FIO job | File-placement role | Parameters |
 | --- | --- | --- |
@@ -106,11 +129,11 @@ The layout names describe FIO file placement only. No Oracle binaries, database 
 
 ### Experiment Schedule and Decision Rules
 
-The regular-settings baseline and every testable candidate run at 45 VPUs/GB for three measured repetitions. The generated `experiment_plan.json` records a random seed and three deterministic candidate-order blocks; each testable candidate appears exactly once in each block, while a different seeded permutation per block counterbalances time/order drift. Run three initial regular-settings baseline repetitions and one additional regular-settings checkpoint after every five candidate attempts. After all candidate measurements, execute the two non-measurement rollback canaries, prove full recovery, and then run three final regular-settings repetitions; no tuning mutation is permitted after that final baseline. A checkpoint that moves beyond the applicable stability/regression threshold pauses the experiment for drift investigation. The generated plan reconciles the discovered candidate count, repetitions, checkpoint count, two canary attempts, total FIO-run count, minimum 660-second-per-measured-run time, estimated transition/rollback time, and expected OCI cost before execution.
+The regular-settings baseline and every testable candidate run at 50 VPUs/GB for three measured repetitions. The generated `experiment_plan.json` records a random seed and three deterministic candidate-order blocks; each testable candidate appears exactly once in each block, while a different seeded permutation per block counterbalances time/order drift. Run three initial regular-settings baseline repetitions and one additional regular-settings checkpoint after every five candidate attempts. After all candidate measurements, execute the two non-measurement rollback canaries, prove full recovery, and then run three final regular-settings repetitions; no tuning mutation is permitted after that final baseline. A checkpoint that moves beyond the applicable stability/regression threshold pauses the experiment for drift investigation. The generated plan reconciles the discovered candidate count, repetitions, checkpoint count, two canary attempts, total FIO-run count, minimum 660-second-per-measured-run time, estimated transition/rollback time, and expected OCI cost before execution.
 
-For every FIO job and metric, report the median, minimum, maximum, median absolute deviation, and coefficient of variation across the three repetitions. A configuration is stable when each primary measure’s CV is at most 5%; otherwise run up to two additional repetitions for that configuration. If the initial or final regular-settings baseline remains unstable, stop the 45-VPU experiment as inconclusive. An unstable candidate is ineligible for recommendation and is reported as inconclusive rather than silently discarded.
+For every FIO job and metric, report the median, minimum, maximum, median absolute deviation, and coefficient of variation across the three repetitions. A configuration is stable when each primary measure’s CV is at most 5%; otherwise run up to two additional repetitions for that configuration. If the initial or final regular-settings baseline remains unstable, stop the 50-VPU experiment as inconclusive. An unstable candidate is ineligible for recommendation and is reported as inconclusive rather than silently discarded.
 
-Primary measures are DATA IOPS, REDO p99 and p99.9 write-completion latency from `jobs[].write.clat_ns.percentile`, and FRA bandwidth. Report `sync.lat_ns` separately but do not substitute it for the REDO primary measure. A candidate is eligible only if it is stable; has no FIO, iSCSI, kernel, TCP, checksum, or restoration error or monitored error-class counter increment; improves at least one primary measure by more than `max(5%, 2 × baseline CV)`; does not regress any other primary measure or p99/p99.9 latency by more than that metric’s `max(5%, 2 × baseline CV)`; and increases median host CPU utilization by no more than 10% relative. The monitored error-class set is frozen in the plan and includes iSCSI/SCSI failures and timeouts, TCP retransmits/resets, NIC errors/drops, and new kernel block/network error records; ordinary byte, packet, and command counters are expected to rise and are not errors. Eligible candidates are Pareto-ranked at 45 VPUs/GB only. Ties prefer lower p99.9 REDO latency, then lower CPU use, then the configuration with fewer changed controls; if no candidate clears the noise and guardrails, the regular OCI/guest baseline is the recommendation.
+Primary measures are DATA IOPS, REDO p99 and p99.9 write-completion latency from `jobs[].write.clat_ns.percentile`, and FRA bandwidth. Report `sync.lat_ns` separately but do not substitute it for the REDO primary measure. A candidate is eligible only if it is stable; has no FIO, iSCSI, kernel, TCP, checksum, or restoration error or monitored error-class counter increment; improves at least one primary measure by more than `max(5%, 2 × baseline CV)`; does not regress any other primary measure or p99/p99.9 latency by more than that metric’s `max(5%, 2 × baseline CV)`; and increases median host CPU utilization by no more than 10% relative. The monitored error-class set is frozen in the plan and includes iSCSI/SCSI failures and timeouts, TCP retransmits/resets, NIC errors/drops, and new kernel block/network error records; ordinary byte, packet, and command counters are expected to rise and are not errors. Eligible candidates are Pareto-ranked at 50 VPUs/GB only. Ties prefer lower p99.9 REDO latency, then lower CPU use, then the configuration with fewer changed controls; if no candidate clears the noise and guardrails, the regular OCI/guest baseline is the recommendation.
 
 Every results-index entry declares `attempt_type=measurement`, `checkpoint`, or `rollback_canary`. Only successful `measurement` rows contribute to repetition counts, CV, eligibility, Pareto ranking, and the recommendation. The two canaries use dedicated IDs `ROLLBACK_CANARY_TRAP` and `ROLLBACK_CANARY_LEASE`, record the safe source candidate separately, have expected failure outcomes, and never change that source candidate’s performance execution status.
 
@@ -128,9 +151,9 @@ No candidate may reformat, repartition, detach, recreate, or mount over the esta
 
 ### Regular Project Test Report
 
-For every attempt, archive ASCII command logs plus valid raw FIO JSON when FIO runs, iostat JSON, OCI volume and attachment JSON, compute/image metadata, iSCSI node/session/socket state, block/LVM/filesystem/mount state, sysctl/NIC/TuneD/IRQ/queue inventory and delta, sentinel results, CPU utilization, and before/after kernel/TCP/network error counters. Each artifact is indexed by run ID, candidate ID, attempt type, `vpu=45`, repetition when applicable, UTC start/end timestamps, result, and restoration state in `results_index.json`.
+For every attempt, archive ASCII command logs plus valid raw FIO JSON when FIO runs, iostat JSON, OCI volume and attachment JSON, compute/image metadata, iSCSI node/session/socket state, block/LVM/filesystem/mount state, sysctl/NIC/TuneD/IRQ/queue inventory and delta, sentinel results, CPU utilization, and before/after kernel/TCP/network error counters. Each artifact is indexed by run ID, candidate ID, attempt type, `vpu=50`, repetition when applicable, UTC start/end timestamps, result, and restoration state in `results_index.json`.
 
-Reuse `tools/render_fio_report_html.sh` and the existing OCI metrics collection/reporting path. Produce per-attempt FIO reports, a 45-VPU candidate comparison table, `fio_analysis.md`, aggregate `fio_report.html`, FIO-window OCI metrics Markdown and HTML reports, `sprint_30_summary.md`, and a machine-readable `recommendation.json`. The summary links every candidate to its raw evidence, coverage-ledger disposition and execution status, statistics, exclusions, guardrails, restoration proof, and recommendation decision. HTML must be standalone and the Markdown/HTML values must reconcile with the JSON index.
+Reuse `tools/render_fio_report_html.sh` and the existing OCI metrics collection/reporting path. Produce per-attempt FIO reports, a 50-VPU candidate comparison table, `fio_analysis.md`, aggregate `fio_report.html`, FIO-window OCI metrics Markdown and HTML reports, `sprint_30_summary.md`, and a machine-readable `recommendation.json`. The summary links every candidate to its raw evidence, coverage-ledger disposition and execution status, statistics, exclusions, guardrails, restoration proof, and recommendation decision. HTML must be standalone and the Markdown/HTML values must reconcile with the JSON index.
 
 ### Evidence and Recommendation
 
@@ -138,8 +161,8 @@ The final report applies the defined statistical and Pareto rules rather than ch
 
 ### Error Handling
 
-- Stop before mutation if credentials, pinned image, exact shape/memory, online CPU topology, five-volume layout, effective 45-VPU setting, single-path state, routes, baseline capture, or sentinels cannot be proved.
-- Treat OCI refusal of 45 VPUs/GB, any effective-value mismatch, or an automatically multipath-enabled attachment as a feasibility failure; do not fabricate a single-path run.
+- Stop before mutation if credentials, pinned image, exact shape/memory, online CPU topology, five-volume layout, effective 50-VPU setting, single-path state, routes, baseline capture, or sentinels cannot be proved.
+- Treat OCI refusal of 50 VPUs/GB, any effective-value mismatch, or an automatically multipath-enabled attachment as a feasibility failure; do not fabricate a single-path run.
 - Restore and stop when a session, device identity, LVM, mount, sentinel, FIO, kernel/TCP error, controller reachability, or effective-setting check fails.
 - Mark an unavailable or unsafe control with an excluded planning disposition rather than forcing it. A discovered control without a disposition, an exclusion without evidence/reason, or a testable control still pending at closure fails completeness.
 - A failed or byte-unequal restoration blocks further candidates and sprint closure.
@@ -171,10 +194,10 @@ The B3 group is intentionally narrow. IT-9 already validates the FIO and OCI-met
 
 | Scenario | Infrastructure Dependencies | Expected Outcome | Est. Runtime |
 | --- | --- | --- | --- |
-| Static contract and deterministic plan | Repository checkout and local fixtures | Runner declares the five-volume layout, fixed 45-VPU Sprint 30 plan, FIO-only scope, exact FIO profile, exhaustive candidate ledger, reports, evidence, and safety guards. | < 1 minute. |
+| Static contract and deterministic plan | Repository checkout and local fixtures | Runner declares the five-volume layout, fixed 50-VPU Sprint 30 plan, FIO-only scope, exact FIO profile, exhaustive candidate ledger, reports, evidence, and safety guards. | < 1 minute. |
 | Fail-closed and restoration fixtures | Repository checkout and command shims | Invalid topology and injected mutation failures stop before load or restore exact baseline state. | < 5 minutes. |
-| Live topology and regular baseline | Approved four-OCPU OCI target and valid credentials | The target proves five effective-45, single-path volumes and completes at least three unchanged-settings FIO repetitions. | At least 33 minutes plus provisioning. |
-| Live 45-VPU candidate matrix | Same approved target | Every testable candidate completes the scheduled repetitions with effective-setting, integrity, error-counter, and per-attempt restoration evidence. | `testable candidates × 3 × 11 minutes`, plus checkpoints, activation, and any stability reruns. |
+| Live topology and regular baseline | Approved four-OCPU OCI target and valid credentials | The target proves five effective-50, single-path volumes and completes at least three unchanged-settings FIO repetitions. | At least 33 minutes plus provisioning. |
+| Live 50-VPU candidate matrix | Same approved target | Every testable candidate completes the scheduled repetitions with effective-setting, integrity, error-counter, and per-attempt restoration evidence. | `testable candidates × 3 × 11 minutes`, plus checkpoints, activation, and any stability reruns. |
 | Rollback canary, reporting, and final state | Same approved target and completed matrix | The host-local lease restores a deliberately interrupted candidate; raw evidence, regular Markdown/HTML reports, recommendation, final baseline, and teardown all reconcile. | Approximately 20 minutes plus the final 33-minute baseline and teardown. |
 
 #### Smoke Test Candidates
@@ -199,23 +222,23 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 #### IT-1: Static runner and CLI contract
 
 - **Preconditions:** Repository checkout.
-- **Steps:** Verify shell syntax and executable entry points; plan-only default; fixed Sprint 30 value of 45 VPUs/GB; exact five-volume DATA/REDO/FRA layout; four-OCPU and single-path guards; exact FIO jobs and parameters; candidate, state, evidence, and report interfaces; use of `iscsiadm` rather than direct `/etc/iscsi/nodes` edits; and an explicit fresh-empty authorization before any destructive initialization.
-- **Expected Outcome:** The declared interface is 45-VPU, FIO-only, evidence-producing, and fail-closed; neither Oracle execution nor an implicit destructive path is present.
+- **Steps:** Verify shell syntax and executable entry points; plan-only default; fixed Sprint 30 value of 50 VPUs/GB; exact five-volume DATA/REDO/FRA layout; four-OCPU and single-path guards; exact FIO jobs and parameters; candidate, state, evidence, and report interfaces; use of `iscsiadm` rather than direct `/etc/iscsi/nodes` edits; and an explicit fresh-empty authorization before any destructive initialization.
+- **Expected Outcome:** The declared interface is 50-VPU, FIO-only, evidence-producing, and fail-closed; neither Oracle execution nor an implicit destructive path is present.
 - **Verification:** Run `test_IT1_static_runner_contract` and assert each contract field from executable plan output or stable machine-readable metadata, not source-text presence alone.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
-#### IT-2: Deterministic 45-VPU experiment plan and coverage ledger
+#### IT-2: Deterministic 50-VPU experiment plan and coverage ledger
 
 - **Preconditions:** Repository checkout and discovery fixtures containing supported, fixed, absent, and unsafe controls.
 - **Steps:** Generate `experiment_plan.json` and `tunable_coverage.json` twice with the same explicit seed and normalized run metadata. Validate the VPU set, repeat blocks, candidate ordering, checkpoints, canaries, FIO count/runtime/cost calculations, stable candidate IDs, and every discovered control's planning disposition and initial execution status.
-- **Expected Outcome:** Both canonical plan payloads are identical after excluding run ID, timestamp, and output path; their VPU set is exactly `[45]`; every `disposition=testable` candidate begins `execution_status=pending` and appears exactly once in each of three blocks; every excluded disposition has a reason and evidence path; the two dedicated rollback canaries are non-measurement attempts; counts reconcile; and no 30, 120, duplicate, or unknown candidate is present.
-- **Verification:** Run `test_IT2_deterministic_45_vpu_plan` and validate both files with `jq` plus recomputed counts.
+- **Expected Outcome:** Both canonical plan payloads are identical after excluding run ID, timestamp, and output path; their VPU set is exactly `[50]`; every `disposition=testable` candidate begins `execution_status=pending` and appears exactly once in each of three blocks; every excluded disposition has a reason and evidence path; the two dedicated rollback canaries are non-measurement attempts; counts reconcile; and no 30, 120, duplicate, or unknown candidate is present.
+- **Verification:** Run `test_IT2_deterministic_50_vpu_plan` and validate both files with `jq` plus recomputed counts.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
 #### IT-3: Fail-closed preflight matrix
 
 - **Preconditions:** Local OCI/host command fixtures with one valid target and one fault per case.
-- **Steps:** Exercise wrong OCPU or RAM, unpinned/different image, any volume not effective 45, multipath enabled or devices present, zero or multiple sessions per target, duplicate device identity, wrong stripes/filesystem/mount, inconsistent iSCSI route/interface, sentinel mismatch, and missing credentials.
+- **Steps:** Exercise wrong OCPU or RAM, unpinned/different image, any volume not effective 50, multipath enabled or devices present, zero or multiple sessions per target, duplicate device identity, wrong stripes/filesystem/mount, inconsistent iSCSI route/interface, sentinel mismatch, and missing credentials.
 - **Expected Outcome:** Every invalid case exits nonzero before mutation or FIO; apply and load command journals remain empty. The valid fixture reaches the planned state without mutation.
 - **Verification:** Run `test_IT3_fail_closed_preflight_matrix` and assert exit code, terminal state, and empty mutation/FIO journals for every negative case.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
@@ -228,27 +251,27 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 - **Verification:** Run `test_IT4_restore_resume_state_machine` and compare state/event journals and before/after baseline bundles.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
-#### IT-5: Live 45-VPU topology and integrity preflight
+#### IT-5: Live 50-VPU topology and integrity preflight
 
 - **Preconditions:** Approved disposable OCI target, valid credentials, explicit live flag, and shared output directory.
 - **Steps:** Provision or resume the pinned `VM.Standard.E5.Flex` four-OCPU/32-GB host and five volumes; capture OCI, route, CPU, device, iSCSI, LVM, filesystem, mount, and sentinel evidence before mutation.
-- **Expected Outcome:** All five volumes report effective 45 VPUs/GB; attachments report `is-multipath=false` and no multipath devices; each target has exactly one session and unique persistent path; DATA and REDO are two-way 256-KiB stripes; FRA is direct; all mounts and sentinel digests are valid.
-- **Verification:** Run `test_IT5_live_45_vpu_topology` and validate live evidence in `SPRINT30_TEST_OUTPUT_DIR` against OCI and guest observations.
+- **Expected Outcome:** All five volumes report effective 50 VPUs/GB; attachments report `is-multipath=false` and no multipath devices; each target has exactly one session and unique persistent path; DATA and REDO are two-way 256-KiB stripes; FRA is direct; all mounts and sentinel digests are valid.
+- **Verification:** Run `test_IT5_live_50_vpu_topology` and validate live evidence in `SPRINT30_TEST_OUTPUT_DIR` against OCI and guest observations.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
-#### IT-6: Live regular-settings baseline at 45 VPUs/GB
+#### IT-6: Live regular-settings baseline at 50 VPUs/GB
 
 - **Preconditions:** IT-5 passed and the regular guest baseline is captured.
-- **Steps:** Execute three 600-second measured FIO repetitions after a 60-second ramp at fixed 45 VPUs/GB with unchanged guest settings; collect FIO, iostat, CPU, OCI metrics-window, topology, integrity, and error-counter evidence. Apply the defined stability extension when needed.
+- **Steps:** Execute three 600-second measured FIO repetitions after a 60-second ramp at fixed 50 VPUs/GB with unchanged guest settings; collect FIO, iostat, CPU, OCI metrics-window, topology, integrity, and error-counter evidence. Apply the defined stability extension when needed.
 - **Expected Outcome:** Raw JSON is valid, exact DATA/REDO/FRA job options are present, OCI metric windows cover every attempt, configuration before/after is equal, and primary-measure CV is at most 5%; otherwise exactly up to two extra runs occur and an unresolved baseline is marked inconclusive with candidate execution blocked.
-- **Verification:** Run `test_IT6_live_regular_45_vpu_baseline` and recompute repetition counts, options, metrics windows, statistics, and state transitions from raw artifacts.
+- **Verification:** Run `test_IT6_live_regular_50_vpu_baseline` and recompute repetition counts, options, metrics windows, statistics, and state transitions from raw artifacts.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
-#### IT-7: Live complete candidate matrix at 45 VPUs/GB
+#### IT-7: Live complete candidate matrix at 50 VPUs/GB
 
 - **Preconditions:** IT-6 produced a stable baseline and every discovered control has a planning disposition.
 - **Steps:** Execute every `disposition=testable` ledger entry once in each of three seeded order blocks, including defined checkpoints and stability extensions; verify the effective value on the actual interface, session, or socket before FIO and restore after every attempt. Update execution status only from archived attempt evidence.
-- **Expected Outcome:** Every testable candidate ends `tested`, `inconclusive`, or `failed`, with no `pending` entry; a tested candidate has exactly three successful measured repetitions unless the defined stability extension applies; every row remains `vpu=45`; excluded controls never execute; topology, sentinels, and monitored error-class counters remain valid; the complete baseline is byte-equal after each attempt; no candidate state leaks forward.
+- **Expected Outcome:** Every testable candidate ends `tested`, `inconclusive`, or `failed`, with no `pending` entry; a tested candidate has exactly three successful measured repetitions unless the defined stability extension applies; every row remains `vpu=50`; excluded controls never execute; topology, sentinels, and monitored error-class counters remain valid; the complete baseline is byte-equal after each attempt; no candidate state leaks forward.
 - **Verification:** Run `test_IT7_live_complete_candidate_matrix` and reconcile the coverage ledger, experiment plan, command journals, effective-setting evidence, and results index.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
@@ -262,9 +285,9 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 
 #### IT-9: Evidence, reports, and recommendation reconciliation
 
-- **Preconditions:** Completed 45-VPU candidate matrix, rollback canaries, and stable final regular-settings baseline.
+- **Preconditions:** Completed 50-VPU candidate matrix, rollback canaries, and stable final regular-settings baseline.
 - **Steps:** Validate every results-index row and referenced artifact; parse raw JSON; check ASCII logs; validate coverage disposition/execution status, Markdown, and standalone HTML reports; independently recompute medians, MAD, CV, eligibility threshold, Pareto set, and tie-break decision from measurement rows only.
-- **Expected Outcome:** Every row contains run/candidate, attempt type, `vpu=45`, applicable repetition, UTC timestamps, result, restoration state, and existing evidence paths. Raw bundles are complete; no testable control remains pending; canaries are excluded from performance statistics and source-candidate status; reports reconcile numerically with JSON; recommendation and exclusions trace to the defined rules and evidence; no ANSI or non-45 result is present.
+- **Expected Outcome:** Every row contains run/candidate, attempt type, `vpu=50`, applicable repetition, UTC timestamps, result, restoration state, and existing evidence paths. Raw bundles are complete; no testable control remains pending; canaries are excluded from performance statistics and source-candidate status; reports reconcile numerically with JSON; recommendation and exclusions trace to the defined rules and evidence; no ANSI or non-50 result is present.
 - **Verification:** Run `test_IT9_reports_and_recommendation` and compare independent calculations with `fio_analysis.md`, `fio_report.html`, OCI metrics reports, `sprint_30_summary.md`, and `recommendation.json`.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
@@ -284,4 +307,6 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 
 ## Design Approval Status
 
-Awaiting Review
+Accepted by Product Owner on 2026-08-18. The approved execution tier was
+subsequently changed from 45 to 50 VPUs/GB after OCI rejected 45; all Sprint
+30 execution, plans, evidence, reports, and recommendation use 50 only.

@@ -460,7 +460,7 @@ Test: integration
 Regression: integration
 Regression scope: iscsi_tuning
 
-Sprint 30 evaluates supported iSCSI network-path tuning on a four-OCPU midrange server without multipath, with every test volume configured at 45 VPUs/GB. It uses the established Oracle-style block-volume layout only for FIO file placement and does not install or test Oracle Database. Later backlog items separately revalidate the Sprint 30 method at 30 and 120 VPUs/GB.
+Sprint 30 evaluates supported iSCSI network-path tuning on a four-OCPU midrange server without multipath, with every test volume configured at 50 VPUs/GB. It uses the established Oracle-style block-volume layout only for FIO file placement and does not install or test Oracle Database. Later backlog items separately revalidate the Sprint 30 method at 30 and 120 VPUs/GB.
 
 Backlog Items:
 

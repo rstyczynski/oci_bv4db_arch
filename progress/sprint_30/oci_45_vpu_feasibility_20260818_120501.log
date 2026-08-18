@@ -1,0 +1,14 @@
+ServiceError:
+{
+    "client_version": "Oracle-PythonSDK/2.156.0, Oracle-PythonCLI/3.63.0",
+    "code": "InvalidParameter",
+    "logging_tips": "Please run the OCI CLI command using --debug flag to find more debug information.",
+    "message": "vpusPerGB is invalid or incorrectly formatted.",
+    "opc-request-id": "B926D3CED8B74530B68ADBA6CC422958/81E4F0402685EFD7FB4D846A5A52482E/1BA9AA03AF85F3F308FA55BA7952AB42",
+    "operation_name": "create_volume",
+    "request_endpoint": "POST https://iaas.eu-zurich-1.oraclecloud.com/20160918/volumes",
+    "status": 400,
+    "target_service": "blockstorage",
+    "timestamp": "2026-08-18T12:20:11.241266+00:00",
+    "troubleshooting_tips": "See [https://docs.oracle.com/iaas/Content/API/References/apierrors.htm] for more information about resolving this error. If you are unable to resolve this issue, run this CLI command with --debug option and contact Oracle support and provide them the full error message."
+}

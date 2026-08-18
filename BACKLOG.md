@@ -622,7 +622,7 @@ Test: validate the runbook on disposable data by converting a single-path attach
 
 ### BV4DB-72. Tune single-path iSCSI performance on a four-OCPU midrange server
 
-Establish the best supported single-path iSCSI configuration for a midrange OCI server with four OCPUs and block volumes configured at 45 VPUs/GB, where multipath is not used. The benchmark must use the Oracle-style block-volume layout already designed in this project. This item is storage-only: evaluate applicable iSCSI network-path tuning with FIO and do not install or test Oracle Database.
+Establish the best supported single-path iSCSI configuration for a midrange OCI server with four OCPUs and block volumes configured at 50 VPUs/GB, where multipath is not used. The benchmark must use the Oracle-style block-volume layout already designed in this project. This item is storage-only: evaluate applicable iSCSI network-path tuning with FIO and do not install or test Oracle Database.
 
 Test: FIO benchmark results compare the baseline with each applicable tuning setting and document throughput, IOPS, latency, CPU use, and the recommended configuration.
 
@@ -634,12 +634,12 @@ Test: an Oracle Database benchmark run compares the approved single-path tuning 
 
 ### BV4DB-74. Revalidate single-path iSCSI tuning at 30 VPUs/GB
 
-Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 30 VPUs/GB. Keep the results separate from the 45-VPU evidence so operators can determine whether the recommended configuration changes with the volume setting.
+Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 30 VPUs/GB. Keep the results separate from the 50-VPU evidence so operators can determine whether the recommended configuration changes with the volume setting.
 
 Test: FIO results at 30 VPUs/GB reproduce the Sprint 30 method, evaluate every applicable tuning candidate, and produce a setting-specific recommendation with the regular project report.
 
 ### BV4DB-75. Revalidate single-path iSCSI tuning at 120 VPUs/GB
 
-Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 120 VPUs/GB. Keep the results separate from the 45-VPU evidence and explicitly report the effective limits of the four-OCPU single-path host.
+Revalidate the single-path iSCSI tuning method established by BV4DB-72 on the same four-OCPU Oracle-style block-volume topology with volumes configured at 120 VPUs/GB. Keep the results separate from the 50-VPU evidence and explicitly report the effective limits of the four-OCPU single-path host.
 
 Test: FIO results at 120 VPUs/GB reproduce the Sprint 30 method, evaluate every applicable tuning candidate, and produce a setting-specific recommendation with the regular project report.

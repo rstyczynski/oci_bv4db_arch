@@ -60,4 +60,4 @@ Progress board is a table showing sprint, and backlog items state. It's the only
 | Sprint 28 | planned | BV4DB-63 | planned |
 | Sprint 28 | planned | BV4DB-70 | planned |
 | Sprint 29 | under_construction | BV4DB-71 | under_construction |
-| Sprint 30 | under_design | BV4DB-72 | test_specified |
+| Sprint 30 | under_construction | BV4DB-72 | under_construction |
