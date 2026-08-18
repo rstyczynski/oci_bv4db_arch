@@ -10,11 +10,13 @@ SENTINELS="$STATE_DIR/sentinels.json"
 IDENTITIES="$STATE_DIR/device_identities.json"
 LOCK_FILE="$STATE_DIR/mutation.lock"
 ATTEMPT_LOCK_FILE="$STATE_DIR/attempt.lock"
+LEASE_LOCK_FILE="$STATE_DIR/lease.lock"
 
 die() { echo "ERROR: $*" >&2; exit 2; }
 need() { command -v "$1" >/dev/null 2>&1 || die "required command missing: $1"; }
 json_tmp() { printf '%s.tmp.%s' "$1" "$$"; }
 atomic_copy() { local tmp; tmp=$(json_tmp "$2"); cp "$1" "$tmp"; mv "$tmp" "$2"; }
+atomic_json() { local target="$1" tmp; tmp=$(json_tmp "$target"); command cat > "$tmp"; mv "$tmp" "$target"; }
 
 verify_sentinels() {
   [ -s "$SENTINELS" ] || die "sentinel manifest is missing"
@@ -476,7 +478,7 @@ prepare() {
   done
   printf '%s\n' "$sent" > "$SENTINELS"; verify_sentinels; cp "$SENTINELS" "$evidence/sentinels.json"
   capture_controls "$BASELINE"; cp "$BASELINE" "$evidence/guest_baseline.json"
-  jq -n '{rollback_armed:false,restoration_state:"baseline_captured"}' > "$STATE_DIR/rollback.json"
+  jq -n '{rollback_armed:false,restoration_state:"baseline_captured"}' | atomic_json "$STATE_DIR/rollback.json"
   lscpu > "$evidence/lscpu.txt"; lsblk -O -J > "$evidence/lsblk.json"; pvs --reportformat json > "$evidence/pvs.json"; vgs --reportformat json > "$evidence/vgs.json"; lvs --reportformat json -a -o +segtype,stripes,stripesize > "$evidence/lvs.json"
   iscsiadm -m session -P 3 > "$evidence/iscsi_sessions.txt"
   sysctl -n net.ipv4.tcp_available_congestion_control > "$evidence/tcp_available_congestion_control.txt"
@@ -500,7 +502,7 @@ prepare() {
 }
 
 run_attempt() {
-  local candidate="$1" repetition="$2" out="$3" runtime="$4" ramp="$5" started ended rc=0 profile unit fio_pid='' iostat_pid='' expected_cc lock_held=false attempt_lock_held=false
+  local candidate="$1" repetition="$2" out="$3" runtime="$4" ramp="$5" started ended rc=0 profile unit deadline_epoch fio_pid='' iostat_pid='' expected_cc lock_held=false attempt_lock_held=false
   transition() {
     local state="$1" file="$out/state.json" now tmp
     now=$(date -u +%Y-%m-%dT%H:%M:%SZ); tmp="$file.tmp.$$"
@@ -513,7 +515,7 @@ run_attempt() {
     [ -z "$iostat_pid" ] || { kill "$iostat_pid" 2>/dev/null || true; wait "$iostat_pid" 2>/dev/null || true; }
     if [ "$lock_held" != true ]; then
       if flock -w 120 9; then lock_held=true; else
-        jq -n --arg unit "$unit" '{rollback_armed:true,unit:$unit,restoration_state:"unproven",reason:"mutation_lock_unavailable"}' > "$STATE_DIR/rollback.json"
+        jq -n --arg unit "$unit" '{rollback_armed:true,unit:$unit,restoration_state:"unproven",reason:"mutation_lock_unavailable"}' | atomic_json "$STATE_DIR/rollback.json"
         transition failed
         if [ "$attempt_lock_held" = true ]; then flock -u 7 >/dev/null 2>&1 || true; attempt_lock_held=false; fi
         return 1
@@ -536,13 +538,15 @@ run_attempt() {
     if [ "$restore_rc" -eq 0 ]; then stop_unit_rc=0; stop_rollback_unit_strict "$unit" "$out/rollback_unit_stop.txt" || { stop_unit_rc=$?; restore_rc=$stop_unit_rc; }; fi
     jq -n --argjson restore_controls_rc "$restore_controls_rc" --argjson capture_rc "$capture_rc" --argjson byte_equal "$byte_equal" --argjson tuned_verify_rc "$tuned_verify_rc" --argjson live_preflight_rc "$live_preflight_rc" --argjson stop_unit_rc "$stop_unit_rc" --argjson restoration_rc "$restore_rc" \
       '{restore_controls_exit_code:$restore_controls_rc,capture_controls_exit_code:$capture_rc,byte_equal:$byte_equal,tuned_verify_exit_code:$tuned_verify_rc,tuned_verify_advisory:false,live_preflight_exit_code:$live_preflight_rc,stop_rollback_unit_exit_code:$stop_unit_rc,restoration_exit_code:$restoration_rc}' > "$out/restoration_checks.json"
+    exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || restore_rc=1
     if [ "$restore_rc" -eq 0 ]; then
-      jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,restoration_state:"restored"}' > "$STATE_DIR/rollback.json"
+      jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,restoration_state:"restored"}' | atomic_json "$STATE_DIR/rollback.json"
       transition restored
     else
-      jq -n --arg unit "$unit" --argjson rc "$restore_rc" '{rollback_armed:true,unit:$unit,restoration_state:"unproven",restore_exit_code:$rc}' > "$STATE_DIR/rollback.json"
+      jq -n --arg unit "$unit" --argjson rc "$restore_rc" '{rollback_armed:true,unit:$unit,restoration_state:"unproven",restore_exit_code:$rc}' | atomic_json "$STATE_DIR/rollback.json"
       transition failed
     fi
+    flock -u 6 >/dev/null 2>&1 || true
     flock -u 9 >/dev/null 2>&1 || true; lock_held=false
     if [ "$attempt_lock_held" = true ]; then flock -u 7 >/dev/null 2>&1 || true; attempt_lock_held=false; fi
     return "$restore_rc"
@@ -554,8 +558,10 @@ run_attempt() {
   restore_controls
   verify_sentinels
   unit="bv4db-s30-restore-$(date +%s)-$$"
-  systemd-run --quiet --unit "$unit" --on-active=180s /usr/local/sbin/bv4db-sprint30-guest restore
-  jq -n --arg unit "$unit" '{rollback_armed:true,unit:$unit,deadline_seconds:180}' > "$STATE_DIR/rollback.json"
+  deadline_epoch=$(( $(date +%s) + 180 ))
+  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,expiry_claimed:false,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
+  systemd-run --quiet --unit "$unit" --on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s /usr/local/sbin/bv4db-sprint30-guest lease-check
+  systemctl is-active --quiet "$unit.timer" || die "rollback watchdog timer did not become active"
   trap 'cleanup_attempt' EXIT
   trap 'exit 130' INT
   trap 'exit 143' TERM
@@ -639,11 +645,30 @@ EOF
 }
 
 renew_rollback_lease() {
-  local unit
+  local unit now deadline tmp
+  exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || die "could not acquire rollback lease-state lock"
   jq -e '.rollback_armed==true and (.unit|length)>0' "$STATE_DIR/rollback.json" >/dev/null || die "rollback lease is not armed"
+  jq -e '(.expiry_claimed//false)==false' "$STATE_DIR/rollback.json" >/dev/null || die "rollback expiry was already claimed"
   unit=$(jq -r .unit "$STATE_DIR/rollback.json")
   systemctl is-active --quiet "$unit.timer" || die "rollback timer is not active"
-  systemctl restart "$unit.timer"
+  now=$(date +%s); deadline=$((now + 180)); tmp=$(json_tmp "$STATE_DIR/rollback.json")
+  jq --argjson deadline "$deadline" --arg renewed_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '.deadline_epoch=$deadline | .renewed_at=$renewed_at' "$STATE_DIR/rollback.json" > "$tmp"
+  mv "$tmp" "$STATE_DIR/rollback.json"
+  jq -e --argjson now "$now" '.rollback_armed==true and .deadline_epoch >= ($now+180)' "$STATE_DIR/rollback.json" >/dev/null || die "rollback deadline renewal was not persisted"
+  systemctl is-active --quiet "$unit.timer" || die "rollback timer became inactive during renewal"
+  flock -u 6
+}
+
+lease_check() {
+  local now deadline claim tmp
+  exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || return 1
+  jq -e '.rollback_armed==true and (.deadline_epoch|type)=="number" and (.expiry_claimed//false)==false' "$STATE_DIR/rollback.json" >/dev/null 2>&1 || { flock -u 6; return 0; }
+  now=$(date +%s); deadline=$(jq -r .deadline_epoch "$STATE_DIR/rollback.json")
+  if [ "$now" -lt "$deadline" ]; then flock -u 6; return 0; fi
+  claim="expiry-$now-$$"; tmp=$(json_tmp "$STATE_DIR/rollback.json")
+  jq --arg claim "$claim" '.expiry_claimed=true | .expiry_claim=$claim' "$STATE_DIR/rollback.json" > "$tmp"; mv "$tmp" "$STATE_DIR/rollback.json"
+  flock -u 6
+  emergency_restore "$claim"
 }
 
 prove_baseline() {
@@ -661,7 +686,7 @@ prove_baseline() {
     unit=$(jq -r .unit "$STATE_DIR/rollback.json")
     stop_rollback_unit_strict "$unit" || die "stale rollback timer/service could not be proved inactive"
   else unit="resume_baseline_proof"; fi
-  jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,restoration_state:"restored",source:"resume_baseline_proof"}' > "$STATE_DIR/rollback.json"
+  jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,restoration_state:"restored",source:"resume_baseline_proof"}' | atomic_json "$STATE_DIR/rollback.json"
   flock -u 9; flock -u 7
 }
 
@@ -686,17 +711,37 @@ candidate_proposal() {
   esac
 }
 
+commit_emergency_restoration() {
+  local unit="$1" canary="$2" evidence_dir="$3" tuned_rc="$4" claim="$5" evidence
+  evidence="$evidence_dir/emergency_restore.json"
+  jq -n --arg unit "$unit" --arg claim "$claim" --argjson tuned_rc "$tuned_rc" '{unit:$unit,expiry_claim:$claim,byte_equal:true,tuned_verify_exit_code:$tuned_rc,live_preflight:true,sentinels_valid:true,restoration_state:"restored"}' | atomic_json "$evidence" || return 1
+  jq -e '.byte_equal==true and (.tuned_verify_exit_code==0 or .tuned_verify_exit_code==null) and .live_preflight==true and .sentinels_valid==true and .restoration_state=="restored" and (.unit|length)>0 and (.expiry_claim|length)>0' "$evidence" >/dev/null || return 1
+  jq -n --arg unit "$unit" --argjson canary "$canary" --arg evidence_dir "$evidence_dir" --argjson tuned_rc "$tuned_rc" '{rollback_armed:false,unit:$unit,restoration_state:"restored",source:"host_local_lease",canary:$canary,emergency_tuned_verify_exit_code:$tuned_rc} + (if $canary then {canary_observation_pending:true,evidence_dir:$evidence_dir} else {} end)' | atomic_json "$STATE_DIR/rollback.json"
+}
+
 emergency_restore() {
-  local tmp unit canary evidence_dir
+  local claim="${1:-manual}" tmp unit canary evidence_dir tuned_rc=null
+  pkill -TERM -x fio >/dev/null 2>&1 || true; sleep 2; pkill -KILL -x fio >/dev/null 2>&1 || true
   exec 8>"$LOCK_FILE"; flock -w 180 8 || die "emergency restore could not acquire mutation lock"
+  exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || die "emergency restore could not acquire lease-state lock"
+  if [ "$claim" != manual ] && ! jq -e --arg claim "$claim" '.rollback_armed==true and .expiry_claimed==true and .expiry_claim==$claim' "$STATE_DIR/rollback.json" >/dev/null 2>&1; then flock -u 6; flock -u 8; return 0; fi
+  flock -u 6
   unit=$(jq -r '.unit // "host_local_lease"' "$STATE_DIR/rollback.json" 2>/dev/null || echo host_local_lease)
   canary=$(jq -r '.canary // false' "$STATE_DIR/rollback.json" 2>/dev/null || echo false)
   evidence_dir=$(jq -r '.evidence_dir // empty' "$STATE_DIR/rollback.json" 2>/dev/null || true)
-  pkill -TERM -x fio >/dev/null 2>&1 || true; sleep 2; pkill -KILL -x fio >/dev/null 2>&1 || true
+  [ -n "$evidence_dir" ] || evidence_dir="$STATE_DIR"; mkdir -p "$evidence_dir"
   restore_controls
   tmp=$(mktemp); capture_controls "$tmp"; cmp -s "$BASELINE" "$tmp" || { rm -f "$tmp"; die "emergency restoration is not byte-equal to baseline"; }; rm -f "$tmp"
+  if [ "$(jq -r .tuned_profile "$BASELINE")" != "__off__" ]; then
+    tuned_rc=0
+    verify_tuned_settled "$evidence_dir/emergency_tuned_verify.txt" 6 5 || tuned_rc=$?
+    if [ "$tuned_rc" -ne 0 ]; then
+      jq --argjson tuned_rc "$tuned_rc" '.restoration_state="unproven" | .emergency_tuned_verify_exit_code=$tuned_rc' "$STATE_DIR/rollback.json" | atomic_json "$STATE_DIR/rollback.json"
+      flock -u 8; return "$tuned_rc"
+    fi
+  fi
   live_preflight "$(jq -r .tcp_congestion_control "$BASELINE")" >/dev/null; verify_sentinels
-  jq -n --arg unit "$unit" --argjson canary "$canary" --arg evidence_dir "$evidence_dir" '{rollback_armed:false,unit:$unit,restoration_state:"restored",source:"host_local_lease",canary:$canary} + (if $canary then {canary_observation_pending:true,evidence_dir:$evidence_dir} else {} end)' > "$STATE_DIR/rollback.json"
+  commit_emergency_restoration "$unit" "$canary" "$evidence_dir" "$tuned_rc" "$claim" || { flock -u 8; return 1; }
   flock -u 8
 }
 
@@ -771,13 +816,15 @@ run_canary() {
 }
 
 arm_lease_canary() {
-  local out="$1" unit
+  local out="$1" unit deadline_epoch
   exec 7>"$ATTEMPT_LOCK_FILE"; flock -n 7 || die "another Sprint 30 attempt/controller is active"
   jq -e '.rollback_armed==false' "$STATE_DIR/rollback.json" >/dev/null || die "a rollback lease is already armed"
   mkdir -p "$out"; restore_controls; verify_sentinels
   unit="bv4db-sprint30-restore-$$"
-  systemd-run --quiet --unit "$unit" --on-active=180s /usr/local/sbin/bv4db-sprint30-guest restore
-  jq -n --arg unit "$unit" --arg out "$out" '{rollback_armed:true,unit:$unit,deadline_seconds:180,canary:true,evidence_dir:$out}' > "$STATE_DIR/rollback.json"
+  deadline_epoch=$(( $(date +%s) + 180 ))
+  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,expiry_claimed:false,canary:true,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
+  systemd-run --quiet --unit "$unit" --on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s /usr/local/sbin/bv4db-sprint30-guest lease-check
+  systemctl is-active --quiet "$unit.timer" || die "lease canary watchdog timer did not become active"
   exec 8>"$LOCK_FILE"; flock -w 120 8 || die "lease canary could not acquire mutation lock"
   apply_candidate TCP_BUF_2X
   capture_controls "$out/controls_applied.json"; verify_candidate_applied TCP_BUF_2X "$out/controls_applied.json"
@@ -786,18 +833,17 @@ arm_lease_canary() {
 }
 
 observe_lease_canary() {
-  local out="$1" unit unit_state service_result service_status after
+  local out="$1" unit unit_state service_result=state_proven service_status=0 after
   exec 7>"$ATTEMPT_LOCK_FILE"; flock -n 7 || die "another Sprint 30 attempt/controller is active"
   exec 8>"$LOCK_FILE"; flock -w 120 8 || die "lease observation could not acquire mutation lock"
+  jq -e '.rollback_armed==false and .restoration_state=="restored" and .source=="host_local_lease" and .canary==true and .canary_observation_pending==true' "$STATE_DIR/rollback.json" >/dev/null || die "host-local lease expiry was not proved"
+  jq -e '.byte_equal==true and (.tuned_verify_exit_code==0 or .tuned_verify_exit_code==null) and .live_preflight==true and .sentinels_valid==true and .restoration_state=="restored"' "$out/emergency_restore.json" >/dev/null || die "emergency restoration evidence is incomplete"
   unit=$(jq -r .unit "$STATE_DIR/rollback.json"); unit_state=$(systemctl is-active "$unit.timer" 2>/dev/null || true)
-  [ "$unit_state" != active ] || die "rollback lease timer remained active"
-  service_result=$(systemctl show "$unit.service" -p Result --value); service_status=$(systemctl show "$unit.service" -p ExecMainStatus --value)
+  stop_rollback_unit_strict "$unit" "$out/rollback_unit_stop.txt" || die "lease watchdog could not be stopped and proved inactive"
   jq -n --arg result "$service_result" --arg status "$service_status" '{result:$result,exec_main_status:($status|tonumber)}' > "$out/restore_service_status.json"
-  [ "$service_result" = success ] && [ "$service_status" -eq 0 ] || die "host-local restore service failed"
-  systemctl reset-failed "$unit.service" >/dev/null 2>&1 || true
   after="$out/controls_after.json"; capture_controls "$after"; cmp -s "$BASELINE" "$after" || die "lease canary did not restore baseline"
   live_preflight "$(jq -r .tcp_congestion_control "$BASELINE")" >/dev/null; verify_sentinels
-  jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,canary:false,canary_observation_pending:false,restoration_state:"restored"}' > "$STATE_DIR/rollback.json"
+  jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,canary:false,canary_observation_pending:false,restoration_state:"restored"}' | atomic_json "$STATE_DIR/rollback.json"
   jq -n --arg unit_state "$unit_state" --arg service_result "$service_result" --argjson service_status "$service_status" '{kind:"lease",safe_source_candidate:"TCP_BUF_2X",result:"expected_failure_restored",baseline_equal:true,sentinels_valid:true,rollback_armed:false,unit_state:$unit_state,restore_service_result:$service_result,restore_service_exit_status:$service_status}' > "$out/canary.json"
   flock -u 8; flock -u 7
 }
@@ -818,6 +864,7 @@ case "${1:-}" in
   proposal) [ "$#" -eq 2 ] || die "proposal CANDIDATE"; candidate_proposal "$2" ;;
   prove-baseline) [ "$#" -eq 2 ] || die "prove-baseline PROOF"; prove_baseline "$2" ;;
   restore) emergency_restore ;;
+  lease-check) lease_check ;;
   canary) [ "$#" -eq 3 ] || die "canary trap|lease OUT"; run_canary "$2" "$3" ;;
   canary-arm) [ "$#" -eq 2 ] || die "canary-arm OUT"; arm_lease_canary "$2" ;;
   canary-observe) [ "$#" -eq 2 ] || die "canary-observe OUT"; observe_lease_canary "$2" ;;

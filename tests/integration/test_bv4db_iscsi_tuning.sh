@@ -156,6 +156,97 @@ exercise_rollback_stop_shim() {
   )
 }
 
+# Production deadline renewal/check functions with time and systemd shims.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_lease_deadline_shim() {
+  local root="$1"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    STATE_DIR="$root/state"; LEASE_LOCK_FILE="$STATE_DIR/lease.lock"; mkdir -p "$STATE_DIR"
+    echo 100 > "$root/now"
+    jq -n '{rollback_armed:true,unit:"test-watchdog",deadline_seconds:180,deadline_epoch:120}' > "$STATE_DIR/rollback.json"
+    date() { if [ "$1" = +%s ]; then command cat "$root/now"; else echo 2026-08-18T00:00:00Z; fi; }
+    systemctl() {
+      if [ "$1" = is-active ]; then return 0; fi
+      printf '%s\n' "$*" >> "$root/systemctl.journal"
+      return 2
+    }
+    flock() { :; }
+    emergency_restore() { touch "$root/emergency-restored"; jq '.rollback_armed=false' "$STATE_DIR/rollback.json" > "$STATE_DIR/rollback.tmp"; mv "$STATE_DIR/rollback.tmp" "$STATE_DIR/rollback.json"; }
+    renew_rollback_lease
+    jq -e '.deadline_epoch==280 and .renewed_at=="2026-08-18T00:00:00Z"' "$STATE_DIR/rollback.json" >/dev/null || return 1
+    [ ! -e "$root/systemctl.journal" ] || return 1
+    echo 279 > "$root/now"; lease_check; [ ! -e "$root/emergency-restored" ] || return 1
+    echo 280 > "$root/now"; lease_check; [ -e "$root/emergency-restored" ] || return 1
+  )
+}
+
+# Expiry claiming and renewal use the same production lease-state lock.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_lease_claim_race_shim() {
+  local root="$1"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    STATE_DIR="$root/state"; LEASE_LOCK_FILE="$STATE_DIR/lease.lock"; mkdir -p "$STATE_DIR"
+    echo 200 > "$root/now"
+    date() { if [ "$1" = +%s ]; then command cat "$root/now"; else echo 2026-08-18T00:00:00Z; fi; }
+    systemctl() { [ "$1" = is-active ]; }
+    flock() {
+      if [ "$1" = -u ]; then rmdir "$root/lease-held" 2>/dev/null || true; return 0; fi
+      while ! mkdir "$root/lease-held" 2>/dev/null; do sleep 0.01; done
+      if [ ! -e "$root/first-lock-observed" ]; then
+        touch "$root/first-lock-observed" "$root/lease-lock-held"
+        while [ ! -e "$root/release-first-lock" ]; do sleep 0.01; done
+      fi
+    }
+    emergency_restore() { printf '%s\n' "$1" > "$root/claimed"; }
+    jq -n '{rollback_armed:true,unit:"test-watchdog",deadline_seconds:180,deadline_epoch:199,expiry_claimed:false}' > "$STATE_DIR/rollback.json"
+    lease_check & checker_pid=$!
+    while [ ! -e "$root/lease-lock-held" ]; do kill -0 "$checker_pid" 2>/dev/null || return 1; sleep 0.01; done
+    (renew_rollback_lease) >/dev/null 2>&1 & renew_pid=$!
+    touch "$root/release-first-lock"
+    wait "$checker_pid"
+    if wait "$renew_pid"; then renew_rc=0; else renew_rc=$?; fi
+    rmdir "$root/lease-held" 2>/dev/null || true
+    jq -e --arg claim "$(cat "$root/claimed")" '.expiry_claimed==true and .expiry_claim==$claim' "$STATE_DIR/rollback.json" >/dev/null || return 1
+    [ "$renew_rc" -ne 0 ] || return 1
+    jq '.expiry_claimed=false | del(.expiry_claim)' "$STATE_DIR/rollback.json" > "$STATE_DIR/reset.json"; mv "$STATE_DIR/reset.json" "$STATE_DIR/rollback.json"
+    echo 100 > "$root/now"; renew_rollback_lease
+    rm -f "$root/claimed"; echo 200 > "$root/now"; lease_check
+    [ ! -e "$root/claimed" ] || return 1
+  )
+}
+
+# Emergency evidence must persist before rollback.json is disarmed.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_emergency_commit_shim() {
+  local root="$1"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    STATE_DIR="$root/state"; mkdir -p "$STATE_DIR"
+    jq -n '{rollback_armed:true,expiry_claimed:true,expiry_claim:"claim-1",unit:"test-watchdog"}' > "$STATE_DIR/rollback.json"
+    fail_evidence=true
+    atomic_json() {
+      local target="$1"
+      if [ "$fail_evidence" = true ] && [[ "$target" == */emergency_restore.json ]]; then command cat >/dev/null; return 1; fi
+      command cat > "$target"
+    }
+    if commit_emergency_restoration test-watchdog false "$root" null claim-1; then return 1; fi
+    jq -e '.rollback_armed==true and .expiry_claimed==true and .expiry_claim=="claim-1"' "$STATE_DIR/rollback.json" >/dev/null || return 1
+    [ ! -e "$root/emergency_restore.json" ] || return 1
+    fail_evidence=false
+    commit_emergency_restoration test-watchdog false "$root" null claim-1
+    jq -e '.byte_equal==true and .unit=="test-watchdog" and .expiry_claim=="claim-1"' "$root/emergency_restore.json" >/dev/null || return 1
+    jq -e '.rollback_armed==false and .restoration_state=="restored" and .source=="host_local_lease"' "$STATE_DIR/rollback.json" >/dev/null || return 1
+  )
+}
+
 exercise_controller_lock() {
   local root="$1" holder
   mkdir -p "$root"
@@ -398,6 +489,13 @@ test_IT4_restore_resume_state_machine() {
   if exercise_rollback_stop_shim "$tmp/stop-mixed" mixed >/dev/null 2>&1; then fail "mixed missing and generic rollback stop failure was accepted"; return 1; fi
   if exercise_rollback_stop_shim "$tmp/stop-missing-loaded" missing_loaded >/dev/null 2>&1; then fail "missing-unit text with loaded state was accepted"; return 1; fi
   if exercise_rollback_stop_shim "$tmp/stop-active" active >/dev/null 2>&1; then fail "active rollback unit was accepted"; return 1; fi
+  exercise_lease_deadline_shim "$tmp/lease-deadline" || { fail "deadline-based lease renewal/check failed"; return 1; }
+  exercise_lease_claim_race_shim "$tmp/lease-claim-race" || { fail "lease expiry claim/renewal serialization failed"; return 1; }
+  exercise_emergency_commit_shim "$tmp/emergency-commit" || { fail "emergency evidence-first commit failed"; return 1; }
+  rg -q -- '--on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s .* lease-check' "$GUEST" || return 1
+  awk '/emergency_restore\(\)/{inside=1} inside&&/pkill -TERM -x fio/{kill=NR} inside&&/flock -w 180 8/{lock=NR; exit} END{exit !(kill && lock && kill<lock)}' "$GUEST" || return 1
+  awk '/emergency_restore\(\)/{inside=1} inside&&/verify_tuned_settled/{tuned=NR} inside&&/commit_emergency_restoration/{commit=NR; exit} END{exit !(tuned && commit && tuned<commit)}' "$GUEST" || return 1
+  awk '/commit_emergency_restoration\(\)/{inside=1} inside&&/atomic_json \"\$evidence\"/{evidence=NR} inside&&/atomic_json \"\$STATE_DIR\/rollback.json\"/{state=NR; exit} END{exit !(evidence && state && evidence<state)}' "$GUEST" || return 1
   exercise_controller_lock "$tmp/controller-lock" || { fail "controller-lifetime lock failed"; return 1; }
   exercise_attachment_convergence "$tmp/attachment-eventual" eventual || { fail "attachment false state did not converge"; return 1; }
   [ "$(cat "$tmp/attachment-eventual/attachment.calls")" -eq 3 ] || { fail "attachment convergence was not polled"; return 1; }
@@ -461,10 +559,13 @@ test_IT7_live_complete_candidate_matrix() {
   pass IT-7
 }
 test_IT8_live_rollback_lease_canary() {
-  echo "=== IT-8: host-local rollback lease canary ==="; local dir path
+  echo "=== IT-8: host-local rollback lease canary ==="; local dir candidate path
   dir=$(require_live_output) || return 1
   jq -e '[.[]|select(.attempt_type=="rollback_canary" and .result=="expected_failure_restored")]|length==2' "$dir/results_index.json" >/dev/null || return 1
-  while IFS= read -r path; do jq -e '.result=="expected_failure_restored" and .baseline_equal==true and .safe_source_candidate=="TCP_BUF_2X"' "$dir/$path/canary.json" >/dev/null || return 1; done < <(jq -r '.[]|select(.attempt_type=="rollback_canary")|.evidence[]' "$dir/results_index.json")
+  while IFS=$'\t' read -r candidate path; do
+    jq -e '.result=="expected_failure_restored" and .baseline_equal==true and .safe_source_candidate=="TCP_BUF_2X"' "$dir/$path/canary.json" >/dev/null || return 1
+    if [ "$candidate" = ROLLBACK_CANARY_LEASE ]; then jq -e '.byte_equal==true and (.tuned_verify_exit_code==0 or .tuned_verify_exit_code==null) and .live_preflight==true and .sentinels_valid==true and .restoration_state=="restored"' "$dir/$path/emergency_restore.json" >/dev/null || return 1; fi
+  done < <(jq -r '.[]|select(.attempt_type=="rollback_canary")|[.candidate_id,.evidence[0]]|@tsv' "$dir/results_index.json")
   jq -e '.rollback_armed==false and .baseline_equal==true' "$dir/final_state.json" >/dev/null || return 1; pass IT-8
 }
 test_IT9_reports_and_recommendation() {

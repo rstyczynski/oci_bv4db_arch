@@ -182,6 +182,28 @@ garbage-collected/not-loaded transient unit and both postconditions prove no
 active timer or service. Generic stop failure and any active state remain
 fail-closed, with focused production-function shims covering all three cases.
 
+Attempt `20260818_194054` proved the corrected disarm path on its first regular
+baseline repetition. The second repetition then recorded a real kernel iSCSI
+`detected conn error (1020)` about 189 seconds after measurement began. This
+coincided with the original transient timer deadline and exposed that
+`systemctl restart` renewal did not postpone the one-shot deadline reliably;
+the restore service was executing during a healthy measurement and was then
+garbage-collected. Cleanup again proved zero resources. Renewal now atomically
+moves a numeric deadline consumed by a five-second periodic systemd watchdog;
+it never restarts the timer. A fresh deadline is inert, while expiry kills FIO
+before waiting for the mutation lock and invokes emergency restoration. Local
+shims prove renewal persistence, no timer restart, pre/post-deadline behavior,
+emergency preemption order, and a deterministic expiry-versus-renewal
+interleaving. Renewal/claim transitions share a dedicated lease-state lock;
+once expiry is claimed, renewal fails, and emergency recovery revalidates the
+claim after acquiring the mutation lock so stale checks cannot overwrite a
+normal restore. Emergency recovery now archives and requires bounded TuneD
+verification in addition to byte equality, topology, and sentinels, and all
+watchdog terminal state is written by atomic rename.
+The emergency commit writes and validates claim/unit-correlated evidence before
+atomically disarming `rollback.json`; a fault-injection shim proves evidence
+write failure leaves the prior armed/claimed state intact.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
@@ -222,6 +244,7 @@ resources rather than custom adoption of direct-created resources.
 ## Quality-gate result to date
 
 `test_run_A3_integration_20260818_120356.log` records the initial A3 attempt:
-IT-1 through IT-4 passed. IT-5 through IT-10 failed as designed because no
-completed live evidence directory exists. This is not a passing gate and B3
-must not run until the executor and live evidence are complete.
+IT-1 through IT-4 passed. IT-5 through IT-10 failed closed because the required
+completed live evidence directory did not exist; these are required acceptance
+tests, not tests designed to fail. This is not a passing gate and B3 must not
+run until the executor and live evidence are complete.
