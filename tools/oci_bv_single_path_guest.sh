@@ -78,6 +78,26 @@ capture_controls() {
     '{rmem_max:$rmem,wmem_max:$wmem,tcp_rmem:$tcp_rmem,tcp_wmem:$tcp_wmem,netdev_max_backlog:$backlog,rps_sock_flow_entries:$rps_sock,tcp_congestion_control:$cc,online_cpus:$online,interface:$iface,mtu:$mtu,rx_queues:$rx,tx_queues:$tx,rps:$rps,xps:$xps,iscsi_queue_depth:$qd,offloads:$offloads,nic:{ring_rx:$ring_rx,ring_tx:$ring_tx,combined_channels:$channels,adaptive_rx:$adaptive_rx,adaptive_tx:$adaptive_tx,irq_vectors:$irq_vectors},tuned_profile:$tuned}' > "$out"
 }
 
+verify_tuned_settled() {
+  local out="$1" attempts="${2:-6}" interval="${3:-5}" attempt rc=1 raw
+  raw="$out.raw.$$"
+  [[ "$attempts" =~ ^[1-9][0-9]*$ ]] || return 2
+  [[ "$interval" =~ ^[0-9]+$ ]] || return 2
+  : > "$out"
+  for ((attempt=1; attempt<=attempts; attempt++)); do
+    if tuned-adm verify > "$raw" 2>&1; then rc=0; else rc=$?; fi
+    {
+      printf 'attempt=%s exit_code=%s\n' "$attempt" "$rc"
+      LC_ALL=C tr -cd '\11\12\40-\176' < "$raw"
+      printf '\n'
+    } >> "$out"
+    if [ "$rc" -eq 0 ]; then rm -f "$raw"; return 0; fi
+    [ "$attempt" -eq "$attempts" ] || sleep "$interval"
+  done
+  rm -f "$raw"
+  return "$rc"
+}
+
 reconnect_storage() {
   local qd="$1" iqn ip port path desired
   sync
@@ -464,7 +484,7 @@ run_attempt() {
     mv "$tmp" "$file"
   }
   cleanup_attempt() {
-    local restore_rc=0
+    local restore_rc=0 restore_controls_rc=0 capture_rc=null live_preflight_rc=null stop_unit_rc=null tuned_verify_rc=null byte_equal=null
     [ -z "$fio_pid" ] || { kill "$fio_pid" 2>/dev/null || true; wait "$fio_pid" 2>/dev/null || true; }
     [ -z "$iostat_pid" ] || { kill "$iostat_pid" 2>/dev/null || true; wait "$iostat_pid" 2>/dev/null || true; }
     if [ "$lock_held" != true ]; then
@@ -476,12 +496,22 @@ run_attempt() {
       fi
     fi
     transition restoring
-    restore_controls || restore_rc=$?
-    if [ "$restore_rc" -eq 0 ]; then capture_controls "$out/controls_restored.json" || restore_rc=$?; fi
-    if [ "$restore_rc" -eq 0 ]; then cmp -s "$BASELINE" "$out/controls_restored.json" || restore_rc=1; fi
-    if [ "$restore_rc" -eq 0 ] && [ "$(jq -r .tuned_profile "$BASELINE")" != "__off__" ]; then tuned-adm verify >/dev/null || restore_rc=$?; fi
-    if [ "$restore_rc" -eq 0 ]; then live_preflight "$(jq -r .tcp_congestion_control "$BASELINE")" >/dev/null || restore_rc=$?; fi
-    if [ "$restore_rc" -eq 0 ]; then stop_rollback_unit_strict "$unit" || restore_rc=$?; fi
+    restore_controls || { restore_controls_rc=$?; restore_rc=$restore_controls_rc; }
+    if [ "$restore_rc" -eq 0 ]; then capture_rc=0; capture_controls "$out/controls_restored.json" || { capture_rc=$?; restore_rc=$capture_rc; }; fi
+    if [ "$restore_rc" -eq 0 ]; then
+      if cmp -s "$BASELINE" "$out/controls_restored.json"; then byte_equal=true; else byte_equal=false; restore_rc=1; fi
+    fi
+    # TuneD can settle asynchronously after restoring a profile. Archive each
+    # bounded verification attempt and require convergence before disarming the
+    # rollback lease. A persistent mismatch remains an authoritative failure.
+    if [ "$restore_rc" -eq 0 ] && [ "$(jq -r .tuned_profile "$BASELINE")" != "__off__" ]; then
+      tuned_verify_rc=0
+      verify_tuned_settled "$out/tuned_verify.txt" 6 5 || { tuned_verify_rc=$?; restore_rc=$tuned_verify_rc; }
+    fi
+    if [ "$restore_rc" -eq 0 ]; then live_preflight_rc=0; live_preflight "$(jq -r .tcp_congestion_control "$BASELINE")" >/dev/null || { live_preflight_rc=$?; restore_rc=$live_preflight_rc; }; fi
+    if [ "$restore_rc" -eq 0 ]; then stop_unit_rc=0; stop_rollback_unit_strict "$unit" || { stop_unit_rc=$?; restore_rc=$stop_unit_rc; }; fi
+    jq -n --argjson restore_controls_rc "$restore_controls_rc" --argjson capture_rc "$capture_rc" --argjson byte_equal "$byte_equal" --argjson tuned_verify_rc "$tuned_verify_rc" --argjson live_preflight_rc "$live_preflight_rc" --argjson stop_unit_rc "$stop_unit_rc" --argjson restoration_rc "$restore_rc" \
+      '{restore_controls_exit_code:$restore_controls_rc,capture_controls_exit_code:$capture_rc,byte_equal:$byte_equal,tuned_verify_exit_code:$tuned_verify_rc,tuned_verify_advisory:false,live_preflight_exit_code:$live_preflight_rc,stop_rollback_unit_exit_code:$stop_unit_rc,restoration_exit_code:$restoration_rc}' > "$out/restoration_checks.json"
     if [ "$restore_rc" -eq 0 ]; then
       jq -n --arg unit "$unit" '{rollback_armed:false,unit:$unit,restoration_state:"restored"}' > "$STATE_DIR/rollback.json"
       transition restored

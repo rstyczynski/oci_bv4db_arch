@@ -155,6 +155,22 @@ independent exact attachment `ATTACHED` predicate, archives both raw responses
 before evaluation, and has command-shim tests rejecting provisioning,
 terminating, invented `IN_USE`, and wrong-tier values.
 
+Attempt `20260818_182030` reached the first full 660-second FIO measurement.
+Its restoration bundle was captured byte-for-byte equal to the immutable
+baseline, but the attempt was rejected by a later undifferentiated restoration
+gate before it could write `attempt.json`. The rollback lease remained armed,
+the controller stopped the matrix, and exact-tag cleanup again proved zero
+volumes and instances. The gate sequence showed that restore, capture, and
+byte equality had passed; the first remaining check was `tuned-adm verify`.
+Because the earlier implementation discarded that command's output, the exact
+mismatch cannot be classified from the failed run. The command is now retried
+for a bounded 30-second settling window, every response is archived as
+plain-ASCII evidence, and persistent mismatch remains fail-closed. Every
+restoration writes `restoration_checks.json` with individual exit codes and
+`null` for checks not reached; the independent verifier requires TuneD
+convergence when a profile is active, all other authoritative checks, and the
+overall restoration result to be zero.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

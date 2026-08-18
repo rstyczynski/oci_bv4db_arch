@@ -82,6 +82,28 @@ exercise_preformat_single_path_shim() {
   )
 }
 
+# Production bounded TuneD convergence check is invoked with command shims.
+# shellcheck disable=SC2030,SC2031,SC2329
+exercise_tuned_verify_settle_shim() {
+  local root="$1" mode="$2"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    mkdir -p "$root"
+    tuned_calls=0
+    tuned-adm() {
+      [ "$1" = verify ] || return 2
+      tuned_calls=$((tuned_calls+1))
+      printf 'TuneD verification call %s\n' "$tuned_calls"
+      if [ "$mode" = transient ] && [ "$tuned_calls" -ge 3 ]; then return 0; fi
+      return 1
+    }
+    sleep() { :; }
+    verify_tuned_settled "$root/tuned_verify.txt" 3 0
+  )
+}
+
 # shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_real_resume_proof() {
   local root="$1" current="$2" restore_result="${3:-0}" systemctl_mode="${4:-inactive}"
@@ -313,6 +335,12 @@ test_IT3_fail_closed_preflight_matrix() {
     if exercise_preformat_single_path_shim "$tmp/preformat-$fault" "$fault" >/dev/null 2>&1; then fail "pre-format proof accepted $fault"; return 1; fi
     [ ! -e "$tmp/preformat-$fault/destructive-command" ] || { fail "pre-format $fault reached a destructive command"; return 1; }
   done
+  exercise_tuned_verify_settle_shim "$tmp/tuned-transient" transient || { fail "transient TuneD verification did not converge"; return 1; }
+  [ "$(rg -c '^attempt=' "$tmp/tuned-transient/tuned_verify.txt")" -eq 3 ] || return 1
+  rg -q '^attempt=3 exit_code=0$' "$tmp/tuned-transient/tuned_verify.txt" || return 1
+  if exercise_tuned_verify_settle_shim "$tmp/tuned-persistent" persistent; then fail "persistent TuneD verification mismatch was accepted"; return 1; fi
+  rg -q '^attempt=3 exit_code=1$' "$tmp/tuned-persistent/tuned_verify.txt" || return 1
+  if LC_ALL=C grep -q '[^ -~[:space:]]' "$tmp/tuned-transient/tuned_verify.txt" "$tmp/tuned-persistent/tuned_verify.txt"; then fail "TuneD diagnostic is not plain ASCII"; return 1; fi
   pass IT-3
 }
 

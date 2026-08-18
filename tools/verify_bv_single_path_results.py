@@ -161,7 +161,7 @@ def main() -> int:
         assert start < end and (end - start).total_seconds() >= 600
         for name in (
             "fio.json", "iostat.json", "workload.fio", "controls_before.json", "controls_applied.json",
-            "controls_restored.json", "errors_before.json", "errors_after.json", "state.json", "attempt.json",
+            "controls_restored.json", "restoration_checks.json", "errors_before.json", "errors_after.json", "state.json", "attempt.json",
             "oci_preflight.json", "guest_preflight.json", "fio_report.html",
         ):
             assert (evidence / name).is_file(), f"missing {name} in {evidence}"
@@ -172,6 +172,16 @@ def main() -> int:
         assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
         assert all(load(evidence / "guest_preflight.json").get(key) is True for key in ("sessions_valid", "routes_valid", "devices_unique", "boot_excluded", "multipath_absent", "mounts_valid", "lvm_valid", "socket_congestion_control_valid", "sentinels_valid"))
         assert load(evidence / "controls_before.json") == load(evidence / "controls_restored.json"), f"restore drift in {evidence}"
+        restoration = load(evidence / "restoration_checks.json")
+        assert restoration.get("byte_equal") is True and restoration.get("tuned_verify_advisory") is False
+        assert all(restoration.get(key) == 0 for key in ("restore_controls_exit_code", "capture_controls_exit_code", "live_preflight_exit_code", "stop_rollback_unit_exit_code", "restoration_exit_code"))
+        tuned_profile = load(evidence / "controls_before.json").get("tuned_profile")
+        if tuned_profile == "__off__":
+            assert restoration.get("tuned_verify_exit_code") is None
+        else:
+            assert restoration.get("tuned_verify_exit_code") == 0
+            tuned_log = evidence / "tuned_verify.txt"
+            assert tuned_log.is_file() and "exit_code=0" in tuned_log.read_text(encoding="ascii")
         states = [item["state"] for item in load(evidence / "state.json")]
         for state in ("planned", "applying", "active", "measuring", "restoring", "restored", "passed"):
             assert state in states, f"missing {state} transition in {evidence}"

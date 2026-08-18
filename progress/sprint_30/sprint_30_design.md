@@ -147,6 +147,8 @@ For a `TCP_CC_<name>` candidate, use the same stop/sync/unmount/VG-deactivate an
 
 Before a NIC, RPS/RFS/XPS, MTU, offload, coalescing, channel, ring, or TuneD mutation, install a root-owned baseline restore bundle and arm a host-local three-minute rollback unit. Cancel it only after local topology/integrity checks and an independent controller reachability check pass. Candidate completion always restores the full baseline, reconnects when required, verifies byte-for-byte configuration equality for applicable controls, validates sessions/topology/sentinels, and records `restored`. Failure, interruption, lost control connectivity, or an expired rollback lease ends the candidate as failed and blocks later candidates until baseline recovery is proven.
 
+Because TuneD can settle asynchronously after profile restoration, `tuned-adm verify` is retried for a bounded 30-second window and every response is archived as plain-ASCII evidence. It must converge successfully before the rollback lease is disarmed; a persistent mismatch remains fail-closed even when the explicitly captured control bundle is byte-equal. Skipped restoration checks are recorded as `null`, not as successful checks.
+
 No candidate may reformat, repartition, detach, recreate, or mount over the established block-volume layout. No tuning state may leak into the next candidate.
 
 ### Regular Project Test Report
