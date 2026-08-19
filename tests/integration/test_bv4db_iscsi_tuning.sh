@@ -506,6 +506,7 @@ test_IT4_restore_resume_state_machine() {
   rg -q 'heartbeat_elapsed.*-ge 30' "$RUNNER" || { fail "controller lease heartbeat is not 30 seconds"; return 1; }
   rg -q 'lease_renewals.log' "$RUNNER" || { fail "controller lease renewal evidence is not archived"; return 1; }
   rg -q 'ssh_job_running' "$RUNNER" || { fail "controller does not distinguish a running SSH job from a zombie"; return 1; }
+  rg -q 'rollback_armed==false and \.restoration_state==\\"restored\\"' "$RUNNER" || { fail "controller does not prove the terminal lease-disarm race"; return 1; }
   rg -q 'ssh -n -i' "$RUNNER" || { fail "SSH can consume the experiment-plan stream"; return 1; }
   rg -q 'ServerAliveInterval=15.*ServerAliveCountMax=4' "$RUNNER" || { fail "SSH liveness window is not aligned with the independent lease heartbeat"; return 1; }
   rg -q -- '--on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s .* lease-check' "$GUEST" || return 1

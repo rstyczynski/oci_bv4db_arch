@@ -636,7 +636,16 @@ execute_measurement() {
         printf '%s candidate=%s block=%s repetition=%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$candidate" "$block" "$repetition" "$renewal" >> "$OUTPUT_DIR/lease_renewals.log"
       else
         sleep 2
-        if ssh_job_running "$ACTIVE_SSH_PID"; then status=failed; kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true; fi
+        if ssh_job_running "$ACTIVE_SSH_PID"; then
+          if ssh_run "sudo jq -e '.rollback_armed==false and .restoration_state==\"restored\"' /var/lib/bv4db-sprint30/rollback.json >/dev/null"; then
+            # Normal completion can disarm the guest lease just before the SSH
+            # process exits. Accept only the guest's persisted restored commit
+            # marker; every other renewal failure remains fail-closed.
+            heartbeat_elapsed=0
+            continue
+          fi
+          status=failed; kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true
+        fi
         break
       fi
     fi

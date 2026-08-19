@@ -1,0 +1,158 @@
+{
+   "blockdevices": [
+      {
+         "name": "sda",
+         "kname": "sda",
+         "type": "disk",
+         "size": "46.6G",
+         "mountpoints": [
+             null
+         ],
+         "serial": "602a0311c41f4d839269d6c191562a6d",
+         "children": [
+            {
+               "name": "sda1",
+               "kname": "sda1",
+               "type": "part",
+               "size": "100M",
+               "mountpoints": [
+                   "/boot/efi"
+               ],
+               "serial": null
+            },{
+               "name": "sda2",
+               "kname": "sda2",
+               "type": "part",
+               "size": "2G",
+               "mountpoints": [
+                   "/boot"
+               ],
+               "serial": null
+            },{
+               "name": "sda3",
+               "kname": "sda3",
+               "type": "part",
+               "size": "44.5G",
+               "mountpoints": [
+                   null
+               ],
+               "serial": null,
+               "children": [
+                  {
+                     "name": "ocivolume-root",
+                     "kname": "dm-0",
+                     "type": "lvm",
+                     "size": "29.5G",
+                     "mountpoints": [
+                         "/"
+                     ],
+                     "serial": null
+                  },{
+                     "name": "ocivolume-oled",
+                     "kname": "dm-1",
+                     "type": "lvm",
+                     "size": "15G",
+                     "mountpoints": [
+                         "/var/oled"
+                     ],
+                     "serial": null
+                  }
+               ]
+            }
+         ]
+      },{
+         "name": "sdb",
+         "kname": "sdb",
+         "type": "disk",
+         "size": "200G",
+         "mountpoints": [
+             null
+         ],
+         "serial": "60b523e22cff403198fd3a3a637e570d",
+         "children": [
+            {
+               "name": "vg_data-lv_oradata",
+               "kname": "dm-2",
+               "type": "lvm",
+               "size": "400G",
+               "mountpoints": [
+                   "/u02/oradata"
+               ],
+               "serial": null
+            }
+         ]
+      },{
+         "name": "sdc",
+         "kname": "sdc",
+         "type": "disk",
+         "size": "200G",
+         "mountpoints": [
+             null
+         ],
+         "serial": "608e574fd66b431aa64a94073200e1b5",
+         "children": [
+            {
+               "name": "vg_data-lv_oradata",
+               "kname": "dm-2",
+               "type": "lvm",
+               "size": "400G",
+               "mountpoints": [
+                   "/u02/oradata"
+               ],
+               "serial": null
+            }
+         ]
+      },{
+         "name": "sdd",
+         "kname": "sdd",
+         "type": "disk",
+         "size": "50G",
+         "mountpoints": [
+             null
+         ],
+         "serial": "60cf58183e16435bb353eed76acd7df8",
+         "children": [
+            {
+               "name": "vg_redo-lv_redo",
+               "kname": "dm-3",
+               "type": "lvm",
+               "size": "100G",
+               "mountpoints": [
+                   "/u03/redo"
+               ],
+               "serial": null
+            }
+         ]
+      },{
+         "name": "sde",
+         "kname": "sde",
+         "type": "disk",
+         "size": "50G",
+         "mountpoints": [
+             null
+         ],
+         "serial": "60bbde76a8634c28998a190f0f382974",
+         "children": [
+            {
+               "name": "vg_redo-lv_redo",
+               "kname": "dm-3",
+               "type": "lvm",
+               "size": "100G",
+               "mountpoints": [
+                   "/u03/redo"
+               ],
+               "serial": null
+            }
+         ]
+      },{
+         "name": "sdf",
+         "kname": "sdf",
+         "type": "disk",
+         "size": "100G",
+         "mountpoints": [
+             "/u04/fra"
+         ],
+         "serial": "60fe58dcbabc44579c72aeaa54b51c75"
+      }
+   ]
+}

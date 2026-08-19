@@ -276,6 +276,14 @@ not benchmarked. The same review found that the generated rotation had placed
 NIC offload testing before iSCSI queue depth despite the approved catalogue
 sequence. Planning now enforces iSCSI first and offloads last.
 
+The next fresh baseline exposed a narrow controller/guest completion race: the
+guest had persisted its restored/disarmed lease commit marker but its SSH
+process had not yet exited, so the next heartbeat renewal correctly refused an
+already-disarmed lease and the controller treated that refusal as failure. The
+controller now accepts this terminal race only after an independent remote read
+proves both `rollback_armed=false` and `restoration_state=restored`; any other
+renewal failure remains fail-closed.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
