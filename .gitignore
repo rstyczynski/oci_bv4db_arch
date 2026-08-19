@@ -12,3 +12,5 @@ progress/.DS_Store
 **/*.tfstate
 **/*.tfstate.*
 **/*.tfvars
+__pycache__/
+*.py[cod]

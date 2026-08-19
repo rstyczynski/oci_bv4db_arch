@@ -683,6 +683,8 @@ execute_matrix() {
       fi
       ssh_run "sudo chmod -R a+rX '$remote/attempts/$candidate'"; scp_from "$remote/attempts/$candidate/." "$local_dir/"
       jq -e '.result=="expected_failure_restored" and .baseline_equal==true and .sentinels_valid==true and .rollback_armed==false' "$local_dir/canary.json" >/dev/null || die "canary proof failed: $candidate"
+      python3 "$ATTEMPT_REPORTER" "$local_dir" >/dev/null
+      [ -s "$local_dir/attempt_report.md" ] || die "rollback canary Markdown report was not created: $candidate"
       row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg path "attempts/$candidate" --slurpfile c "$local_dir/canary.json" '{run_id:$run_id,candidate_id:$candidate,safe_source_candidate:$c[0].safe_source_candidate,attempt_type:"rollback_canary",vpu:50,result:$c[0].result,restoration_state:(if $c[0].baseline_equal then "restored" else "unproven" end),sentinels_valid:$c[0].sentinels_valid,rollback_armed:$c[0].rollback_armed,unit_state:$c[0].unit_state,evidence:[$path]}'); append_result "$row"
       continue
     fi

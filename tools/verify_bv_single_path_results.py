@@ -137,12 +137,13 @@ def main() -> int:
     manifest = load(root / "target_manifest.json")
     manifest_volumes = {item["role"]: item["volume_ocid"] for item in manifest["volumes"]}
     results, recommendation = load(root / "results_index.json"), load(root / "recommendation.json")
-    assert plan["vpus"] == [50] and plan["repeats"] == 3
+    assert plan["vpus"] == [50] and plan["repeats"] == 1
+    assert plan["screening_repetitions"] == 1 and plan["shortlist_validation_repetitions"] == 3
     testable = [row["id"] for row in coverage if row["disposition"] == "testable"]
     assert sorted(plan["candidate_ids"]) == sorted(testable), "plan does not cover every testable candidate"
     assert len(testable) == len(set(testable)), "duplicate candidate ID"
     for candidate in testable:
-        assert sum(block.count(candidate) for block in plan["candidate_order_blocks"]) == 3
+        assert sum(block.count(candidate) for block in plan["candidate_order_blocks"]) == 1
     assert all(row.get("execution_status") in {"tested", "inconclusive", "failed"} for row in coverage if row["disposition"] == "testable")
     assert all(row.get("discovered_value") is not None and row.get("proposed_value") is not None for row in coverage if row["disposition"] == "testable")
     assert all("execution_status" not in row and row.get("reason") and row.get("evidence") for row in coverage if row["disposition"] != "testable")
@@ -155,6 +156,7 @@ def main() -> int:
         evidence = root / row["evidence"][0]
         assert evidence.is_dir(), f"missing evidence directory {evidence}"
         if row["attempt_type"] not in {"measurement", "checkpoint"}:
+            assert (evidence / "attempt_report.md").is_file(), f"missing written non-measurement report in {evidence}"
             continue
         assert isinstance(row.get("repetition"), int) and row["repetition"] >= 1
         start, end = when(row["started_at"]), when(row["ended_at"])
@@ -162,7 +164,7 @@ def main() -> int:
         for name in (
             "fio.json", "iostat.json", "workload.fio", "controls_before.json", "controls_applied.json",
             "controls_restored.json", "restoration_checks.json", "rollback_unit_stop.txt", "errors_before.json", "errors_after.json", "state.json", "attempt.json",
-            "oci_preflight.json", "guest_preflight.json", "fio_report.html",
+            "oci_preflight.json", "guest_preflight.json", "fio_report.html", "attempt_report.md",
         ):
             assert (evidence / name).is_file(), f"missing {name} in {evidence}"
         for context in ("context_before", "context_applied", "context_restored"):
@@ -200,28 +202,30 @@ def main() -> int:
     performance = [row for row in measured if row["attempt_type"] == "measurement"]
     initial = [row for row in performance if row["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
     final = [row for row in performance if row["candidate_id"] == "REGULAR_BASELINE_FINAL"]
-    assert 3 <= len(initial) <= 5 and 3 <= len(final) <= 5
+    assert len(initial) == 1 and len(final) == 1
     baseline = {name: summarize([row["metrics"][name] for row in initial]) for name in PRIMARY}
     final_baseline = {name: summarize([row["metrics"][name] for row in final]) for name in PRIMARY}
     for name in PRIMARY:
         check_summary(recommendation["baseline"][name], baseline[name], f"baseline {name}")
         check_summary(recommendation["final_baseline"][name], final_baseline[name], f"final baseline {name}")
-    drift = [name for name in PRIMARY if abs((final_baseline[name]["median"] - baseline[name]["median"]) / baseline[name]["median"]) > max(0.05, 2 * baseline[name]["cv"])]
+    drift = [name for name in PRIMARY if abs((final_baseline[name]["median"] - baseline[name]["median"]) / baseline[name]["median"]) > 0.05]
     assert recommendation["baseline_drift_metrics"] == drift == [], "baseline drift reconciliation failed"
 
     eligible = []
     computed = {}
     baseline_cpu = summarize([row["metrics"]["cpu_percent"] for row in initial])
+    shortlisted = load(root / "shortlisted_candidates.json")
+    assert len(shortlisted) == len(set(shortlisted)) and all(candidate in testable for candidate in shortlisted)
     for candidate in testable:
         rows = [row for row in performance if row["candidate_id"] == candidate]
-        assert 3 <= len(rows) <= 5, f"invalid repetition count for {candidate}"
+        assert len(rows) == (3 if candidate in shortlisted else 1), f"invalid smoke/validation repetition count for {candidate}"
         stats = {name: summarize([row["metrics"][name] for row in rows]) for name in PRIMARY}
-        stable = all(value["cv"] <= 0.05 for value in stats.values())
+        stable = len(rows) == 3 and all(value["cv"] <= 0.05 for value in stats.values())
         improvements, regressions, gains = [], [], {}
         for name in PRIMARY:
             ratio = (stats[name]["median"] - baseline[name]["median"]) / baseline[name]["median"]
             gain = ratio if name in {"data_iops", "fra_bw_bytes"} else -ratio
-            threshold = max(0.05, 2 * baseline[name]["cv"])
+            threshold = 0.05
             gains[name] = gain
             if gain > threshold:
                 improvements.append(name)

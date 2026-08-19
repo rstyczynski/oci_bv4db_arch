@@ -21,7 +21,7 @@ volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
 Product-owner clarification on 2026-08-19: every executed performance test
 must create a written Markdown report, not only raw JSON and optional HTML.
 The setup and design contracts now require `attempt_report.md` for baseline,
-checkpoint, candidate, stability-extension, failed/interrupted, and rollback-
+checkpoint, candidate screening, shortlist-validation, failed/interrupted, and rollback-
 canary attempts. Construction and IT-9 must be updated before Sprint 30 can
 pass; evidence produced before this clarification is incomplete under the new
 contract.
@@ -63,9 +63,10 @@ the five attached Block Volumes only:
    `/etc/iscsi/nodes` directly;
 2. initializes the DATA/REDO/FRA layout only after explicit fresh-empty
    authorization, and never touches the boot device;
-3. captures baseline state and sentinels, applies one candidate at a time,
-   proves the effective setting, executes three FIO repetitions, restores the
-   exact baseline, and records evidence;
+3. captures baseline state and sentinels, runs one smoke baseline, applies one
+   candidate at a time for one screening measurement, validates only
+   shortlisted candidates with two additional measurements, restores the exact
+   baseline after every attempt, and records evidence;
 4. runs the two rollback canaries, final regular baseline, report rendering,
    recommendation, evidence copy, and teardown.
 
@@ -244,6 +245,24 @@ resources. The SSH server-alive window is now 60 seconds (15 seconds times
 four), still well inside the 180-second host-local deadline and independently
 bounded by the 30-second renewal channel, while tolerating a short OCI network
 pause that must not invalidate an otherwise supervised 660-second attempt.
+
+Attempt `20260818_224723` completed five locally healthy initial-baseline
+measurements. Every FIO command exited zero, controls restored byte-equal,
+sentinels remained valid, the rollback lease disarmed, and monitored error
+gates stayed clean. The old aggregate rule nevertheless stopped the run because
+REDO p99.9 variability exceeded 5%; cleanup archived all six scaffold states as
+deleted and `failure_cleanup_inventory.json` proved zero active tagged volumes
+or instances. The Product Owner rejected repeated baselines as inappropriate
+for this screening sprint and approved one smoke baseline, one run per
+candidate, and two additional validation runs only for promising candidates.
+The controller, analyzer, verifier, plan tests, and design contract are being
+updated to that method before the next fresh A3.
+
+The same run exposed a report-rendering defect: Oracle Linux 9 sysstat emitted
+`rkB/s` and `wkB/s`, while `render_fio_report_html.sh` read only `rMB/s` and
+`wMB/s`. Raw iostat collection was complete, but HTML throughput displayed as
+zero. The shared renderer now accepts either schema and converts KiB/s to
+MiB/s; all valid archived Sprint 30 attempt HTML reports were regenerated.
 
 ## Live environment status
 

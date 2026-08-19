@@ -89,11 +89,36 @@ def duration_seconds(start: str | None, end: str | None):
 
 def render(attempt_dir: Path) -> Path:
     fio = load(attempt_dir / "fio.json", {})
+    canary = load(attempt_dir / "canary.json", {})
     attempt = load(attempt_dir / "attempt.json", {})
     states = load(attempt_dir / "state.json", [])
     restoration = load(attempt_dir / "restoration_checks.json", {})
     before = load(attempt_dir / "errors_before.json", {})
     after = load(attempt_dir / "errors_after.json", {})
+    if canary:
+        lines = [
+            f"# Sprint 30 rollback-canary report: {attempt_dir.name}",
+            "",
+            "## Result",
+            "",
+            f"- Result: `{canary.get('result', 'unknown')}`",
+            f"- Safe source candidate: `{canary.get('safe_source_candidate', 'unknown')}`",
+            f"- Baseline restored byte-equal: `{yes_no(canary.get('baseline_equal'))}`",
+            f"- Sentinels valid: `{yes_no(canary.get('sentinels_valid'))}`",
+            f"- Rollback lease disarmed: `{yes_no(not canary.get('rollback_armed') if 'rollback_armed' in canary else None)}`",
+            f"- Rollback unit state: `{canary.get('unit_state', 'unknown')}`",
+            "",
+            "This is a non-performance recovery test. It intentionally injects a failure and makes no throughput or latency claim.",
+            "",
+            "## Evidence files",
+            "",
+        ]
+        for name in ("canary.json", "emergency_restore.json", "controls_before.json", "controls_restored.json", "guest_preflight.json"):
+            if (attempt_dir / name).exists():
+                lines.append(f"- [{name}]({name})")
+        output = attempt_dir / "attempt_report.md"
+        output.write_text("\n".join(lines) + "\n", encoding="ascii")
+        return output
     if not isinstance(fio.get("jobs"), list) or not fio["jobs"]:
         last_state = states[-1].get("state", "unknown") if states else "unknown"
         lines = [

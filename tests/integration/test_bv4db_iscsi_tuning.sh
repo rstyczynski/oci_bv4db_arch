@@ -6,6 +6,8 @@ REPO_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 RUNNER="$REPO_DIR/tools/oci_bv_single_path_tuning.sh"
 GUEST="$REPO_DIR/tools/oci_bv_single_path_guest.sh"
 VERIFIER="$REPO_DIR/tools/verify_bv_single_path_results.py"
+FIO_RENDERER="$REPO_DIR/tools/render_fio_report_html.sh"
+ATTEMPT_REPORTER="$REPO_DIR/tools/render_bv_attempt_report.py"
 CONTROLLER_LOCK="$REPO_DIR/tools/oci_bv_controller_lock.sh"
 fail() { echo "FAIL: $*" >&2; return 1; }
 pass() { echo "PASS: $*"; }
@@ -414,7 +416,15 @@ test_IT1_static_runner_contract() {
   awk '/preformat_single_path_proof "\$role"/{proof=NR} /^[[:space:]]*pvcreate /{if(!first)first=NR} END{exit !(proof && first && proof<first)}' "$GUEST" || return 1
   "$RUNNER" --plan --output-dir "$tmp" --seed 30050 >/dev/null || return 1
   jq -e '.status=="planned" and .vpu==50 and .resume==null' "$tmp/run_state.json" >/dev/null || return 1
-  jq -e '.vpus==[50] and .repeats==3 and .multipath==false and .oracle_database==false and (.layout|length)==5 and ([.layout[].path]|sort)==["/dev/oracleoci/oraclevdb","/dev/oracleoci/oraclevdc","/dev/oracleoci/oraclevdd","/dev/oracleoci/oraclevde","/dev/oracleoci/oraclevdf"] and .fio.global.ioengine=="libaio" and .fio.global.direct==1 and .fio.global.runtime==600 and .fio.global.ramp_time==60 and ([.fio.jobs[].id]|sort)==["data-8k","fra-1m","redo"]' "$tmp/experiment_plan.json" >/dev/null || return 1
+  jq -e '.vpus==[50] and .repeats==1 and .screening_repetitions==1 and .shortlist_validation_repetitions==3 and .multipath==false and .oracle_database==false and (.layout|length)==5 and ([.layout[].path]|sort)==["/dev/oracleoci/oraclevdb","/dev/oracleoci/oraclevdc","/dev/oracleoci/oraclevdd","/dev/oracleoci/oraclevde","/dev/oracleoci/oraclevdf"] and .fio.global.ioengine=="libaio" and .fio.global.direct==1 and .fio.global.runtime==600 and .fio.global.ramp_time==60 and ([.fio.jobs[].id]|sort)==["data-8k","fra-1m","redo"]' "$tmp/experiment_plan.json" >/dev/null || return 1
+  jq -n '{"global options":{runtime:600,ramp_time:60,ioengine:"libaio"},jobs:[]}' > "$tmp/fio.json"
+  jq -n '{sysstat:{hosts:[{statistics:[{disk:[{disk_device:"sdb","rkB/s":1024,"wkB/s":2048,util:50}]}]}]}}' > "$tmp/iostat.json"
+  "$FIO_RENDERER" "$tmp/fio.json" "$tmp/iostat.json" "$tmp/fio_report.html" "sysstat kB/s regression" || return 1
+  rg -q '<tr><td>sdb</td><td>1\.0</td><td>2\.0</td><td>50\.0</td><td>50\.0</td></tr>' "$tmp/fio_report.html" || { fail "renderer did not convert sysstat kB/s to MiB/s"; return 1; }
+  mkdir -p "$tmp/canary"
+  jq -n '{result:"expected_failure_restored",safe_source_candidate:"TCP_BUF_2X",baseline_equal:true,sentinels_valid:true,rollback_armed:false,unit_state:"inactive"}' > "$tmp/canary/canary.json"
+  python3 "$ATTEMPT_REPORTER" "$tmp/canary" >/dev/null || return 1
+  rg -q 'Result: `expected_failure_restored`' "$tmp/canary/attempt_report.md" || { fail "rollback canary written report was not rendered"; return 1; }
   if "$RUNNER" --plan --output-dir "$tmp/rejected" --vpu 45 >/dev/null 2>&1; then fail "runner accepted non-Sprint-30 VPU"; return 1; fi
   if "$RUNNER" --execute --output-dir "$tmp/partial" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted a partial live matrix"; return 1; fi
   pass IT-1
@@ -428,7 +438,7 @@ test_IT2_deterministic_50_vpu_plan() {
   "$RUNNER" --plan --output-dir "$tmp/different" --seed 18 >/dev/null || return 1
   cmp "$tmp/first/experiment_plan.json" "$tmp/second/experiment_plan.json" || { fail "plan is not deterministic"; return 1; }
   cmp -s "$tmp/first/experiment_plan.json" "$tmp/different/experiment_plan.json" && { fail "different seed did not change the plan"; return 1; }
-  jq -e '.vpus==[50] and .repeats==3 and .checkpoint_interval==5 and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==((.candidate_count*3)/5|floor) and ([.attempts[]|select(.attempt_type=="measurement" and (.block==1 or .block==2 or .block==3))|.candidate_id]|sort|group_by(.)|all(length==3)) and all(.attempts[]|select(.block==1 or .block==2 or .block==3);.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-3].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_LEASE") and (.attempts[-1].candidate_id=="REGULAR_BASELINE_FINAL")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
+  jq -e '.vpus==[50] and .repeats==1 and .checkpoint_interval==5 and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==(.candidate_count/5|floor) and ([.attempts[]|select(.attempt_type=="measurement" and .block=="screening")|.candidate_id]|sort|group_by(.)|all(length==1)) and all(.attempts[]|select(.block=="screening");.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-3].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_LEASE") and (.attempts[-1].candidate_id=="REGULAR_BASELINE_FINAL")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
   jq -e 'all(.[];if .disposition=="testable" then .execution_status=="pending" else (has("execution_status")|not) and (.reason|length>0) and (.evidence|length>0) end)' "$tmp/first/tunable_coverage.json" >/dev/null || return 1
   if "$RUNNER" --plan --output-dir "$tmp/selected" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted removed partial-candidate interface"; return 1; fi
   pass IT-2
@@ -549,8 +559,8 @@ test_IT5_live_50_vpu_topology() {
 test_IT6_live_regular_50_vpu_baseline() {
   echo "=== IT-6: live regular-settings baseline at 50 VPUs/GB ==="; local dir path
   dir=$(require_live_output) || return 1
-  jq -e '[.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|select(.attempt_type=="measurement" and .result=="passed")] as $b | ($b|length)>=6 and ($b|length)<=10 and all($b[];.vpu==50 and .restoration_state=="restored")' "$dir/results_index.json" >/dev/null || return 1
-  while IFS= read -r path; do jq -e '.jobs|length==6' "$dir/$path/fio.json" >/dev/null || return 1; done < <(jq -r '.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|.evidence[]' "$dir/results_index.json")
+  jq -e '[.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|select(.attempt_type=="measurement" and .result=="passed")] as $b | ($b|length)==2 and all($b[];.vpu==50 and .restoration_state=="restored")' "$dir/results_index.json" >/dev/null || return 1
+  while IFS= read -r path; do jq -e '.jobs|length==6' "$dir/$path/fio.json" >/dev/null || return 1; [ -s "$dir/$path/attempt_report.md" ] || return 1; done < <(jq -r '.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|.evidence[]' "$dir/results_index.json")
   "$VERIFIER" "$dir" >/dev/null || return 1
   pass IT-6
 }
@@ -559,7 +569,7 @@ test_IT7_live_complete_candidate_matrix() {
   dir=$(require_live_output) || return 1
   jq -e --slurpfile plan "$dir/experiment_plan.json" '([$plan[0].candidate_ids[]]|sort)==([.[]|select(.disposition=="testable")|.id]|sort) and all(.[];if .disposition=="testable" then (.execution_status=="tested" or .execution_status=="inconclusive" or .execution_status=="failed") else (has("execution_status")|not) and (.reason|length)>0 end)' "$dir/tunable_coverage.json" >/dev/null || return 1
   jq -e 'length>6 and all(.[];.vpu==50 and .restoration_state=="restored" and (.evidence|length)>0)' "$dir/results_index.json" >/dev/null || return 1
-  expected=$(jq '(.candidate_count*3) + ((.candidate_count*3)/5|floor) + 6 + 2' "$dir/experiment_plan.json"); actual=$(jq length "$dir/results_index.json"); [ "$actual" -ge "$expected" ] && [ "$actual" -le "$((expected + 2 * ($(jq '.candidate_count' "$dir/experiment_plan.json") + 2)))" ] || { fail "result count $actual outside allowed stability-extension range from $expected"; return 1; }
+  expected=$(jq '.candidate_count + (.candidate_count/5|floor) + 4' "$dir/experiment_plan.json"); expected=$((expected + 2 * $(jq 'length' "$dir/shortlisted_candidates.json"))); actual=$(jq length "$dir/results_index.json"); [ "$actual" -eq "$expected" ] || { fail "result count $actual does not match smoke plus shortlisted validation count $expected"; return 1; }
   "$VERIFIER" "$dir" >/dev/null || return 1
   pass IT-7
 }
@@ -569,6 +579,7 @@ test_IT8_live_rollback_lease_canary() {
   jq -e '[.[]|select(.attempt_type=="rollback_canary" and .result=="expected_failure_restored")]|length==2' "$dir/results_index.json" >/dev/null || return 1
   while IFS=$'\t' read -r candidate path; do
     jq -e '.result=="expected_failure_restored" and .baseline_equal==true and .safe_source_candidate=="TCP_BUF_2X"' "$dir/$path/canary.json" >/dev/null || return 1
+    [ -s "$dir/$path/attempt_report.md" ] || { fail "missing rollback canary report: $candidate"; return 1; }
     if [ "$candidate" = ROLLBACK_CANARY_LEASE ]; then jq -e '.byte_equal==true and (.tuned_verify_exit_code==0 or .tuned_verify_exit_code==null) and .live_preflight==true and .sentinels_valid==true and .restoration_state=="restored"' "$dir/$path/emergency_restore.json" >/dev/null || return 1; fi
   done < <(jq -r '.[]|select(.attempt_type=="rollback_canary")|[.candidate_id,.evidence[0]]|@tsv' "$dir/results_index.json")
   jq -e '.rollback_armed==false and .baseline_equal==true' "$dir/final_state.json" >/dev/null || return 1; pass IT-8
@@ -580,7 +591,15 @@ test_IT9_reports_and_recommendation() {
   jq -e '.vpu==50 and (.decision|length>0) and (.evidence|length)>0 and .measurement_runs>0' "$dir/recommendation.json" >/dev/null || return 1
   jq -e '.baseline_drift_metrics==[] and (.pareto_candidates|type)=="array"' "$dir/recommendation.json" >/dev/null || return 1
   jq -e 'length>0 and all(.[];(.metrics|length)>0 and all(.metrics[];.attempt_datapoint_count>=8))' "$dir/oci_metrics_attempt_windows.json" >/dev/null || return 1
-  while IFS= read -r path; do [ -d "$dir/$path" ] || { fail "missing indexed evidence: $path"; return 1; }; done < <(jq -r '.[].evidence[]' "$dir/results_index.json")
+  while IFS= read -r path; do
+    [ -d "$dir/$path" ] || { fail "missing indexed evidence: $path"; return 1; }
+    if [ -s "$dir/$path/fio.json" ]; then
+      [ -s "$dir/$path/attempt_report.md" ] || { fail "missing written attempt report: $path"; return 1; }
+      if jq -e '[.sysstat.hosts[0].statistics[].disk[]? | ((."rMB/s" // ((."rkB/s" // 0)/1024)) > 0 or (."wMB/s" // ((."wkB/s" // 0)/1024)) > 0)] | any' "$dir/$path/iostat.json" >/dev/null; then
+        rg -q '<tr><td>[^<]+</td><td>(0\.[0-9]*[1-9][0-9]*|[1-9][0-9.]*)</td><td>|<tr><td>[^<]+</td><td>0\.0</td><td>(0\.[0-9]*[1-9][0-9]*|[1-9][0-9.]*)</td>' "$dir/$path/fio_report.html" || { fail "FIO HTML lost nonzero iostat throughput: $path"; return 1; }
+      fi
+    fi
+  done < <(jq -r '.[].evidence[]' "$dir/results_index.json")
   "$VERIFIER" "$dir" >/dev/null || return 1
   if LC_ALL=C grep -R $'\033' "$dir" >/dev/null 2>&1; then fail "ANSI escape sequence in evidence"; return 1; fi; pass IT-9
 }
