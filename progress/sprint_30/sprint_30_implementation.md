@@ -270,9 +270,11 @@ the failed run's cleanup inventory proved that no OCI resources remained.
 
 The first candidate screening then proved a driver dependency that discovery
 could not infer from the top-level feature flags: disabling TX checksum also
-disables TSO. `OFFLOAD_TX_CHECKSUM` is therefore recorded as an explicit
-two-control coupled profile, with exact readback permitting only those two
-changes and byte-equal restoration still required afterward.
+disables TSO. Because the approved design forbids combined offload candidates,
+`OFFLOAD_TX_CHECKSUM` is classified `unsafe` on this `virtio_net` target and is
+not benchmarked. The same review found that the generated rotation had placed
+NIC offload testing before iSCSI queue depth despite the approved catalogue
+sequence. Planning now enforces iSCSI first and offloads last.
 
 ## Live environment status
 

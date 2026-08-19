@@ -13,25 +13,6 @@ fail() { echo "FAIL: $*" >&2; return 1; }
 pass() { echo "PASS: $*"; }
 new_tmp() { mktemp -d "${TMPDIR:-/tmp}/sprint30-test.XXXXXX"; }
 
-# The fixed OCI NIC couples TX checksum disablement to TSO disablement. Prove
-# the guest verifier accepts exactly that pair and rejects a third delta.
-# shellcheck disable=SC2030
-exercise_tx_checksum_coupling_shim() {
-  local root="$1"
-  (
-    export BV4DB_GUEST_SOURCE_ONLY=1
-    # shellcheck source=/dev/null
-    source "$GUEST"
-    mkdir -p "$root"
-    BASELINE="$root/baseline.json"
-    jq -n '{offloads:{"tx-checksumming":"on","tcp-segmentation-offload":"on","generic-segmentation-offload":"on"},marker:"unchanged"}' > "$BASELINE"
-    jq '.offloads["tx-checksumming"]="off" | .offloads["tcp-segmentation-offload"]="off"' "$BASELINE" > "$root/applied.json"
-    verify_candidate_applied OFFLOAD_TX_CHECKSUM "$root/applied.json"
-    jq '.marker="unexpected"' "$root/applied.json" > "$root/unrelated.json"
-    if (verify_candidate_applied OFFLOAD_TX_CHECKSUM "$root/unrelated.json") >/dev/null 2>&1; then return 1; fi
-  )
-}
-
 # Production functions are invoked indirectly after sourcing the guest script.
 # shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_guest_preflight_shims() {
@@ -445,7 +426,6 @@ test_IT1_static_runner_contract() {
   jq -n '{result:"expected_failure_restored",safe_source_candidate:"TCP_BUF_2X",baseline_equal:true,sentinels_valid:true,rollback_armed:false,unit_state:"inactive"}' > "$tmp/canary/canary.json"
   python3 "$ATTEMPT_REPORTER" "$tmp/canary" >/dev/null || return 1
   rg -q 'Result: `expected_failure_restored`' "$tmp/canary/attempt_report.md" || { fail "rollback canary written report was not rendered"; return 1; }
-  exercise_tx_checksum_coupling_shim "$tmp/tx-checksum" || { fail "TX checksum/TSO coupled-profile verification failed"; return 1; }
   if "$RUNNER" --plan --output-dir "$tmp/rejected" --vpu 45 >/dev/null 2>&1; then fail "runner accepted non-Sprint-30 VPU"; return 1; fi
   if "$RUNNER" --execute --output-dir "$tmp/partial" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted a partial live matrix"; return 1; fi
   pass IT-1
@@ -459,7 +439,7 @@ test_IT2_deterministic_50_vpu_plan() {
   "$RUNNER" --plan --output-dir "$tmp/different" --seed 18 >/dev/null || return 1
   cmp "$tmp/first/experiment_plan.json" "$tmp/second/experiment_plan.json" || { fail "plan is not deterministic"; return 1; }
   cmp -s "$tmp/first/experiment_plan.json" "$tmp/different/experiment_plan.json" && { fail "different seed did not change the plan"; return 1; }
-  jq -e '.vpus==[50] and .repeats==1 and .checkpoint_interval==5 and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==(.candidate_count/5|floor) and ([.attempts[]|select(.attempt_type=="measurement" and .block=="screening")|.candidate_id]|sort|group_by(.)|all(length==1)) and all(.attempts[]|select(.block=="screening");.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-3].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_LEASE") and (.attempts[-1].candidate_id=="REGULAR_BASELINE_FINAL")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
+  jq -e '.vpus==[50] and .repeats==1 and .checkpoint_interval==5 and .candidate_order_blocks[0][0]=="ISCSI_QD128" and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==(.candidate_count/5|floor) and ([.attempts[]|select(.attempt_type=="measurement" and .block=="screening")|.candidate_id]|sort|group_by(.)|all(length==1)) and all(.attempts[]|select(.block=="screening");.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-3].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_LEASE") and (.attempts[-1].candidate_id=="REGULAR_BASELINE_FINAL")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
   jq -e 'all(.[];if .disposition=="testable" then .execution_status=="pending" else (has("execution_status")|not) and (.reason|length>0) and (.evidence|length>0) end)' "$tmp/first/tunable_coverage.json" >/dev/null || return 1
   if "$RUNNER" --plan --output-dir "$tmp/selected" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted removed partial-candidate interface"; return 1; fi
   pass IT-2

@@ -1,0 +1,32 @@
+{
+  "data": {
+    "auto-tuned-vpus-per-gb": null,
+    "autotune-policies": [],
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "block-volume-replicas": null,
+    "cluster-placement-group-id": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "defined-tags": {
+      "Oracle-Tags": {
+        "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+        "CreatedOn": "2026-08-19T01:26:15.423Z"
+      }
+    },
+    "display-name": "s30-20260819012328-85462-redo2-bv",
+    "freeform-tags": {},
+    "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrh7mxauhdifn55vt2yunq4upb2krsujbpfeflxwomcn6xotr5gdiq",
+    "is-auto-tune-enabled": false,
+    "is-hydrated": true,
+    "is-reservations-enabled": false,
+    "kms-key-id": null,
+    "lifecycle-state": "AVAILABLE",
+    "size-in-gbs": 50,
+    "size-in-mbs": 51200,
+    "source-details": null,
+    "system-tags": {},
+    "time-created": "2026-08-19T01:26:15.430000+00:00",
+    "volume-group-id": null,
+    "vpus-per-gb": 50
+  },
+  "etag": "6b413edc4885d67c7ad29d0295d919e8"
+}

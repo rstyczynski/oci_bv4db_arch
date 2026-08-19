@@ -119,12 +119,23 @@ CATALOGUE='[
 
 write_plan() {
   local plan="$OUTPUT_DIR/experiment_plan.json" ledger="$OUTPUT_DIR/tunable_coverage.json"
-  local candidate_ids all_candidate_ids order1 attempts candidate_count offset
+  local candidate_ids all_candidate_ids order1 attempts candidate_count
   all_candidate_ids=$(jq -c '[.[] | select(.disposition == "testable") | .id]' <<<"$CATALOGUE")
   candidate_ids="$all_candidate_ids"
   candidate_count=$(jq 'length' <<<"$candidate_ids")
-  offset=$((SEED % candidate_count))
-  order1=$(jq -c --argjson n "$offset" 'sort | .[$n:] + .[:$n]' <<<"$candidate_ids")
+  order1=$(jq -c '
+    def rank:
+      if .=="ISCSI_QD128" then 0
+      elif startswith("TCP_BUF_") then 1
+      elif startswith("TCP_CC_") then 2
+      elif startswith("NETDEV_BACKLOG_") then 3
+      elif test("^RPS_|^RFS_|^XPS_") then 4
+      elif startswith("NIC_RING_") then 5
+      elif startswith("NIC_CHANNEL_") then 6
+      elif startswith("NIC_COAL_") then 7
+      elif startswith("OFFLOAD_") then 8
+      else 9 end;
+    sort_by([rank, .])' <<<"$candidate_ids")
   attempts=$(jq -n --argjson a "$order1" '
     def rows($block; $items): [$items[] | {candidate_id:.,attempt_type:"measurement",block:$block,vpu:50,repetitions:1}];
     def checkpoints($rows):
@@ -508,10 +519,15 @@ reconcile_live_catalogue() {
     case "$feature" in RX_CHECKSUM) line=rx-checksumming;; TX_CHECKSUM) line=tx-checksumming;; TSO) line=tcp-segmentation-offload;; GSO) line=generic-segmentation-offload;; GRO) line=generic-receive-offload;; esac
     if grep -Eq "^$line: (on|off)( |$)" "$discovery/ethtool_features.txt" && ! grep -E "^$line:.*\[fixed\]" "$discovery/ethtool_features.txt" >/dev/null; then
       disposition=testable
-      if [ "$feature" = TX_CHECKSUM ]; then reason="documented coupled profile: disabling TX checksum also disables dependent TSO; exact two-control readback is enforced"; else reason="driver reports the feature as independently changeable"; fi
+      reason="driver reports the feature as independently changeable"
     else disposition=unsupported; reason="driver reports the feature absent or fixed"; fi
     ledger=$(jq -c --arg id "OFFLOAD_$feature" --arg disposition "$disposition" --arg reason "$reason" '. + [{id:$id,control:"NIC offload",disposition:$disposition,reason:$reason,evidence:"discovery/ethtool_features.txt"}] | map(if .id==$id and .disposition=="testable" then .execution_status="pending" else . end)' <<<"$ledger")
   done
+  if grep -Eq '^driver:[[:space:]]+virtio_net$' "$discovery/ethtool_driver.txt" \
+    && jq -e '.offloads["tx-checksumming"]=="on" and .offloads["tcp-segmentation-offload"]=="on"' "$baseline" >/dev/null; then
+    cp "$REPO_DIR/progress/sprint_30/offload_dependency_policy.json" "$discovery/offload_dependency_policy.json"
+    ledger=$(jq -c 'map(if .id=="OFFLOAD_TX_CHECKSUM" then .disposition="unsafe"|.reason="virtio_net TX-checksum disablement was live-proven to disable TSO too; Sprint 30 forbids combined offload candidates"|.evidence="discovery/offload_dependency_policy.json"|del(.execution_status) else . end)' <<<"$ledger")
+  fi
 
   ring_max_rx=$(awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="RX:"{print $2;exit}' "$discovery/ethtool_rings.txt" || true)
   ring_max_tx=$(awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="TX:"{print $2;exit}' "$discovery/ethtool_rings.txt" || true)
