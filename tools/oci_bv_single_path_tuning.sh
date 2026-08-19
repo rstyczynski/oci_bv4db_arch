@@ -15,7 +15,7 @@ DEFAULT_OUTPUT="$REPO_DIR/progress/sprint_30/results/$(date -u +%Y%m%dT%H%M%SZ)"
 MODE=plan
 OUTPUT_DIR="$DEFAULT_OUTPUT"
 VPU=50
-REPEATS=3
+REPEATS=1
 SEED=30050
 RESUME_RUN=""
 KEEP_INFRA=false
@@ -34,7 +34,7 @@ Usage: tools/oci_bv_single_path_tuning.sh [--plan|--execute] [options]
 Sprint 30 options:
   --output-dir DIR       Result directory (default: timestamped Sprint 30 dir)
   --vpu 50               Fixed Sprint 30 VPU/GB value; other values are rejected
-  --repeats 3            Measured repetitions per candidate (fixed at three)
+  --repeats 1            Smoke repetitions per baseline/candidate (fixed at one)
   --seed INTEGER         Deterministic candidate order seed
   --resume RUN_ID        Resume only after byte-equal baseline proof
   --keep-infra           Preserve disposable infrastructure after evidence copy
@@ -74,7 +74,7 @@ done
 require_cmd jq
 [ -z "$RESUME_RUN" ] || [ "$MODE" = execute ] || die "--resume requires --execute"
 [ "$VPU" = 50 ] || die "Sprint 30 is locked to 50 VPUs/GB; received: $VPU"
-[ "$REPEATS" = 3 ] || die "Sprint 30 requires exactly three measured repetitions"
+[ "$REPEATS" = 1 ] || die "Sprint 30 requires exactly one smoke measurement per baseline/candidate"
 [[ "$SEED" =~ ^[0-9]+$ ]] || die "seed must be an integer"
 [ -n "$OUTPUT_DIR" ] || die "--output-dir must not be empty"
 if [ "$MODE" = execute ] && [ -z "$RESUME_RUN" ] && [ -d "$OUTPUT_DIR" ] && find "$OUTPUT_DIR" -mindepth 1 -print -quit | grep -q .; then
@@ -119,33 +119,32 @@ CATALOGUE='[
 
 write_plan() {
   local plan="$OUTPUT_DIR/experiment_plan.json" ledger="$OUTPUT_DIR/tunable_coverage.json"
-  local candidate_ids all_candidate_ids order1 order2 order3 attempts candidate_count offset
+  local candidate_ids all_candidate_ids order1 attempts candidate_count offset
   all_candidate_ids=$(jq -c '[.[] | select(.disposition == "testable") | .id]' <<<"$CATALOGUE")
   candidate_ids="$all_candidate_ids"
   candidate_count=$(jq 'length' <<<"$candidate_ids")
   offset=$((SEED % candidate_count))
   order1=$(jq -c --argjson n "$offset" 'sort | .[$n:] + .[:$n]' <<<"$candidate_ids")
-  order2=$(jq -c --argjson n "$(((SEED + 3) % candidate_count))" 'sort | reverse | .[$n:] + .[:$n]' <<<"$candidate_ids")
-  order3=$(jq -c --argjson n "$(((SEED + 5) % candidate_count))" 'sort_by(explode|reverse|add) | .[$n:] + .[:$n]' <<<"$candidate_ids")
-  attempts=$(jq -n --argjson a "$order1" --argjson b "$order2" --argjson c "$order3" '
+  attempts=$(jq -n --argjson a "$order1" '
     def rows($block; $items): [$items[] | {candidate_id:.,attempt_type:"measurement",block:$block,vpu:50,repetitions:1}];
     def checkpoints($rows):
       reduce ($rows|to_entries[]) as $entry ([];
         . + [$entry.value]
         + (if (($entry.key + 1) % 5)==0 then [{candidate_id:("REGULAR_CHECKPOINT_" + (($entry.key + 1)|tostring)),attempt_type:"checkpoint",block:"checkpoint",vpu:50,repetitions:1}] else [] end));
-    (rows(1;$a) + rows(2;$b) + rows(3;$c)) as $candidate_rows |
-    [{candidate_id:"REGULAR_BASELINE_INITIAL",attempt_type:"measurement",block:"initial",vpu:50,repetitions:3}]
+    rows("screening";$a) as $candidate_rows |
+    [{candidate_id:"REGULAR_BASELINE_INITIAL",attempt_type:"measurement",block:"initial",vpu:50,repetitions:1}]
     + checkpoints($candidate_rows)
-    + [{candidate_id:"ROLLBACK_CANARY_TRAP",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"ROLLBACK_CANARY_LEASE",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"REGULAR_BASELINE_FINAL",attempt_type:"measurement",block:"final",vpu:50,repetitions:3}]')
+    + [{candidate_id:"ROLLBACK_CANARY_TRAP",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"ROLLBACK_CANARY_LEASE",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"REGULAR_BASELINE_FINAL",attempt_type:"measurement",block:"final",vpu:50,repetitions:1}]')
   jq -n \
     --arg profile sprint30_single_path_50 \
-    --argjson vpu 50 --argjson repeats 3 --argjson seed "$SEED" \
+    --argjson vpu 50 --argjson repeats 1 --argjson seed "$SEED" \
     --argjson layout "$LAYOUT" --argjson fio "$FIO_PROFILE" \
-    --argjson blocks "[$order1,$order2,$order3]" --argjson attempts "$attempts" \
+    --argjson blocks "[$order1]" --argjson attempts "$attempts" \
     --argjson candidates "$candidate_ids" --argjson candidate_count "$candidate_count" \
     '($attempts | map(select(.attempt_type=="measurement" or .attempt_type=="checkpoint") | .repetitions) | add) as $fio_runs |
-     (($fio_runs*660)+($candidate_count*3*120)+400+900+300) as $seconds |
-     {profile:$profile,vpus:[$vpu],repeats:$repeats,seed:$seed,layout:$layout,fio:$fio,candidate_ids:$candidates,candidate_order_blocks:$blocks,attempts:$attempts,fio_run_count:$fio_runs,measurement_runtime_seconds:($fio_runs*660),estimated_transition_rollback_seconds:(($candidate_count*3*120)+400),estimated_total_seconds:$seconds,estimated_resource_hours:($seconds/3600),estimated_cost_usd:((($seconds/3600)*0.28)+(($seconds/3600)/730*600*(0.0334203+(50*0.00222802)))|.*100|round/100),cost_basis:{compute_hourly_usd:0.28,volume_storage_gb_month_usd:0.0334203,volume_performance_unit_gb_month_usd:0.00222802,total_block_gb:600,hours_per_month:730,source:"https://www.oracle.com/cloud/iaas-paas/",estimated_at_plan_time:true},candidate_count:$candidate_count,checkpoint_interval:5,stability_cv_limit:0.05,stability_extension_limit:2,oracle_database:false,multipath:false}' \
+     ($fio_runs + ($candidate_count*2)) as $maximum_fio_runs |
+     (($maximum_fio_runs*660)+($candidate_count*3*120)+400+900+300) as $seconds |
+     {profile:$profile,vpus:[$vpu],repeats:$repeats,seed:$seed,layout:$layout,fio:$fio,candidate_ids:$candidates,candidate_order_blocks:$blocks,attempts:$attempts,fio_run_count:$fio_runs,maximum_fio_run_count:$maximum_fio_runs,measurement_runtime_seconds:($fio_runs*660),maximum_measurement_runtime_seconds:($maximum_fio_runs*660),estimated_transition_rollback_seconds:(($candidate_count*3*120)+400),estimated_total_seconds:$seconds,estimated_resource_hours:($seconds/3600),estimated_cost_usd:((($seconds/3600)*0.28)+(($seconds/3600)/730*600*(0.0334203+(50*0.00222802)))|.*100|round/100),cost_basis:{compute_hourly_usd:0.28,volume_storage_gb_month_usd:0.0334203,volume_performance_unit_gb_month_usd:0.00222802,total_block_gb:600,hours_per_month:730,source:"https://www.oracle.com/cloud/iaas-paas/",estimated_at_plan_time:true},candidate_count:$candidate_count,checkpoint_interval:5,screening_repetitions:1,shortlist_validation_repetitions:3,fixed_comparison_threshold:0.05,oracle_database:false,multipath:false}' \
     | atomic_json "$plan"
   jq '
     map(if .disposition == "testable" then . + {execution_status:"pending"} else . end)
@@ -190,6 +189,7 @@ INFRA_STATE="$REPO_DIR/progress/sprint_1/state-bv4db.json"
 GUEST_EXECUTOR="$REPO_DIR/tools/oci_bv_single_path_guest.sh"
 ANALYZER="$REPO_DIR/tools/analyze_bv_single_path.py"
 FIO_RENDERER="$REPO_DIR/tools/render_fio_report_html.sh"
+ATTEMPT_REPORTER="$REPO_DIR/tools/render_bv_attempt_report.py"
 SC_DIR="$OUTPUT_DIR/scaffold"
 RUN_TAG=""
 PUBLIC_IP=""
@@ -625,6 +625,9 @@ execute_measurement() {
   if [ "$status" = passed ] && [ -s "$attempt_file" ] && jq -e '.restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false and .fio_exit_code==0' "$attempt_file" >/dev/null && jq -e 'type=="object"' "$local_dir/fio.json" >/dev/null 2>&1; then
     [ -x "$FIO_RENDERER" ] || die "per-attempt FIO renderer is missing or not executable"
     "$FIO_RENDERER" "$local_dir/fio.json" "$local_dir/iostat.json" "$local_dir/fio_report.html" "Sprint 30 $candidate block $block repetition $repetition"
+    [ -f "$ATTEMPT_REPORTER" ] || die "per-attempt Markdown reporter is missing"
+    python3 "$ATTEMPT_REPORTER" "$local_dir" >/dev/null
+    [ -s "$local_dir/attempt_report.md" ] || die "per-attempt Markdown report was not created"
     row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg attempt_type "$attempt_type" --arg block "$block" --argjson repetition "$repetition" --arg result "$status" --arg path "attempts/$key" --slurpfile a "$attempt_file" '{run_id:$run_id,candidate_id:$candidate,attempt_type:$attempt_type,block:$block,repetition:$repetition,vpu:50,result:$result,restoration_state:$a[0].restoration_state,sentinels_valid:$a[0].sentinels_valid,started_at:$a[0].started_at,ended_at:$a[0].ended_at,evidence:[$path]}')
   else
     row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg attempt_type "$attempt_type" --arg block "$block" --argjson repetition "$repetition" --arg path "attempts/$key" '{run_id:$run_id,candidate_id:$candidate,attempt_type:$attempt_type,block:$block,repetition:$repetition,vpu:50,result:"failed",restoration_state:"unproven",sentinels_valid:false,evidence:[$path]}')
@@ -634,28 +637,24 @@ execute_measurement() {
   jq --arg candidate "$candidate" --arg block "$block" --argjson repetition "$repetition" --slurpfile transitions "$local_dir/state.json" '.attempt_transitions=((.attempt_transitions//[]) + [{candidate_id:$candidate,block:$block,repetition:$repetition,transitions:$transitions[0]}])' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
 }
 
-extend_and_gate_stability() {
-  local phase="$1" id count rep remaining
+validate_smoke_baseline() {
+  local candidate="$1" count
+  count=$(jq --arg id "$candidate" '[.[]|select(.candidate_id==$id and .attempt_type=="measurement" and .result=="passed")]|length' "$OUTPUT_DIR/results_index.json")
+  [ "$count" -eq 1 ] || die "expected exactly one passed smoke baseline for $candidate; found $count"
+}
+
+validate_shortlisted_candidates() {
+  local id rep shortlist
+  shortlist=$("$ANALYZER" --shortlist "$OUTPUT_DIR")
+  printf '%s\n' "$shortlist" | jq -Rsc 'split("\n")|map(select(length>0))' > "$OUTPUT_DIR/shortlisted_candidates.json"
   while IFS= read -r id; do
-    case "$phase:$id" in
-      initial:REGULAR_BASELINE_INITIAL|final:REGULAR_BASELINE_FINAL) ;;
-      initial:*|final:*|candidates:REGULAR_*) continue ;;
-      candidates:*) ;;
-    esac
-    count=$(jq --arg id "$id" '[.[]|select(.candidate_id==$id and .result=="passed")]|length' "$OUTPUT_DIR/results_index.json")
-    rep=$((count+1)); while [ "$rep" -le 5 ]; do execute_measurement "$id" stability_extension "$rep"; rep=$((rep+1)); done
-  done < <("$ANALYZER" --unstable "$OUTPUT_DIR")
-  remaining=$("$ANALYZER" --unstable "$OUTPUT_DIR")
-  case "$phase" in
-    initial) remaining=$(grep -Fx 'REGULAR_BASELINE_INITIAL' <<<"$remaining" || true) ;;
-    final) remaining=$(grep -Fx 'REGULAR_BASELINE_FINAL' <<<"$remaining" || true) ;;
-    candidates) remaining=$(grep -Ev '^REGULAR_' <<<"$remaining" || true) ;;
-  esac
-  if [ "$phase" = candidates ] && [ -n "$remaining" ]; then
-    while IFS= read -r id; do [ -n "$id" ] || continue; jq --arg id "$id" 'map(if .id==$id then .execution_status="inconclusive" else . end)' "$OUTPUT_DIR/tunable_coverage.json" | atomic_json "$OUTPUT_DIR/tunable_coverage.json"; done <<<"$remaining"
-    return 0
-  fi
-  [ -z "$remaining" ] || die "$phase measurements remain unstable after five repetitions: $remaining"
+    [ -n "$id" ] || continue
+    for rep in 2 3; do
+      if ! jq -e --arg id "$id" --argjson rep "$rep" '.[]|select(.candidate_id==$id and .block=="validation" and .repetition==$rep and .result=="passed")' "$OUTPUT_DIR/results_index.json" >/dev/null; then
+        execute_measurement "$id" validation "$rep"
+      fi
+    done
+  done <<<"$shortlist"
 }
 
 execute_matrix() {
@@ -663,10 +662,10 @@ execute_matrix() {
   if [ -z "$RESUME_RUN" ] || [ ! -s "$OUTPUT_DIR/results_index.json" ]; then printf '[]\n' > "$OUTPUT_DIR/results_index.json"; fi
   while IFS= read -r attempt; do
     candidate=$(jq -r .candidate_id <<<"$attempt"); attempt_type=$(jq -r .attempt_type <<<"$attempt"); block=$(jq -r '.block|tostring' <<<"$attempt")
-    if [ "$initial_gated" = false ] && [ "$candidate" != REGULAR_BASELINE_INITIAL ]; then extend_and_gate_stability initial; initial_gated=true; fi
+    if [ "$initial_gated" = false ] && [ "$candidate" != REGULAR_BASELINE_INITIAL ]; then validate_smoke_baseline REGULAR_BASELINE_INITIAL; initial_gated=true; fi
     if [ "$attempt_type" = rollback_canary ]; then
       if [ "$candidates_gated" = false ]; then
-        extend_and_gate_stability candidates
+        validate_shortlisted_candidates
         drifted=$("$ANALYZER" --checkpoint-drift "$OUTPUT_DIR")
         [ -z "$drifted" ] || die "regular checkpoint drift exceeded the accepted threshold: $drifted"
         candidates_gated=true
@@ -695,10 +694,10 @@ execute_matrix() {
       rep=$((rep+1))
     done
   done < <(jq -c '.attempts[]' "$OUTPUT_DIR/experiment_plan.json")
-  extend_and_gate_stability final
+  validate_smoke_baseline REGULAR_BASELINE_FINAL
   drifted=$("$ANALYZER" --final-drift "$OUTPUT_DIR")
   [ -z "$drifted" ] || die "initial/final regular baseline drift exceeded the accepted threshold: $drifted"
-  jq --slurpfile results "$OUTPUT_DIR/results_index.json" --slurpfile plan "$OUTPUT_DIR/experiment_plan.json" 'map(. as $c | if .disposition=="testable" and (.id as $id|$plan[0].candidate_ids|index($id))!=null and .execution_status!="inconclusive" then .execution_status=(if ([$results[0][]|select(.candidate_id==$c.id and .result=="passed")]|length) as $n | ($n>=3 and $n<=5) then "tested" else "failed" end) else . end)' "$OUTPUT_DIR/tunable_coverage.json" | atomic_json "$OUTPUT_DIR/tunable_coverage.json"
+  jq --slurpfile results "$OUTPUT_DIR/results_index.json" --slurpfile plan "$OUTPUT_DIR/experiment_plan.json" 'map(. as $c | if .disposition=="testable" and (.id as $id|$plan[0].candidate_ids|index($id))!=null then .execution_status=(if ([$results[0][]|select(.candidate_id==$c.id and .result=="passed")]|length)>=1 then "tested" else "failed" end) else . end)' "$OUTPUT_DIR/tunable_coverage.json" | atomic_json "$OUTPUT_DIR/tunable_coverage.json"
 }
 
 collect_oci_metrics() {

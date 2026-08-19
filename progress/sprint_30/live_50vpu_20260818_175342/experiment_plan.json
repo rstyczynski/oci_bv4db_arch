@@ -1,0 +1,404 @@
+{
+  "profile": "sprint30_single_path_50",
+  "vpus": [
+    50
+  ],
+  "repeats": 3,
+  "seed": 30050,
+  "layout": [
+    {
+      "role": "DATA",
+      "name": "data1",
+      "size_gb": 200,
+      "path": "/dev/oracleoci/oraclevdb",
+      "volume_group": "vg_data",
+      "logical_volume": "lv_oradata",
+      "stripes": 2,
+      "stripe_kib": 256,
+      "mount": "/u02/oradata"
+    },
+    {
+      "role": "DATA",
+      "name": "data2",
+      "size_gb": 200,
+      "path": "/dev/oracleoci/oraclevdc",
+      "volume_group": "vg_data",
+      "logical_volume": "lv_oradata",
+      "stripes": 2,
+      "stripe_kib": 256,
+      "mount": "/u02/oradata"
+    },
+    {
+      "role": "REDO",
+      "name": "redo1",
+      "size_gb": 50,
+      "path": "/dev/oracleoci/oraclevdd",
+      "volume_group": "vg_redo",
+      "logical_volume": "lv_redo",
+      "stripes": 2,
+      "stripe_kib": 256,
+      "mount": "/u03/redo"
+    },
+    {
+      "role": "REDO",
+      "name": "redo2",
+      "size_gb": 50,
+      "path": "/dev/oracleoci/oraclevde",
+      "volume_group": "vg_redo",
+      "logical_volume": "lv_redo",
+      "stripes": 2,
+      "stripe_kib": 256,
+      "mount": "/u03/redo"
+    },
+    {
+      "role": "FRA",
+      "name": "fra",
+      "size_gb": 100,
+      "path": "/dev/oracleoci/oraclevdf",
+      "volume_group": null,
+      "logical_volume": null,
+      "stripes": null,
+      "stripe_kib": null,
+      "mount": "/u04/fra"
+    }
+  ],
+  "fio": {
+    "global": {
+      "ioengine": "libaio",
+      "direct": 1,
+      "time_based": 1,
+      "runtime": 600,
+      "ramp_time": 60,
+      "group_reporting": 0,
+      "invalidate": 1,
+      "lat_percentiles": 1,
+      "percentile_list": [
+        95,
+        99,
+        99.9
+      ],
+      "output_format": "json"
+    },
+    "jobs": [
+      {
+        "id": "data-8k",
+        "directory": "/u02/oradata",
+        "rw": "randrw",
+        "rwmixread": 70,
+        "bs": "8k",
+        "size": "32G",
+        "numjobs": 4,
+        "iodepth": 16
+      },
+      {
+        "id": "redo",
+        "directory": "/u03/redo",
+        "rw": "write",
+        "bs": "4k",
+        "size": "4G",
+        "numjobs": 1,
+        "iodepth": 1,
+        "fdatasync": 1
+      },
+      {
+        "id": "fra-1m",
+        "directory": "/u04/fra",
+        "rw": "readwrite",
+        "bs": "1M",
+        "size": "16G",
+        "numjobs": 1,
+        "iodepth": 8,
+        "rate": "120M"
+      }
+    ]
+  },
+  "candidate_ids": [
+    "ISCSI_QD128",
+    "TCP_BUF_2X",
+    "TCP_BUF_4X",
+    "NETDEV_BACKLOG_2X",
+    "NETDEV_BACKLOG_4X",
+    "RPS_ALL_ONLINE",
+    "RPS_RFS_65536",
+    "XPS_BY_QUEUE"
+  ],
+  "candidate_order_blocks": [
+    [
+      "NETDEV_BACKLOG_4X",
+      "RPS_ALL_ONLINE",
+      "RPS_RFS_65536",
+      "TCP_BUF_2X",
+      "TCP_BUF_4X",
+      "XPS_BY_QUEUE",
+      "ISCSI_QD128",
+      "NETDEV_BACKLOG_2X"
+    ],
+    [
+      "NETDEV_BACKLOG_4X",
+      "NETDEV_BACKLOG_2X",
+      "ISCSI_QD128",
+      "XPS_BY_QUEUE",
+      "TCP_BUF_4X",
+      "TCP_BUF_2X",
+      "RPS_RFS_65536",
+      "RPS_ALL_ONLINE"
+    ],
+    [
+      "NETDEV_BACKLOG_4X",
+      "ISCSI_QD128",
+      "TCP_BUF_2X",
+      "TCP_BUF_4X",
+      "RPS_RFS_65536",
+      "XPS_BY_QUEUE",
+      "RPS_ALL_ONLINE",
+      "NETDEV_BACKLOG_2X"
+    ]
+  ],
+  "attempts": [
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "attempt_type": "measurement",
+      "block": "initial",
+      "vpu": 50,
+      "repetitions": 3
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_4X",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_ALL_ONLINE",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_RFS_65536",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_2X",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_4X",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "REGULAR_CHECKPOINT_5",
+      "attempt_type": "checkpoint",
+      "block": "checkpoint",
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "XPS_BY_QUEUE",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "ISCSI_QD128",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_2X",
+      "attempt_type": "measurement",
+      "block": 1,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_4X",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_2X",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "REGULAR_CHECKPOINT_10",
+      "attempt_type": "checkpoint",
+      "block": "checkpoint",
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "ISCSI_QD128",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "XPS_BY_QUEUE",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_4X",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_2X",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_RFS_65536",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "REGULAR_CHECKPOINT_15",
+      "attempt_type": "checkpoint",
+      "block": "checkpoint",
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_ALL_ONLINE",
+      "attempt_type": "measurement",
+      "block": 2,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_4X",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "ISCSI_QD128",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_2X",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "TCP_BUF_4X",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "REGULAR_CHECKPOINT_20",
+      "attempt_type": "checkpoint",
+      "block": "checkpoint",
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_RFS_65536",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "XPS_BY_QUEUE",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "RPS_ALL_ONLINE",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_2X",
+      "attempt_type": "measurement",
+      "block": 3,
+      "vpu": 50,
+      "repetitions": 1
+    },
+    {
+      "candidate_id": "ROLLBACK_CANARY_TRAP",
+      "attempt_type": "rollback_canary",
+      "block": "canary",
+      "vpu": 50,
+      "repetitions": 0
+    },
+    {
+      "candidate_id": "ROLLBACK_CANARY_LEASE",
+      "attempt_type": "rollback_canary",
+      "block": "canary",
+      "vpu": 50,
+      "repetitions": 0
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_FINAL",
+      "attempt_type": "measurement",
+      "block": "final",
+      "vpu": 50,
+      "repetitions": 3
+    }
+  ],
+  "fio_run_count": 34,
+  "measurement_runtime_seconds": 22440,
+  "estimated_transition_rollback_seconds": 3280,
+  "estimated_total_seconds": 26920,
+  "estimated_resource_hours": 7.477777777777778,
+  "estimated_cost_usd": 2.98,
+  "cost_basis": {
+    "compute_hourly_usd": 0.28,
+    "volume_storage_gb_month_usd": 0.0334203,
+    "volume_performance_unit_gb_month_usd": 0.00222802,
+    "total_block_gb": 600,
+    "hours_per_month": 730,
+    "source": "https://www.oracle.com/cloud/iaas-paas/",
+    "estimated_at_plan_time": true
+  },
+  "candidate_count": 8,
+  "checkpoint_interval": 5,
+  "stability_cv_limit": 0.05,
+  "stability_extension_limit": 2,
+  "oracle_database": false,
+  "multipath": false
+}

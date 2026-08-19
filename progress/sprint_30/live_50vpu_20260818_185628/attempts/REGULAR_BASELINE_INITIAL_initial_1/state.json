@@ -1,0 +1,34 @@
+[
+  {
+    "state": "planned",
+    "at": "2026-08-18T19:03:09Z"
+  },
+  {
+    "state": "applying",
+    "at": "2026-08-18T19:03:11Z"
+  },
+  {
+    "state": "active",
+    "at": "2026-08-18T19:03:11Z"
+  },
+  {
+    "state": "measuring",
+    "at": "2026-08-18T19:03:12Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-18T19:18:51Z"
+  },
+  {
+    "state": "failed",
+    "at": "2026-08-18T19:18:52Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-18T19:18:52Z"
+  },
+  {
+    "state": "failed",
+    "at": "2026-08-18T19:18:53Z"
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "ISCSI_QD128",
+    "control": "node.session.queue_depth",
+    "disposition": "testable",
+    "reason": "fixture reports independently mutable iSCSI node records",
+    "evidence": "discovery/iscsi.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "TCP_BUF_2X",
+    "control": "tcp buffers",
+    "disposition": "testable",
+    "reason": "fixture reports numeric sysctl baseline",
+    "evidence": "discovery/sysctl.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "TCP_BUF_4X",
+    "control": "tcp buffers",
+    "disposition": "testable",
+    "reason": "fixture reports numeric sysctl baseline",
+    "evidence": "discovery/sysctl.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "NETDEV_BACKLOG_2X",
+    "control": "net.core.netdev_max_backlog",
+    "disposition": "testable",
+    "reason": "fixture reports numeric sysctl baseline",
+    "evidence": "discovery/sysctl.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "NETDEV_BACKLOG_4X",
+    "control": "net.core.netdev_max_backlog",
+    "disposition": "testable",
+    "reason": "fixture reports numeric sysctl baseline",
+    "evidence": "discovery/sysctl.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "RPS_ALL_ONLINE",
+    "control": "RPS",
+    "disposition": "testable",
+    "reason": "fixture has online CPU and RX queue inventory",
+    "evidence": "discovery/queues.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "RPS_RFS_65536",
+    "control": "RPS plus RFS",
+    "disposition": "testable",
+    "reason": "baseline RPS is zero; RFS is coupled and not a no-op",
+    "evidence": "discovery/queues.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "XPS_BY_QUEUE",
+    "control": "XPS",
+    "disposition": "testable",
+    "reason": "fixture has TX queue inventory",
+    "evidence": "discovery/queues.json",
+    "execution_status": "pending"
+  },
+  {
+    "id": "MTU_ALTERNATIVE",
+    "control": "MTU",
+    "disposition": "unsafe",
+    "reason": "endpoint support is not proven",
+    "evidence": "discovery/mtu.json"
+  },
+  {
+    "id": "NIC_RING_MAX",
+    "control": "NIC rings",
+    "disposition": "unsupported",
+    "reason": "fixture does not advertise independently changeable ring sizes",
+    "evidence": "discovery/ethtool.json"
+  },
+  {
+    "id": "TUNED_PROFILE",
+    "control": "TuneD",
+    "disposition": "not_applicable",
+    "reason": "fixture has no applicable installed profile",
+    "evidence": "discovery/tuned.json"
+  }
+]

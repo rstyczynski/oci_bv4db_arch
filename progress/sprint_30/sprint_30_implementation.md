@@ -18,6 +18,14 @@ volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
 | Quality gates | Run A3 first, then scoped B3, with timestamped logs. | Initial A3 failed before the executor existed; a fresh A3 is pending. |
 | Documentation | Reconcile design, implementation, evidence, test results, and backlog traceability. | Not started; cannot start before construction/gates finish. |
 
+Product-owner clarification on 2026-08-19: every executed performance test
+must create a written Markdown report, not only raw JSON and optional HTML.
+The setup and design contracts now require `attempt_report.md` for baseline,
+checkpoint, candidate, stability-extension, failed/interrupted, and rollback-
+canary attempts. Construction and IT-9 must be updated before Sprint 30 can
+pass; evidence produced before this clarification is incomplete under the new
+contract.
+
 ## BV4DB-72 implementation
 
 ### OCI resource lifecycle correction

@@ -1,0 +1,121 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+{"unit":"test-watchdog","deadline_epoch":280,"renewed_at":"2026-08-18T00:00:00Z","renewal_count":1}
+{"unit":"test-watchdog","deadline_epoch":280,"renewed_at":"2026-08-18T00:00:00Z","renewal_count":1}
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-compute.json
+
+  [WAIT] Compute instance provisioning  0s (state: PROVISIONING)
+  [WAIT] Compute instance provisioning  5s (state: PROVISIONING)
+  [WAIT] Compute instance provisioning  10s (state: PROVISIONING)
+  [WAIT] Compute instance provisioning  15s (state: PROVISIONING)
+  [WAIT] Compute instance provisioning  20s (state: PROVISIONING)
+  [WAIT] Compute instance provisioning  25s (state: RUNNING)
+  [DONE] Compute instance created (VM.Standard.E5.Flex, 4 OCPU, 32 GB): ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicpatrszlmnjnzbnzlf4ho6lefekcorkoewivagb5vkbcq
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-data1.json
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljr46iqnvbpjnyfjg7tko5d56sz4odtwj7lknatwyqdnkru7t5r74qa (200 GB)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyices42ucdq7uvxwvc6ypwxjywyj76rjs6a26sff6zwbe4a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:987f0a59-ad3c-4438-abd1-6474a68694ca  target=169.254.2.2:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-data2.json
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrz2ur3h4kr4ajigl2umevzmlrlr4wel2xew7bjg37ojq7dzsmjgzq (200 GB)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicttzsquwojqxsrhk4xevpdzitwmzh6lfhbyvcqwj4a4qa
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:1439fea3-286f-4a15-bac5-284b33ffab84  target=169.254.2.3:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-redo1.json
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljr6fgngdbep4jkyun4ae3v5qecjwldmo7rorxl2z2mexztyuhr7puq (50 GB)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic76yxoq2q3rtn36zaz5rypbhpipjuoi64hsb5f2oggfea
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:2901fb0c-723e-45a8-975c-5fb37b852ea2  target=169.254.2.4:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-redo2.json
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrrwcpotgmpfl42xruofmfnxwhwjpiuy5xqltobk23dohu6xgciaaa (50 GB)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyico72dkbrteuf3yyz3cbcsqrueykidif4qvyp4ihf6xr2a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:78eb738b-f252-41d7-a34c-b9622d838eb7  target=169.254.2.5:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/scaffold/state-s30-20260818211505-3732-fra.json
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrekx56nb6u4kcoiakxithn64cq6sdqgcsxx3pgyem5nqhw3a3p4ta (100 GB)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicqqoatdkcn3y6a6hska7rxhaprdxsqkxvilxnja4epzea
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:3874ddda-a608-4b33-b089-cfb05cddd034  target=169.254.2.6:3260
+  Physical volume "/dev/oracleoci/oraclevdb" successfully created.
+  Physical volume "/dev/oracleoci/oraclevdc" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_data" successfully created
+  Logical volume "lv_oradata" created.
+Creating filesystem with 104855552 4k blocks and 26214400 inodes
+Filesystem UUID: c1e77272-53d6-440f-a69e-fa898c55884a
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+	102400000
+
+Allocating group tables:    0/320        done                            
+Writing inode tables:    0/320        done                            
+Creating journal (262144 blocks): done
+Writing superblocks and filesystem accounting information:    0/320        done
+
+  Physical volume "/dev/oracleoci/oraclevdd" successfully created.
+  Physical volume "/dev/oracleoci/oraclevde" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_redo" successfully created
+  Logical volume "lv_redo" created.
+Creating filesystem with 26212352 4k blocks and 6553600 inodes
+Filesystem UUID: 3ca5b17e-383d-4053-8832-448ef557f85f
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/80      done                            
+Writing inode tables:   0/80      done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/80      done
+
+Creating filesystem with 26214400 4k blocks and 6553600 inodes
+Filesystem UUID: 65e0a8bf-b08f-4736-90cf-9259c6a244be
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/80      done                            
+Writing inode tables:   0/80      done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/80      done
+
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430/tunable_coverage.json
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_50_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+
+Results: 4 passed, 6 failed

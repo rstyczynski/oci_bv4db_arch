@@ -1,0 +1,90 @@
+{
+  "rmem_max": "229376",
+  "wmem_max": "229376",
+  "tcp_rmem": "4096\t131072\t6291456",
+  "tcp_wmem": "4096\t16384\t4194304",
+  "netdev_max_backlog": "1000",
+  "rps_sock_flow_entries": "0",
+  "tcp_congestion_control": "cubic",
+  "online_cpus": "0-7",
+  "interface": "enp0s5",
+  "mtu": "9000",
+  "rx_queues": [
+    "/sys/class/net/enp0s5/queues/rx-0",
+    "/sys/class/net/enp0s5/queues/rx-1"
+  ],
+  "tx_queues": [
+    "/sys/class/net/enp0s5/queues/tx-0",
+    "/sys/class/net/enp0s5/queues/tx-1"
+  ],
+  "rps": [
+    {
+      "path": "/sys/class/net/enp0s5/queues/rx-0",
+      "cpus": "11",
+      "flow_count": "0"
+    },
+    {
+      "path": "/sys/class/net/enp0s5/queues/rx-1",
+      "cpus": "22",
+      "flow_count": "0"
+    }
+  ],
+  "xps": [
+    {
+      "path": "/sys/class/net/enp0s5/queues/tx-0",
+      "cpus": "44"
+    },
+    {
+      "path": "/sys/class/net/enp0s5/queues/tx-1",
+      "cpus": "88"
+    }
+  ],
+  "iscsi_queue_depth": [
+    {
+      "iqn": "iqn.2015-12.com.oracleiaas:d35d52fd-14a7-4350-b9b1-9e53395ea17e",
+      "portal": "169.254.2.2:3260",
+      "value": "32",
+      "live_value": "32"
+    },
+    {
+      "iqn": "iqn.2015-12.com.oracleiaas:dfaf020b-306d-44cc-b8bf-4a30e4fe9d01",
+      "portal": "169.254.2.3:3260",
+      "value": "32",
+      "live_value": "32"
+    },
+    {
+      "iqn": "iqn.2015-12.com.oracleiaas:49124a09-5de1-48e9-800a-622eaa042a31",
+      "portal": "169.254.2.4:3260",
+      "value": "32",
+      "live_value": "32"
+    },
+    {
+      "iqn": "iqn.2015-12.com.oracleiaas:1d5affaf-cdb6-479c-bf46-f300697e1b90",
+      "portal": "169.254.2.5:3260",
+      "value": "32",
+      "live_value": "32"
+    },
+    {
+      "iqn": "iqn.2015-12.com.oracleiaas:7a1a72da-fe47-4031-a627-16fef2d4d345",
+      "portal": "169.254.2.6:3260",
+      "value": "32",
+      "live_value": "32"
+    }
+  ],
+  "offloads": {
+    "rx-checksumming": "on",
+    "tx-checksumming": "on",
+    "tcp-segmentation-offload": "on",
+    "generic-segmentation-offload": "on",
+    "generic-receive-offload": "on"
+  },
+  "nic": {
+    "ring_rx": "256",
+    "ring_tx": "256",
+    "combined_channels": "2",
+    "adaptive_rx": "off",
+    "adaptive_tx": "n/a",
+    "irq_vectors": []
+  },
+  "tuned_profile": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic"
+}

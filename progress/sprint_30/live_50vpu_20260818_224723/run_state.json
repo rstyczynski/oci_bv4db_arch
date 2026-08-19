@@ -1,0 +1,186 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_224723",
+  "resume": null,
+  "run_tag": "s30-20260818224742-11508",
+  "matrix_start": "2026-08-18T22:54:24Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T22:54:33Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T22:54:34Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T22:54:35Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T22:54:36Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T23:10:16Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T23:10:17Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T23:10:18Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 2,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T23:10:42Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T23:10:43Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T23:10:44Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T23:10:45Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T23:21:45Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T23:21:46Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T23:21:47Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 3,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T23:22:16Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T23:22:17Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T23:22:18Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T23:22:18Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T23:33:19Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T23:33:20Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T23:33:21Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "stability_extension",
+      "repetition": 4,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T23:33:50Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T23:33:51Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T23:33:52Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T23:33:53Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T23:44:53Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T23:44:54Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T23:44:55Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "stability_extension",
+      "repetition": 5,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T23:45:25Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T23:45:26Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T23:45:26Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T23:45:27Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T23:56:27Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T23:56:29Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T23:56:29Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 2
+}

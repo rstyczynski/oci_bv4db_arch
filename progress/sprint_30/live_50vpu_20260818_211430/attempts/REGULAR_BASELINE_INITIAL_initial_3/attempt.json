@@ -1,0 +1,10 @@
+{
+  "candidate_id": "REGULAR_BASELINE_INITIAL",
+  "repetition": 3,
+  "started_at": "2026-08-18T21:48:36Z",
+  "ended_at": "2026-08-18T21:59:37Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

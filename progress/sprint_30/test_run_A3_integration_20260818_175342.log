@@ -1,0 +1,134 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+another Sprint 30 controller is active with PID 92564
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-compute.json
+  [WAIT] Compute instance provisioning … 0s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 5s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 10s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 15s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 20s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 25s (state: RUNNING)
+  [DONE] Compute instance created (VM.Standard.E5.Flex, 4 OCPU, 32 GB): ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyiccletys6nygzjh7mealzhrixnyveddk7dblddigvcrqha
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-data1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrzmhqpz55q42dyses2s7rkozkcsf6nplaqk63yl6tvliz7m6nn23a (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicpj5jabtiqafrjsrafbfnw62nahf44zturmfbaa3mqwxq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:fe5b49aa-efff-4237-adc4-615a1b3712b2  target=169.254.2.2:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-data2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrikxpjtnyf2u76vn5w3s32eorbcleechs5zy4tkptsd5jdlwodzqq (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgbz6sz5lwxjp2tjawoecikyk4gm3jompw6lpkc5c6zsq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:82f41314-48d0-49c9-8f0d-f08f7774459a  target=169.254.2.3:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-redo1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrinq7567aulzsp3qnbmydfj4q55pao3iz5filrca2wnsstshfdcpa (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicblrgm3ymcobbf4h5kbeos5qliltmxlc73ckphwewjneq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:f9108151-6cce-4190-97db-6107021e58c6  target=169.254.2.4:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-redo2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrwvjgsdxe6jx4fxfrefevj7f5x7j7l4e63i3wfgbx5fkwziot6mxq (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicg7wp2odjcie2r34w3msw633oddnfsfzbbkiw6mzippzq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:495c2b5f-8d17-41e9-88be-b3b5a04186d7  target=169.254.2.5:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/scaffold/state-s30-20260818175401-93492-fra.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljree2kxi22oaxvwkr3vf2x5cmydegahhlbmmm7b4tngm6eb46cuuoa (100 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdzu2cv3vpmutuv5h3zq6lqticfjtnl2wldzybfjxouqa
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:6c1eeec5-565e-4a06-b073-9a86bc72f20e  target=169.254.2.6:3260
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Created symlink /etc/systemd/system/multi-user.target.wants/iscsid.service → /usr/lib/systemd/system/iscsid.service.
+  Physical volume "/dev/oracleoci/oraclevdb" successfully created.
+  Physical volume "/dev/oracleoci/oraclevdc" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_data" successfully created
+  Logical volume "lv_oradata" created.
+Creating filesystem with 104855552 4k blocks and 26214400 inodes
+Filesystem UUID: d919d422-f9fe-4bb8-9c1c-9d710d3c8d8c
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+	102400000
+
+Allocating group tables:    0/3200mke2fs 1.47.1 (20-May-2024)
+         done                            
+Writing inode tables:    0/3200         done                            
+Creating journal (262144 blocks): done
+Writing superblocks and filesystem accounting information:    0/3200         done
+
+  Physical volume "/dev/oracleoci/oraclevdd" successfully created.
+  Physical volume "/dev/oracleoci/oraclevde" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_redo" successfully created
+  Logical volume "lv_redo" created.
+Creating filesystem with 26212352 4k blocks and 6553600 inodes
+Filesystem UUID: 2a00b10d-b39a-42f2-bd69-a9f1b6769b0a
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/800       done                            
+mke2fs 1.47.1 (20-May-2024)
+Writing inode tables:   0/800       done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/800       done
+
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 26214400 4k blocks and 6553600 inodes
+Filesystem UUID: 398be1ea-0866-45de-88a0-9e3594438cb4
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/800       done                            
+Writing inode tables:   0/800       done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/800       done
+
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_50_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 50 VPUs/GB ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: missing report: fio_analysis.md
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_175342/final_state.json: No such file or directory
+
+Results: 4 passed, 6 failed

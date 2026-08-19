@@ -121,9 +121,9 @@ def changed_control_count(run_dir: Path, row: dict) -> int:
 
 
 def main() -> int:
-    special_mode = sys.argv[1] if len(sys.argv) == 3 and sys.argv[1] in {"--unstable", "--checkpoint-drift", "--final-drift"} else ""
+    special_mode = sys.argv[1] if len(sys.argv) == 3 and sys.argv[1] in {"--shortlist", "--checkpoint-drift", "--final-drift"} else ""
     if len(sys.argv) != 2 and not special_mode:
-        raise SystemExit("usage: analyze_bv_single_path.py [--unstable|--checkpoint-drift|--final-drift] RUN_DIR")
+        raise SystemExit("usage: analyze_bv_single_path.py [--shortlist|--checkpoint-drift|--final-drift] RUN_DIR")
     run_dir = Path(sys.argv[2] if special_mode else sys.argv[1]).resolve()
     rows = load(run_dir / "results_index.json")
     coverage = load(run_dir / "tunable_coverage.json")
@@ -131,14 +131,26 @@ def main() -> int:
     for row in passed_fio_rows:
         row["metrics"] = attempt_metrics(run_dir, row)
     measurement_rows = [r for r in passed_fio_rows if r.get("attempt_type") == "measurement"]
-    if special_mode == "--unstable":
-        ids = [c["id"] for c in coverage if c.get("disposition") == "testable"] + ["REGULAR_BASELINE_INITIAL", "REGULAR_BASELINE_FINAL"]
-        for candidate_id in ids:
-            candidate_rows = [r for r in measurement_rows if r["candidate_id"] == candidate_id]
-            if len(candidate_rows) >= 3:
-                stats = [summary([r["metrics"][name] for r in candidate_rows]) for name in ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")]
-                if any(item["cv"] is None or item["cv"] > 0.05 for item in stats):
-                    print(candidate_id)
+    if special_mode == "--shortlist":
+        initial = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
+        if len(initial) != 1:
+            raise ValueError(f"expected one initial smoke baseline, found {len(initial)}")
+        names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
+        base = {name: initial[0]["metrics"][name] for name in names}
+        baseline_cpu = initial[0]["metrics"]["cpu_percent"]
+        for candidate_id in [c["id"] for c in coverage if c.get("disposition") == "testable"]:
+            rows = [r for r in measurement_rows if r["candidate_id"] == candidate_id]
+            if len(rows) != 1:
+                continue
+            gains = {
+                name: ((rows[0]["metrics"][name] - base[name]) / base[name]) * (1 if name in {"data_iops", "fra_bw_bytes"} else -1)
+                for name in names if base[name]
+            }
+            improves = any(value > 0.05 for value in gains.values())
+            regresses = any(value < -0.05 for value in gains.values())
+            cpu_ok = math.isfinite(rows[0]["metrics"]["cpu_percent"]) and baseline_cpu and rows[0]["metrics"]["cpu_percent"] <= baseline_cpu * 1.10
+            if improves and not regresses and cpu_ok and rows[0]["metrics"]["errors_clean"]:
+                print(candidate_id)
         return 0
     if special_mode in {"--checkpoint-drift", "--final-drift"}:
         names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
@@ -150,7 +162,7 @@ def main() -> int:
             for name in names:
                 median = base[name]["median"]
                 other = comparison[name]["median"]
-                if median in (None, 0) or other is None or abs((other - median) / median) > max(0.05, 2 * (base[name]["cv"] or 0)):
+                if median in (None, 0) or other is None or abs((other - median) / median) > 0.05:
                     print(name)
             return 0
         for row in (r for r in passed_fio_rows if r.get("attempt_type") == "checkpoint"):
@@ -160,7 +172,7 @@ def main() -> int:
                 if median in (None, 0):
                     drifted = True
                     continue
-                threshold = max(0.05, 2 * (base[name]["cv"] or 0))
+                threshold = 0.05
                 ratio = (row["metrics"][name] - median) / median
                 drifted |= abs(ratio) > threshold
             if drifted:
@@ -169,8 +181,8 @@ def main() -> int:
     initial_rows = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
     final_rows = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_FINAL"]
     baseline_rows = initial_rows + final_rows
-    if len(baseline_rows) < 6 or len(baseline_rows) > 10:
-        raise ValueError(f"expected six to ten initial/final baseline rows, found {len(baseline_rows)}")
+    if len(initial_rows) != 1 or len(final_rows) != 1:
+        raise ValueError(f"expected one initial and one final smoke baseline, found {len(initial_rows)} and {len(final_rows)}")
     metric_names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
     baseline = {name: summary([r["metrics"][name] for r in initial_rows]) for name in metric_names}
     final_baseline = {name: summary([r["metrics"][name] for r in final_rows]) for name in metric_names}
@@ -179,7 +191,7 @@ def main() -> int:
         if baseline[name]["median"] in (None, 0)
         or final_baseline[name]["median"] is None
         or abs((final_baseline[name]["median"] - baseline[name]["median"]) / baseline[name]["median"])
-        > max(0.05, 2 * (baseline[name]["cv"] or 0))
+        > 0.05
     ]
     candidate_ids = [c["id"] for c in coverage if c.get("disposition") == "testable"]
     def job_statistics(selected_rows: list[dict]) -> dict:
@@ -206,7 +218,7 @@ def main() -> int:
             value = stats[name]
             if base["median"] in (None, 0) or value["median"] is None:
                 continue
-            threshold = max(0.05, 2 * (base["cv"] or 0))
+            threshold = 0.05
             ratio = (value["median"] - base["median"]) / base["median"]
             higher_is_better = name in {"data_iops", "fra_bw_bytes"}
             gain = ratio if higher_is_better else -ratio

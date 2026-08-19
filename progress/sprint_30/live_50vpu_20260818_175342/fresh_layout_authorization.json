@@ -1,0 +1,32 @@
+{
+  "authorize_fresh_layout": true,
+  "run_id": "s30-20260818175401-93492",
+  "manifest_sha256": "34ebc457e88c726695a05b20ecdd9e7457bfb23730537a552899863adff5451a",
+  "volumes": [
+    {
+      "volume_ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzmhqpz55q42dyses2s7rkozkcsf6nplaqk63yl6tvliz7m6nn23a",
+      "path": "/dev/oracleoci/oraclevdb",
+      "iqn": "iqn.2015-12.com.oracleiaas:fe5b49aa-efff-4237-adc4-615a1b3712b2"
+    },
+    {
+      "volume_ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrikxpjtnyf2u76vn5w3s32eorbcleechs5zy4tkptsd5jdlwodzqq",
+      "path": "/dev/oracleoci/oraclevdc",
+      "iqn": "iqn.2015-12.com.oracleiaas:82f41314-48d0-49c9-8f0d-f08f7774459a"
+    },
+    {
+      "volume_ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrinq7567aulzsp3qnbmydfj4q55pao3iz5filrca2wnsstshfdcpa",
+      "path": "/dev/oracleoci/oraclevdd",
+      "iqn": "iqn.2015-12.com.oracleiaas:f9108151-6cce-4190-97db-6107021e58c6"
+    },
+    {
+      "volume_ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrwvjgsdxe6jx4fxfrefevj7f5x7j7l4e63i3wfgbx5fkwziot6mxq",
+      "path": "/dev/oracleoci/oraclevde",
+      "iqn": "iqn.2015-12.com.oracleiaas:495c2b5f-8d17-41e9-88be-b3b5a04186d7"
+    },
+    {
+      "volume_ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljree2kxi22oaxvwkr3vf2x5cmydegahhlbmmm7b4tngm6eb46cuuoa",
+      "path": "/dev/oracleoci/oraclevdf",
+      "iqn": "iqn.2015-12.com.oracleiaas:6c1eeec5-565e-4a06-b073-9a86bc72f20e"
+    }
+  ]
+}

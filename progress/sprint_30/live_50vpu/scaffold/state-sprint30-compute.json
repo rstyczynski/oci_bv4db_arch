@@ -1,0 +1,37 @@
+{
+  "summary": {
+    "created": 1,
+    "existing": 0,
+    "tested": 1,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "46670-2331-1787056227",
+    "creation_order": [
+      "compute",
+      "blockvolume"
+    ]
+  },
+  "inputs": {
+    "name_prefix": "sprint30-compute",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 4,
+    "compute_memory_gb": 32,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "compute_ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic6tw5rmp7frlnmnat5qgna3esr4rfglvxwgf6aazt2rpa"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "created": false,
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic6tw5rmp7frlnmnat5qgna3esr4rfglvxwgf6aazt2rpa",
+    "name": "bv4db-s30-50vpu-instance"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrr5op2ceg4qr3vidr6buosadtkfx3bkcbtoq4gkjirhpoa3xqmqiq"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "data": {
+    "attachment-type": "iscsi",
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "chap-secret": null,
+    "chap-username": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "device": "/dev/oracleoci/oraclevdd",
+    "display-name": "volumeattachment20260818203847",
+    "encryption-in-transit-type": "NONE",
+    "id": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjv77oae3eh4nrvizgziajiaupt5mclxb7jzr5xjjpuga",
+    "instance-id": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicyikn2nudo44voa5ov7lmfbgi3pnvafk664qt2czvmp5q",
+    "ipv4": "169.254.2.4",
+    "iqn": "iqn.2015-12.com.oracleiaas:49124a09-5de1-48e9-800a-622eaa042a31",
+    "is-agent-auto-iscsi-login-enabled": null,
+    "is-multipath": null,
+    "is-pv-encryption-in-transit-enabled": false,
+    "is-read-only": false,
+    "is-shareable": false,
+    "is-volume-created-during-launch": false,
+    "iscsi-login-state": "UNKNOWN",
+    "lifecycle-state": "ATTACHED",
+    "multipath-devices": null,
+    "port": 3260,
+    "time-created": "2026-08-18T20:38:48.219000+00:00",
+    "volume-id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzi25vxi547hs53pdjrdxxwtsbwit3wsjba4fxzugldzarwjf76xa"
+  },
+  "etag": "6f30fa2ade818b008ba6d3dbedacbe3ad5f5ee9b0e79a1fe5aa9c718c3531f3f"
+}

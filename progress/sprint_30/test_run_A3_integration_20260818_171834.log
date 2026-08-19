@@ -1,0 +1,57 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+another Sprint 30 controller is active with PID 56833
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/scaffold/state-s30-20260818171854-57731-compute.json
+  [WAIT] Compute instance provisioning … 0s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 5s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 10s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 15s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 20s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 25s (state: RUNNING)
+  [DONE] Compute instance created (VM.Standard.E5.Flex, 4 OCPU, 32 GB): ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicgfmpecib6wj44aw25nyd5shloioixtp66rpsjpw2d4kq
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/scaffold/state-s30-20260818171854-57731-data1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljr73ruftoqzjpent5lqinrtdmwniib6yb4hwnt4a74623chgsjuynq (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicj5gfnonea7nllflkibzrofua3y6s47bgkywigtokxmxq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:dd57f4c5-ef4a-4d85-9309-18dcf6620ae8  target=169.254.2.2:3260
+ERROR: attachment did not converge to exactly bound single-path: data1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_50_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 50 VPUs/GB ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: missing report: fio_analysis.md
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_171834/final_state.json: No such file or directory
+
+Results: 4 passed, 6 failed

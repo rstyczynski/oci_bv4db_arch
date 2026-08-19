@@ -1,0 +1,36 @@
+{
+  "summary": {
+    "created": 2,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "46909-30038-1787073011",
+    "creation_order": [
+      "compute"
+    ],
+    "torn_down_at": "2026-08-18T17:13:07Z"
+  },
+  "inputs": {
+    "name_prefix": "s30-20260818171009-46909-compute",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "compute_shape": "VM.Standard.E5.Flex",
+    "compute_ocpus": 4,
+    "compute_memory_gb": 32,
+    "subnet_prohibit_public_ip": false,
+    "compute_ssh_authorized_keys_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_1/bv4db-key.pub",
+    "compute_image_id": "ocid1.image.oc1.eu-zurich-1.aaaaaaaa2iefb4zxnerxymizrughj2vqrewg5c7rdusuuowhcwe6wodpdntq"
+  },
+  "subnet": {
+    "ocid": "ocid1.subnet.oc1.eu-zurich-1.aaaaaaaau3ey2oynpy7w24qlyjkb7wgww3mv3ckoyxxvpdeypgr4m5dl2dka"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicku64b527cii4lc5faszyowogmucaqofyacxmi2niadaa",
+    "created": true,
+    "name": "s30-20260818171009-46909-compute-instance",
+    "public_ip": "140.238.208.224",
+    "private_ip": "10.0.0.66",
+    "deleted": true
+  }
+}

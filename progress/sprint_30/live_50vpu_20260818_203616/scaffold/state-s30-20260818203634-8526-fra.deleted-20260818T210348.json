@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "created": 4,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "8526-27146-1787085396",
+    "creation_order": [
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-08-18T21:03:48Z"
+  },
+  "inputs": {
+    "name_prefix": "s30-20260818203634-8526-fra",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_attach_type": "iscsi",
+    "bv_is_multipath": false,
+    "bv_vpus_per_gb": 50,
+    "bv_size_gb": 100,
+    "bv_device_path": "/dev/oracleoci/oraclevdf"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicyikn2nudo44voa5ov7lmfbgi3pnvafk664qt2czvmp5q"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrtmlsi6asxvcjz74pr27eelurgar6xqitfkptj4zrvq5ydhe4draa",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdf",
+    "is_multipath": false,
+    "vpus_per_gb": 50,
+    "iqn": "iqn.2015-12.com.oracleiaas:7a1a72da-fe47-4031-a627-16fef2d4d345",
+    "ipv4": "169.254.2.6",
+    "port": 3260,
+    "deleted": true
+  }
+}

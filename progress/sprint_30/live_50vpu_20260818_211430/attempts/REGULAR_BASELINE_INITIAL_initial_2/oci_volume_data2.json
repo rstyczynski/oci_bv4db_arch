@@ -1,0 +1,32 @@
+{
+  "data": {
+    "auto-tuned-vpus-per-gb": null,
+    "autotune-policies": [],
+    "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+    "block-volume-replicas": null,
+    "cluster-placement-group-id": null,
+    "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "defined-tags": {
+      "Oracle-Tags": {
+        "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+        "CreatedOn": "2026-08-18T21:16:14.463Z"
+      }
+    },
+    "display-name": "s30-20260818211505-3732-data2-bv",
+    "freeform-tags": {},
+    "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrz2ur3h4kr4ajigl2umevzmlrlr4wel2xew7bjg37ojq7dzsmjgzq",
+    "is-auto-tune-enabled": false,
+    "is-hydrated": true,
+    "is-reservations-enabled": false,
+    "kms-key-id": null,
+    "lifecycle-state": "AVAILABLE",
+    "size-in-gbs": 200,
+    "size-in-mbs": 204800,
+    "source-details": null,
+    "system-tags": {},
+    "time-created": "2026-08-18T21:16:14.471000+00:00",
+    "volume-group-id": null,
+    "vpus-per-gb": 50
+  },
+  "etag": "2d34d864e09c44c99d251b8d63ea0b96"
+}

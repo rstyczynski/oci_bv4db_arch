@@ -1,0 +1,86 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+another Sprint 30 controller is active with PID 82558
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-compute.json
+  [WAIT] Compute instance provisioning … 0s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 5s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 10s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 15s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 20s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 25s (state: RUNNING)
+  [DONE] Compute instance created (VM.Standard.E5.Flex, 4 OCPU, 32 GB): ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyichp26lplcpapkgxo2az6laixahlnpvktfgclv6sw2ntra
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-data1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrr7vrrgh7z4fydjninty6tg5urh55t42gtwiqqmmxzbkdvamsl4ga (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicwmkm4dchqloach7kccrdo2nbxp5xazcqpbitcyv5ok3a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:6cc198a4-12e2-44bf-92b6-1f917107ecdc  target=169.254.2.2:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-data2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrtz4cmw6puq6csljakzynxiqlc7otln6rogv5lzviqx5fuk3c37pa (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicorqx57xuxlnoshnvd5rxiz3jika3wxbxtbbkzrz5bqra
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:7a5a3304-c508-4fb3-84bf-47896c67fe38  target=169.254.2.3:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-redo1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrcvecz2g3hdskrejr7nwnvlli52we7fvzxy5szj7pflxg36corl2q (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicq7i2ix4vjhlogyyiirff7vsknbil4eoo7v4b6i7r23gq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:c8b8d771-d913-48ff-b877-c21f0e9931d8  target=169.254.2.4:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-redo2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrzcyjnroclismozg6bnfd5jvvlwnrze7a5pr625eyd5ozdmt75jwa (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicoeudnuerxbt3kg4ftigu3hhzo5pjmgicddmgqdrwsacq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:5cbcae1f-38c5-4532-a621-168e669bbc7c  target=169.254.2.5:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/scaffold/state-s30-20260818174233-83507-fra.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrjzbxdp5urv3vwywppj6i27j77wg6uxhutrfpvyhertqdp2givsaa (100 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicjrrlftatfkg5d4f6kuwgwcvsvfei4czmgb4okkj4h62a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:0531955e-0e8d-4aab-8519-c410f43d693d  target=169.254.2.6:3260
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Created symlink /etc/systemd/system/multi-user.target.wants/iscsid.service → /usr/lib/systemd/system/iscsid.service.
+ERROR: data1 does not have exactly one expected-portal iSCSI session
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_50_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 50 VPUs/GB ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: missing report: fio_analysis.md
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_174211/final_state.json: No such file or directory
+
+Results: 4 passed, 6 failed

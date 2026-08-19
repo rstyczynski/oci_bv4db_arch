@@ -1,0 +1,17 @@
+{
+  "inputs": {
+    "name_prefix": "sprint30-data1",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_attach_type": "iscsi",
+    "bv_is_multipath": false,
+    "bv_size_gb": 200,
+    "bv_device_path": "/dev/oracleoci/oraclevdb",
+    "bv_vpus_per_gb": 50
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyic6tw5rmp7frlnmnat5qgna3esr4rfglvxwgf6aazt2rpa"
+  },
+  "blockvolume": {
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrdctifsb2vfklooiecsgphm4l5izwbadcjk3unjtirzgm5qucxvra"
+  }
+}

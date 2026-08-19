@@ -1,0 +1,193 @@
+{
+   "filesystems": [
+      {
+         "target": "/",
+         "source": "/dev/mapper/ocivolume-root",
+         "fstype": "xfs",
+         "options": "rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota",
+         "children": [
+            {
+               "target": "/proc",
+               "source": "proc",
+               "fstype": "proc",
+               "options": "rw,nosuid,nodev,noexec,relatime",
+               "children": [
+                  {
+                     "target": "/proc/sys/fs/binfmt_misc",
+                     "source": "systemd-1",
+                     "fstype": "autofs",
+                     "options": "rw,relatime,fd=30,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=6108"
+                  }
+               ]
+            },{
+               "target": "/sys",
+               "source": "sysfs",
+               "fstype": "sysfs",
+               "options": "rw,nosuid,nodev,noexec,relatime,seclabel",
+               "children": [
+                  {
+                     "target": "/sys/kernel/security",
+                     "source": "securityfs",
+                     "fstype": "securityfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime"
+                  },{
+                     "target": "/sys/fs/cgroup",
+                     "source": "cgroup2",
+                     "fstype": "cgroup2",
+                     "options": "rw,nosuid,nodev,noexec,relatime,seclabel,nsdelegate,memory_recursiveprot"
+                  },{
+                     "target": "/sys/fs/pstore",
+                     "source": "pstore",
+                     "fstype": "pstore",
+                     "options": "rw,nosuid,nodev,noexec,relatime,seclabel"
+                  },{
+                     "target": "/sys/firmware/efi/efivars",
+                     "source": "efivarfs",
+                     "fstype": "efivarfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime"
+                  },{
+                     "target": "/sys/fs/bpf",
+                     "source": "bpf",
+                     "fstype": "bpf",
+                     "options": "rw,nosuid,nodev,noexec,relatime,mode=700"
+                  },{
+                     "target": "/sys/fs/selinux",
+                     "source": "selinuxfs",
+                     "fstype": "selinuxfs",
+                     "options": "rw,nosuid,noexec,relatime"
+                  },{
+                     "target": "/sys/kernel/debug",
+                     "source": "debugfs",
+                     "fstype": "debugfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime,seclabel"
+                  },{
+                     "target": "/sys/kernel/tracing",
+                     "source": "tracefs",
+                     "fstype": "tracefs",
+                     "options": "rw,nosuid,nodev,noexec,relatime,seclabel"
+                  },{
+                     "target": "/sys/fs/fuse/connections",
+                     "source": "fusectl",
+                     "fstype": "fusectl",
+                     "options": "rw,nosuid,nodev,noexec,relatime"
+                  },{
+                     "target": "/sys/kernel/config",
+                     "source": "configfs",
+                     "fstype": "configfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime"
+                  }
+               ]
+            },{
+               "target": "/dev",
+               "source": "devtmpfs",
+               "fstype": "devtmpfs",
+               "options": "rw,nosuid,seclabel,size=4096k,nr_inodes=4029633,mode=755,inode64",
+               "children": [
+                  {
+                     "target": "/dev/shm",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,noexec,seclabel,inode64"
+                  },{
+                     "target": "/dev/pts",
+                     "source": "devpts",
+                     "fstype": "devpts",
+                     "options": "rw,nosuid,noexec,relatime,seclabel,gid=5,mode=620,ptmxmode=000"
+                  },{
+                     "target": "/dev/mqueue",
+                     "source": "mqueue",
+                     "fstype": "mqueue",
+                     "options": "rw,nosuid,nodev,noexec,relatime,seclabel"
+                  },{
+                     "target": "/dev/hugepages",
+                     "source": "hugetlbfs",
+                     "fstype": "hugetlbfs",
+                     "options": "rw,relatime,seclabel,pagesize=2M"
+                  }
+               ]
+            },{
+               "target": "/run",
+               "source": "tmpfs",
+               "fstype": "tmpfs",
+               "options": "rw,nosuid,nodev,seclabel,size=6477796k,nr_inodes=819200,mode=755,inode64",
+               "children": [
+                  {
+                     "target": "/run/credentials/systemd-sysctl.service",
+                     "source": "ramfs",
+                     "fstype": "ramfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,seclabel,mode=700"
+                  },{
+                     "target": "/run/credentials/systemd-sysusers.service",
+                     "source": "ramfs",
+                     "fstype": "ramfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,seclabel,mode=700"
+                  },{
+                     "target": "/run/credentials/systemd-tmpfiles-setup-dev.service",
+                     "source": "ramfs",
+                     "fstype": "ramfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,seclabel,mode=700"
+                  },{
+                     "target": "/run/credentials/systemd-tmpfiles-setup.service",
+                     "source": "ramfs",
+                     "fstype": "ramfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,seclabel,mode=700"
+                  },{
+                     "target": "/run/user/1000",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,relatime,seclabel,size=3238896k,nr_inodes=809724,mode=700,uid=1000,gid=1000,inode64"
+                  },{
+                     "target": "/run/user/0",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,relatime,seclabel,size=3238896k,nr_inodes=809724,mode=700,inode64"
+                  },{
+                     "target": "/run/user/988",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,relatime,seclabel,size=3238896k,nr_inodes=809724,mode=700,uid=988,gid=990,inode64"
+                  }
+               ]
+            },{
+               "target": "/boot",
+               "source": "/dev/sda2",
+               "fstype": "xfs",
+               "options": "rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota",
+               "children": [
+                  {
+                     "target": "/boot/efi",
+                     "source": "/dev/sda1",
+                     "fstype": "vfat",
+                     "options": "rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=winnt,errors=remount-ro"
+                  }
+               ]
+            },{
+               "target": "/var/oled",
+               "source": "/dev/mapper/ocivolume-oled",
+               "fstype": "xfs",
+               "options": "rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota"
+            },{
+               "target": "/var/lib/nfs/rpc_pipefs",
+               "source": "rpc_pipefs",
+               "fstype": "rpc_pipefs",
+               "options": "rw,relatime"
+            },{
+               "target": "/u02/oradata",
+               "source": "/dev/mapper/vg_data-lv_oradata",
+               "fstype": "ext4",
+               "options": "rw,relatime,seclabel,stripe=128"
+            },{
+               "target": "/u03/redo",
+               "source": "/dev/mapper/vg_redo-lv_redo",
+               "fstype": "ext4",
+               "options": "rw,relatime,seclabel,stripe=128"
+            },{
+               "target": "/u04/fra",
+               "source": "/dev/sdf",
+               "fstype": "ext4",
+               "options": "rw,relatime,seclabel,stripe=256"
+            }
+         ]
+      }
+   ]
+}

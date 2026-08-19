@@ -1,0 +1,116 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_211430",
+  "resume": null,
+  "run_tag": "s30-20260818211505-3732",
+  "matrix_start": "2026-08-18T21:20:42Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T21:20:51Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T21:20:52Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T21:20:53Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T21:20:53Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T21:36:33Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T21:36:34Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T21:36:35Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 2,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T21:37:00Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T21:37:01Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T21:37:02Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T21:37:03Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T21:48:03Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T21:48:04Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T21:48:05Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 3,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-18T21:48:34Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-18T21:48:35Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-18T21:48:36Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-18T21:48:36Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-18T21:59:37Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-18T21:59:38Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-18T21:59:39Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 2
+}

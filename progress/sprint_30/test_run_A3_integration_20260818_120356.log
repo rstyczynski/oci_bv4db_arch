@@ -1,0 +1,44 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_45_vpu_plan ---
+=== IT-2: deterministic 45-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_45_vpu_topology ---
+=== IT-5: live 45-VPU topology and integrity preflight ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_45_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 45 VPUs/GB ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 45 VPUs/GB ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+FAIL: SPRINT30_TEST_OUTPUT_DIR is required for live evidence validation
+
+Results: 4 passed, 6 failed

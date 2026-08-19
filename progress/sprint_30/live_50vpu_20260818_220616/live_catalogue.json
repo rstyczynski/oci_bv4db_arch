@@ -1,0 +1,575 @@
+[
+  {
+    "id": "ISCSI_QD128",
+    "control": "node.session.queue_depth",
+    "disposition": "testable",
+    "reason": "five target node records expose a captured numeric queue depth",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": [
+      {
+        "iqn": "iqn.2015-12.com.oracleiaas:26281b31-52cb-4452-a1b2-086572ae0045",
+        "portal": "169.254.2.2:3260",
+        "value": "32",
+        "live_value": "32"
+      },
+      {
+        "iqn": "iqn.2015-12.com.oracleiaas:16947b1c-241a-4a63-9acf-ece862a38c55",
+        "portal": "169.254.2.3:3260",
+        "value": "32",
+        "live_value": "32"
+      },
+      {
+        "iqn": "iqn.2015-12.com.oracleiaas:f34f7b62-338d-48d0-9fad-355b73f2d073",
+        "portal": "169.254.2.4:3260",
+        "value": "32",
+        "live_value": "32"
+      },
+      {
+        "iqn": "iqn.2015-12.com.oracleiaas:1dccd0d7-886e-4ede-a4b3-8ca3b417994d",
+        "portal": "169.254.2.5:3260",
+        "value": "32",
+        "live_value": "32"
+      },
+      {
+        "iqn": "iqn.2015-12.com.oracleiaas:5adab7b0-8fc3-41e1-bce3-29e8602629a2",
+        "portal": "169.254.2.6:3260",
+        "value": "32",
+        "live_value": "32"
+      }
+    ],
+    "proposed_value": {
+      "node_and_live_queue_depth": 128
+    }
+  },
+  {
+    "id": "MTU_ALTERNATIVE",
+    "control": "MTU",
+    "disposition": "unsafe",
+    "reason": "alternate endpoint MTU support is not proven for the active iSCSI route",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": "9000",
+    "proposed_value": null
+  },
+  {
+    "id": "NETDEV_BACKLOG_2X",
+    "control": "net.core.netdev_max_backlog",
+    "disposition": "testable",
+    "reason": "numeric sysctl baseline captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": "1000",
+    "proposed_value": {
+      "netdev_max_backlog": 2000
+    }
+  },
+  {
+    "id": "NETDEV_BACKLOG_4X",
+    "control": "net.core.netdev_max_backlog",
+    "disposition": "testable",
+    "reason": "numeric sysctl baseline captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": "1000",
+    "proposed_value": {
+      "netdev_max_backlog": 4000
+    }
+  },
+  {
+    "id": "NIC_CHANNEL_MAX",
+    "control": "NIC channels",
+    "disposition": "not_applicable",
+    "reason": "driver exposes no distinct changeable combined-channel target",
+    "evidence": "discovery/ethtool_channels.txt",
+    "discovered_value": {
+      "ring_rx": "256",
+      "ring_tx": "256",
+      "combined_channels": "2",
+      "adaptive_rx": "off",
+      "adaptive_tx": "n/a",
+      "irq_vectors": []
+    },
+    "proposed_value": null
+  },
+  {
+    "id": "NIC_COAL_ADAPTIVE_OFF",
+    "control": "NIC adaptive coalescing",
+    "disposition": "not_applicable",
+    "reason": "adaptive RX/TX is unsupported or this value is the baseline no-op",
+    "evidence": "discovery/ethtool_coalescing.txt",
+    "discovered_value": {
+      "ring_rx": "256",
+      "ring_tx": "256",
+      "combined_channels": "2",
+      "adaptive_rx": "off",
+      "adaptive_tx": "n/a",
+      "irq_vectors": []
+    },
+    "proposed_value": null
+  },
+  {
+    "id": "NIC_COAL_ADAPTIVE_ON",
+    "control": "NIC adaptive coalescing",
+    "disposition": "not_applicable",
+    "reason": "adaptive RX/TX is unsupported or this value is the baseline no-op",
+    "evidence": "discovery/ethtool_coalescing.txt",
+    "discovered_value": {
+      "ring_rx": "256",
+      "ring_tx": "256",
+      "combined_channels": "2",
+      "adaptive_rx": "off",
+      "adaptive_tx": "n/a",
+      "irq_vectors": []
+    },
+    "proposed_value": null
+  },
+  {
+    "id": "NIC_DRIVER_BASELINE",
+    "control": "NIC driver/firmware",
+    "disposition": "read_only",
+    "reason": "driver and firmware are fixed experiment baselines",
+    "evidence": "discovery/ethtool_driver.txt",
+    "discovered_value": "see evidence",
+    "proposed_value": null
+  },
+  {
+    "id": "NIC_RING_MAX",
+    "control": "NIC rings",
+    "disposition": "unsupported",
+    "reason": "driver has no independently changeable larger ring size",
+    "evidence": "discovery/ethtool_rings.txt",
+    "discovered_value": {
+      "ring_rx": "256",
+      "ring_tx": "256",
+      "combined_channels": "2",
+      "adaptive_rx": "off",
+      "adaptive_tx": "n/a",
+      "irq_vectors": []
+    },
+    "proposed_value": null
+  },
+  {
+    "id": "OFFLOAD_GRO",
+    "control": "NIC offload",
+    "disposition": "testable",
+    "reason": "driver reports the feature as independently changeable",
+    "evidence": "discovery/ethtool_features.txt",
+    "execution_status": "pending",
+    "discovered_value": {
+      "rx-checksumming": "on",
+      "tx-checksumming": "on",
+      "tcp-segmentation-offload": "on",
+      "generic-segmentation-offload": "on",
+      "generic-receive-offload": "on"
+    },
+    "proposed_value": {
+      "feature": "generic-receive-offload",
+      "value": "off"
+    }
+  },
+  {
+    "id": "OFFLOAD_GSO",
+    "control": "NIC offload",
+    "disposition": "testable",
+    "reason": "driver reports the feature as independently changeable",
+    "evidence": "discovery/ethtool_features.txt",
+    "execution_status": "pending",
+    "discovered_value": {
+      "rx-checksumming": "on",
+      "tx-checksumming": "on",
+      "tcp-segmentation-offload": "on",
+      "generic-segmentation-offload": "on",
+      "generic-receive-offload": "on"
+    },
+    "proposed_value": {
+      "feature": "generic-segmentation-offload",
+      "value": "off"
+    }
+  },
+  {
+    "id": "OFFLOAD_RX_CHECKSUM",
+    "control": "NIC offload",
+    "disposition": "unsupported",
+    "reason": "driver reports the feature absent or fixed",
+    "evidence": "discovery/ethtool_features.txt",
+    "discovered_value": {
+      "rx-checksumming": "on",
+      "tx-checksumming": "on",
+      "tcp-segmentation-offload": "on",
+      "generic-segmentation-offload": "on",
+      "generic-receive-offload": "on"
+    },
+    "proposed_value": null
+  },
+  {
+    "id": "OFFLOAD_TSO",
+    "control": "NIC offload",
+    "disposition": "testable",
+    "reason": "driver reports the feature as independently changeable",
+    "evidence": "discovery/ethtool_features.txt",
+    "execution_status": "pending",
+    "discovered_value": {
+      "rx-checksumming": "on",
+      "tx-checksumming": "on",
+      "tcp-segmentation-offload": "on",
+      "generic-segmentation-offload": "on",
+      "generic-receive-offload": "on"
+    },
+    "proposed_value": {
+      "feature": "tcp-segmentation-offload",
+      "value": "off"
+    }
+  },
+  {
+    "id": "OFFLOAD_TX_CHECKSUM",
+    "control": "NIC offload",
+    "disposition": "testable",
+    "reason": "driver reports the feature as independently changeable",
+    "evidence": "discovery/ethtool_features.txt",
+    "execution_status": "pending",
+    "discovered_value": {
+      "rx-checksumming": "on",
+      "tx-checksumming": "on",
+      "tcp-segmentation-offload": "on",
+      "generic-segmentation-offload": "on",
+      "generic-receive-offload": "on"
+    },
+    "proposed_value": {
+      "feature": "tx-checksumming",
+      "value": "off"
+    }
+  },
+  {
+    "id": "RFS_65536",
+    "control": "RFS",
+    "disposition": "testable",
+    "reason": "discovered baseline RPS masks are active, so standalone RFS is non-no-op",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": {
+      "rps_sock_flow_entries": "0",
+      "rps": [
+        {
+          "path": "/sys/class/net/enp0s5/queues/rx-0",
+          "cpus": "11",
+          "flow_count": "0"
+        },
+        {
+          "path": "/sys/class/net/enp0s5/queues/rx-1",
+          "cpus": "22",
+          "flow_count": "0"
+        }
+      ]
+    },
+    "proposed_value": {
+      "rps_sock_flow_entries": 65536,
+      "rps_flow_count_per_queue": 32768
+    }
+  },
+  {
+    "id": "RPS_ALL_ONLINE",
+    "control": "RPS",
+    "disposition": "testable",
+    "reason": "online CPU and NIC queue topology captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": {
+      "rps_sock_flow_entries": "0",
+      "rps": [
+        {
+          "path": "/sys/class/net/enp0s5/queues/rx-0",
+          "cpus": "11",
+          "flow_count": "0"
+        },
+        {
+          "path": "/sys/class/net/enp0s5/queues/rx-1",
+          "cpus": "22",
+          "flow_count": "0"
+        }
+      ]
+    },
+    "proposed_value": {
+      "rps_mask": "ff"
+    }
+  },
+  {
+    "id": "RSS_INDIR_BASELINE",
+    "control": "RSS indirection/hash",
+    "disposition": "read_only",
+    "reason": "RSS topology is captured as a fixed baseline; no independently approved RSS mutation is defined",
+    "evidence": "discovery/ethtool_rss.txt",
+    "discovered_value": "see evidence",
+    "proposed_value": null
+  },
+  {
+    "id": "TCP_BUF_2X",
+    "control": "tcp buffers",
+    "disposition": "testable",
+    "reason": "numeric sysctl baseline captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": {
+      "rmem_max": "229376",
+      "wmem_max": "229376",
+      "tcp_rmem": "4096\t131072\t6291456",
+      "tcp_wmem": "4096\t16384\t4194304"
+    },
+    "proposed_value": {
+      "rmem_max": 458752,
+      "wmem_max": 458752,
+      "tcp_rmem": [
+        4096,
+        131072,
+        12582912
+      ],
+      "tcp_wmem": [
+        4096,
+        16384,
+        8388608
+      ]
+    }
+  },
+  {
+    "id": "TCP_BUF_4X",
+    "control": "tcp buffers",
+    "disposition": "testable",
+    "reason": "numeric sysctl baseline captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": {
+      "rmem_max": "229376",
+      "wmem_max": "229376",
+      "tcp_rmem": "4096\t131072\t6291456",
+      "tcp_wmem": "4096\t16384\t4194304"
+    },
+    "proposed_value": {
+      "rmem_max": 917504,
+      "wmem_max": 917504,
+      "tcp_rmem": [
+        4096,
+        131072,
+        25165824
+      ],
+      "tcp_wmem": [
+        4096,
+        16384,
+        16777216
+      ]
+    }
+  },
+  {
+    "id": "TCP_CC_BBR",
+    "control": "TCP congestion control",
+    "disposition": "testable",
+    "reason": "available alternative discovered on the pinned host: bbr",
+    "evidence": "discovery/tcp_available_congestion_control.txt",
+    "execution_status": "pending",
+    "discovered_value": "cubic",
+    "proposed_value": {
+      "tcp_congestion_control": "bbr"
+    }
+  },
+  {
+    "id": "TCP_CC_RENO",
+    "control": "TCP congestion control",
+    "disposition": "testable",
+    "reason": "available alternative discovered on the pinned host: reno",
+    "evidence": "discovery/tcp_available_congestion_control.txt",
+    "execution_status": "pending",
+    "discovered_value": "cubic",
+    "proposed_value": {
+      "tcp_congestion_control": "reno"
+    }
+  },
+  {
+    "id": "TUNED_PROFILE_ACCELERATOR_PERFORMANCE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/accelerator-performance.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_AWS",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/aws.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_BALANCED",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/balanced.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_BALANCED_BATTERY",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/balanced-battery.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_DESKTOP",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/desktop.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_HPC_COMPUTE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/hpc-compute.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_INTEL_SST",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/intel-sst.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_LATENCY_PERFORMANCE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/latency-performance.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_NETWORK_LATENCY",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/network-latency.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_NETWORK_THROUGHPUT",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/network-throughput.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_OCI_BUSY_POLLING",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/oci-busy-polling.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_OCI_CPU_POWER",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/oci-cpu-power.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_OCI_NIC",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/oci-nic.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_OCI_RPS_XPS",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/oci-rps-xps.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_OPTIMIZE_SERIAL_CONSOLE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/optimize-serial-console.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_POWERSAVE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/powersave.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_THROUGHPUT_PERFORMANCE",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/throughput-performance.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_VIRTUAL_GUEST",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/virtual-guest.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "TUNED_PROFILE_VIRTUAL_HOST",
+    "control": "TuneD profile",
+    "disposition": "unsafe",
+    "reason": "TuneD activation is a coupled service mutation whose resolved profile delta is not completely bounded by the byte-equal network/iSCSI restoration bundle",
+    "evidence": "discovery/tuned_profile_info/virtual-host.txt",
+    "discovered_value": "oci-rps-xps oci-busy-polling oci-cpu-power oci-nic",
+    "proposed_value": null
+  },
+  {
+    "id": "XPS_BY_QUEUE",
+    "control": "XPS",
+    "disposition": "testable",
+    "reason": "online CPU and NIC queue topology captured on the pinned host",
+    "evidence": "discovery/guest_baseline.json",
+    "discovered_value": [
+      {
+        "path": "/sys/class/net/enp0s5/queues/tx-0",
+        "cpus": "44"
+      },
+      {
+        "path": "/sys/class/net/enp0s5/queues/tx-1",
+        "cpus": "88"
+      }
+    ],
+    "proposed_value": [
+      {
+        "queue": "/sys/class/net/enp0s5/queues/tx-0",
+        "mask": "1"
+      },
+      {
+        "queue": "/sys/class/net/enp0s5/queues/tx-1",
+        "mask": "2"
+      }
+    ]
+  }
+]

@@ -47,12 +47,20 @@ for job in jobs:
 
 stats = (((iostat.get("sysstat") or {}).get("hosts") or [{}])[0].get("statistics") or [])
 disk_samples = {}
+
+def disk_mib_per_second(disk, direction):
+    mb_key = f"{direction}MB/s"
+    kb_key = f"{direction}kB/s"
+    if mb_key in disk:
+        return float(disk.get(mb_key, 0.0) or 0.0)
+    return float(disk.get(kb_key, 0.0) or 0.0) / 1024.0
+
 for snap in stats:
     for disk in snap.get("disk", []):
         name = disk.get("disk_device", "unknown")
         disk_samples.setdefault(name, []).append({
-            "read_mib": float(disk.get("rMB/s", 0.0)),
-            "write_mib": float(disk.get("wMB/s", 0.0)),
+            "read_mib": disk_mib_per_second(disk, "r"),
+            "write_mib": disk_mib_per_second(disk, "w"),
             "util": float(disk.get("util", 0.0)),
         })
 

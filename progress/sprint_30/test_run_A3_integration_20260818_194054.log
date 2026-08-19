@@ -1,0 +1,232 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+another Sprint 30 controller is active with PID 53571
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-compute.json
+  [WAIT] Compute instance provisioning … 0s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 5s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 10s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 15s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 20s (state: PROVISIONING)  [WAIT] Compute instance provisioning … 25s (state: RUNNING)
+  [DONE] Compute instance created (VM.Standard.E5.Flex, 4 OCPU, 32 GB): ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyicocs3agssayuanktke4krvjszbosgt4bedi7jgabse72q
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-data1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrjoaeoxsmxoxzp4hfqbzcbi4wr67acznhwselcdo73falh54pasca (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicwbpioggmkhtkl4xiue6jjmpgdpodb56ppb7cpv5fnizq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:b9230dda-94b8-4e22-a9a0-84dc1bfc21c0  target=169.254.2.2:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-data2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrnzu7vgq2dyekpkk6xelrco7xhfmvehtelqfejmxv3xeu5fgxo63a (200 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicm5isl4xprvz3yjqjzj4cw4dk7zgdxrqlr7gjdi3cqp5q
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:fc361b57-161a-4c82-8c4e-5b7a1185bb5f  target=169.254.2.3:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-redo1.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrwhdrx4pwg4k3twiumcq6liiswquvxvl55gepkfnwgvfv7j26qlrq (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyictxyepo4uiy7kc4fcxqohp7ixzffdzltl4v6ruzsntsra
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:35687aed-d1e6-4c92-95db-59cc1534c7bb  target=169.254.2.4:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-redo2.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrv7rwi5temcjzuhtgaz5t4v46svk27rgscdmm4iowmtcvi3eyntka (50 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicydlx3onf3aevltnldd65qjdfxt3fwrpj4nopbkhvtoba
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:64e12903-2b96-466d-a46b-9562492d3c7b  target=169.254.2.5:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/scaffold/state-s30-20260818194111-54610-fra.json
+Action completed. Waiting until the resource has entered state: ('AVAILABLE',)
+  [DONE] Block volume created: ocid1.volume.oc1.eu-zurich-1.ab5heljrty64vpm4peooc4vvjhc24rfkz2q2hxl7dsslxcvaeusalak2tlua (100 GB)
+Action completed. Waiting until the resource has entered state: ('ATTACHED',)
+  [DONE] Block volume attached (iscsi): ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicb7rfexsda5g4sijmm5wbcvslt56zzwdtwivxkxqnyf3a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:11c898f2-1c0f-4054-b25f-6f676b63b8f7  target=169.254.2.6:3260
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Created symlink /etc/systemd/system/multi-user.target.wants/iscsid.service → /usr/lib/systemd/system/iscsid.service.
+  Physical volume "/dev/oracleoci/oraclevdb" successfully created.
+  Physical volume "/dev/oracleoci/oraclevdc" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_data" successfully created
+  Logical volume "lv_oradata" created.
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 104855552 4k blocks and 26214400 inodes
+Filesystem UUID: 8036bdb8-5f2d-4078-87d7-97f12e8554b1
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+	102400000
+
+Allocating group tables:    0/3200         done                            
+Writing inode tables:    0/3200         done                            
+Creating journal (262144 blocks): done
+Writing superblocks and filesystem accounting information:    0/3200         done
+
+  Physical volume "/dev/oracleoci/oraclevdd" successfully created.
+  Physical volume "/dev/oracleoci/oraclevde" successfully created.
+  Not creating system devices file due to existing VGs.
+  Not creating system devices file due to existing VGs.
+  Volume group "vg_redo" successfully created
+  Logical volume "lv_redo" created.
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 26212352 4k blocks and 6553600 inodes
+Filesystem UUID: 3fd86e9e-c368-4368-9d2e-f36ce6b56c4a
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/800       done                            
+Writing inode tables:   0/800       done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/800       done
+
+mke2fs 1.47.1 (20-May-2024)
+Creating filesystem with 26214400 4k blocks and 6553600 inodes
+Filesystem UUID: 343cd5b3-9252-487b-bee4-031dddfa6e1f
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872
+
+Allocating group tables:   0/800       done                            
+Writing inode tables:   0/800       done                            
+Creating journal (131072 blocks): done
+Writing superblocks and filesystem accounting information:   0/800       done
+
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/tunable_coverage.json
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 49566: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 49566: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 49569: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 49569: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 49572: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 49572: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 49575: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 49575: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on pvs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on vgs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 48720: bash
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52167: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52167: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52170: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52170: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52173: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52173: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52176: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52176: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on pvs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on vgs invocation. Parent PID 48720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 48720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 48720: bash
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 53720: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 53720: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 53723: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 53723: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 53726: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 53726: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 53729: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 53729: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on pvs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on vgs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52874: bash
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+Failed to add the host to the list of known hosts (/Users/rstyczynski/.ssh/known_hosts).
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 55117: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 55117: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 55120: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 55120: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 55123: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 55123: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 55126: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 55126: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on pvs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on pvs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on vgs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on vgs invocation. Parent PID 52874: bash
+File descriptor 7 (/var/lib/bv4db-sprint30/attempt.lock) leaked on lvs invocation. Parent PID 52874: bash
+File descriptor 9 (/var/lib/bv4db-sprint30/mutation.lock) leaked on lvs invocation. Parent PID 52874: bash
+ERROR: monitored kernel, iSCSI, TCP, or NIC error counter increased
+ERROR: FIO attempt failed or restoration is unproven: REGULAR_BASELINE_INITIAL_initial_2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_live_regular_50_vpu_baseline ---
+=== IT-6: live regular-settings baseline at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: missing report: fio_analysis.md
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_teardown ---
+=== IT-10: final state, FIO-only guard, and teardown ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_194054/final_state.json: No such file or directory
+
+Results: 4 passed, 6 failed

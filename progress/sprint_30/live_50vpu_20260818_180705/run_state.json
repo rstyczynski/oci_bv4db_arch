@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260818_180705",
+  "resume": null,
+  "run_tag": "s30-20260818180723-3444",
+  "matrix_start": "2026-08-18T18:13:19Z",
+  "exit_code": 2
+}

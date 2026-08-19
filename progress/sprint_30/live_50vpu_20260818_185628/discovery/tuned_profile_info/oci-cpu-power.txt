@@ -1,0 +1,19 @@
+Profile name:
+oci-cpu-power
+
+Profile summary:
+Set processor power management parameters in OCI
+
+Profile description:
+
+
+### /usr/lib/tuned/oci-cpu-power/tuned.conf
+#
+# tuned configuration
+#
+
+[main]
+summary=Set processor power management parameters in OCI
+
+[cpu]
+governor=performance
