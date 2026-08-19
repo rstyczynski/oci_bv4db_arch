@@ -413,6 +413,7 @@ test_IT1_static_runner_contract() {
   rg -q 'SPRINT30_AUTHORIZE_FRESH_LAYOUT' "$RUNNER" || return 1
   rg -q 'fresh_layout_authorization|layout_authorization.consumed' "$RUNNER" "$GUEST" || return 1
   rg -q 'ATTEMPT_LOCK_FILE' "$GUEST" || return 1
+  rg -q 'guest package installation did not complete after transient SSH retries' "$RUNNER" || return 1
   awk '/preformat_single_path_proof "\$role"/{proof=NR} /^[[:space:]]*pvcreate /{if(!first)first=NR} END{exit !(proof && first && proof<first)}' "$GUEST" || return 1
   "$RUNNER" --plan --output-dir "$tmp" --seed 30050 >/dev/null || return 1
   jq -e '.status=="planned" and .vpu==50 and .resume==null' "$tmp/run_state.json" >/dev/null || return 1

@@ -264,6 +264,10 @@ The same run exposed a report-rendering defect: Oracle Linux 9 sysstat emitted
 zero. The shared renderer now accepts either schema and converts KiB/s to
 MiB/s; all valid archived Sprint 30 attempt HTML reports were regenerated.
 
+A fresh live retry also exposed a transient SSH reset during idempotent guest
+package bootstrap. The bootstrap now retries for a bounded five-minute window;
+the failed run's cleanup inventory proved that no OCI resources remained.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active

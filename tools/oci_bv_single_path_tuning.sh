@@ -441,7 +441,12 @@ provision_fresh_with_scaffold() {
   oci secrets secret-bundle get --secret-id "$secret_ocid" --query 'data."secret-bundle-content".content' --raw-output | base64 --decode > "$TMPKEY"
   ssh-keygen -R "$PUBLIC_IP" >/dev/null 2>&1 || true
   elapsed=0; until ssh_run true >/dev/null 2>&1; do sleep 5; elapsed=$((elapsed+5)); [ "$elapsed" -lt 300 ] || die "SSH did not become ready"; done
-  ssh_run "sudo dnf install -y fio sysstat jq lvm2 iscsi-initiator-utils ethtool tuned >/dev/null"
+  elapsed=0
+  until ssh_run "sudo dnf install -y fio sysstat jq lvm2 iscsi-initiator-utils ethtool tuned >/dev/null"; do
+    sleep 10
+    elapsed=$((elapsed+10))
+    [ "$elapsed" -lt 300 ] || die "guest package installation did not complete after transient SSH retries"
+  done
   iface=$(ssh_run "ip route get $(jq -r '.[0].ipv4' <<<"$volumes") | awk '{for(i=1;i<=NF;i++)if(\$i==\"dev\"){print \$(i+1);exit}}'")
   [ -n "$iface" ] || die "could not resolve the iSCSI network interface"
   compute_json="$OUTPUT_DIR/discovery/compute.json"; oci compute instance get --instance-id "$compute_ocid" > "$compute_json"

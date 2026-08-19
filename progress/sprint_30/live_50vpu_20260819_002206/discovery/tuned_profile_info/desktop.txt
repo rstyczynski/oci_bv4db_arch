@@ -1,0 +1,20 @@
+Profile name:
+desktop
+
+Profile summary:
+Optimize for the desktop use-case
+
+Profile description:
+
+
+### /usr/lib/tuned/desktop/tuned.conf
+#
+# tuned configuration
+#
+
+[main]
+summary=Optimize for the desktop use-case
+include=balanced
+
+[sysctl]
+kernel.sched_autogroup_enabled=1
