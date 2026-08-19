@@ -27,6 +27,14 @@ def when(value: str) -> datetime:
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
+def when_oci(value: str) -> datetime:
+    """Parse OCI Monitoring RFC 3339 timestamps while requiring UTC."""
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.utcoffset() is None or parsed.utcoffset().total_seconds() != 0:
+        raise AssertionError(f"non-UTC OCI timestamp: {value!r}")
+    return parsed
+
+
 def percentile(job: dict, key: str) -> float:
     values = job.get("write", {}).get("clat_ns", {}).get("percentile", {})
     for candidate in (key, f"{float(key):.6f}"):
@@ -135,7 +143,8 @@ def main() -> int:
     root = Path(sys.argv[1]).resolve()
     plan, coverage = load(root / "experiment_plan.json"), load(root / "tunable_coverage.json")
     manifest = load(root / "target_manifest.json")
-    manifest_volumes = {item["role"]: item["volume_ocid"] for item in manifest["volumes"]}
+    baseline_manifest_path = root / "baseline_reference" / "target_manifest.json"
+    baseline_manifest = load(baseline_manifest_path) if baseline_manifest_path.is_file() else None
     results, recommendation = load(root / "results_index.json"), load(root / "recommendation.json")
     assert plan["vpus"] == [50] and plan["repeats"] == 1
     assert plan["screening_repetitions"] == 1 and plan["shortlist_validation_repetitions"] == 3
@@ -170,8 +179,11 @@ def main() -> int:
         for context in ("context_before", "context_applied", "context_restored"):
             assert (evidence / context).is_dir() and (evidence / context / "iscsi_sessions.txt").is_file(), f"missing {context} in {evidence}"
         oci_preflight = load(evidence / "oci_preflight.json")
-        manifest_volume_rows = {item["role"]: item for item in manifest["volumes"]}
-        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
+        evidence_manifest = baseline_manifest if row.get("source") == "archived_baseline" else manifest
+        assert evidence_manifest is not None, "archived baseline target manifest is missing"
+        evidence_manifest_volumes = {item["role"]: item["volume_ocid"] for item in evidence_manifest["volumes"]}
+        manifest_volume_rows = {item["role"]: item for item in evidence_manifest["volumes"]}
+        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == evidence_manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == evidence_manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
         assert all(load(evidence / "guest_preflight.json").get(key) is True for key in ("sessions_valid", "routes_valid", "devices_unique", "boot_excluded", "multipath_absent", "mounts_valid", "lvm_valid", "socket_congestion_control_valid", "sentinels_valid"))
         assert load(evidence / "controls_before.json") == load(evidence / "controls_restored.json"), f"restore drift in {evidence}"
         restoration = load(evidence / "restoration_checks.json")
@@ -197,19 +209,17 @@ def main() -> int:
         item = dict(row)
         item["metrics"] = metrics(evidence)
         measured.append(item)
-        indexed_keys.add((row["candidate_id"], row["attempt_type"], row["repetition"], row["started_at"], row["ended_at"]))
+        if row.get("source") != "archived_baseline":
+            indexed_keys.add((row["candidate_id"], row["attempt_type"], row["repetition"], row["started_at"], row["ended_at"]))
 
     performance = [row for row in measured if row["attempt_type"] == "measurement"]
     initial = [row for row in performance if row["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
-    final = [row for row in performance if row["candidate_id"] == "REGULAR_BASELINE_FINAL"]
-    assert len(initial) == 1 and len(final) == 1
+    assert initial and all(row.get("source") == "archived_baseline" for row in initial), "accepted archived baseline is missing"
     baseline = {name: summarize([row["metrics"][name] for row in initial]) for name in PRIMARY}
-    final_baseline = {name: summarize([row["metrics"][name] for row in final]) for name in PRIMARY}
     for name in PRIMARY:
         check_summary(recommendation["baseline"][name], baseline[name], f"baseline {name}")
-        check_summary(recommendation["final_baseline"][name], final_baseline[name], f"final baseline {name}")
-    drift = [name for name in PRIMARY if abs((final_baseline[name]["median"] - baseline[name]["median"]) / baseline[name]["median"]) > 0.05]
-    assert recommendation["baseline_drift_metrics"] == drift == [], "baseline drift reconciliation failed"
+    assert recommendation["baseline_source"] == "archived" and recommendation["baseline_remeasured"] is False
+    assert recommendation["baseline_drift_metrics"] == [], "archived baseline must not be remeasured for drift"
 
     eligible = []
     computed = {}
@@ -268,7 +278,7 @@ def main() -> int:
         for source, indexed in zip(raw, window["metrics"], strict=True):
             expected_row = copy.deepcopy(source)
             for series in expected_row.get("payload", {}).get("data", []):
-                series["aggregated-datapoints"] = [point for point in series.get("aggregated-datapoints", []) if start <= when(point["timestamp"]) <= end]
+                series["aggregated-datapoints"] = [point for point in series.get("aggregated-datapoints", []) if start <= when_oci(point["timestamp"]) <= end]
             expected = sum(len(series.get("aggregated-datapoints", [])) for series in expected_row.get("payload", {}).get("data", []))
             expected_row["attempt_datapoint_count"] = expected
             assert expected >= 8 and indexed == expected_row

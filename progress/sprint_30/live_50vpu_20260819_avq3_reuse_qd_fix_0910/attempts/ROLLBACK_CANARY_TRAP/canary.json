@@ -1,0 +1,9 @@
+{
+  "kind": "trap",
+  "safe_source_candidate": "TCP_BUF_2X",
+  "result": "expected_failure_restored",
+  "baseline_equal": true,
+  "sentinels_valid": true,
+  "rollback_armed": false,
+  "unit_state": "not_applicable"
+}

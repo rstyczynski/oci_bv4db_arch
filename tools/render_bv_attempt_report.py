@@ -133,7 +133,8 @@ def render(attempt_dir: Path) -> Path:
             f"- Started: `{attempt.get('started_at', 'unknown')}`",
             f"- Ended: `{attempt.get('ended_at', 'unknown')}`",
             f"- FIO exit code: `{attempt.get('fio_exit_code', 'unknown')}`",
-            "- Performance result: `invalid - fio.json is not valid machine-readable FIO output`",
+            f"- Attempt result: `{attempt.get('result', 'invalid')}`",
+            f"- Performance result: `{'not run - candidate application was not live-proven' if attempt.get('result') == 'inconclusive' else 'invalid - fio.json is not valid machine-readable FIO output'}`",
             "",
             "No performance claim is made for this attempt. The raw output is retained for diagnosis only.",
             "",
@@ -147,7 +148,7 @@ def render(attempt_dir: Path) -> Path:
             "## Evidence files",
             "",
         ]
-        for name in ("fio.json", "fio.log", "iostat.json", "attempt.json", "state.json", "restoration_checks.json", "emergency_restore.json", "errors_before.json", "errors_after.json"):
+        for name in ("application_result.json", "controls_applied.json", "fio.json", "fio.log", "iostat.json", "attempt.json", "state.json", "restoration_checks.json", "emergency_restore.json", "errors_before.json", "errors_after.json"):
             if (attempt_dir / name).exists():
                 lines.append(f"- [{name}]({name})")
         output = attempt_dir / "attempt_report.md"
@@ -175,6 +176,7 @@ def render(attempt_dir: Path) -> Path:
     clean = monitored_errors_clean(before, after) if before and after else None
     candidate = attempt.get("candidate_id") or attempt_dir.name.rsplit("_", 2)[0]
     repetition = attempt.get("repetition", "unknown")
+    applied = load(attempt_dir / "controls_applied.json", {})
 
     lines = [
         f"# Sprint 30 attempt report: {attempt_dir.name}",
@@ -190,6 +192,18 @@ def render(attempt_dir: Path) -> Path:
         f"- Measured attempt duration: `{seconds if seconds is not None else 'unknown'} seconds`",
         f"- FIO exit code: `{attempt.get('fio_exit_code', 'unknown')}`",
         "",
+    ]
+    if candidate == "ISCSI_QD128":
+        configured = sorted({str(row.get("value", "unknown")) for row in applied.get("iscsi_queue_depth", [])})
+        effective = sorted({str(row.get("live_value", "unknown")) for row in applied.get("iscsi_queue_depth", [])})
+        lines += [
+            "## Applied settings",
+            "",
+            f"- Requested iSCSI node queue depth: `{', '.join(configured) if configured else 'unknown'}`",
+            f"- Effective live SCSI queue depth: `{', '.join(effective) if effective else 'unknown'}`",
+            "",
+        ]
+    lines += [
         "## Performance summary",
         "",
         "| Metric | Result |",

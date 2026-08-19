@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "created": 4,
+    "existing": 0,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "10387-13426-1787123321",
+    "creation_order": [
+      "blockvolume"
+    ],
+    "torn_down_at": "2026-08-19T07:27:25Z"
+  },
+  "inputs": {
+    "name_prefix": "s30-20260819070838-10387-redo1",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_attach_type": "iscsi",
+    "bv_is_multipath": false,
+    "bv_vpus_per_gb": 50,
+    "bv_size_gb": 50,
+    "bv_device_path": "/dev/oracleoci/oraclevdd"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyiclwc7vhixvbivvuyqo6et32bdq7nmltdv3ozq3yxq3eya"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr3br4f5wf46alv7az354a27ipt73jwppnpmqla76n3kyu756vguoq",
+    "attachment_ocid": "",
+    "device_path": "/dev/oracleoci/oraclevdd",
+    "is_multipath": false,
+    "vpus_per_gb": 50,
+    "iqn": "iqn.2015-12.com.oracleiaas:8cb7bf4b-b31e-4f46-8f44-f2f42613ee72",
+    "ipv4": "169.254.2.4",
+    "port": 3260,
+    "deleted": true
+  }
+}

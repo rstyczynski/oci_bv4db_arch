@@ -1,0 +1,1831 @@
+{
+  "data": [
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-05-07T13:13:53.966Z"
+        }
+      },
+      "display-name": "bv4db-tf-agent-native-uhp",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrom2lhvouk5simmzk7al3fhc3eia7xl3wh7h5pw6smaswk7yebu7a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 1500,
+      "size-in-mbs": 1536000,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-05-07T13:13:53.973000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 120
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-05-08T12:56:26.467Z"
+        }
+      },
+      "display-name": "bv4db-s26-vanilla-uhp",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr7pfx6wekodlmk5tt55lu4qyza2pudgsamtpedqijjx3dybf2ovmq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 1500,
+      "size-in-mbs": 1536000,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-05-08T12:56:26.474000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 120
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-10T09:41:48.797Z"
+        }
+      },
+      "display-name": "bv4db-s29-volume",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsm74eomwaxjldfxumzt63wf2pv73ya6xdrivpljukxjtd2u2jycq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-10T09:41:48.804000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 100
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T18:57:29.341Z"
+        }
+      },
+      "display-name": "s30-20260818185649-39135-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzkk247wqclsdd6xwiq37qz4qtsfvre2zru6fhhccnzx5k2cskrbq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T18:57:29.349000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T18:58:25.907Z"
+        }
+      },
+      "display-name": "s30-20260818185649-39135-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljriedyg7uu2crnm4yhkerhpkxyimr7ja7ltdjzrjcdmmvkillqyd4q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T18:58:25.915000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T18:59:05.441Z"
+        }
+      },
+      "display-name": "s30-20260818185649-39135-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrgqvigzo5vkudadumi2rowttgtw7pxi4c54njerp3axixf4w7pj2a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T18:59:05.448000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T18:59:44.923Z"
+        }
+      },
+      "display-name": "s30-20260818185649-39135-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrncqwt7hstrsyeo4wkegjp2nn7bek75qva7ubfkdtdymntxqg7gya",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T18:59:44.931000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:00:25.494Z"
+        }
+      },
+      "display-name": "s30-20260818185649-39135-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrfuu7qpt4p36tcqqcrzpdtkjtr7n3pxqxu4wqanac5l5jwjhzktza",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:00:25.518000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:41:50.867Z"
+        }
+      },
+      "display-name": "s30-20260818194111-54610-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrjoaeoxsmxoxzp4hfqbzcbi4wr67acznhwselcdo73falh54pasca",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:41:50.878000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:42:30.358Z"
+        }
+      },
+      "display-name": "s30-20260818194111-54610-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrnzu7vgq2dyekpkk6xelrco7xhfmvehtelqfejmxv3xeu5fgxo63a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:42:30.365000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:43:09.452Z"
+        }
+      },
+      "display-name": "s30-20260818194111-54610-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrwhdrx4pwg4k3twiumcq6liiswquvxvl55gepkfnwgvfv7j26qlrq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:43:09.459000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:43:40.672Z"
+        }
+      },
+      "display-name": "s30-20260818194111-54610-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrv7rwi5temcjzuhtgaz5t4v46svk27rgscdmm4iowmtcvi3eyntka",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:43:40.679000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T19:44:19.838Z"
+        }
+      },
+      "display-name": "s30-20260818194111-54610-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrty64vpm4peooc4vvjhc24rfkz2q2hxl7dsslxcvaeusalak2tlua",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T19:44:19.845000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T20:37:13.073Z"
+        }
+      },
+      "display-name": "s30-20260818203634-8526-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrwjmf7sgiterpyordlfms6u6egkxnvl4ymmxbddus6mvirfkh4zsq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T20:37:13.080000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T20:37:51.893Z"
+        }
+      },
+      "display-name": "s30-20260818203634-8526-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzurcfxniamohdsk2vieyev3vzj6nt3lpp6wzulifk6aobno53p4a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T20:37:51.902000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T20:38:31.069Z"
+        }
+      },
+      "display-name": "s30-20260818203634-8526-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzi25vxi547hs53pdjrdxxwtsbwit3wsjba4fxzugldzarwjf76xa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T20:38:31.076000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T20:39:10.044Z"
+        }
+      },
+      "display-name": "s30-20260818203634-8526-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrh46bzxjll2cejocuf2gijh6bqp42p7n4cyiqcaaonzul3u2aa6ca",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T20:39:10.052000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T20:39:40.907Z"
+        }
+      },
+      "display-name": "s30-20260818203634-8526-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrtmlsi6asxvcjz74pr27eelurgar6xqitfkptj4zrvq5ydhe4draa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T20:39:40.915000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T21:15:43.949Z"
+        }
+      },
+      "display-name": "s30-20260818211505-3732-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr46iqnvbpjnyfjg7tko5d56sz4odtwj7lknatwyqdnkru7t5r74qa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T21:15:43.957000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T21:16:14.463Z"
+        }
+      },
+      "display-name": "s30-20260818211505-3732-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrz2ur3h4kr4ajigl2umevzmlrlr4wel2xew7bjg37ojq7dzsmjgzq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T21:16:14.471000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T21:16:53.173Z"
+        }
+      },
+      "display-name": "s30-20260818211505-3732-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr6fgngdbep4jkyun4ae3v5qecjwldmo7rorxl2z2mexztyuhr7puq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T21:16:53.180000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T21:17:32.423Z"
+        }
+      },
+      "display-name": "s30-20260818211505-3732-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrrwcpotgmpfl42xruofmfnxwhwjpiuy5xqltobk23dohu6xgciaaa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T21:17:32.429000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T21:18:11.181Z"
+        }
+      },
+      "display-name": "s30-20260818211505-3732-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrekx56nb6u4kcoiakxithn64cq6sdqgcsxx3pgyem5nqhw3a3p4ta",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T21:18:11.188000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:07:19.616Z"
+        }
+      },
+      "display-name": "s30-20260818220635-4409-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlewupyqt2kyhyuh6q7x4wynt5pp4enfhpq5jr3xusasbakoiaygq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:07:19.624000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:08:14.890Z"
+        }
+      },
+      "display-name": "s30-20260818220635-4409-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljriy2pphh77s5ue6ozjzb3ecepndaofmwqgepahsehpkb3ggjlm27q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:08:14.899000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:08:45.369Z"
+        }
+      },
+      "display-name": "s30-20260818220635-4409-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrwbiknvgkbu2piogpzi4bjynyihgleij3i2u7qfbw4uwqqidihsla",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:08:45.376000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:09:24.303Z"
+        }
+      },
+      "display-name": "s30-20260818220635-4409-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrtkxatm6inuiavupggdt6detfsuh7kpljbn6uqyryzegox6ckbq4q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:09:24.310000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:10:03.131Z"
+        }
+      },
+      "display-name": "s30-20260818220635-4409-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrfd7rzvzigc6n22n3sysbfsvxnydiamutlkmo5vnlx26c5crsenta",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:10:03.139000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:48:20.826Z"
+        }
+      },
+      "display-name": "s30-20260818224742-11508-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzqxljalcvmrfkv5qne6gqhzmp7nqagsjz67uboyppr7s5blpgtiq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:48:20.831000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:48:59.420Z"
+        }
+      },
+      "display-name": "s30-20260818224742-11508-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrmcpq7ixvagug4ibs2llooxk55gcbjriegillirm34dslgacn65xq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:48:59.427000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:49:30.158Z"
+        }
+      },
+      "display-name": "s30-20260818224742-11508-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrn2of5k6j465reifxa3wi4hoxzxqs7cxj4w5antrunrx5stxsmqxa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:49:30.167000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:50:08.836Z"
+        }
+      },
+      "display-name": "s30-20260818224742-11508-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrm24473qrubmbpvbnzi65xr7nsfyrz3upfjwv6yv6w44bvmt4gf5q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:50:08.844000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-18T22:50:47.720Z"
+        }
+      },
+      "display-name": "s30-20260818224742-11508-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrm5iyegabocokevmuhpkfp2pzre2s3ajj7e5p6ylefoxfyr5q2x7a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-18T22:50:47.727000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:23:22.229Z"
+        }
+      },
+      "display-name": "s30-20260819002236-76171-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrdwivlojv4fnm73bdk7ayaaft4mxfatqiymwxjrlyogwbkcltvq7q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:23:22.237000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:24:02.127Z"
+        }
+      },
+      "display-name": "s30-20260819002236-76171-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr3vb2oeuzixgtylgu2pybijsgf2tgx6xrwfeuvzc6colifeyjujkq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:24:02.133000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:24:41.974Z"
+        }
+      },
+      "display-name": "s30-20260819002236-76171-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrk3wigofltwwygfcaj5duaiwatgtczrzrldaqrlmhu5xnblmuq7aq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:24:41.981000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:25:38.416Z"
+        }
+      },
+      "display-name": "s30-20260819002236-76171-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrod23vinn6zj3yqa2oxzxddfvtynkm52umzu3u2aizwd3tl3b5laq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:25:38.424000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:26:18.142Z"
+        }
+      },
+      "display-name": "s30-20260819002236-76171-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrt6aomlwirbqfip6asg4um3tg6weskhdqueoz3ukbqmstw5txwbpq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:26:18.148000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:46:14.416Z"
+        }
+      },
+      "display-name": "s30-20260819004529-79312-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrvfgcqjggiinruq22nblwtuqkvihq73r24bpff5pobzrvbsj4xqga",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:46:14.423000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:46:54.056Z"
+        }
+      },
+      "display-name": "s30-20260819004529-79312-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrux63rr7vdu6pukbe5jvaeglmquoh7j7mgq7eghr3j6vhpk4zzvuq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:46:54.063000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:47:34.300Z"
+        }
+      },
+      "display-name": "s30-20260819004529-79312-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrr2ayy3aezcr3z7zogiggdodir35idmknyr5j4txwwatfw2grs53a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:47:34.307000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:48:13.833Z"
+        }
+      },
+      "display-name": "s30-20260819004529-79312-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrv757d4rwtoxeqcqxvsw5aamtnos6s4ii6fqiyrpizynxne5bs3yq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:48:13.841000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:48:45.469Z"
+        }
+      },
+      "display-name": "s30-20260819004529-79312-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr53rr7awcgjk65cmz5qvrbvnzk7y3yclwnw23xx3tda75ahdiy7ea",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:48:45.476000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:55:13.802Z"
+        }
+      },
+      "display-name": "s30-20260819005433-81086-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr5apbpt4eckxgaxmujiinyn2ulsf4esevuavb3qm2o5whailuh52q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:55:13.814000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:56:09.695Z"
+        }
+      },
+      "display-name": "s30-20260819005433-81086-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrvmfzlh75s6qghxdgvpvtjremmu3u5jnfq5ywe7l7e5tn2dvit6wq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:56:09.702000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:56:49.874Z"
+        }
+      },
+      "display-name": "s30-20260819005433-81086-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrnycc4xc6pyf4xliewvh3dxv2pvrhvqd2eretcwj2fdykzgiebyza",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:56:49.881000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:57:30.633Z"
+        }
+      },
+      "display-name": "s30-20260819005433-81086-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljresraoup7ncrslp6vipwwssx46rjnuvyorg5vx3xfy24wsxcrblna",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:57:30.640000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T00:58:10.221Z"
+        }
+      },
+      "display-name": "s30-20260819005433-81086-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrl2pcdvnnioeovqnijt3grdu55imuol7u53ueys6k5lxmwfeet5ia",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T00:58:10.228000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:24:07.951Z"
+        }
+      },
+      "display-name": "s30-20260819012328-85462-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljraabpmnpileroybbn7tnoyxorj2jngpuqny5mymmp7zgshr5vdn3q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:24:07.959000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:24:39.467Z"
+        }
+      },
+      "display-name": "s30-20260819012328-85462-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrzav7csu75ezuhyicgzebyewvsnzodurkw4b5z24ylx3mjfpdk32a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:24:39.476000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:25:27.897Z"
+        }
+      },
+      "display-name": "s30-20260819012328-85462-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrbwtdsqm7lb3haky4xtp7alxvvxrj4xw5sqcsifzwnwqv6wil2c3q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:25:27.906000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:26:15.423Z"
+        }
+      },
+      "display-name": "s30-20260819012328-85462-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrh7mxauhdifn55vt2yunq4upb2krsujbpfeflxwomcn6xotr5gdiq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:26:15.430000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:26:54.605Z"
+        }
+      },
+      "display-name": "s30-20260819012328-85462-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrw2jzvkcdioyglwfcjslq4esgqdkuqrr22iv22woilaf22yp4qhhq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:26:54.611000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:56:48.421Z"
+        }
+      },
+      "display-name": "s30-20260819015614-93169-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljreqqhfmrfpkiuhb62r5nffuf2pxt4sftlf2yy4irdj5eye26yvlca",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:56:48.430000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:57:27.983Z"
+        }
+      },
+      "display-name": "s30-20260819015614-93169-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrojmb6o62os5krrxjwobofjl2zps6vxlb7tyvjwmr7qpwbqx2syna",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:57:27.990000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:58:07.110Z"
+        }
+      },
+      "display-name": "s30-20260819015614-93169-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrk2a5ufwmjomatevbuckhf54p3ffkgs4je7xxksxribil6h24xt5q",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:58:07.117000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:58:46.292Z"
+        }
+      },
+      "display-name": "s30-20260819015614-93169-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrd52hjjevyha7l3h6fhtxjoyvtvlq4leb3wdxwclwhaupj4gjrc2a",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:58:46.299000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T01:59:25.446Z"
+        }
+      },
+      "display-name": "s30-20260819015614-93169-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr6fpb6xaerruxsmunvol75b7vvl6wqvcu6stkgewata7uhdgt6uka",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "TERMINATED",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T01:59:25.454000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T07:09:18.873Z"
+        }
+      },
+      "display-name": "s30-20260819070838-10387-data1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrpfey52sl74qpacyj4mi7l7wsbx47hfzkv7mq22ooceip5ado23ba",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T07:09:18.880000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T07:09:59.282Z"
+        }
+      },
+      "display-name": "s30-20260819070838-10387-data2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr52nzlmhroyprmfpfpqha3tbsiqujib3iqmldfmjocg33tpgaevrq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 200,
+      "size-in-mbs": 204800,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T07:09:59.289000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T07:10:32.169Z"
+        }
+      },
+      "display-name": "s30-20260819070838-10387-redo1-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljr3br4f5wf46alv7az354a27ipt73jwppnpmqla76n3kyu756vguoq",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T07:10:32.176000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T07:11:11.834Z"
+        }
+      },
+      "display-name": "s30-20260819070838-10387-redo2-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljryhp4b4uiuy2vp4jhyyphfjshbr25qi7yynmqfznxgd6jjnquisxa",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 50,
+      "size-in-mbs": 51200,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T07:11:11.841000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    },
+    {
+      "auto-tuned-vpus-per-gb": null,
+      "autotune-policies": [],
+      "availability-domain": "jJRq:EU-ZURICH-1-AD-1",
+      "block-volume-replicas": null,
+      "cluster-placement-group-id": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+      "defined-tags": {
+        "Oracle-Tags": {
+          "CreatedBy": "default/ryszard.styczynski@avaloq.com",
+          "CreatedOn": "2026-08-19T07:11:43.311Z"
+        }
+      },
+      "display-name": "s30-20260819070838-10387-fra-bv",
+      "freeform-tags": {},
+      "id": "ocid1.volume.oc1.eu-zurich-1.ab5heljrmofmyc6glokmh6bsp3oy5uebcsn5dqywkcxmbss5chiq3o5ph4ma",
+      "is-auto-tune-enabled": false,
+      "is-hydrated": true,
+      "is-reservations-enabled": false,
+      "kms-key-id": null,
+      "lifecycle-state": "AVAILABLE",
+      "size-in-gbs": 100,
+      "size-in-mbs": 102400,
+      "source-details": null,
+      "system-tags": {},
+      "time-created": "2026-08-19T07:11:43.319000+00:00",
+      "volume-group-id": null,
+      "vpus-per-gb": 50
+    }
+  ]
+}

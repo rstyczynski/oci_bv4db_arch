@@ -1,0 +1,11 @@
+{
+  "oci_profile": "avq3",
+  "infrastructure_tag": "s30-reusable-50vpu",
+  "vpus_per_gb": 50,
+  "lifecycle": "reuse_and_restore",
+  "baseline_source": "progress/sprint_30/live_50vpu_20260818_224723",
+  "baseline_remeasured": false,
+  "normal_completion": "restore_configuration_and_retain_resources",
+  "normal_failure": "restore_configuration_and_retain_resources",
+  "destruction": "explicit_hard_recovery_only"
+}

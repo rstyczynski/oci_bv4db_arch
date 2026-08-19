@@ -1,0 +1,43 @@
+{
+  "inputs": {
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "metrics_definition_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics_definition.json",
+    "metrics_report_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md",
+    "metrics_html_report_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.html",
+    "metrics_raw_file": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics_raw.json",
+    "metrics_resolution": "1m"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyics2vxl4j5kcz7p6vukp4ftewilyjn745lcsrwgqfvu53q"
+  },
+  "volumes": {
+    "data1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrdurief7ldzkuz7v64p7hyfkzsoixx2wjybsnt4glnoc6rk3t4idq"
+    },
+    "data2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrsxmk64svhsokq7nbvvdwtv6vw6vim7yxbcmoii6cle2r3bfhq65a"
+    },
+    "redo1": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljr3mmz3hnxwklvz5h6b2st2ijmmayfvqup6g2gd2tpm43hmtwntc4a"
+    },
+    "redo2": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlchvgabaweseowppdjv6kqqv2rzcxsb7opqbpkuxig5shsueem7q"
+    },
+    "fra": {
+      "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrtpnpsuksbnuvgo5fyvvcbxnvhf2tn5xet5px7ff4zqpeurs7y7ba"
+    }
+  },
+  "test_window": {
+    "start_time": "2026-08-19T09:09:50Z",
+    "end_time": "2026-08-19T11:46:33Z"
+  },
+  "summary": {
+    "created": 0,
+    "existing": 0,
+    "tested": 3,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "22116-31396-1787139995"
+  }
+}

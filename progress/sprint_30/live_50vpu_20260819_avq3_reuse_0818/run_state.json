@@ -1,0 +1,38 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0818",
+  "resume": null,
+  "run_tag": "s30-20260819080410-60811",
+  "matrix_start": "2026-08-19T08:05:17Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "ISCSI_QD128",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T08:05:26Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T08:05:28Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T08:05:39Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T08:05:52Z"
+        },
+        {
+          "state": "inconclusive",
+          "at": "2026-08-19T08:05:53Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 2
+}

@@ -1,0 +1,10 @@
+{
+  "restore_controls_exit_code": 0,
+  "capture_controls_exit_code": 0,
+  "byte_equal": true,
+  "tuned_verify_exit_code": 0,
+  "tuned_verify_advisory": false,
+  "live_preflight_exit_code": 0,
+  "stop_rollback_unit_exit_code": 0,
+  "restoration_exit_code": 0
+}

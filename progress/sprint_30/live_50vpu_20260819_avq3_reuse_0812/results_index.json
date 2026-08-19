@@ -1,0 +1,109 @@
+[
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T22:54:36Z",
+    "ended_at": "2026-08-18T23:10:16Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_1"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 2,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:10:45Z",
+    "ended_at": "2026-08-18T23:21:45Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_2"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 3,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:22:18Z",
+    "ended_at": "2026-08-18T23:33:19Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_3"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 4,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:33:53Z",
+    "ended_at": "2026-08-18T23:44:53Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_4"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 5,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:45:27Z",
+    "ended_at": "2026-08-18T23:56:27Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_5"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819075950-53549",
+    "candidate_id": "ISCSI_QD128",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "inconclusive",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T08:01:11Z",
+    "ended_at": "2026-08-19T08:01:38Z",
+    "evidence": [
+      "attempts/ISCSI_QD128_screening_1"
+    ],
+    "reason": "requested_candidate_value_not_live_proven"
+  }
+]

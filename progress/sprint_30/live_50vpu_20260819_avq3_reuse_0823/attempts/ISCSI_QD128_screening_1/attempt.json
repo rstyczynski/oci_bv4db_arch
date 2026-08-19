@@ -1,0 +1,12 @@
+{
+  "candidate_id": "ISCSI_QD128",
+  "repetition": 1,
+  "started_at": "2026-08-19T08:15:35Z",
+  "ended_at": "2026-08-19T08:16:01Z",
+  "fio_exit_code": null,
+  "result": "inconclusive",
+  "application_proven": false,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

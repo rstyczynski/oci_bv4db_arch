@@ -1,0 +1,247 @@
+iSCSI Transport Class version 2.0-870
+version 6.2.1.11
+Target: iqn.2015-12.com.oracleiaas:5fd1749e-b174-4f68-a593-2cc77c2b3430 (non-flash)
+	Current Portal: 169.254.2.2:3260,1
+	Persistent Portal: 169.254.2.2:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1994-05.com.redhat:83c2999472e6
+		Iface IPaddress: 10.0.0.11
+		Iface HWaddress: default
+		Iface Netdev: default
+		SID: 1
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 6000
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 65536
+		FirstBurstLength: 131072
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 7	State: running
+		scsi7 Channel 00 Id 0 Lun: 0
+		scsi7 Channel 00 Id 0 Lun: 2
+			Attached scsi disk sdb		State: running
+Target: iqn.2015-12.com.oracleiaas:da8c8b6e-02e1-4d3f-811b-9736b4c26ab5 (non-flash)
+	Current Portal: 169.254.2.3:3260,1
+	Persistent Portal: 169.254.2.3:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1994-05.com.redhat:83c2999472e6
+		Iface IPaddress: 10.0.0.11
+		Iface HWaddress: default
+		Iface Netdev: default
+		SID: 2
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 6000
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 65536
+		FirstBurstLength: 131072
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 8	State: running
+		scsi8 Channel 00 Id 0 Lun: 0
+		scsi8 Channel 00 Id 0 Lun: 3
+			Attached scsi disk sdc		State: running
+Target: iqn.2015-12.com.oracleiaas:cd20b500-f207-4ddc-ae76-6ff688c38572 (non-flash)
+	Current Portal: 169.254.2.4:3260,1
+	Persistent Portal: 169.254.2.4:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1994-05.com.redhat:83c2999472e6
+		Iface IPaddress: 10.0.0.11
+		Iface HWaddress: default
+		Iface Netdev: default
+		SID: 3
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 6000
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 65536
+		FirstBurstLength: 131072
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 9	State: running
+		scsi9 Channel 00 Id 0 Lun: 0
+		scsi9 Channel 00 Id 0 Lun: 4
+			Attached scsi disk sdd		State: running
+Target: iqn.2015-12.com.oracleiaas:15c9220b-8344-4a3a-93f1-dd9bae120163 (non-flash)
+	Current Portal: 169.254.2.5:3260,1
+	Persistent Portal: 169.254.2.5:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1994-05.com.redhat:83c2999472e6
+		Iface IPaddress: 10.0.0.11
+		Iface HWaddress: default
+		Iface Netdev: default
+		SID: 4
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 6000
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 65536
+		FirstBurstLength: 131072
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 10	State: running
+		scsi10 Channel 00 Id 0 Lun: 0
+		scsi10 Channel 00 Id 0 Lun: 5
+			Attached scsi disk sde		State: running
+Target: iqn.2015-12.com.oracleiaas:64db66e5-9c88-43f5-a207-8127fad0fd47 (non-flash)
+	Current Portal: 169.254.2.6:3260,1
+	Persistent Portal: 169.254.2.6:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1994-05.com.redhat:83c2999472e6
+		Iface IPaddress: 10.0.0.11
+		Iface HWaddress: default
+		Iface Netdev: default
+		SID: 5
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 6000
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 65536
+		FirstBurstLength: 131072
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 11	State: running
+		scsi11 Channel 00 Id 0 Lun: 0
+		scsi11 Channel 00 Id 0 Lun: 6
+			Attached scsi disk sdf		State: running

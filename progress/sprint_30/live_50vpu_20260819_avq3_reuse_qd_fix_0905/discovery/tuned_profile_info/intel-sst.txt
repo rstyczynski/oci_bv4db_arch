@@ -1,0 +1,15 @@
+Profile name:
+intel-sst
+
+Profile summary:
+Configure for Intel Speed Select Base Frequency
+
+Profile description:
+
+
+### /usr/lib/tuned/intel-sst/tuned.conf
+[main]
+summary=Configure for Intel Speed Select Base Frequency
+
+[bootloader]
+cmdline_intel_sst=-intel_pstate=disable

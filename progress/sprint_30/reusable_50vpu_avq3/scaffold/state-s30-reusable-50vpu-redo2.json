@@ -1,0 +1,37 @@
+{
+  "summary": {
+    "created": 0,
+    "existing": 2,
+    "tested": 0,
+    "failed": 0
+  },
+  "meta": {
+    "run_id": "84509-3145-1787130524",
+    "creation_order": [
+      "blockvolume"
+    ]
+  },
+  "inputs": {
+    "name_prefix": "s30-reusable-50vpu-redo2",
+    "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
+    "bv_attach_type": "iscsi",
+    "bv_is_multipath": false,
+    "bv_vpus_per_gb": 50,
+    "bv_size_gb": 50,
+    "bv_device_path": "/dev/oracleoci/oraclevde"
+  },
+  "compute": {
+    "ocid": "ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyics2vxl4j5kcz7p6vukp4ftewilyjn745lcsrwgqfvu53q"
+  },
+  "blockvolume": {
+    "created": true,
+    "ocid": "ocid1.volume.oc1.eu-zurich-1.ab5heljrlchvgabaweseowppdjv6kqqv2rzcxsb7opqbpkuxig5shsueem7q",
+    "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgmifmzvfdhz7knlfs6435w6xawujvuoxq5mlsssziv6a",
+    "device_path": "/dev/oracleoci/oraclevde",
+    "is_multipath": false,
+    "vpus_per_gb": 50,
+    "iqn": "iqn.2015-12.com.oracleiaas:a3510bf4-108e-4f0a-99ca-bfc997a87571",
+    "ipv4": "169.254.2.5",
+    "port": 3260
+  }
+}

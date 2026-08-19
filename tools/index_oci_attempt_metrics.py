@@ -22,6 +22,8 @@ def main() -> int:
     for attempt in results:
         if attempt.get("attempt_type") not in {"measurement", "checkpoint"}:
             continue
+        if attempt.get("source") == "archived_baseline":
+            continue
         start, end = timestamp(attempt["started_at"]), timestamp(attempt["ended_at"])
         metrics = []
         for source in raw:

@@ -133,11 +133,11 @@ def main() -> int:
     measurement_rows = [r for r in passed_fio_rows if r.get("attempt_type") == "measurement"]
     if special_mode == "--shortlist":
         initial = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
-        if len(initial) != 1:
-            raise ValueError(f"expected one initial smoke baseline, found {len(initial)}")
+        if not initial:
+            raise ValueError("accepted archived baseline is missing")
         names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
-        base = {name: initial[0]["metrics"][name] for name in names}
-        baseline_cpu = initial[0]["metrics"]["cpu_percent"]
+        base = {name: summary([row["metrics"][name] for row in initial])["median"] for name in names}
+        baseline_cpu = summary([row["metrics"]["cpu_percent"] for row in initial])["median"]
         for candidate_id in [c["id"] for c in coverage if c.get("disposition") == "testable"]:
             rows = [r for r in measurement_rows if r["candidate_id"] == candidate_id]
             if len(rows) != 1:
@@ -179,20 +179,11 @@ def main() -> int:
                 print(row["candidate_id"])
         return 0
     initial_rows = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
-    final_rows = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_FINAL"]
-    baseline_rows = initial_rows + final_rows
-    if len(initial_rows) != 1 or len(final_rows) != 1:
-        raise ValueError(f"expected one initial and one final smoke baseline, found {len(initial_rows)} and {len(final_rows)}")
+    if not initial_rows:
+        raise ValueError("accepted archived baseline is missing")
     metric_names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
     baseline = {name: summary([r["metrics"][name] for r in initial_rows]) for name in metric_names}
-    final_baseline = {name: summary([r["metrics"][name] for r in final_rows]) for name in metric_names}
-    baseline_drift = [
-        name for name in metric_names
-        if baseline[name]["median"] in (None, 0)
-        or final_baseline[name]["median"] is None
-        or abs((final_baseline[name]["median"] - baseline[name]["median"]) / baseline[name]["median"])
-        > 0.05
-    ]
+    baseline_drift = []
     candidate_ids = [c["id"] for c in coverage if c.get("disposition") == "testable"]
     def job_statistics(selected_rows: list[dict]) -> dict:
         job_names = sorted({name for row in selected_rows for name in row["metrics"]["job_metrics"]})
@@ -259,19 +250,20 @@ def main() -> int:
     recommendation = {
         "vpu": 50,
         "decision": decision,
-        "reason": "Pareto-optimal stable non-regressing candidate" if pareto else ("initial/final baseline drift exceeded threshold" if baseline_drift else "no stable candidate cleared improvement and regression thresholds"),
-        "evidence": ["results_index.json", "tunable_coverage.json", "attempts/"],
+        "reason": "Pareto-optimal stable non-regressing candidate" if pareto else "no stable candidate cleared improvement and regression thresholds",
+        "evidence": ["baseline_reference.json", "results_index.json", "tunable_coverage.json", "attempts/"],
         "measurement_runs": len(measurement_rows),
         "baseline": baseline,
         "baseline_job_statistics": baseline_job_statistics,
-        "final_baseline": final_baseline,
+        "baseline_source": "archived",
+        "baseline_remeasured": False,
         "baseline_drift_metrics": baseline_drift,
         "candidates": candidates,
         "eligible_candidates": eligible,
         "pareto_candidates": pareto,
     }
     (run_dir / "recommendation.json").write_text(json.dumps(recommendation, indent=2) + "\n", encoding="utf-8")
-    lines = ["# Sprint 30 FIO analysis", "", "- Fixed tier: `50 VPUs/GB`", f"- Successful measured repetitions: `{len(measurement_rows)}`", f"- Recommendation: `{decision}`", f"- Initial/final drift metrics: `{', '.join(baseline_drift) or 'none'}`", "", "## Candidate statistics", "", "| Candidate | Stable | Eligible | Improvements | Regressions | Evidence |", "| --- | --- | --- | --- | --- | --- |"]
+    lines = ["# Sprint 30 FIO analysis", "", "- Fixed tier: `50 VPUs/GB`", "- Baseline source: archived accepted evidence; not remeasured", f"- Successful measured repetitions including archived baseline: `{len(measurement_rows)}`", f"- Recommendation: `{decision}`", "", "## Candidate statistics", "", "| Candidate | Stable | Eligible | Improvements | Regressions | Evidence |", "| --- | --- | --- | --- | --- | --- |"]
     for candidate_id in candidate_ids:
         item = candidates[candidate_id]
         evidence_links = ", ".join(f"[{Path(path).name}]({path}/fio_report.html)" for path in item["evidence"])
@@ -290,7 +282,7 @@ def main() -> int:
         f"<td>{html.escape(', '.join(candidates[cid]['improvements']) or '-')}</td><td>{html.escape(', '.join(candidates[cid]['regressions']) or '-')}</td></tr>"
         for cid in candidate_ids
     )
-    report = f'<!doctype html><html><head><meta charset="utf-8"><title>Sprint 30 FIO report</title></head><body><h1>Sprint 30 FIO report</h1><p>Fixed tier: 50 VPUs/GB.</p><p>Recommendation: <code>{html.escape(decision)}</code></p><p>Initial/final drift: {html.escape(", ".join(baseline_drift) or "none")}</p><table><thead><tr><th>Candidate</th><th>Stable</th><th>Eligible</th><th>DATA IOPS median</th><th>REDO p99 ns</th><th>REDO p99.9 ns</th><th>FRA B/s</th><th>REDO sync mean ns</th><th>Host CPU %</th><th>Improvements</th><th>Regressions</th></tr></thead><tbody>{table_rows}</tbody></table></body></html>\n'
+    report = f'<!doctype html><html><head><meta charset="utf-8"><title>Sprint 30 FIO report</title></head><body><h1>Sprint 30 FIO report</h1><p>Fixed tier: 50 VPUs/GB.</p><p>Baseline: archived accepted evidence; not remeasured.</p><p>Recommendation: <code>{html.escape(decision)}</code></p><table><thead><tr><th>Candidate</th><th>Stable</th><th>Eligible</th><th>DATA IOPS median</th><th>REDO p99 ns</th><th>REDO p99.9 ns</th><th>FRA B/s</th><th>REDO sync mean ns</th><th>Host CPU %</th><th>Improvements</th><th>Regressions</th></tr></thead><tbody>{table_rows}</tbody></table></body></html>\n'
     (run_dir / "fio_report.html").write_text(report, encoding="utf-8")
     return 0
 

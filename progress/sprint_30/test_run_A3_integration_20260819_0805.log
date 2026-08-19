@@ -1,0 +1,80 @@
+
+=== Running integration tests (10 selected) ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT1_static_runner_contract ---
+=== IT-1: static runner and CLI contract ===
+PASS: IT-1
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT2_deterministic_50_vpu_plan ---
+=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ===
+PASS: IT-2
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT3_fail_closed_preflight_matrix ---
+=== IT-3: fail-closed preflight matrix ===
+PASS: IT-3
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT4_restore_resume_state_machine ---
+=== IT-4: restore and resume state machine ===
+{"unit":"test-watchdog","deadline_epoch":280,"renewed_at":"2026-08-18T00:00:00Z","renewal_count":1}
+{"unit":"test-watchdog","deadline_epoch":280,"renewed_at":"2026-08-18T00:00:00Z","renewal_count":1}
+another Sprint 30 controller is active with PID 45952
+PASS: IT-4
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT5_live_50_vpu_topology ---
+=== IT-5: live 50-VPU topology and integrity preflight ===
+PLAN: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805/experiment_plan.json
+LEDGER: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805/tunable_coverage.json
+  [INFO] COMPARTMENT_OCID defaulted to tenancy: ocid1.tenancy.oc1..aaaaaaaay2b2tvqcmqmndvcbz5kuptzuo7sp4vufarqfgoru7qojdgywb27a
+  [INFO] OCI_REGION defaulted to home region: eu-zurich-1
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-compute.json
+  [EXISTING] Compute instance 's30-reusable-50vpu-compute-instance' already exists: ocid1.instance.oc1.eu-zurich-1.an5heljrknhfuyics2vxl4j5kcz7p6vukp4ftewilyjn745lcsrwgqfvu53q
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-data1.json
+  [EXISTING] Block volume 's30-reusable-50vpu-data1-bv': ocid1.volume.oc1.eu-zurich-1.ab5heljrdurief7ldzkuz7v64p7hyfkzsoixx2wjybsnt4glnoc6rk3t4idq
+  [EXISTING] Block volume attachment: ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic3yam6fsksyspchfpimgf4s5jc3fdhav4fuymnjvcrawq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:621095db-13d3-4d3f-94c6-ad13984f3a17  target=169.254.2.2:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-data2.json
+  [EXISTING] Block volume 's30-reusable-50vpu-data2-bv': ocid1.volume.oc1.eu-zurich-1.ab5heljrsxmk64svhsokq7nbvvdwtv6vw6vim7yxbcmoii6cle2r3bfhq65a
+  [EXISTING] Block volume attachment: ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyic6kmfxehxcitvptqvmxmp5ihkndaplwnwmcoki35r4laq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:713c71bf-58bd-46a4-aee7-4ee5d0d490b5  target=169.254.2.3:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-redo1.json
+  [EXISTING] Block volume 's30-reusable-50vpu-redo1-bv': ocid1.volume.oc1.eu-zurich-1.ab5heljr3mmz3hnxwklvz5h6b2st2ijmmayfvqup6g2gd2tpm43hmtwntc4a
+  [EXISTING] Block volume attachment: ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicm7vgrngwim6aqgt564s5fzwx7cbvplurxmy2i2v4craq
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:db224acf-03e8-42b7-847f-ee6dcfb68dc8  target=169.254.2.4:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-redo2.json
+  [EXISTING] Block volume 's30-reusable-50vpu-redo2-bv': ocid1.volume.oc1.eu-zurich-1.ab5heljrlchvgabaweseowppdjv6kqqv2rzcxsb7opqbpkuxig5shsueem7q
+  [EXISTING] Block volume attachment: ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicgmifmzvfdhz7knlfs6435w6xawujvuoxq5mlsssziv6a
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:a3510bf4-108e-4f0a-99ca-bfc997a87571  target=169.254.2.5:3260
+  [INFO] STATE_FILE: /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3/scaffold/state-s30-reusable-50vpu-fra.json
+  [EXISTING] Block volume 's30-reusable-50vpu-fra-bv': ocid1.volume.oc1.eu-zurich-1.ab5heljrtpnpsuksbnuvgo5fyvvcbxnvhf2tn5xet5px7ff4zqpeurs7y7ba
+  [EXISTING] Block volume attachment: ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdezbux74ykujndwqu5gqbjnlbqwver372iwih234egoa
+  [INFO] iSCSI: IQN=iqn.2015-12.com.oracleiaas:73e44c48-bc09-46c4-8249-158ee33a7a28  target=169.254.2.6:3260
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+ERROR: fresh layout was not explicitly authorized
+ERROR: guest preparation failed; partial discovery was copied when available
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+Warning: Permanently added '152.67.89.145' (ED25519) to the list of known hosts.
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT6_archived_50_vpu_baseline_reference ---
+=== IT-6: archived 50-VPU baseline reference (no remeasurement) ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT7_live_complete_candidate_matrix ---
+=== IT-7: live complete candidate matrix at 50 VPUs/GB ===
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT8_live_rollback_lease_canary ---
+=== IT-8: host-local rollback lease canary ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805/results_index.json: No such file or directory
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT9_reports_and_recommendation ---
+=== IT-9: evidence, reports, and recommendation reconciliation ===
+FAIL: missing report: fio_analysis.md
+
+--- integration:test_bv4db_iscsi_tuning.sh:test_IT10_final_state_fio_only_resource_reuse ---
+=== IT-10: final state, FIO-only guard, restore, and resource reuse ===
+jq: error: Could not open file /Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805/final_state.json: No such file or directory
+
+Results: 4 passed, 6 failed

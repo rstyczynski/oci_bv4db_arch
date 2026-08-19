@@ -1,0 +1,10 @@
+{
+  "candidate_id": "RPS_ALL_ONLINE",
+  "repetition": 1,
+  "started_at": "2026-08-19T10:42:29Z",
+  "ended_at": "2026-08-19T10:53:31Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

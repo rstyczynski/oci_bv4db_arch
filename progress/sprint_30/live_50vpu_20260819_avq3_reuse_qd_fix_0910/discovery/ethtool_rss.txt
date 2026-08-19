@@ -1,0 +1,12 @@
+
+RX flow hash indirection table for enp0s5 with 2 RX ring(s):
+Operation not supported
+RSS hash key:
+Operation not supported
+RSS hash function:
+    toeplitz: on
+    xor: off
+    crc32: off
+RSS input transformation:
+    symmetric-xor: off
+    symmetric-or-xor: off

@@ -1,0 +1,30 @@
+{
+  "sessions_valid": true,
+  "routes_valid": true,
+  "devices_unique": true,
+  "boot_excluded": true,
+  "multipath_absent": true,
+  "mounts_valid": true,
+  "lvm_valid": true,
+  "socket_congestion_control_valid": true,
+  "sentinels_valid": true,
+  "interface": "enp0s5",
+  "leaves": [
+    "/dev/sdb",
+    "/dev/sdc",
+    "/dev/sdd",
+    "/dev/sde",
+    "/dev/sdf"
+  ],
+  "layout": {
+    "data_stripes": 2,
+    "redo_stripes": 2,
+    "stripe_kib": 256,
+    "fra_direct": true,
+    "mounts": [
+      "/u02/oradata",
+      "/u03/redo",
+      "/u04/fra"
+    ]
+  }
+}

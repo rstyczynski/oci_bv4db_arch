@@ -1,0 +1,330 @@
+[
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T22:54:36Z",
+    "ended_at": "2026-08-18T23:10:16Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_1"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 2,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:10:45Z",
+    "ended_at": "2026-08-18T23:21:45Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_2"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 3,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:22:18Z",
+    "ended_at": "2026-08-18T23:33:19Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_initial_3"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 4,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:33:53Z",
+    "ended_at": "2026-08-18T23:44:53Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_4"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "archived",
+    "repetition": 5,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-18T23:45:27Z",
+    "ended_at": "2026-08-18T23:56:27Z",
+    "evidence": [
+      "baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_5"
+    ],
+    "source": "archived_baseline",
+    "source_run_id": "s30-20260818224742-11508"
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "ISCSI_QD128",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T09:10:02Z",
+    "ended_at": "2026-08-19T09:21:16Z",
+    "evidence": [
+      "attempts/ISCSI_QD128_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "TCP_BUF_2X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T09:21:50Z",
+    "ended_at": "2026-08-19T09:32:52Z",
+    "evidence": [
+      "attempts/TCP_BUF_2X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "TCP_BUF_4X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T09:33:16Z",
+    "ended_at": "2026-08-19T09:44:18Z",
+    "evidence": [
+      "attempts/TCP_BUF_4X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "TCP_CC_BBR",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T09:44:42Z",
+    "ended_at": "2026-08-19T09:55:57Z",
+    "evidence": [
+      "attempts/TCP_CC_BBR_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "TCP_CC_RENO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T09:56:30Z",
+    "ended_at": "2026-08-19T10:07:44Z",
+    "evidence": [
+      "attempts/TCP_CC_RENO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "NETDEV_BACKLOG_2X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T10:08:17Z",
+    "ended_at": "2026-08-19T10:19:19Z",
+    "evidence": [
+      "attempts/NETDEV_BACKLOG_2X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "NETDEV_BACKLOG_4X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T10:19:42Z",
+    "ended_at": "2026-08-19T10:30:43Z",
+    "evidence": [
+      "attempts/NETDEV_BACKLOG_4X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "RFS_65536",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T10:31:05Z",
+    "ended_at": "2026-08-19T10:42:07Z",
+    "evidence": [
+      "attempts/RFS_65536_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "RPS_ALL_ONLINE",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T10:42:29Z",
+    "ended_at": "2026-08-19T10:53:31Z",
+    "evidence": [
+      "attempts/RPS_ALL_ONLINE_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "XPS_BY_QUEUE",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T10:53:54Z",
+    "ended_at": "2026-08-19T11:04:55Z",
+    "evidence": [
+      "attempts/XPS_BY_QUEUE_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "OFFLOAD_GRO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T11:05:17Z",
+    "ended_at": "2026-08-19T11:16:19Z",
+    "evidence": [
+      "attempts/OFFLOAD_GRO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "OFFLOAD_GSO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T11:16:43Z",
+    "ended_at": "2026-08-19T11:27:45Z",
+    "evidence": [
+      "attempts/OFFLOAD_GSO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "OFFLOAD_TSO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T11:28:07Z",
+    "ended_at": "2026-08-19T11:39:08Z",
+    "evidence": [
+      "attempts/OFFLOAD_TSO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "ROLLBACK_CANARY_TRAP",
+    "safe_source_candidate": "TCP_BUF_2X",
+    "attempt_type": "rollback_canary",
+    "vpu": 50,
+    "result": "expected_failure_restored",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "rollback_armed": false,
+    "unit_state": "not_applicable",
+    "evidence": [
+      "attempts/ROLLBACK_CANARY_TRAP"
+    ]
+  },
+  {
+    "run_id": "s30-20260819090841-84509",
+    "candidate_id": "ROLLBACK_CANARY_LEASE",
+    "safe_source_candidate": "TCP_BUF_2X",
+    "attempt_type": "rollback_canary",
+    "vpu": 50,
+    "result": "expected_failure_restored",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "rollback_armed": false,
+    "unit_state": "active",
+    "evidence": [
+      "attempts/ROLLBACK_CANARY_LEASE"
+    ]
+  }
+]

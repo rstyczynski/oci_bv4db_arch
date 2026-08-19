@@ -1,0 +1,30 @@
+{
+  "data": [
+    {
+      "agent-features": null,
+      "base-image-id": null,
+      "billable-size-in-gbs": 6,
+      "compartment-id": null,
+      "create-image-allowed": true,
+      "defined-tags": {},
+      "display-name": "Oracle-Linux-9.8-2026.08.14-0",
+      "freeform-tags": {},
+      "id": "ocid1.image.oc1.eu-zurich-1.aaaaaaaa2iefb4zxnerxymizrughj2vqrewg5c7rdusuuowhcwe6wodpdntq",
+      "launch-mode": "NATIVE",
+      "launch-options": {
+        "boot-volume-type": "PARAVIRTUALIZED",
+        "firmware": "UEFI_64",
+        "is-consistent-volume-naming-enabled": true,
+        "is-pv-encryption-in-transit-enabled": true,
+        "network-type": "PARAVIRTUALIZED",
+        "remote-data-volume-type": "PARAVIRTUALIZED"
+      },
+      "lifecycle-state": "AVAILABLE",
+      "listing-type": null,
+      "operating-system": "Oracle Linux",
+      "operating-system-version": "9",
+      "size-in-mbs": 47719,
+      "time-created": "2026-08-16T01:17:06.177000+00:00"
+    }
+  ]
+}

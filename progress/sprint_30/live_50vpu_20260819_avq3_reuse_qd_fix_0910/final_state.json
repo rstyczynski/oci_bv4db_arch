@@ -1,0 +1,9 @@
+{
+  "baseline_equal": true,
+  "sentinels_valid": true,
+  "rollback_armed": false,
+  "oracle_database_invoked": false,
+  "resource_disposition": "baseline_restored_resources_retained",
+  "resources_retained": true,
+  "infrastructure_reused": true
+}

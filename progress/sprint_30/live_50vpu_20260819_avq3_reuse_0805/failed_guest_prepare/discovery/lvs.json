@@ -1,0 +1,15 @@
+  {
+      "report": [
+          {
+              "lv": [
+                  {"lv_name":"oled", "vg_name":"ocivolume", "lv_attr":"-wi-ao----", "lv_size":"15.00g", "pool_lv":"", "origin":"", "data_percent":"", "metadata_percent":"", "move_pv":"", "mirror_log":"", "copy_percent":"", "convert_lv":"", "segtype":"linear", "stripes":"1", "stripe_size":"0 "},
+                  {"lv_name":"root", "vg_name":"ocivolume", "lv_attr":"-wi-ao----", "lv_size":"29.50g", "pool_lv":"", "origin":"", "data_percent":"", "metadata_percent":"", "move_pv":"", "mirror_log":"", "copy_percent":"", "convert_lv":"", "segtype":"linear", "stripes":"1", "stripe_size":"0 "},
+                  {"lv_name":"lv_oradata", "vg_name":"vg_data", "lv_attr":"-wi-ao----", "lv_size":"399.99g", "pool_lv":"", "origin":"", "data_percent":"", "metadata_percent":"", "move_pv":"", "mirror_log":"", "copy_percent":"", "convert_lv":"", "segtype":"striped", "stripes":"2", "stripe_size":"256.00k"},
+                  {"lv_name":"lv_redo", "vg_name":"vg_redo", "lv_attr":"-wi-ao----", "lv_size":"99.99g", "pool_lv":"", "origin":"", "data_percent":"", "metadata_percent":"", "move_pv":"", "mirror_log":"", "copy_percent":"", "convert_lv":"", "segtype":"striped", "stripes":"2", "stripe_size":"256.00k"}
+              ]
+          }
+      ]
+      ,
+      "log": [
+      ]
+  }

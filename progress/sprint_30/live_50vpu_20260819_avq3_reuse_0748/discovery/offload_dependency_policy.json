@@ -1,0 +1,16 @@
+{
+  "driver": "virtio_net",
+  "candidate_id": "OFFLOAD_TX_CHECKSUM",
+  "classification": "unsafe",
+  "reason": "Disabling TX checksum also disabled TCP segmentation offload, while the approved Sprint 30 design forbids combined offload candidates.",
+  "observed_baseline": {
+    "tx-checksumming": "on",
+    "tcp-segmentation-offload": "on"
+  },
+  "observed_applied": {
+    "tx-checksumming": "off",
+    "tcp-segmentation-offload": "off"
+  },
+  "source_run": "live_50vpu_20260819_005428",
+  "source_evidence": "live_50vpu_20260819_005428/attempts/OFFLOAD_TX_CHECKSUM_screening_1/controls_applied.json"
+}

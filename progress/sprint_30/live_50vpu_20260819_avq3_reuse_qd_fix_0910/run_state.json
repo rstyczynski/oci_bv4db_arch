@@ -1,0 +1,473 @@
+{
+  "status": "completed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910",
+  "resume": null,
+  "run_tag": "s30-20260819090841-84509",
+  "matrix_start": "2026-08-19T09:09:50Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "ISCSI_QD128",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T09:10:00Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T09:10:02Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T09:10:15Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T09:10:16Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T09:21:16Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T09:21:29Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T09:21:30Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_BUF_2X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T09:21:49Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T09:21:50Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T09:21:51Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T09:21:52Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T09:32:52Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T09:32:53Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T09:32:54Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_BUF_4X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T09:33:15Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T09:33:16Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T09:33:17Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T09:33:18Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T09:44:18Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T09:44:19Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T09:44:20Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_CC_BBR",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T09:44:41Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T09:44:42Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T09:44:56Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T09:44:56Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T09:55:57Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T09:56:09Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T09:56:10Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_CC_RENO",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T09:56:29Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T09:56:30Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T09:56:43Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T09:56:43Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T10:07:44Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T10:07:57Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T10:07:58Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_2X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T10:08:16Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T10:08:17Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T10:08:18Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T10:08:18Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T10:19:19Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T10:19:20Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T10:19:21Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "NETDEV_BACKLOG_4X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T10:19:40Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T10:19:42Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T10:19:42Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T10:19:43Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T10:30:43Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T10:30:44Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T10:30:45Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "RFS_65536",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T10:31:04Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T10:31:05Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T10:31:06Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T10:31:07Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T10:42:07Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T10:42:08Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T10:42:09Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "RPS_ALL_ONLINE",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T10:42:28Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T10:42:29Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T10:42:30Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T10:42:31Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T10:53:31Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T10:53:32Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T10:53:33Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "XPS_BY_QUEUE",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T10:53:52Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T10:53:54Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T10:53:54Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T10:53:55Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T11:04:55Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T11:04:56Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T11:04:57Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "OFFLOAD_GRO",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T11:05:16Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T11:05:17Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T11:05:18Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T11:05:18Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T11:16:19Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T11:16:20Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T11:16:21Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "OFFLOAD_GSO",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T11:16:42Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T11:16:43Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T11:16:44Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T11:16:44Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T11:27:45Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T11:27:46Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T11:27:47Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "OFFLOAD_TSO",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T11:28:06Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T11:28:07Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T11:28:07Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T11:28:08Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T11:39:08Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T11:39:10Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T11:39:10Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 0,
+  "completed_at": "2026-08-19T11:46:58Z",
+  "topology_verified": true,
+  "single_path": true,
+  "sentinels_valid": true,
+  "baseline_equal": true,
+  "resource_disposition": "baseline_restored_resources_retained",
+  "resources_retained": true
+}

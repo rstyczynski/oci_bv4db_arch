@@ -1,0 +1,10 @@
+{
+  "candidate_id": "TCP_BUF_4X",
+  "repetition": 1,
+  "started_at": "2026-08-19T08:30:42Z",
+  "ended_at": "2026-08-19T08:41:43Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

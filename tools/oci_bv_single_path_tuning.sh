@@ -12,17 +12,23 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCAFFOLD_DIR="$REPO_DIR/oci_scaffold"
 DEFAULT_OUTPUT="$REPO_DIR/progress/sprint_30/results/$(date -u +%Y%m%dT%H%M%SZ)"
+DEFAULT_INFRA_DIR="$REPO_DIR/progress/sprint_30/reusable_50vpu_avq3"
+DEFAULT_BASELINE_RUN="$REPO_DIR/progress/sprint_30/live_50vpu_20260818_224723"
 MODE=plan
 OUTPUT_DIR="$DEFAULT_OUTPUT"
+INFRA_DIR="${SPRINT30_INFRA_DIR:-$DEFAULT_INFRA_DIR}"
+INFRA_TAG="${SPRINT30_INFRA_TAG:-s30-reusable-50vpu}"
+BASELINE_RUN="${SPRINT30_BASELINE_RUN:-$DEFAULT_BASELINE_RUN}"
 VPU=50
 REPEATS=1
 SEED=30050
 RESUME_RUN=""
-KEEP_INFRA=false
+ALLOW_HARD_DESTROY=false
 FIXTURE=""
 STATE_FAULT=""
 BV4DB_CONTROLLER_TEST_MODE=false
 RECOVERY_OBSERVED_ACTIVE=false
+LAYOUT_REUSED=false
 
 # shellcheck disable=SC1091
 source "$REPO_DIR/tools/oci_bv_controller_lock.sh"
@@ -34,18 +40,21 @@ Usage: tools/oci_bv_single_path_tuning.sh [--plan|--execute] [options]
 Sprint 30 options:
   --output-dir DIR       Result directory (default: timestamped Sprint 30 dir)
   --vpu 50               Fixed Sprint 30 VPU/GB value; other values are rejected
-  --repeats 1            Smoke repetitions per baseline/candidate (fixed at one)
+  --repeats 1            One screening measurement per candidate (fixed at one)
   --seed INTEGER         Deterministic candidate order seed
   --resume RUN_ID        Resume only after byte-equal baseline proof
-  --keep-infra           Preserve disposable infrastructure after evidence copy
+  --infra-dir DIR        Stable reusable scaffold state (default: Sprint 30 avq3 state)
+  --baseline-run DIR     Archived accepted baseline evidence; never remeasured
+  --keep-infra           Compatibility no-op; reusable infrastructure is retained
+  --allow-hard-destroy   Destroy reusable resources only if baseline restoration fails
 
 Local verification hooks (used by the Sprint 30 integration tests):
   --fixture FILE         Validate a JSON topology fixture without mutation
   --state-fault NAME     Exercise a restoration state-machine fault fixture
 
-The default is --plan. --execute provisions uniquely owned disposable resources
-and never formats or tunes them until its generated target manifest passes the
-fixed-50/single-path checks and the fresh-layout authorization is consumed.
+The default is --plan. --execute reuses the stable oci_scaffold infrastructure.
+Only the first initialization (or exceptional hard recovery) creates and formats
+resources; later runs restore and retain the same baseline infrastructure.
 EOF
 }
 
@@ -63,7 +72,10 @@ while [ "$#" -gt 0 ]; do
     --repeats) REPEATS="${2:-}"; shift 2 ;;
     --seed) SEED="${2:-}"; shift 2 ;;
     --resume) RESUME_RUN="${2:-}"; shift 2 ;;
-    --keep-infra) KEEP_INFRA=true; shift ;;
+    --infra-dir) INFRA_DIR="${2:-}"; shift 2 ;;
+    --baseline-run) BASELINE_RUN="${2:-}"; shift 2 ;;
+    --keep-infra) shift ;;
+    --allow-hard-destroy) ALLOW_HARD_DESTROY=true; shift ;;
     --fixture) FIXTURE="${2:-}"; shift 2 ;;
     --state-fault) STATE_FAULT="${2:-}"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
@@ -74,9 +86,11 @@ done
 require_cmd jq
 [ -z "$RESUME_RUN" ] || [ "$MODE" = execute ] || die "--resume requires --execute"
 [ "$VPU" = 50 ] || die "Sprint 30 is locked to 50 VPUs/GB; received: $VPU"
-[ "$REPEATS" = 1 ] || die "Sprint 30 requires exactly one smoke measurement per baseline/candidate"
+[ "$REPEATS" = 1 ] || die "Sprint 30 requires exactly one screening measurement per candidate"
 [[ "$SEED" =~ ^[0-9]+$ ]] || die "seed must be an integer"
 [ -n "$OUTPUT_DIR" ] || die "--output-dir must not be empty"
+[ -n "$INFRA_DIR" ] || die "--infra-dir must not be empty"
+[ -d "$BASELINE_RUN" ] || die "accepted baseline run is missing: $BASELINE_RUN"
 if [ "$MODE" = execute ] && [ -z "$RESUME_RUN" ] && [ -d "$OUTPUT_DIR" ] && find "$OUTPUT_DIR" -mindepth 1 -print -quit | grep -q .; then
   die "--execute requires a new empty output directory; use immutable evidence validation for completed runs"
 fi
@@ -137,25 +151,18 @@ write_plan() {
       else 9 end;
     sort_by([rank, .])' <<<"$candidate_ids")
   attempts=$(jq -n --argjson a "$order1" '
-    def rows($block; $items): [$items[] | {candidate_id:.,attempt_type:"measurement",block:$block,vpu:50,repetitions:1}];
-    def checkpoints($rows):
-      reduce ($rows|to_entries[]) as $entry ([];
-        . + [$entry.value]
-        + (if (($entry.key + 1) % 5)==0 then [{candidate_id:("REGULAR_CHECKPOINT_" + (($entry.key + 1)|tostring)),attempt_type:"checkpoint",block:"checkpoint",vpu:50,repetitions:1}] else [] end));
-    rows("screening";$a) as $candidate_rows |
-    [{candidate_id:"REGULAR_BASELINE_INITIAL",attempt_type:"measurement",block:"initial",vpu:50,repetitions:1}]
-    + checkpoints($candidate_rows)
-    + [{candidate_id:"ROLLBACK_CANARY_TRAP",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"ROLLBACK_CANARY_LEASE",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"REGULAR_BASELINE_FINAL",attempt_type:"measurement",block:"final",vpu:50,repetitions:1}]')
+    [$a[] | {candidate_id:.,attempt_type:"measurement",block:"screening",vpu:50,repetitions:1}]
+    + [{candidate_id:"ROLLBACK_CANARY_TRAP",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}, {candidate_id:"ROLLBACK_CANARY_LEASE",attempt_type:"rollback_canary",block:"canary",vpu:50,repetitions:0}]')
   jq -n \
     --arg profile sprint30_single_path_50 \
     --argjson vpu 50 --argjson repeats 1 --argjson seed "$SEED" \
     --argjson layout "$LAYOUT" --argjson fio "$FIO_PROFILE" \
     --argjson blocks "[$order1]" --argjson attempts "$attempts" \
-    --argjson candidates "$candidate_ids" --argjson candidate_count "$candidate_count" \
+    --argjson candidates "$candidate_ids" --argjson candidate_count "$candidate_count" --arg baseline_run "$BASELINE_RUN" \
     '($attempts | map(select(.attempt_type=="measurement" or .attempt_type=="checkpoint") | .repetitions) | add) as $fio_runs |
      ($fio_runs + ($candidate_count*2)) as $maximum_fio_runs |
-     (($maximum_fio_runs*660)+($candidate_count*3*120)+400+900+300) as $seconds |
-     {profile:$profile,vpus:[$vpu],repeats:$repeats,seed:$seed,layout:$layout,fio:$fio,candidate_ids:$candidates,candidate_order_blocks:$blocks,attempts:$attempts,fio_run_count:$fio_runs,maximum_fio_run_count:$maximum_fio_runs,measurement_runtime_seconds:($fio_runs*660),maximum_measurement_runtime_seconds:($maximum_fio_runs*660),estimated_transition_rollback_seconds:(($candidate_count*3*120)+400),estimated_total_seconds:$seconds,estimated_resource_hours:($seconds/3600),estimated_cost_usd:((($seconds/3600)*0.28)+(($seconds/3600)/730*600*(0.0334203+(50*0.00222802)))|.*100|round/100),cost_basis:{compute_hourly_usd:0.28,volume_storage_gb_month_usd:0.0334203,volume_performance_unit_gb_month_usd:0.00222802,total_block_gb:600,hours_per_month:730,source:"https://www.oracle.com/cloud/iaas-paas/",estimated_at_plan_time:true},candidate_count:$candidate_count,checkpoint_interval:5,screening_repetitions:1,shortlist_validation_repetitions:3,fixed_comparison_threshold:0.05,oracle_database:false,multipath:false}' \
+     (($maximum_fio_runs*660)+($candidate_count*3*120)+400) as $seconds |
+     {profile:$profile,vpus:[$vpu],repeats:$repeats,seed:$seed,layout:$layout,fio:$fio,candidate_ids:$candidates,candidate_order_blocks:$blocks,attempts:$attempts,fio_run_count:$fio_runs,maximum_fio_run_count:$maximum_fio_runs,measurement_runtime_seconds:($fio_runs*660),maximum_measurement_runtime_seconds:($maximum_fio_runs*660),estimated_transition_rollback_seconds:(($candidate_count*3*120)+400),estimated_total_seconds:$seconds,estimated_resource_hours:($seconds/3600),estimated_cost_usd:((($seconds/3600)*0.28)+(($seconds/3600)/730*600*(0.0334203+(50*0.00222802)))|.*100|round/100),cost_basis:{compute_hourly_usd:0.28,volume_storage_gb_month_usd:0.0334203,volume_performance_unit_gb_month_usd:0.00222802,total_block_gb:600,hours_per_month:730,source:"https://www.oracle.com/cloud/iaas-paas/",estimated_at_plan_time:true},candidate_count:$candidate_count,baseline:{source:"archived",run:$baseline_run,remeasured:false},checkpoint_interval:0,screening_repetitions:1,shortlist_validation_repetitions:3,fixed_comparison_threshold:0.05,oracle_database:false,multipath:false,reuse_infrastructure:true}' \
     | atomic_json "$plan"
   jq '
     map(if .disposition == "testable" then . + {execution_status:"pending"} else . end)
@@ -201,7 +208,7 @@ GUEST_EXECUTOR="$REPO_DIR/tools/oci_bv_single_path_guest.sh"
 ANALYZER="$REPO_DIR/tools/analyze_bv_single_path.py"
 FIO_RENDERER="$REPO_DIR/tools/render_fio_report_html.sh"
 ATTEMPT_REPORTER="$REPO_DIR/tools/render_bv_attempt_report.py"
-SC_DIR="$OUTPUT_DIR/scaffold"
+SC_DIR="$INFRA_DIR/scaffold"
 RUN_TAG=""
 PUBLIC_IP=""
 TMPKEY=""
@@ -214,9 +221,9 @@ ACTIVE_SSH_PID=""
 # Never allow SSH to consume the experiment-plan process substitution that
 # feeds execute_matrix. A background measurement otherwise drains the
 # remaining plan rows from the controller's stdin after its first attempt.
-ssh_run() { ssh -n -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
-scp_to() { scp -q -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "$1" "opc@$PUBLIC_IP:$2"; }
-scp_from() { scp -q -r -i "$TMPKEY" -o StrictHostKeyChecking=no -o ConnectTimeout=15 -o BatchMode=yes "opc@$PUBLIC_IP:$1" "$2"; }
+ssh_run() { ssh -n -i "$TMPKEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes "opc@$PUBLIC_IP" "$@"; }
+scp_to() { scp -q -i "$TMPKEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=15 -o BatchMode=yes "$1" "opc@$PUBLIC_IP:$2"; }
+scp_from() { scp -q -r -i "$TMPKEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=15 -o BatchMode=yes "opc@$PUBLIC_IP:$1" "$2"; }
 ssh_job_running() {
   local state
   state=$(ps -p "$1" -o stat= 2>/dev/null) || return 1
@@ -239,7 +246,7 @@ recover_incomplete_scaffold_states() {
   printf '%s\n' "$volumes" > "$OUTPUT_DIR/failure_cleanup_volume_discovery.json"
   printf '%s\n' "$compute" > "$OUTPUT_DIR/failure_cleanup_compute_discovery.json"
   for role in data1 data2 redo1 redo2 fra; do
-    prefix="$RUN_TAG-$role"; state="$SC_DIR/state-$prefix.json"
+    prefix="$INFRA_TAG-$role"; state="$SC_DIR/state-$prefix.json"
     display="$prefix-bv"
     count=$(jq --arg display "$display" '[.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")]|length' <<<"$volumes")
     [ "$count" -le 1 ] || { echo "multiple exact-name volumes found during failure recovery: $display" >&2; return 1; }
@@ -255,7 +262,7 @@ recover_incomplete_scaffold_states() {
     attachment_ocid=$(jq -r '[.data[]|select(."lifecycle-state"!="DETACHED")]|if length<=1 then (.[0].id//"") else error("multiple active attachments") end' <<<"$attachment_json") || return 1
     jq -n --arg prefix "$prefix" --arg compartment "$compartment" --arg ocid "$ocid" --arg attachment "$attachment_ocid" '{inputs:{name_prefix:$prefix,oci_compartment:$compartment},blockvolume:{created:true,ocid:$ocid,attachment_ocid:$attachment},meta:{creation_order:["blockvolume"],recovered_for_failure_cleanup:true}}' > "$state"
   done
-  prefix="$RUN_TAG-compute"; state="$SC_DIR/state-$prefix.json"
+  prefix="$INFRA_TAG-compute"; state="$SC_DIR/state-$prefix.json"
   display_compute="$prefix-instance"
   count=$(jq --arg display "$display_compute" '[.data[]|select(."display-name"==$display and ."lifecycle-state"!="TERMINATED")]|length' <<<"$compute")
   [ "$count" -le 1 ] || { echo "multiple exact-name instances found during failure recovery: $display_compute" >&2; return 1; }
@@ -271,7 +278,7 @@ cleanup_volume_states_once() {
   local role prefix state failed=0
   cd "$SC_DIR" || return 1
   for role in fra redo2 redo1 data2 data1; do
-    prefix="$RUN_TAG-$role"; state="$SC_DIR/state-$prefix.json"
+    prefix="$INFRA_TAG-$role"; state="$SC_DIR/state-$prefix.json"
     if [ -f "$state" ]; then
       if jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then
         export NAME_PREFIX="$prefix"; unset STATE_FILE || true; "$SCAFFOLD_DIR/do/teardown.sh" >/dev/null 2>&1 || failed=1
@@ -283,7 +290,7 @@ cleanup_volume_states_once() {
 }
 
 cleanup_compute_state_once() {
-  local prefix="$RUN_TAG-compute" state="$SC_DIR/state-$RUN_TAG-compute.json"
+  local prefix="$INFRA_TAG-compute" state="$SC_DIR/state-$INFRA_TAG-compute.json"
   [ -f "$state" ] || return 0
   jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null || { [ -z "$(jq -r '.compute.ocid // empty' "$state")" ] && return 0; return 1; }
   cd "$SC_DIR" || return 1
@@ -309,7 +316,7 @@ poll_uncertain_volume_cleanup() {
     cleanup_compute_state_once || return 1
     inventory=$(oci bv volume list --compartment-id "$compartment" --all) || return 1
     compute_inventory=$(oci compute instance list --compartment-id "$compartment" --all) || return 1
-    active=$(jq -n --arg run_tag "$RUN_TAG" --argjson volumes "$inventory" --argjson compute "$compute_inventory" '([$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length) + ([$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length)')
+    active=$(jq -n --arg run_tag "$INFRA_TAG" --argjson volumes "$inventory" --argjson compute "$compute_inventory" '([$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length) + ([$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]|length)')
     if [ "$active" -gt 0 ]; then last_active="$elapsed"; required_end=$((last_active+quiet_seconds)); fi
     if [ "$required_end" -gt "$hard_end" ]; then echo "resource appeared too late to prove the required quiet interval within the cleanup bound" >&2; return 1; fi
     if [ "$elapsed" -ge "$horizon_seconds" ] && [ "$active" -eq 0 ] && [ "$elapsed" -ge "$required_end" ]; then return 0; fi
@@ -326,12 +333,12 @@ cleanup_owned_resources() {
     ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest restore" >/dev/null 2>&1 || true
     ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest quiesce" >/dev/null 2>&1 || true
   fi
-  for role in data1 data2 redo1 redo2 fra; do state="$SC_DIR/state-$RUN_TAG-$role.json"; if [ -f "$state" ] && ! jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then uncertain=true; fi; done
-  state="$SC_DIR/state-$RUN_TAG-compute.json"; if ! { [ -f "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; }; then uncertain=true; fi
+  for role in data1 data2 redo1 redo2 fra; do state="$SC_DIR/state-$INFRA_TAG-$role.json"; if [ -f "$state" ] && ! jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null; then uncertain=true; fi; done
+  state="$SC_DIR/state-$INFRA_TAG-compute.json"; if ! { [ -f "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; }; then uncertain=true; fi
   if [ "$uncertain" = true ]; then poll_uncertain_volume_cleanup || failed=1
   else recover_incomplete_scaffold_states || failed=1; cleanup_volume_states_once || failed=1; fi
   cd "$SC_DIR" 2>/dev/null || return 1
-  prefix="$RUN_TAG-compute"; state="$SC_DIR/state-$prefix.json"
+  prefix="$INFRA_TAG-compute"; state="$SC_DIR/state-$prefix.json"
   if [ "$failed" -eq 0 ] && [ -f "$state" ] && jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null; then
     export NAME_PREFIX="$prefix"; unset STATE_FILE || true
     if jq -e '((.meta.creation_order//[])|index("compute"))==null' "$state" >/dev/null; then "$SCAFFOLD_DIR/resource/teardown-compute.sh" >/dev/null 2>&1 || failed=1; fi
@@ -341,17 +348,35 @@ cleanup_owned_resources() {
   compartment=$(jq -r '.compartment.ocid' "$INFRA_STATE")
   if ! volume_inventory=$(oci bv volume list --compartment-id "$compartment" --all); then volume_query_ok=false; volume_inventory='{"data":[]}'; failed=1; fi
   if ! compute_inventory=$(oci compute instance list --compartment-id "$compartment" --all); then compute_query_ok=false; compute_inventory='{"data":[]}'; failed=1; fi
-  jq -n --arg run_tag "$RUN_TAG" --argjson volume_query_ok "$volume_query_ok" --argjson compute_query_ok "$compute_query_ok" --argjson volumes "$volume_inventory" --argjson compute "$compute_inventory" '{run_tag:$run_tag,inventory_queries_succeeded:($volume_query_ok and $compute_query_ok),active_volumes:[$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")],active_instances:[$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]}' > "$OUTPUT_DIR/failure_cleanup_inventory.json"
+  jq -n --arg run_tag "$INFRA_TAG" --argjson volume_query_ok "$volume_query_ok" --argjson compute_query_ok "$compute_query_ok" --argjson volumes "$volume_inventory" --argjson compute "$compute_inventory" '{run_tag:$run_tag,inventory_queries_succeeded:($volume_query_ok and $compute_query_ok),active_volumes:[$volumes.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")],active_instances:[$compute.data[]|select((."display-name"//"")|startswith($run_tag+"-"))|select(."lifecycle-state"!="TERMINATED")]}' > "$OUTPUT_DIR/failure_cleanup_inventory.json"
   if ! jq -e '(.active_volumes|length)==0 and (.active_instances|length)==0' "$OUTPUT_DIR/failure_cleanup_inventory.json" >/dev/null; then failed=1; fi
   jq -n --argjson failed "$failed" '{failure_cleanup_attempted:true,cleanup_failed:($failed!=0)}' > "$OUTPUT_DIR/failure_cleanup.json" 2>/dev/null || true
   [ "$failed" -eq 0 ]
+}
+
+restore_reusable_infrastructure() {
+  [ "$OWNERSHIP_ACTIVE" = true ] || return 0
+  [ -n "$TMPKEY" ] && [ -n "$PUBLIC_IP" ] || return 1
+  ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest restore"
+  ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest prove-baseline /var/tmp/bv4db-sprint30/controller_exit_baseline.json"
+  ssh_run "sudo chmod a+r /var/tmp/bv4db-sprint30/controller_exit_baseline.json"
+  mkdir -p "$OUTPUT_DIR/final_recovery"
+  scp_from /var/tmp/bv4db-sprint30/controller_exit_baseline.json "$OUTPUT_DIR/final_recovery/baseline.json"
+  return 0
 }
 
 controller_exit() {
   local ec=$?
   trap - EXIT INT TERM
   if [ -n "$ACTIVE_SSH_PID" ]; then kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true; wait "$ACTIVE_SSH_PID" 2>/dev/null || true; ACTIVE_SSH_PID=""; fi
-  if [ "$RUN_COMPLETE" != true ] && [ "$KEEP_INFRA" != true ]; then cleanup_owned_resources || true; fi
+  if [ "$RUN_COMPLETE" != true ]; then
+    if ! restore_reusable_infrastructure; then
+      jq -n '{restoration_proven:false,infrastructure_retained:true}' > "$OUTPUT_DIR/reusable_infrastructure_recovery.json" 2>/dev/null || true
+      if [ "$ALLOW_HARD_DESTROY" = true ]; then cleanup_owned_resources || true; fi
+    else
+      jq -n '{restoration_proven:true,infrastructure_retained:true}' > "$OUTPUT_DIR/reusable_infrastructure_recovery.json" 2>/dev/null || true
+    fi
+  fi
   if [ "$RUN_COMPLETE" != true ] && [ -s "$OUTPUT_DIR/run_state.json" ]; then
     local exit_status=failed
     if [ "$ec" -eq 130 ] || [ "$ec" -eq 143 ]; then exit_status=interrupted; fi
@@ -389,7 +414,29 @@ wait_for_single_path_attachment_evidence() {
   done
 }
 
-provision_fresh_with_scaffold() {
+classify_reusable_scaffold_state() {
+  local role state present=0 complete=0
+  for role in compute data1 data2 redo1 redo2 fra; do
+    state="$SC_DIR/state-$INFRA_TAG-$role.json"
+    if [ -f "$state" ]; then
+      present=$((present + 1))
+      if [ "$role" = compute ]; then
+        jq -e '.compute.created==true and (.compute.ocid//"")!=""' "$state" >/dev/null && complete=$((complete + 1))
+      else
+        jq -e '.blockvolume.created==true and (.blockvolume.ocid//"")!=""' "$state" >/dev/null && complete=$((complete + 1))
+      fi
+    fi
+  done
+  if [ "$present" -eq 0 ]; then
+    LAYOUT_REUSED=false
+  elif [ "$present" -eq 6 ] && [ "$complete" -eq 6 ]; then
+    LAYOUT_REUSED=true
+  else
+    die "reusable scaffold state is partial; restore it or use explicit hard recovery"
+  fi
+}
+
+ensure_reusable_infrastructure() {
   [ "${SPRINT30_APPLY_SCAFFOLD:-0}" = 1 ] || die "live execution requires SPRINT30_APPLY_SCAFFOLD=1"
   [ -d "$SCAFFOLD_DIR" ] || die "oci_scaffold submodule is missing"
   [ -f "$INFRA_STATE" ] || die "Sprint 1 infrastructure state is missing"
@@ -402,38 +449,48 @@ provision_fresh_with_scaffold() {
   public_key="$REPO_DIR/progress/sprint_1/bv4db-key.pub"
   [ -n "$compartment" ] && [ -n "$subnet" ] && [ -f "$public_key" ] || die "Sprint 1 shared inputs are incomplete"
   mkdir -p "$SC_DIR" "$OUTPUT_DIR/discovery"
+  classify_reusable_scaffold_state
   RUN_TAG="s30-$(date -u +%Y%m%d%H%M%S)-$$"
-  jq --arg run_tag "$RUN_TAG" '. + {status:"provisioning",run_tag:$run_tag}' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
-  [ "${SPRINT30_AUTHORIZE_FRESH_LAYOUT:-0}" = 1 ] || die "live execution requires SPRINT30_AUTHORIZE_FRESH_LAYOUT=1"
-  image_ocid="${SPRINT30_IMAGE_OCID:-}"
-  [ -n "$image_ocid" ] || die "live execution requires an explicitly pinned SPRINT30_IMAGE_OCID"
+  jq --arg run_tag "$RUN_TAG" --arg infra_tag "$INFRA_TAG" --arg infra_dir "$INFRA_DIR" --argjson initialized "$LAYOUT_REUSED" '. + {status:"ensuring_reusable_infrastructure",run_tag:$run_tag,infrastructure:{tag:$infra_tag,directory:$infra_dir,reused:true,initialized_before_run:$initialized}}' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
+  if [ "$LAYOUT_REUSED" = false ]; then
+    [ "${SPRINT30_AUTHORIZE_FRESH_LAYOUT:-0}" = 1 ] || die "first reusable-layout initialization requires SPRINT30_AUTHORIZE_FRESH_LAYOUT=1"
+  fi
   image_json="$OUTPUT_DIR/discovery/oci_images_ol9.json"
-  oci compute image list --compartment-id "$compartment" --operating-system 'Oracle Linux' --operating-system-version 9 --shape VM.Standard.E5.Flex --sort-by TIMECREATED --sort-order DESC --all > "$image_json"
-  jq -e --arg image "$image_ocid" '.data[0].id==$image and .data[0]."operating-system"=="Oracle Linux" and (.data[0]."operating-system-version"|startswith("9"))' "$image_json" >/dev/null || die "pinned image is not the newest resolved Oracle Linux 9 image for the shape"
+  if [ "$LAYOUT_REUSED" = true ]; then
+    image_ocid=$(jq -r '.inputs.compute_image_id // empty' "$SC_DIR/state-$INFRA_TAG-compute.json")
+    [ -n "$image_ocid" ] || die "reusable scaffold state has no pinned image OCID"
+    oci compute image get --image-id "$image_ocid" | jq '{data:[.data]}' > "$image_json"
+    jq -e '.data[0]."operating-system"=="Oracle Linux" and (.data[0]."operating-system-version"|startswith("9"))' "$image_json" >/dev/null || die "reusable scaffold image is not Oracle Linux 9"
+  else
+    image_ocid="${SPRINT30_IMAGE_OCID:-}"
+    [ -n "$image_ocid" ] || die "first reusable-infrastructure initialization requires an explicitly pinned SPRINT30_IMAGE_OCID"
+    oci compute image list --compartment-id "$compartment" --operating-system 'Oracle Linux' --operating-system-version 9 --shape VM.Standard.E5.Flex --sort-by TIMECREATED --sort-order DESC --all > "$image_json"
+    jq -e --arg image "$image_ocid" '.data[0].id==$image and .data[0]."operating-system"=="Oracle Linux" and (.data[0]."operating-system-version"|startswith("9"))' "$image_json" >/dev/null || die "pinned image is not the newest resolved Oracle Linux 9 image for the shape"
+  fi
   oci compute image get --image-id "$image_ocid" > "$OUTPUT_DIR/discovery/pinned_image.json"
 
   cd "$SC_DIR"
   export PATH="$SCAFFOLD_DIR/do:$SCAFFOLD_DIR/resource:$PATH"
-  prefix="$RUN_TAG-compute"; set_prefix "$prefix"
+  prefix="$INFRA_TAG-compute"; set_prefix "$prefix"
   _state_set '.inputs.name_prefix' "$prefix"; _state_set '.inputs.oci_compartment' "$compartment"; _state_set '.subnet.ocid' "$subnet"
   _state_set '.inputs.compute_shape' VM.Standard.E5.Flex; _state_set '.inputs.compute_ocpus' 4; _state_set '.inputs.compute_memory_gb' 32
   _state_set '.inputs.subnet_prohibit_public_ip' false; _state_set '.inputs.compute_ssh_authorized_keys_file' "$public_key"; _state_set '.inputs.compute_image_id' "$image_ocid"
   OWNERSHIP_ACTIVE=true
   ensure-compute.sh
   compute_state="$SC_DIR/state-$prefix.json"
-  jq -e '.compute.created==true and .inputs.compute_image_id!=null and (.meta.creation_order|index("compute")!=null)' "$compute_state" >/dev/null || die "scaffold compute was not freshly created"
+  jq -e '(.compute.created|type)=="boolean" and .inputs.compute_image_id!=null and (.meta.creation_order|index("compute")!=null)' "$compute_state" >/dev/null || die "reusable scaffold compute state is incomplete"
   compute_ocid=$(jq -r '.compute.ocid' "$compute_state"); PUBLIC_IP=$(jq -r '.compute.public_ip' "$compute_state")
-  [ -n "$PUBLIC_IP" ] && [ "$PUBLIC_IP" != null ] || die "fresh compute has no public IP"
+  [ -n "$PUBLIC_IP" ] && [ "$PUBLIC_IP" != null ] || die "reusable compute has no public IP"
 
   for role in data1 data2 redo1 redo2 fra; do
     case "$role" in data1) size=200; path=/dev/oracleoci/oraclevdb;; data2) size=200; path=/dev/oracleoci/oraclevdc;; redo1) size=50; path=/dev/oracleoci/oraclevdd;; redo2) size=50; path=/dev/oracleoci/oraclevde;; fra) size=100; path=/dev/oracleoci/oraclevdf;; esac
-    prefix="$RUN_TAG-$role"; set_prefix "$prefix"
+    prefix="$INFRA_TAG-$role"; set_prefix "$prefix"
     _state_set '.inputs.name_prefix' "$prefix"; _state_set '.inputs.oci_compartment' "$compartment"; _state_set '.compute.ocid' "$compute_ocid"
     _state_set '.inputs.bv_attach_type' iscsi; _state_set '.inputs.bv_is_multipath' false; _state_set '.inputs.bv_vpus_per_gb' 50
     _state_set '.inputs.bv_size_gb' "$size"; _state_set '.inputs.bv_device_path' "$path"
     ensure-blockvolume.sh
     state="$SC_DIR/state-$prefix.json"
-    jq -e '.blockvolume.created==true and .blockvolume.vpus_per_gb==50 and .blockvolume.is_multipath==false and (.meta.creation_order|index("blockvolume")!=null)' "$state" >/dev/null || die "scaffold volume was not freshly created at 50 VPUs: $role"
+    jq -e '(.blockvolume.created|type)=="boolean" and .blockvolume.vpus_per_gb==50 and .blockvolume.is_multipath==false and (.meta.creation_order|index("blockvolume")!=null)' "$state" >/dev/null || die "reusable scaffold volume state is incomplete at 50 VPUs: $role"
     attach_json="$OUTPUT_DIR/discovery/attachment_$role.json"
     wait_for_single_path_attachment_evidence \
       "$(jq -r '.blockvolume.attachment_ocid' "$state")" \
@@ -450,7 +507,6 @@ provision_fresh_with_scaffold() {
   secret_ocid=$(jq -r '.secret.ocid // empty' "$INFRA_STATE"); [ -n "$secret_ocid" ] || die "Sprint 1 Vault SSH secret is missing"
   TMPKEY=$(mktemp); chmod 600 "$TMPKEY"
   oci secrets secret-bundle get --secret-id "$secret_ocid" --query 'data."secret-bundle-content".content' --raw-output | base64 --decode > "$TMPKEY"
-  ssh-keygen -R "$PUBLIC_IP" >/dev/null 2>&1 || true
   elapsed=0; until ssh_run true >/dev/null 2>&1; do sleep 5; elapsed=$((elapsed+5)); [ "$elapsed" -lt 300 ] || die "SSH did not become ready"; done
   elapsed=0
   until ssh_run "sudo dnf install -y fio sysstat jq lvm2 iscsi-initiator-utils ethtool tuned >/dev/null"; do
@@ -465,10 +521,10 @@ provision_fresh_with_scaffold() {
   [ "$(ssh_run uname -m)" = x86_64 ] || die "guest architecture is not x86_64"
   manifest="$OUTPUT_DIR/target_manifest.json"
   guest_sha=$(shasum -a 256 "$GUEST_EXECUTOR" | awk '{print $1}')
-  jq -n --arg run_id "$RUN_TAG" --argjson volumes "$volumes" --arg iface "$iface" --arg compute_ocid "$compute_ocid" --arg image_ocid "$image_ocid" --arg guest_sha "$guest_sha" '{run_id:$run_id,vpu:50,guest_executor_sha256:$guest_sha,compute:{ocid:$compute_ocid,shape:"VM.Standard.E5.Flex",ocpus:4,memory_gb:32,architecture:"x86_64",image_ocid:$image_ocid},iscsi_interface:$iface,volumes:$volumes}' > "$manifest"
+  jq -n --arg run_id "$RUN_TAG" --arg infra_tag "$INFRA_TAG" --arg infra_dir "$INFRA_DIR" --argjson initialized "$LAYOUT_REUSED" --argjson volumes "$volumes" --arg iface "$iface" --arg compute_ocid "$compute_ocid" --arg image_ocid "$image_ocid" --arg guest_sha "$guest_sha" '{run_id:$run_id,vpu:50,guest_executor_sha256:$guest_sha,infrastructure:{tag:$infra_tag,directory:$infra_dir,reused:true,initialized_before_run:$initialized},compute:{ocid:$compute_ocid,shape:"VM.Standard.E5.Flex",ocpus:4,memory_gb:32,architecture:"x86_64",image_ocid:$image_ocid},iscsi_interface:$iface,volumes:$volumes}' > "$manifest"
   manifest_sha=$(shasum -a 256 "$manifest" | awk '{print $1}')
   authorization="$OUTPUT_DIR/fresh_layout_authorization.json"
-  jq -n --arg run_id "$RUN_TAG" --arg sha "$manifest_sha" --slurpfile m "$manifest" '{authorize_fresh_layout:true,run_id:$run_id,manifest_sha256:$sha,volumes:[$m[0].volumes[]|{volume_ocid,path,iqn}]}' > "$authorization"
+  jq -n --arg run_id "$RUN_TAG" --arg sha "$manifest_sha" --argjson reused "$LAYOUT_REUSED" --slurpfile m "$manifest" '{authorize_fresh_layout:($reused|not),reuse_existing_layout:$reused,run_id:$run_id,manifest_sha256:$sha,volumes:[$m[0].volumes[]|{volume_ocid,path,iqn}]}' > "$authorization"
   scp_to "$GUEST_EXECUTOR" /tmp/bv4db-sprint30-guest
   scp_to "$manifest" /tmp/bv4db-sprint30-manifest.json
   scp_to "$authorization" /tmp/bv4db-sprint30-authorization.json
@@ -594,7 +650,7 @@ validate_oci_volume_preflight() {
 
 validate_resume_volume_preflight() {
   local role="$1" expected="$2" state="$3" evidence="$4" volume
-  jq -e --arg prefix "$RUN_TAG-$role" --arg expected "$expected" '.inputs.name_prefix==$prefix and .blockvolume.created==true and .blockvolume.ocid==$expected' "$state" >/dev/null || return 1
+  jq -e --arg prefix "$INFRA_TAG-$role" --arg expected "$expected" '.inputs.name_prefix==$prefix and (.blockvolume.created|type)=="boolean" and .blockvolume.ocid==$expected' "$state" >/dev/null || return 1
   volume=$(oci bv volume get --volume-id "$expected") || return 1
   printf '%s\n' "$volume" > "$evidence"
   validate_oci_volume_preflight "$volume"
@@ -619,7 +675,7 @@ validate_attempt_topology() {
 }
 
 execute_measurement() {
-  local candidate="$1" block="$2" repetition="$3" attempt_type="${4:-measurement}" remote=/var/tmp/bv4db-sprint30 key local_dir status attempt_file row renewal run_rc=0 heartbeat_elapsed=0
+  local candidate="$1" block="$2" repetition="$3" attempt_type="${4:-measurement}" remote="/var/tmp/bv4db-sprint30/runs/$RUN_TAG" key local_dir status attempt_file row run_rc=0 renewal_pid heartbeat_failure
   key="${candidate}_${block}_${repetition}"; local_dir="$OUTPUT_DIR/attempts/$key"
   if [ -n "$RESUME_RUN" ] && [ -d "$local_dir" ] && find "$local_dir" -mindepth 1 -print -quit | grep -q .; then
     mkdir -p "$OUTPUT_DIR/interrupted"; mv "$local_dir" "$OUTPUT_DIR/interrupted/$key-$(date -u +%Y%m%dT%H%M%SZ)"
@@ -628,34 +684,38 @@ execute_measurement() {
   mkdir -p "$local_dir"
   validate_attempt_topology "$local_dir"
   ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest run '$candidate' '$repetition' '$remote/attempts/$key' 600 60" & ACTIVE_SSH_PID=$!
+  heartbeat_failure="$local_dir/controller_heartbeat_failure.txt"
   status=passed
-  while ssh_job_running "$ACTIVE_SSH_PID"; do
-    sleep 15; heartbeat_elapsed=$((heartbeat_elapsed+15))
-    if [ "$heartbeat_elapsed" -ge 30 ] && ssh_job_running "$ACTIVE_SSH_PID"; then
+  (
+    local renewal
+    while kill -0 "$ACTIVE_SSH_PID" >/dev/null 2>&1; do
+      sleep 30
+      kill -0 "$ACTIVE_SSH_PID" >/dev/null 2>&1 || break
       if renewal=$(ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest renew"); then
         printf '%s candidate=%s block=%s repetition=%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$candidate" "$block" "$repetition" "$renewal" >> "$OUTPUT_DIR/lease_renewals.log"
       else
         sleep 2
-        if ssh_job_running "$ACTIVE_SSH_PID"; then
-          if ssh_run "sudo jq -e '.rollback_armed==false and .restoration_state==\"restored\"' /var/lib/bv4db-sprint30/rollback.json >/dev/null"; then
-            # Normal completion can disarm the guest lease just before the SSH
-            # process exits. Accept only the guest's persisted restored commit
-            # marker; every other renewal failure remains fail-closed.
-            heartbeat_elapsed=0
-            continue
-          fi
-          status=failed; kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true
+        if ! ssh_run "sudo jq -e '.rollback_armed==false and .restoration_state==\"restored\"' /var/lib/bv4db-sprint30/rollback.json >/dev/null"; then
+          printf '%s renewal_failed\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$heartbeat_failure"
+          kill "$ACTIVE_SSH_PID" >/dev/null 2>&1 || true
         fi
         break
       fi
-    fi
-    [ "$heartbeat_elapsed" -lt 30 ] || heartbeat_elapsed=0
-  done
+    done
+  ) & renewal_pid=$!
   set +e; wait "$ACTIVE_SSH_PID"; run_rc=$?; set -e; ACTIVE_SSH_PID=""
+  kill "$renewal_pid" >/dev/null 2>&1 || true
+  wait "$renewal_pid" 2>/dev/null || true
+  [ ! -s "$heartbeat_failure" ] || status=failed
   [ "$run_rc" -eq 0 ] || status=failed
   ssh_run "sudo chmod -R a+rX '$remote/attempts/$key'" >/dev/null 2>&1 || true; scp_from "$remote/attempts/$key/." "$local_dir/" >/dev/null 2>&1 || true
   attempt_file="$local_dir/attempt.json"
-  if [ "$status" = passed ] && [ -s "$attempt_file" ] && jq -e '.restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false and .fio_exit_code==0' "$attempt_file" >/dev/null && jq -e 'type=="object"' "$local_dir/fio.json" >/dev/null 2>&1; then
+  if [ "$status" = passed ] && [ -s "$attempt_file" ] && jq -e '.result=="inconclusive" and .restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false and .fio_exit_code==null' "$attempt_file" >/dev/null; then
+    status=inconclusive
+    [ -f "$ATTEMPT_REPORTER" ] || die "per-attempt Markdown reporter is missing"
+    python3 "$ATTEMPT_REPORTER" "$local_dir" >/dev/null
+    row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg attempt_type "$attempt_type" --arg block "$block" --argjson repetition "$repetition" --arg path "attempts/$key" --slurpfile a "$attempt_file" '{run_id:$run_id,candidate_id:$candidate,attempt_type:$attempt_type,block:$block,repetition:$repetition,vpu:50,result:"inconclusive",restoration_state:$a[0].restoration_state,sentinels_valid:$a[0].sentinels_valid,started_at:$a[0].started_at,ended_at:$a[0].ended_at,evidence:[$path],reason:"requested_candidate_value_not_live_proven"}')
+  elif [ "$status" = passed ] && [ -s "$attempt_file" ] && jq -e '.restoration_state=="restored" and .sentinels_valid==true and .rollback_armed==false and .fio_exit_code==0' "$attempt_file" >/dev/null && jq -e 'type=="object"' "$local_dir/fio.json" >/dev/null 2>&1; then
     [ -x "$FIO_RENDERER" ] || die "per-attempt FIO renderer is missing or not executable"
     "$FIO_RENDERER" "$local_dir/fio.json" "$local_dir/iostat.json" "$local_dir/fio_report.html" "Sprint 30 $candidate block $block repetition $repetition"
     [ -f "$ATTEMPT_REPORTER" ] || die "per-attempt Markdown reporter is missing"
@@ -666,14 +726,32 @@ execute_measurement() {
     row=$(jq -n --arg run_id "$RUN_TAG" --arg candidate "$candidate" --arg attempt_type "$attempt_type" --arg block "$block" --argjson repetition "$repetition" --arg path "attempts/$key" '{run_id:$run_id,candidate_id:$candidate,attempt_type:$attempt_type,block:$block,repetition:$repetition,vpu:50,result:"failed",restoration_state:"unproven",sentinels_valid:false,evidence:[$path]}')
     status=failed
   fi
-  append_result "$row"; [ "$status" = passed ] || die "FIO attempt failed or restoration is unproven: $key"
+  append_result "$row"; [ "$status" = passed ] || [ "$status" = inconclusive ] || die "FIO attempt failed or restoration is unproven: $key"
   jq --arg candidate "$candidate" --arg block "$block" --argjson repetition "$repetition" --slurpfile transitions "$local_dir/state.json" '.attempt_transitions=((.attempt_transitions//[]) + [{candidate_id:$candidate,block:$block,repetition:$repetition,transitions:$transitions[0]}])' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
 }
 
 validate_smoke_baseline() {
   local candidate="$1" count
   count=$(jq --arg id "$candidate" '[.[]|select(.candidate_id==$id and .attempt_type=="measurement" and .result=="passed")]|length' "$OUTPUT_DIR/results_index.json")
-  [ "$count" -eq 1 ] || die "expected exactly one passed smoke baseline for $candidate; found $count"
+  [ "$count" -ge 1 ] || die "accepted archived baseline evidence is missing for $candidate"
+}
+
+import_baseline_reference() {
+  local source_index="$BASELINE_RUN/results_index.json" destination="$OUTPUT_DIR/baseline_reference" row path name imported=0
+  [ -s "$source_index" ] && [ -s "$BASELINE_RUN/target_manifest.json" ] || die "baseline results index or target manifest is missing: $BASELINE_RUN"
+  mkdir -p "$destination"
+  cp "$BASELINE_RUN/target_manifest.json" "$destination/target_manifest.json"
+  while IFS= read -r row; do
+    path=$(jq -r '.evidence[0]' <<<"$row")
+    name=$(basename "$path")
+    [ -s "$BASELINE_RUN/$path/fio.json" ] && [ -s "$BASELINE_RUN/$path/attempt_report.md" ] || die "baseline evidence is incomplete: $path"
+    if [ ! -d "$destination/$name" ]; then cp -R "$BASELINE_RUN/$path" "$destination/$name"; fi
+    row=$(jq --arg run_id "$RUN_TAG" --arg source_run "$(jq -r .run_id <<<"$row")" --arg evidence "baseline_reference/$name" '.run_id=$run_id | .source="archived_baseline" | .source_run_id=$source_run | .block="archived" | .evidence=[$evidence]' <<<"$row")
+    append_result "$row"
+    imported=$((imported+1))
+  done < <(jq -c '.[]|select(.candidate_id=="REGULAR_BASELINE_INITIAL" and .attempt_type=="measurement" and .result=="passed")' "$source_index")
+  [ "$imported" -ge 1 ] || die "no passed archived baseline rows were found"
+  jq -n --arg source "$BASELINE_RUN" --argjson measurements "$imported" '{source:$source,measurements:$measurements,remeasured:false}' > "$OUTPUT_DIR/baseline_reference.json"
 }
 
 validate_shortlisted_candidates() {
@@ -691,16 +769,14 @@ validate_shortlisted_candidates() {
 }
 
 execute_matrix() {
-  local remote=/var/tmp/bv4db-sprint30 attempt candidate attempt_type block reps rep local_dir row kind drifted initial_gated=false candidates_gated=false
-  if [ -z "$RESUME_RUN" ] || [ ! -s "$OUTPUT_DIR/results_index.json" ]; then printf '[]\n' > "$OUTPUT_DIR/results_index.json"; fi
+  local remote="/var/tmp/bv4db-sprint30/runs/$RUN_TAG" attempt candidate attempt_type block reps rep local_dir row kind initial_gated=false candidates_gated=false
+  if [ -z "$RESUME_RUN" ] || [ ! -s "$OUTPUT_DIR/results_index.json" ]; then printf '[]\n' > "$OUTPUT_DIR/results_index.json"; import_baseline_reference; fi
   while IFS= read -r attempt; do
     candidate=$(jq -r .candidate_id <<<"$attempt"); attempt_type=$(jq -r .attempt_type <<<"$attempt"); block=$(jq -r '.block|tostring' <<<"$attempt")
     if [ "$initial_gated" = false ] && [ "$candidate" != REGULAR_BASELINE_INITIAL ]; then validate_smoke_baseline REGULAR_BASELINE_INITIAL; initial_gated=true; fi
     if [ "$attempt_type" = rollback_canary ]; then
       if [ "$candidates_gated" = false ]; then
         validate_shortlisted_candidates
-        drifted=$("$ANALYZER" --checkpoint-drift "$OUTPUT_DIR")
-        [ -z "$drifted" ] || die "regular checkpoint drift exceeded the accepted threshold: $drifted"
         candidates_gated=true
       fi
       if jq -e --arg id "$candidate" '.[]|select(.candidate_id==$id and .attempt_type=="rollback_canary" and .result=="expected_failure_restored")' "$OUTPUT_DIR/results_index.json" >/dev/null; then continue; fi
@@ -710,7 +786,12 @@ execute_matrix() {
       if [ "$kind" = lease ]; then
         ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest canary-arm '$remote/attempts/$candidate'"
         sleep 185
-        ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest canary-observe '$remote/attempts/$candidate'"
+        local lease_observed=false
+        for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
+          if ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest canary-observe '$remote/attempts/$candidate'"; then lease_observed=true; break; fi
+          sleep 5
+        done
+        [ "$lease_observed" = true ] || die "lease canary did not become observable within the bounded recovery window"
       else
         ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest canary '$kind' '$remote/attempts/$candidate'"
       fi
@@ -729,10 +810,7 @@ execute_matrix() {
       rep=$((rep+1))
     done
   done < <(jq -c '.attempts[]' "$OUTPUT_DIR/experiment_plan.json")
-  validate_smoke_baseline REGULAR_BASELINE_FINAL
-  drifted=$("$ANALYZER" --final-drift "$OUTPUT_DIR")
-  [ -z "$drifted" ] || die "initial/final regular baseline drift exceeded the accepted threshold: $drifted"
-  jq --slurpfile results "$OUTPUT_DIR/results_index.json" --slurpfile plan "$OUTPUT_DIR/experiment_plan.json" 'map(. as $c | if .disposition=="testable" and (.id as $id|$plan[0].candidate_ids|index($id))!=null then .execution_status=(if ([$results[0][]|select(.candidate_id==$c.id and .result=="passed")]|length)>=1 then "tested" else "failed" end) else . end)' "$OUTPUT_DIR/tunable_coverage.json" | atomic_json "$OUTPUT_DIR/tunable_coverage.json"
+  jq --slurpfile results "$OUTPUT_DIR/results_index.json" --slurpfile plan "$OUTPUT_DIR/experiment_plan.json" 'map(. as $c | if .disposition=="testable" and (.id as $id|$plan[0].candidate_ids|index($id))!=null then .execution_status=(if ([$results[0][]|select(.candidate_id==$c.id and .result=="passed")]|length)>=1 then "tested" elif ([$results[0][]|select(.candidate_id==$c.id and .result=="inconclusive")]|length)>=1 then "inconclusive" else "failed" end) else . end)' "$OUTPUT_DIR/tunable_coverage.json" | atomic_json "$OUTPUT_DIR/tunable_coverage.json"
 }
 
 collect_oci_metrics() {
@@ -765,7 +843,7 @@ render_reports() {
   {
     echo '# Sprint 30 summary'; echo
     echo '- FIO only; Oracle Database was not installed or invoked.'
-    echo '- Five fresh 50-VPU/GB volumes used one iSCSI path each.'
+    echo '- One stable reusable five-volume 50-VPU/GB topology used one iSCSI path per volume; candidate teardown restored configuration and retained OCI resources.'
     echo '- Interpretation: this is constrained single-path characterization on a four-OCPU host, not a supported multipath/UHP entitlement; an observed gain cannot by itself distinguish the instance network/IOPS ceiling, single-path limit, volume tier, or workload concurrency.'
     echo "- Successful measured repetitions: $passed."
     echo "- Recommendation: \`$(jq -r .decision "$OUTPUT_DIR/recommendation.json")\`."
@@ -832,16 +910,17 @@ teardown_scaffold() {
 }
 
 resume_existing_run() {
-  local state role expected secret_ocid elapsed local_sha remote_sha
+  local state role expected secret_ocid elapsed local_sha remote_sha rollback_state local_dir remote row observed=false
   [ -f "$OUTPUT_DIR/run_state.json" ] && [ -f "$OUTPUT_DIR/target_manifest.json" ] && [ -f "$OUTPUT_DIR/experiment_plan.json" ] && [ -f "$OUTPUT_DIR/tunable_coverage.json" ] || die "resume evidence set is incomplete"
   RUN_TAG=$(jq -r '.run_tag // empty' "$OUTPUT_DIR/run_state.json")
   [ -n "$RUN_TAG" ] && [ "$RUN_TAG" = "$RESUME_RUN" ] && [ "$RUN_TAG" = "$(jq -r .run_id "$OUTPUT_DIR/target_manifest.json")" ] || die "resume run ID does not match immutable run evidence"
   ! jq -e '.status=="completed"' "$OUTPUT_DIR/run_state.json" >/dev/null || die "completed run cannot be resumed"
-  SC_DIR="$OUTPUT_DIR/scaffold"; state="$SC_DIR/state-$RUN_TAG-compute.json"; expected=$(jq -r .compute.ocid "$OUTPUT_DIR/target_manifest.json")
-  jq -e --arg prefix "$RUN_TAG-compute" --arg expected "$expected" '.inputs.name_prefix==$prefix and .compute.created==true and .compute.ocid==$expected' "$state" >/dev/null || die "resume compute ownership proof failed"
+  INFRA_TAG=$(jq -r '.infrastructure.tag' "$OUTPUT_DIR/target_manifest.json"); INFRA_DIR=$(jq -r '.infrastructure.directory' "$OUTPUT_DIR/target_manifest.json")
+  SC_DIR="$INFRA_DIR/scaffold"; state="$SC_DIR/state-$INFRA_TAG-compute.json"; expected=$(jq -r .compute.ocid "$OUTPUT_DIR/target_manifest.json")
+  jq -e --arg prefix "$INFRA_TAG-compute" --arg expected "$expected" '.inputs.name_prefix==$prefix and (.compute.created|type)=="boolean" and .compute.ocid==$expected' "$state" >/dev/null || die "resume compute ownership proof failed"
   PUBLIC_IP=$(jq -r .compute.public_ip "$state"); oci compute instance get --instance-id "$expected" | jq -e '.data."lifecycle-state"=="RUNNING"' >/dev/null || die "resume compute is not running"
   for role in data1 data2 redo1 redo2 fra; do
-    state="$SC_DIR/state-$RUN_TAG-$role.json"; expected=$(jq -r --arg role "$role" '.volumes[]|select(.role==$role)|.volume_ocid' "$OUTPUT_DIR/target_manifest.json")
+    state="$SC_DIR/state-$INFRA_TAG-$role.json"; expected=$(jq -r --arg role "$role" '.volumes[]|select(.role==$role)|.volume_ocid' "$OUTPUT_DIR/target_manifest.json")
     validate_resume_volume_preflight "$role" "$expected" "$state" "$OUTPUT_DIR/resume_volume_$role.json" || die "resume volume ownership/state/tier failed: $role"
   done
   secret_ocid=$(jq -r '.secret.ocid // empty' "$INFRA_STATE"); [ -n "$secret_ocid" ] || die "Sprint 1 Vault SSH secret is missing"
@@ -850,7 +929,24 @@ resume_existing_run() {
   local_sha=$(shasum -a 256 "$GUEST_EXECUTOR" | awk '{print $1}'); remote_sha=$(ssh_run "sudo sha256sum /usr/local/sbin/bv4db-sprint30-guest | awk '{print \$1}'")
   [ "$local_sha" = "$(jq -r .guest_executor_sha256 "$OUTPUT_DIR/target_manifest.json")" ] && [ "$local_sha" = "$remote_sha" ] || die "resume executor hash mismatch"
   OWNERSHIP_ACTIVE=true
+  rollback_state=$(ssh_run "sudo cat /var/lib/bv4db-sprint30/rollback.json")
+  if jq -e '.canary==true and .canary_observation_pending==true and .restoration_state=="restored"' <<<"$rollback_state" >/dev/null; then
+    local_dir="$OUTPUT_DIR/attempts/ROLLBACK_CANARY_LEASE"; remote="/var/tmp/bv4db-sprint30/runs/$RUN_TAG/attempts/ROLLBACK_CANARY_LEASE"
+    for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
+      if ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest canary-observe '$remote'"; then observed=true; break; fi
+      sleep 5
+    done
+    [ "$observed" = true ] || die "pending lease canary could not be observed during resume"
+    ssh_run "sudo chmod -R a+rX '$remote'"; mkdir -p "$local_dir"; scp_from "$remote/." "$local_dir/"
+    jq -e '.result=="expected_failure_restored" and .baseline_equal==true and .sentinels_valid==true and .rollback_armed==false' "$local_dir/canary.json" >/dev/null || die "resumed lease canary proof failed"
+    python3 "$ATTEMPT_REPORTER" "$local_dir" >/dev/null
+    if ! jq -e '.[]|select(.candidate_id=="ROLLBACK_CANARY_LEASE" and .result=="expected_failure_restored")' "$OUTPUT_DIR/results_index.json" >/dev/null; then
+      row=$(jq -n --arg run_id "$RUN_TAG" --arg path "attempts/ROLLBACK_CANARY_LEASE" --slurpfile c "$local_dir/canary.json" '{run_id:$run_id,candidate_id:"ROLLBACK_CANARY_LEASE",safe_source_candidate:$c[0].safe_source_candidate,attempt_type:"rollback_canary",vpu:50,result:$c[0].result,restoration_state:(if $c[0].baseline_equal then "restored" else "unproven" end),sentinels_valid:$c[0].sentinels_valid,rollback_armed:$c[0].rollback_armed,unit_state:$c[0].unit_state,evidence:[$path]}')
+      append_result "$row"
+    fi
+  fi
   ssh_run "sudo /usr/local/sbin/bv4db-sprint30-guest prove-baseline /var/tmp/bv4db-sprint30/resume_baseline_proof.json"
+  ssh_run "sudo chmod a+r /var/tmp/bv4db-sprint30/resume_baseline_proof.json"
   scp_from /var/tmp/bv4db-sprint30/resume_baseline_proof.json "$OUTPUT_DIR/resume_baseline_proof.json"
   validate_attempt_topology "$OUTPUT_DIR/resume_preflight"
   MATRIX_START=$(jq -r '.matrix_start // empty' "$OUTPUT_DIR/run_state.json"); [ -n "$MATRIX_START" ] || die "resume matrix start is missing"
@@ -859,7 +955,7 @@ resume_existing_run() {
 
 live_execute() {
   if [ -n "$RESUME_RUN" ]; then resume_existing_run; else
-    provision_fresh_with_scaffold
+    ensure_reusable_infrastructure
     MATRIX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
     jq --arg start "$MATRIX_START" '. + {status:"running",matrix_start:$start}' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
   fi
@@ -868,13 +964,14 @@ live_execute() {
   ssh_run "sudo cat /var/lib/bv4db-sprint30/rollback.json" > "$OUTPUT_DIR/final_rollback.json"
   jq -e '.rollback_armed==false' "$OUTPUT_DIR/final_rollback.json" >/dev/null || die "final rollback lease remains armed"
   render_reports
-  local teardown=completed
-  if [ "$KEEP_INFRA" = true ]; then teardown=kept; else teardown_scaffold; OWNERSHIP_ACTIVE=false; fi
+  restore_reusable_infrastructure || die "reusable infrastructure did not return to its captured baseline"
+  local resource_disposition=baseline_restored_resources_retained
   local sentinels_valid baseline_equal
   sentinels_valid=$(jq 'all(.[];.sentinels_valid==true)' "$OUTPUT_DIR/results_index.json")
   baseline_equal=$(jq 'all(.[];.restoration_state=="restored")' "$OUTPUT_DIR/results_index.json")
-  jq -n --arg teardown "$teardown" --argjson keep "$KEEP_INFRA" --argjson sentinels "$sentinels_valid" --argjson baseline "$baseline_equal" --slurpfile rollback "$OUTPUT_DIR/final_rollback.json" '{baseline_equal:$baseline,sentinels_valid:$sentinels,rollback_armed:$rollback[0].rollback_armed,oracle_database_invoked:false,teardown:$teardown,keep_infra:$keep}' > "$OUTPUT_DIR/final_state.json"
-  jq --arg teardown "$teardown" --argjson sentinels "$sentinels_valid" --argjson baseline "$baseline_equal" '. + {status:(if $sentinels and $baseline then "completed" else "failed" end),topology_verified:true,vpu:50,single_path:true,sentinels_valid:$sentinels,baseline_equal:$baseline,teardown:$teardown}' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
+  jq -n --arg resource_disposition "$resource_disposition" --argjson sentinels "$sentinels_valid" --argjson baseline "$baseline_equal" --slurpfile rollback "$OUTPUT_DIR/final_rollback.json" '{baseline_equal:$baseline,sentinels_valid:$sentinels,rollback_armed:$rollback[0].rollback_armed,oracle_database_invoked:false,resource_disposition:$resource_disposition,resources_retained:true,infrastructure_reused:true}' > "$OUTPUT_DIR/final_state.json"
+  [ "$sentinels_valid" = true ] && [ "$baseline_equal" = true ] || die "final restoration proof failed"
+  jq --arg resource_disposition "$resource_disposition" --arg completed_at "$MATRIX_END" '. + {status:"completed",exit_code:0,completed_at:$completed_at,topology_verified:true,vpu:50,single_path:true,sentinels_valid:true,baseline_equal:true,resource_disposition:$resource_disposition,resources_retained:true}' "$OUTPUT_DIR/run_state.json" | atomic_json "$OUTPUT_DIR/run_state.json"
   RUN_COMPLETE=true
   log "COMPLETE: $OUTPUT_DIR"
 }

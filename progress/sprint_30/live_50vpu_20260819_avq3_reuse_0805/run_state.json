@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0805",
+  "resume": null,
+  "run_tag": "s30-20260819075728-47017",
+  "infrastructure": {
+    "tag": "s30-reusable-50vpu",
+    "directory": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/reusable_50vpu_avq3",
+    "reused": true,
+    "initialized_before_run": true
+  },
+  "exit_code": 2
+}

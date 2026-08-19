@@ -1,0 +1,44 @@
+{
+  "network": [
+    {
+      "ifindex": 2,
+      "ifname": "enp0s5",
+      "flags": [
+        "BROADCAST",
+        "MULTICAST",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": 9000,
+      "qdisc": "mq",
+      "operstate": "UP",
+      "linkmode": "DEFAULT",
+      "group": "default",
+      "txqlen": 1000,
+      "link_type": "ether",
+      "address": "02:00:17:18:6b:33",
+      "broadcast": "ff:ff:ff:ff:ff:ff",
+      "stats64": {
+        "rx": {
+          "bytes": 439598136334,
+          "packets": 65336657,
+          "errors": 0,
+          "dropped": 0,
+          "over_errors": 0,
+          "multicast": 0
+        },
+        "tx": {
+          "bytes": 349118557169,
+          "packets": 96728630,
+          "errors": 0,
+          "dropped": 0,
+          "carrier_errors": 0,
+          "collisions": 0
+        }
+      }
+    }
+  ],
+  "nstat": {},
+  "kernel_errors": "[Wed Aug 19 07:47:32 2026] scsi 0:0:0:1: Power-on or device reset occurred\n[Wed Aug 19 07:47:32 2026] GPT: Use GNU Parted to correct GPT errors.\n[Wed Aug 19 07:47:44 2026] block dm-1: the capability attribute has been deprecated.",
+  "iscsi_error_state": "\t\tTimeouts:\n\t\tRecovery Timeout: 6000\n\t\tTarget Reset Timeout: 30\n\t\tLUN Reset Timeout: 30\n\t\tAbort Timeout: 15\n\t\tTimeouts:\n\t\tRecovery Timeout: 6000\n\t\tTarget Reset Timeout: 30\n\t\tLUN Reset Timeout: 30\n\t\tAbort Timeout: 15\n\t\tTimeouts:\n\t\tRecovery Timeout: 6000\n\t\tTarget Reset Timeout: 30\n\t\tLUN Reset Timeout: 30\n\t\tAbort Timeout: 15\n\t\tTimeouts:\n\t\tRecovery Timeout: 6000\n\t\tTarget Reset Timeout: 30\n\t\tLUN Reset Timeout: 30\n\t\tAbort Timeout: 15\n\t\tTimeouts:\n\t\tRecovery Timeout: 6000\n\t\tTarget Reset Timeout: 30\n\t\tLUN Reset Timeout: 30\n\t\tAbort Timeout: 15"
+}

@@ -42,7 +42,7 @@ Every Sprint 30 tuning candidate is compared only with the regular OCI/guest-set
 
 | VPUs/GB | Attachment | Baseline action | Interpretation |
 | --- | --- | --- | --- |
-| 50 | single-path iSCSI | Run FIO with unchanged OCI and guest settings. | Characterize the 50-VPU volume configuration through the constrained four-OCPU, single-path host. |
+| 50 | single-path iSCSI | Reuse the archived accepted FIO baseline; do not remeasure it during tuning. | Characterize candidates relative to the documented regular-settings evidence. |
 
 Sprint 30 performs no 30-, 45-, or 120-VPU run and no VPU transition experiment. An attempt, plan entry, index row, report row, or recommendation containing any value other than 50 fails the Sprint 30 gate.
 
@@ -65,37 +65,40 @@ an LVM PV, a filesystem initialization target, an iSCSI tuning target, or a
 candidate evidence device. All load generation and storage-layout actions are
 restricted to the five separately attached Block Volumes listed above.
 
-Provision all five volumes at 50 VPUs/GB and keep them at that value. Wait until every volume leaves the provisioning state, confirm the effective value of 50 from OCI, revalidate the conjunctive single-path proof above, one session per target, unchanged device identity, LVM, filesystem, sentinels, and mounts, and only then run FIO. Repeat the effective-value and path checks before every measured run so a mixed, drifted, or multipath DATA/REDO/FRA tier cannot confound the comparison.
+Create the five-volume reusable topology once, only when no valid scaffold state exists, and keep every volume at 50 VPUs/GB. Ordinary tests call the scaffold ensure operations against the existing stable state; they must not provision replacement resources. Before every measured run, confirm the effective value of 50 from OCI and revalidate the conjunctive single-path proof, one session per target, unchanged device identity, LVM, filesystem, sentinels, and mounts so a mixed, drifted, or multipath DATA/REDO/FRA tier cannot confound the comparison.
 
 Layout initialization is allowed only on newly provisioned, empty Sprint 30 volumes. A rerun must discover and reuse the existing PV, VG, LV, filesystem, and mount metadata; it must never use a failed discovery check as permission to run `wipefs`, `pvcreate`, `mkfs`, or other initialization commands.
 
 ### Design Overview
 
-The sprint adds one resumable benchmark runner and report renderer. The runner provisions the fixed topology once, captures an immutable baseline, applies exactly one reversible candidate or documented coupled profile, executes the fixed-50-VPU candidate/repetition schedule, restores and verifies baseline state, and then advances. It records raw FIO, CPU, iSCSI, TCP/network, block-device, OCI, integrity, and kernel-counter evidence for every attempt. It also writes `attempt_report.md` inside every executed attempt directory; machine-readable evidence and HTML do not replace this written report.
+The sprint adds one resumable benchmark runner and report renderer. The runner imports the archived immutable performance baseline, ensures one stable reusable scaffold topology, applies exactly one reversible candidate or documented coupled profile, restores and verifies the captured infrastructure and guest baseline, and only then advances. It records raw FIO, CPU, iSCSI, TCP/network, block-device, OCI, integrity, and kernel-counter evidence for every new candidate attempt. It writes `attempt_report.md` inside every executed attempt directory; machine-readable evidence and HTML do not replace this written report.
 
 ### OCI Resource Lifecycle
 
-All OCI resource creation, adoption, attachment, state recording, and teardown
+All OCI resource creation, adoption, attachment, state recording, and exceptional destruction
 must use the repository's `oci_scaffold` tool. Sprint 30's runner sources
 `oci_scaffold/do/oci_scaffold.sh`, uses `ensure-compute.sh` for the pinned
 four-OCPU target, uses one `ensure-blockvolume.sh` state file per DATA/REDO/FRA
-volume, and uses the scaffold teardown path for resources it owns. It must not
+volume. The scaffold teardown path is disabled during ordinary test completion and failure. It must not
 replace this lifecycle with ad-hoc `oci compute instance launch`, `oci bv volume
 create`, or attachment commands.
 
-The runner stores its scaffold state below its own output directory, records
-whether every compute/volume/attachment was created or adopted, and passes
+The runner stores scaffold state in a stable infrastructure directory separate
+from immutable per-run evidence, records whether every compute/volume/attachment was created or adopted, and passes
 `bv_is_multipath=false` for every iSCSI attachment. A pre-existing resource may
 be adopted only after its OCID, exact 50-VPU setting, size, target instance,
-single-path attachment state, and ownership/teardown decision are archived.
+single-path attachment state, and reuse/recovery decision are archived.
 The boot volume is never placed in a Sprint 30 scaffold state and is never a
-teardown, layout, or tuning target.
+destruction, layout, or tuning target. Normal completion, failure, or interruption
+restores the captured guest configuration and retains compute and Block Volumes.
+Destruction requires explicit hard-recovery authorization and is allowed only
+when exact restoration has failed or the reusable topology is irrecoverable.
 
 The candidate catalogue must inspect and classify the target’s available controls before execution:
 
 | Category | Proposed parameters to test | Safety boundary |
 | --- | --- | --- |
-| iSCSI session | `ISCSI_QD128`: set `node.session.queue_depth=128` on all five target/portal records | Use only `iscsiadm`; activate through the safe reconnect sequence and prove the live value from session detail/sysfs. |
+| iSCSI session | `ISCSI_QD128`: request `node.session.queue_depth=128` on all five target/portal records | Use only `iscsiadm`; activate through the safe reconnect sequence; require configured value 128 and a consistent effective live value greater than baseline and no greater than 128; report the negotiated value exactly. |
 | TCP socket buffers | `TCP_BUF_2X` and `TCP_BUF_4X`: multiply the discovered numeric baseline for `net.core.rmem_max` and `net.core.wmem_max`; multiply only the maximum field of `net.ipv4.tcp_rmem` and `net.ipv4.tcp_wmem`, retaining discovered minimum/default fields | Candidate value is exactly baseline × multiplier; exclude overflow or kernel-rejected values and verify readback. |
 | TCP congestion control | one `TCP_CC_<name>` candidate for every alternative already listed in `net.ipv4.tcp_available_congestion_control` | Do not load a new module; reconnect sessions and verify the algorithm on actual iSCSI sockets with `ss -ti`. |
 | receive backlog | `NETDEV_BACKLOG_2X` and `NETDEV_BACKLOG_4X`: multiply discovered `net.core.netdev_max_backlog` | Exclude overflow or rejected values and verify readback. |
@@ -111,13 +114,13 @@ The runner must write a machine-readable `tunable_coverage.json` before changing
 
 ### Runner and State Interface
 
-The implementation entry point is `tools/oci_bv_single_path_tuning.sh`. It supports `--plan`, `--execute`, `--resume <run-id>`, singular `--vpu <integer>`, `--repeats 1`, `--keep-infra`, and `--output-dir`. Sprint closure always requires the complete discovered candidate matrix; the earlier partial `--candidate` interface was removed because it could not produce a schema-valid completed coverage ledger. Defaults are plan-only, all candidates, 50 VPUs/GB, one smoke measurement per baseline and candidate, conditional validation only for shortlisted candidates, teardown after successful evidence copy, and a timestamped Sprint 30 output directory. The singular VPU argument keeps the method reusable, but the Sprint 30 plan profile is locked to 50: its gate rejects a different input or any non-50 plan, attempt, index, report, or recommendation value. BV4DB-74 and BV4DB-75 must approve their own plans before using the interface at 30 or 120.
+The implementation entry point is `tools/oci_bv_single_path_tuning.sh`. It supports `--plan`, `--execute`, `--resume <run-id>`, `--infra-dir`, `--baseline-run`, singular `--vpu 50`, `--repeats 1`, and `--output-dir`. Sprint closure requires the complete discovered candidate matrix. Defaults are plan-only, all candidates, the stable avq3 infrastructure state, the accepted archived baseline, one screening measurement per candidate, conditional validation only for shortlisted candidates, restoration without OCI teardown, and a timestamped evidence directory. `--allow-hard-destroy` is an explicit exceptional recovery authorization, never the normal test path.
 
 OCI profile/region, compartment, subnet, pinned image OCID, and SSH/Run Command prerequisites are explicit inputs; secrets are never written to artifacts. Each run owns `run_state.json`, `tunable_coverage.json`, `experiment_plan.json`, `results_index.json`, and per-attempt evidence directories. State transitions are atomic and record planned, applying, active, measuring, restoring, restored, passed, failed, or interrupted. `--resume` may continue only after it proves baseline configuration, sentinels, topology, and attachments; otherwise it fails closed.
 
 ### FIO Load Generation
 
-Sprint 30 reuses the project’s Sprint 10 Oracle-layout FIO profile without installing Oracle Database. Every 50-VPU baseline and candidate run uses `ioengine=libaio`, `direct=1`, `time_based=1`, `runtime=600`, `ramp_time=60`, `group_reporting=0`, `invalidate=1`, `lat_percentiles=1`, `percentile_list=95:99:99.9`, and `--output-format=json`.
+Sprint 30 reuses the project’s Sprint 10 Oracle-layout FIO profile without installing Oracle Database. The archived baseline and every new candidate run use the same FIO options: `ioengine=libaio`, `direct=1`, `time_based=1`, `runtime=600`, `ramp_time=60`, `group_reporting=0`, `invalidate=1`, `lat_percentiles=1`, `percentile_list=95:99:99.9`, and `--output-format=json`.
 
 | FIO job | File-placement role | Parameters |
 | --- | --- | --- |
@@ -129,19 +132,19 @@ The layout names describe FIO file placement only. No Oracle binaries, database 
 
 ### Experiment Schedule and Decision Rules
 
-The regular-settings baseline and every testable candidate first run once at 50 VPUs/GB. The generated `experiment_plan.json` records a seed and one deterministic candidate screening order that follows the approved catalogue category sequence: iSCSI session first, then TCP buffers, TCP congestion control, receive backlog, RPS/RFS/XPS, NIC rings, NIC channels, NIC coalescing, and finally independently changeable NIC offloads; each testable candidate appears exactly once. Run one initial regular-settings smoke baseline and one additional regular-settings checkpoint after every five candidate attempts. A candidate is shortlisted only when its screening result improves at least one primary metric by more than 5%, regresses no primary metric by more than 5%, remains within the 10% host-CPU guard, preserves integrity and restoration, and introduces no monitored error increase. Only shortlisted candidates receive repetitions two and three for final validation. After candidate screening and conditional validation, execute the two non-measurement rollback canaries, prove full recovery, and then run one final regular-settings smoke baseline; no tuning mutation is permitted after that final baseline. A checkpoint or final baseline that moves more than 5% from the initial smoke baseline pauses the experiment for drift investigation. The generated plan reconciles the discovered candidate count, checkpoint count, two canary attempts, unconditional and maximum conditional FIO-run counts, minimum 660-second-per-measured-run time, estimated transition/rollback time, and worst-case OCI cost before execution.
+The accepted baseline is imported once and is not an executable plan row. The generated `experiment_plan.json` records its source plus one deterministic candidate screening order: iSCSI session first, then TCP buffers, TCP congestion control, receive backlog, RPS/RFS/XPS, NIC rings, NIC channels, NIC coalescing, and finally independently changeable NIC offloads. Each testable candidate appears exactly once. There are no repeated baseline, checkpoint, or final-baseline FIO runs. A candidate is shortlisted only when its screening result improves a primary metric by more than 5%, regresses no primary metric by more than 5%, remains within the CPU guard, preserves integrity and restoration, and introduces no monitored error increase. Only shortlisted candidates receive repetitions two and three. After screening and conditional validation, execute the two non-measurement rollback canaries and prove full recovery. The plan reconciles archived baseline references, candidate count, canaries, conditional runs, elapsed time, and incremental test cost.
 
-For every FIO job and metric, report the screening value. For shortlisted candidates, additionally report the median, minimum, maximum, median absolute deviation, and coefficient of variation across their three total measurements. A shortlisted candidate is eligible for recommendation only when each primary measure’s CV is at most 5%; an unstable validated candidate is ineligible and reported as inconclusive. Baseline and checkpoint comparison uses the fixed 5% threshold because smoke baselines deliberately have one observation and therefore cannot supply a meaningful variance estimate.
+For every FIO job and metric, report the screening value. For shortlisted candidates, additionally report the median, minimum, maximum, median absolute deviation, and coefficient of variation across their three total measurements. A shortlisted candidate is eligible for recommendation only when each primary measure’s CV is at most 5%; an unstable validated candidate is ineligible and reported as inconclusive. Baseline statistics come only from the documented archived baseline evidence.
 
 Primary measures are DATA IOPS, REDO p99 and p99.9 write-completion latency from `jobs[].write.clat_ns.percentile`, and FRA bandwidth. Report `sync.lat_ns` separately but do not substitute it for the REDO primary measure. A candidate is eligible only if it is stable; has no FIO, iSCSI, kernel, TCP, checksum, or restoration error or monitored error-class counter increment; improves at least one primary measure by more than `max(5%, 2 × baseline CV)`; does not regress any other primary measure or p99/p99.9 latency by more than that metric’s `max(5%, 2 × baseline CV)`; and increases median host CPU utilization by no more than 10% relative. The monitored error-class set is frozen in the plan and includes iSCSI/SCSI failures and timeouts, TCP retransmits/resets, NIC errors/drops, and new kernel block/network error records; ordinary byte, packet, and command counters are expected to rise and are not errors. Eligible candidates are Pareto-ranked at 50 VPUs/GB only. Ties prefer lower p99.9 REDO latency, then lower CPU use, then the configuration with fewer changed controls; if no candidate clears the noise and guardrails, the regular OCI/guest baseline is the recommendation.
 
-Every results-index entry declares `attempt_type=measurement`, `checkpoint`, or `rollback_canary`. Only successful `measurement` rows contribute to repetition counts, CV, eligibility, Pareto ranking, and the recommendation. The two canaries use dedicated IDs `ROLLBACK_CANARY_TRAP` and `ROLLBACK_CANARY_LEASE`, record the safe source candidate separately, have expected failure outcomes, and never change that source candidate’s performance execution status.
+Every results-index entry declares `attempt_type=measurement` or `rollback_canary`. Archived baseline measurement rows are marked `source=archived_baseline`; new candidate rows are never confused with them. Only successful candidate measurement rows contribute to candidate repetition counts and stability. The two canaries use dedicated IDs and never change their source candidate's performance status.
 
 ### Safe Mutation, Activation, and Restoration
 
 Before any candidate, archive exact baseline sysctl, TuneD, NIC, queue, IRQ, route, iSCSI node/session, block, LVM, filesystem, and mount state. Create a non-FIO 64 MiB sentinel on each mounted filesystem and record its SHA-256 digest. FIO files never overlap the sentinels; verify all three digests before and after every mutation and measured run.
 
-For `ISCSI_QD128`, stop load, `sync`, unmount FRA/REDO/DATA, deactivate both VGs, update only `node.session.queue_depth` on the five target records through `iscsiadm`, log out all five sessions, log in exactly one portal per target, wait for devices, reactivate VGs, mount all filesystems, and verify topology and sentinels. Prove the live queue depth from detailed session/sysfs state and prove that congestion control on the new sockets remains at its captured baseline. Restoration repeats the safe reconnect sequence, restores only the captured queue-depth values through `iscsiadm`, and verifies both queue depth and baseline congestion control.
+For `ISCSI_QD128`, stop load, `sync`, unmount FRA/REDO/DATA, deactivate both VGs, update only `node.session.queue_depth` on the five target records through `iscsiadm`, log out all five sessions, log in exactly one portal per target, wait for devices, reactivate VGs, mount all filesystems, and verify topology and sentinels. Prove the configured node value is exactly 128. Because the target/SCSI layer may negotiate a lower effective depth, prove that all five live sysfs values are numeric and equal, strictly exceed their captured baseline, and do not exceed 128; archive and label the exact effective value in the attempt report. An unchanged, inconsistent, or out-of-range value stops before FIO. Prove that congestion control on the new sockets remains at its captured baseline. Restoration repeats the safe reconnect sequence, restores only the captured queue-depth values through `iscsiadm`, and verifies both queue depth and baseline congestion control.
 
 For a `TCP_CC_<name>` candidate, use the same stop/sync/unmount/VG-deactivate and reconnect safety boundary, but never update an iSCSI node record. Change only `net.ipv4.tcp_congestion_control`, log out and log in exactly one portal per target to create new sockets, restore storage, and prove the selected algorithm on the actual iSCSI sockets with `ss -ti` while proving queue depth remains at baseline. Restoration changes only congestion control, reconnects, and independently verifies baseline congestion control and queue depth. Queue depth and congestion control are never combined in one performance candidate.
 
@@ -151,7 +154,7 @@ Because TuneD can settle asynchronously after profile restoration, `tuned-adm ve
 
 Rollback-unit disarm stops and classifies the timer and service independently, archiving each `systemctl stop` response and post-stop load/active state. A nonzero stop for one unit is accepted only when every nonempty diagnostic line exactly identifies that same unit as missing/not loaded, its `LoadState` is `not-found` or `unknown`, and its active state is inactive, failed, or unknown. Mixed/generic errors, missing text paired with a loaded unit, or any active state remain fail-closed.
 
-No candidate may reformat, repartition, detach, recreate, or mount over the established block-volume layout. No tuning state may leak into the next candidate.
+No candidate may reformat, repartition, detach, recreate, or mount over the established block-volume layout. No tuning state may leak into the next candidate. Test completion restores the exact baseline configuration while leaving the OCI resources and filesystem layout available for reuse.
 
 ### Regular Project Test Report
 
@@ -159,7 +162,7 @@ For every attempt, archive ASCII command logs plus valid raw FIO JSON when FIO r
 
 Every executed attempt must additionally contain `attempt_report.md`. The report states the run and candidate IDs, attempt type, repetition/block, VPU, UTC window and duration, exact workload and effective settings, outcome, DATA/REDO/FRA performance metrics when FIO ran, CPU/error observations, topology and integrity verdicts, restoration/rollback verdict, and relative links to the raw evidence used for every claim. A failed, interrupted, or canary attempt still receives a report, explicitly marking unavailable sections and the authoritative failure or expected-failure reason. The report is written only from archived evidence, uses plain ASCII, and is referenced directly by that attempt's `results_index.json` row. Missing, empty, unparseable, or numerically inconsistent attempt Markdown is a failed evidence gate.
 
-Reuse `tools/render_fio_report_html.sh` and the existing OCI metrics collection/reporting path. Produce per-attempt `attempt_report.md` for every executed test, per-attempt FIO HTML when FIO ran, a 50-VPU candidate comparison table, `fio_analysis.md`, aggregate `fio_report.html`, FIO-window OCI metrics Markdown and HTML reports, `sprint_30_summary.md`, and a machine-readable `recommendation.json`. The summary links every candidate to its raw evidence, coverage-ledger disposition and execution status, statistics, exclusions, guardrails, restoration proof, and recommendation decision. HTML must be standalone and all per-attempt and aggregate Markdown/HTML values must reconcile with the JSON index and raw evidence.
+Reuse `tools/render_fio_report_html.sh` and the existing OCI metrics collection/reporting path. Produce per-attempt `attempt_report.md` for every executed test and per-attempt FIO HTML immediately after each successful FIO run, before the next candidate starts; then produce the 50-VPU candidate comparison table, `fio_analysis.md`, aggregate `fio_report.html`, FIO-window OCI metrics Markdown and HTML reports, `sprint_30_summary.md`, and a machine-readable `recommendation.json`. The summary links every candidate to its raw evidence, coverage-ledger disposition and execution status, statistics, exclusions, guardrails, restoration proof, and recommendation decision. HTML must be standalone and all per-attempt and aggregate Markdown/HTML values must reconcile with the JSON index and raw evidence.
 
 ### Evidence and Recommendation
 
@@ -172,7 +175,7 @@ The final report applies the defined statistical and Pareto rules rather than ch
 - Restore and stop when a session, device identity, LVM, mount, sentinel, FIO, kernel/TCP error, controller reachability, or effective-setting check fails.
 - Mark an unavailable or unsafe control with an excluded planning disposition rather than forcing it. A discovered control without a disposition, an exclusion without evidence/reason, or a testable control still pending at closure fails completeness.
 - A failed or byte-unequal restoration blocks further candidates and sprint closure.
-- Live A3 requires valid OCI authentication and an approved disposable target. Missing prerequisites fail the live test; they are not converted into a skip/pass.
+- Live A3 requires OCI profile `avq3`, the approved reusable target, stable scaffold state, and the archived baseline reference. Missing prerequisites fail the live test; they are not converted into a skip/pass.
 
 ### Testing Strategy
 
@@ -202,9 +205,9 @@ The B3 group is intentionally narrow. IT-9 already validates the FIO and OCI-met
 | --- | --- | --- | --- |
 | Static contract and deterministic plan | Repository checkout and local fixtures | Runner declares the five-volume layout, fixed 50-VPU Sprint 30 plan, FIO-only scope, exact FIO profile, exhaustive candidate ledger, reports, evidence, and safety guards. | < 1 minute. |
 | Fail-closed and restoration fixtures | Repository checkout and command shims | Invalid topology and injected mutation failures stop before load or restore exact baseline state. | < 5 minutes. |
-| Live topology and regular baseline | Approved four-OCPU OCI target and valid credentials | The target proves five effective-50, single-path volumes and completes one unchanged-settings smoke FIO run. | About 11 minutes plus provisioning. |
-| Live 50-VPU candidate matrix | Same approved target | Every testable candidate completes one screening run; only shortlisted candidates complete two additional validation runs, all with effective-setting, integrity, error-counter, and per-attempt restoration evidence. | `testable candidates × 11 minutes`, plus checkpoints, activation, and `shortlisted candidates × 22 minutes`. |
-| Rollback canary, reporting, and final state | Same approved target and completed matrix | The host-local lease restores a deliberately interrupted candidate; raw evidence, regular Markdown/HTML reports, recommendation, final baseline, and teardown all reconcile. | Approximately 20 minutes plus the final 33-minute baseline and teardown. |
+| Live topology and baseline reference | Approved reusable four-OCPU target, valid credentials, and archived baseline | The target proves five effective-50 single paths and the runner imports, but does not execute, the accepted baseline. | Topology validation only. |
+| Live 50-VPU candidate matrix | Same reusable target | Every testable candidate completes one screening run; only shortlisted candidates complete two validation runs, each returning to baseline. | `testable candidates × 11 minutes`, activation, and `shortlisted candidates × 22 minutes`. |
+| Rollback canary, reporting, and final state | Same reusable target and completed matrix | The lease restores deliberate failures; reports reconcile and resources remain in the captured baseline state. | Approximately 20 minutes plus reporting. |
 
 #### Smoke Test Candidates
 
@@ -221,7 +224,7 @@ Sprint Test Configuration:
 
 All ten tests live in the component/domain file `tests/integration/test_bv4db_iscsi_tuning.sh`. The file supports both selected-function dispatch for the Sprint 30 A3 manifest and no-argument `run_all` dispatch for component regression.
 
-The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_EXECUTE_LIVE=1`, valid OCI authentication, and approval to use the disposable target. IT-5 creates or resumes the one shared run; IT-6 through IT-10 reuse that run instead of reprovisioning. Missing live prerequisites or required artifacts fail rather than skip. B3 runs the `iscsi_tuning` manifest with the same immutable output directory and `SPRINT30_EXECUTE_LIVE=0`; it validates completed evidence and must not provision or mutate infrastructure again.
+The A3 live sequence requires `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_INFRA_DIR`, `SPRINT30_BASELINE_RUN`, `SPRINT30_EXECUTE_LIVE=1`, and OCI profile `avq3`. IT-5 ensures or resumes the reusable topology; IT-6 proves the imported baseline; IT-7 through IT-10 reuse the same infrastructure and restore it after each test. B3 validates the immutable completed evidence with `SPRINT30_EXECUTE_LIVE=0` and performs no OCI mutation.
 
 ### Integration Tests
 
@@ -236,7 +239,7 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 #### IT-2: Deterministic 50-VPU experiment plan and coverage ledger
 
 - **Preconditions:** Repository checkout and discovery fixtures containing supported, fixed, absent, and unsafe controls.
-- **Steps:** Generate `experiment_plan.json` and `tunable_coverage.json` twice with the same explicit seed and normalized run metadata. Validate the VPU set, repeat blocks, candidate ordering, checkpoints, canaries, FIO count/runtime/cost calculations, stable candidate IDs, and every discovered control's planning disposition and initial execution status.
+- **Steps:** Generate `experiment_plan.json` and `tunable_coverage.json` twice with the same seed. Validate the archived baseline reference, reusable-infrastructure flag, candidate ordering, absence of executable baseline/checkpoint rows, canaries, counts, and dispositions.
 - **Expected Outcome:** Both canonical plan payloads are identical after excluding run ID, timestamp, and output path; their VPU set is exactly `[50]`; every `disposition=testable` candidate begins `execution_status=pending` and appears exactly once in each of three blocks; every excluded disposition has a reason and evidence path; the two dedicated rollback canaries are non-measurement attempts; counts reconcile; and no 30, 120, duplicate, or unknown candidate is present.
 - **Verification:** Run `test_IT2_deterministic_50_vpu_plan` and validate both files with `jq` plus recomputed counts.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
@@ -259,7 +262,7 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 
 #### IT-5: Live 50-VPU topology and integrity preflight
 
-- **Preconditions:** Approved disposable OCI target, valid credentials, explicit live flag, and shared output directory.
+- **Preconditions:** Approved reusable OCI target, stable scaffold state, OCI profile `avq3`, archived baseline, explicit live flag, and new evidence directory.
 - **Steps:** Provision or resume the pinned `VM.Standard.E5.Flex` four-OCPU/32-GB host and five volumes; capture OCI, route, CPU, device, iSCSI, LVM, filesystem, mount, and sentinel evidence before mutation.
 - **Expected Outcome:** All five volumes report effective 50 VPUs/GB; each requested single-path attachment is exactly bound, has no secondary endpoint, and never reports `is-multipath=true`; each target has exactly one guest session and unique persistent path with no multipath device; DATA and REDO are two-way 256-KiB stripes; FRA is direct; all mounts and sentinel digests are valid.
 - **Verification:** Run `test_IT5_live_50_vpu_topology` and validate live evidence in `SPRINT30_TEST_OUTPUT_DIR` against OCI and guest observations.
@@ -269,14 +272,14 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 
 - **Preconditions:** IT-5 passed and the regular guest baseline is captured.
 - **Steps:** Execute one 600-second smoke FIO measurement after a 60-second ramp at fixed 50 VPUs/GB with unchanged guest settings; collect FIO, iostat, CPU, OCI metrics-window, topology, integrity, and error-counter evidence.
-- **Expected Outcome:** Raw JSON is valid, exact DATA/REDO/FRA job options are present, OCI metric windows cover every attempt, configuration before/after is equal, and primary-measure CV is at most 5%; otherwise exactly up to two extra runs occur and an unresolved baseline is marked inconclusive with candidate execution blocked.
+- **Expected Outcome:** Archived raw baseline JSON and reports are valid, imported rows are marked `source=archived_baseline`, and no baseline FIO process is executed.
 - **Verification:** Run `test_IT6_live_regular_50_vpu_baseline` and recompute repetition counts, options, metrics windows, statistics, and state transitions from raw artifacts.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
 #### IT-7: Live complete candidate matrix at 50 VPUs/GB
 
 - **Preconditions:** IT-6 produced a stable baseline and every discovered control has a planning disposition.
-- **Steps:** Execute every `disposition=testable` ledger entry once in the seeded screening order with defined checkpoints; verify the effective value on the actual interface, session, or socket before FIO and restore after every attempt. Shortlist only candidates that clear the fixed screening guards, then execute their second and third validation measurements. Update execution status only from archived attempt evidence.
+- **Steps:** Execute every `disposition=testable` ledger entry once in seeded order; verify the effective value before FIO and restore after every attempt. Shortlist only candidates that clear the guards, then execute their second and third validation measurements.
 - **Expected Outcome:** Every testable candidate ends `tested`, `inconclusive`, or `failed`, with no `pending` entry; every candidate has one successful screening measurement and every shortlisted candidate has exactly three total measurements; every row remains `vpu=50`; excluded controls never execute; topology, sentinels, and monitored error-class counters remain valid; the complete baseline is byte-equal after each attempt; no candidate state leaks forward.
 - **Verification:** Run `test_IT7_live_complete_candidate_matrix` and reconcile the coverage ledger, experiment plan, command journals, effective-setting evidence, and results index.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
@@ -284,25 +287,25 @@ The A3 live sequence requires an explicit `SPRINT30_TEST_OUTPUT_DIR`, `SPRINT30_
 #### IT-8: Host-local rollback lease canary
 
 - **Preconditions:** Candidate measurements completed, live target restored to verified baseline, and one safe reversible source candidate selected by the plan.
-- **Steps:** Run dedicated non-measurement attempt `ROLLBACK_CANARY_TRAP` and inject an ordinary FIO failure to exercise trap restoration. Separately run `ROLLBACK_CANARY_LEASE`, terminate controller/process control after verified application, allow the three-minute host-local lease to expire, and observe recovery independently. After recovery proof, execute one final regular-settings smoke baseline; permit no later mutation.
-- **Expected Outcome:** Both canaries have expected-failure/restored outcomes without altering the source candidate's execution status or performance sample count; sysctl/NIC/TuneD/iSCSI state, sessions, mounts, topology, and sentinels return to baseline; later execution stays blocked until recovery proof; no rollback unit remains armed; and the final baseline is stable before reporting.
+- **Steps:** Run `ROLLBACK_CANARY_TRAP` and `ROLLBACK_CANARY_LEASE`, independently observe restoration, and perform no baseline FIO afterward.
+- **Expected Outcome:** Both canaries restore the reusable infrastructure baseline, no rollback unit remains armed, and OCI resources remain available.
 - **Verification:** Run `test_IT8_live_rollback_lease_canary` and validate lease logs, independent post-expiry evidence, terminal states, and byte-equal baseline bundles.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
 #### IT-9: Evidence, reports, and recommendation reconciliation
 
 - **Preconditions:** Completed 50-VPU candidate matrix, rollback canaries, and stable final regular-settings baseline.
-- **Steps:** Validate every results-index row and referenced artifact; require and parse `attempt_report.md` for every executed baseline, checkpoint, candidate screening, shortlist-validation, failed/interrupted attempt, and rollback canary; parse raw JSON; check ASCII logs and Markdown; validate coverage disposition/execution status and standalone HTML reports; independently recompute medians, MAD, CV, eligibility threshold, Pareto set, and tie-break decision from measurement rows only.
+- **Steps:** Validate imported baseline rows and every new candidate/canary artifact; require `attempt_report.md` for every executed candidate, validate reports, and independently recompute statistics and the recommendation.
 - **Expected Outcome:** Every row contains run/candidate, attempt type, `vpu=50`, applicable repetition, UTC timestamps, result, restoration state, an existing per-attempt Markdown report, and existing raw-evidence paths. Each report contains the required identity, configuration, timing, outcome, performance when applicable, safety/restoration, and evidence-link sections. Raw bundles are complete; no testable control remains pending; canaries are excluded from performance statistics and source-candidate status; reports reconcile numerically with JSON; recommendation and exclusions trace to the defined rules and evidence; no ANSI or non-50 result is present.
 - **Verification:** Run `test_IT9_reports_and_recommendation`; verify every indexed evidence directory has `attempt_report.md`; and compare independent calculations with the per-attempt reports, `fio_analysis.md`, `fio_report.html`, OCI metrics reports, `sprint_30_summary.md`, and `recommendation.json`.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
-#### IT-10: Final state, FIO-only guard, and teardown
+#### IT-10: Final state, FIO-only guard, and reusable infrastructure
 
 - **Preconditions:** Reporting completed or the run entered a terminal failure path.
-- **Steps:** Validate the final regular-settings repetitions, baseline equality, sentinel digests, rollback-unit state, candidate state, evidence copy, teardown/keep-infra decision, and captured package/process/service command journals.
-- **Expected Outcome:** Baseline is byte-equal, all sentinels match, no lease or candidate remains active, evidence is safe before teardown, terminal state records teardown success or approved keep-infra, and no Oracle Database package, binary, service, Swingbench workload, or AWR collection was installed or invoked.
-- **Verification:** Run `test_IT10_final_state_fio_only_teardown` and inspect final state plus negative Oracle-execution evidence.
+- **Steps:** Validate baseline equality, sentinel digests, rollback-unit state, candidate state, evidence copy, and retained OCI topology.
+- **Expected Outcome:** Baseline is byte-equal, sentinels match, no mutation remains active, compute and volumes remain reusable, and no Oracle workload was invoked.
+- **Verification:** Run `test_IT10_final_state_fio_only_resource_reuse` and inspect final restoration/resource-retention state plus negative Oracle-execution evidence.
 - **Target file:** `tests/integration/test_bv4db_iscsi_tuning.sh`.
 
 ### Traceability

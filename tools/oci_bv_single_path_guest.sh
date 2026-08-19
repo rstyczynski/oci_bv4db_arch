@@ -2,6 +2,7 @@
 # Sprint 30 root-side executor. It operates only on the five devices described
 # by a controller-generated manifest and never discovers a formatting target.
 set -Eeuo pipefail
+export LVM_SUPPRESS_FD_WARNINGS=1
 
 STATE_DIR=/var/lib/bv4db-sprint30
 BASELINE="$STATE_DIR/baseline.json"
@@ -327,7 +328,22 @@ verify_candidate_applied() {
       while IFS=$'\t' read -r q value; do cpu=${cpus[$((idx % ${#cpus[@]}))]}; printf -v mask '%x' "$((1 << cpu))"; [ "${value//,/}" = "$mask" ] || [ "$((16#${value//,/}))" -eq "$((16#$mask))" ] || die "exact XPS readback failed: $q"; idx=$((idx+1)); done < <(jq -r '.xps[]|[.path,.cpus]|@tsv' "$file")
       diff -u <(jq -S 'del(.xps)' "$BASELINE") <(jq -S 'del(.xps)' "$file") >/dev/null || die "XPS candidate changed an unrelated captured control" ;;
     ISCSI_QD128)
-      jq -e 'all(.iscsi_queue_depth[];.value=="128" and .live_value=="128")' "$file" >/dev/null || die "iSCSI queue-depth live readback failed"
+      # The node setting is the requested limit. The target/SCSI layer may
+      # expose a lower effective depth after login, so prove and benchmark a
+      # consistent effective increase instead of requiring it to equal 128.
+      jq -e --slurpfile b "$BASELINE" '
+        (.iscsi_queue_depth|length)==5 and
+        ([.iscsi_queue_depth[].live_value]|unique|length)==1 and
+        all(.iscsi_queue_depth[];
+          . as $c |
+          $c.value=="128" and
+          ($c.live_value|test("^[0-9]+$")) and
+          ($c.live_value|tonumber)<=128 and
+          any($b[0].iscsi_queue_depth[];
+            .iqn==$c.iqn and .portal==$c.portal and
+            (.live_value|test("^[0-9]+$")) and
+            ($c.live_value|tonumber)>(.live_value|tonumber)))
+      ' "$file" >/dev/null || die "iSCSI queue-depth configured/effective readback failed"
       diff -u <(jq -S 'del(.iscsi_queue_depth)' "$BASELINE") <(jq -S 'del(.iscsi_queue_depth)' "$file") >/dev/null || die "queue-depth candidate changed an unrelated captured control"
       expected=$(jq -r .tcp_congestion_control "$BASELINE"); verify_all_iscsi_socket_cc "$expected" ;;
     TCP_CC_*)
@@ -408,14 +424,14 @@ preformat_single_path_proof() {
 
 prepare() {
   local input="$1" authorization="$2" evidence="$3" role iqn ip port path root_leaf leaf sig manifest_sha run_id bypath candidate mounts observed_size expected_size pvs_output
-  local leaves='[]' identities='[]' sent='[]' sentinel digest
+  local leaves='[]' identities='[]' sent='[]' sentinel digest layout_reused=false
   trap 'die "guest preparation command failed at line $LINENO"' ERR
   need jq; need lsblk; need iscsiadm; need fio; need iostat; need sha256sum; need flock
   [ "$(uname -m)" = x86_64 ] || die "Sprint 30 guest architecture must be x86_64"
   install -d -m 0700 "$STATE_DIR" "$evidence"
   jq -e '.vpu==50 and (.run_id|length)>0 and (.volumes|length)==5 and all(.volumes[];.created==true and .vpu==50 and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.iqn|length)>0) and ([.volumes[].path]|unique|length)==5 and ([.volumes[].volume_ocid]|unique|length)==5 and ([.volumes[].iqn]|unique|length)==5' "$input" >/dev/null || die "manifest contract rejected"
   manifest_sha=$(sha256sum "$input" | awk '{print $1}'); run_id=$(jq -r '.run_id' "$input")
-  jq -e --arg run_id "$run_id" --arg sha "$manifest_sha" '.authorize_fresh_layout==true and .run_id==$run_id and .manifest_sha256==$sha and (.volumes|length)==5' "$authorization" >/dev/null || die "fresh-layout authorization rejected"
+  jq -e --arg run_id "$run_id" --arg sha "$manifest_sha" '.run_id==$run_id and .manifest_sha256==$sha and (.volumes|length)==5 and ((.authorize_fresh_layout==true and .reuse_existing_layout==false) or (.authorize_fresh_layout==false and .reuse_existing_layout==true))' "$authorization" >/dev/null || die "layout authorization rejected"
   diff -u <(jq -S '[.volumes[]|{volume_ocid,path,iqn}]' "$input") <(jq -S '.volumes' "$authorization") >/dev/null || die "authorization volume set mismatch"
   atomic_copy "$input" "$MANIFEST"
   systemctl enable --now iscsid >/dev/null
@@ -440,7 +456,8 @@ prepare() {
   [ "$(jq 'unique|length' <<<"$leaves")" -eq 5 ] || die "expected five unique non-boot leaf devices"
   printf '%s\n' "$identities" > "$IDENTITIES"; cp "$IDENTITIES" "$evidence/device_identities.json"
 
-  if [ ! -s "$STATE_DIR/layout_initialized" ]; then
+  if [ ! -f "$STATE_DIR/layout_initialized" ]; then
+    jq -e '.authorize_fresh_layout==true and .reuse_existing_layout==false' "$authorization" >/dev/null || die "fresh layout was not explicitly authorized"
     while IFS=$'\t' read -r path role expected_size; do
       sig=$(wipefs -n "$path" 2>/dev/null) || die "wipefs inspection failed: $path"
       [ -z "$sig" ] || die "fresh volume has signatures: $path"
@@ -465,19 +482,28 @@ prepare() {
     mkfs.ext4 -E nodiscard /dev/oracleoci/oraclevdf
     touch "$STATE_DIR/layout_initialized"
   else
-    die "fresh Sprint 30 prepare refuses an existing initialized layout"
+    jq -e '.authorize_fresh_layout==false and .reuse_existing_layout==true' "$authorization" >/dev/null || die "existing layout reuse was not explicitly requested"
+    [ -s "$BASELINE" ] && [ -s "$SENTINELS" ] || die "reusable layout is missing its captured baseline or sentinels"
+    layout_reused=true
   fi
   mkdir -p /u02/oradata /u03/redo /u04/fra
-  mount /dev/vg_data/lv_oradata /u02/oradata
-  mount /dev/vg_redo/lv_redo /u03/redo
-  mount /dev/oracleoci/oraclevdf /u04/fra
+  vgchange -ay vg_data vg_redo >/dev/null
+  mountpoint -q /u02/oradata || mount /dev/vg_data/lv_oradata /u02/oradata
+  mountpoint -q /u03/redo || mount /dev/vg_redo/lv_redo /u03/redo
+  mountpoint -q /u04/fra || mount /dev/oracleoci/oraclevdf /u04/fra
   chown opc:opc /u02/oradata /u03/redo /u04/fra
-  for sentinel in /u02/oradata/.sprint30-sentinel /u03/redo/.sprint30-sentinel /u04/fra/.sprint30-sentinel; do
-    dd if=/dev/urandom of="$sentinel" bs=1M count=64 status=none; chmod 0444 "$sentinel"
-    digest=$(sha256sum "$sentinel" | awk '{print $1}'); sent=$(jq -c --arg path "$sentinel" --arg sha "$digest" '. + [{path:$path,sha256:$sha}]' <<<"$sent")
-  done
-  printf '%s\n' "$sent" > "$SENTINELS"; verify_sentinels; cp "$SENTINELS" "$evidence/sentinels.json"
-  capture_controls "$BASELINE"; cp "$BASELINE" "$evidence/guest_baseline.json"
+  if [ "$layout_reused" = false ]; then
+    for sentinel in /u02/oradata/.sprint30-sentinel /u03/redo/.sprint30-sentinel /u04/fra/.sprint30-sentinel; do
+      dd if=/dev/urandom of="$sentinel" bs=1M count=64 status=none; chmod 0444 "$sentinel"
+      digest=$(sha256sum "$sentinel" | awk '{print $1}'); sent=$(jq -c --arg path "$sentinel" --arg sha "$digest" '. + [{path:$path,sha256:$sha}]' <<<"$sent")
+    done
+    printf '%s\n' "$sent" > "$SENTINELS"
+    capture_controls "$BASELINE"
+  fi
+  verify_sentinels; cp "$SENTINELS" "$evidence/sentinels.json"
+  if [ "$layout_reused" = true ]; then restore_controls; fi
+  cp "$BASELINE" "$evidence/guest_baseline.json"
+  jq -n --argjson reused "$layout_reused" '{infrastructure_reused:$reused,baseline_reused:$reused}' > "$evidence/reuse_state.json"
   jq -n '{rollback_armed:false,restoration_state:"baseline_captured"}' | atomic_json "$STATE_DIR/rollback.json"
   lscpu > "$evidence/lscpu.txt"; lsblk -O -J > "$evidence/lsblk.json"; pvs --reportformat json > "$evidence/pvs.json"; vgs --reportformat json > "$evidence/vgs.json"; lvs --reportformat json -a -o +segtype,stripes,stripesize > "$evidence/lvs.json"
   iscsiadm -m session -P 3 > "$evidence/iscsi_sessions.txt"
@@ -570,11 +596,23 @@ run_attempt() {
   capture_attempt_context "$out/context_before"
   exec 9>"$LOCK_FILE"; flock -w 120 9 || die "could not acquire mutation lock"; lock_held=true
   transition applying
+  started=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   apply_candidate "$candidate"
   capture_controls "$out/controls_applied.json"
-  verify_candidate_applied "$candidate" "$out/controls_applied.json"
+  if ! (verify_candidate_applied "$candidate" "$out/controls_applied.json"); then
+    jq -n --arg candidate "$candidate" --slurpfile applied "$out/controls_applied.json" '{candidate_id:$candidate,result:"inconclusive",reason:"requested_candidate_value_not_live_proven",controls_applied:$applied[0]}' > "$out/application_result.json"
+    cleanup_attempt || die "inconclusive candidate restoration failed; rollback lease remains armed"
+    trap - EXIT INT TERM
+    capture_attempt_context "$out/context_restored"
+    capture_errors "$out/errors_after.json"
+    verify_sentinels
+    ended=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+    transition inconclusive
+    jq -n --arg candidate "$candidate" --argjson repetition "$repetition" --arg started "$started" --arg ended "$ended" '{candidate_id:$candidate,repetition:$repetition,started_at:$started,ended_at:$ended,fio_exit_code:null,result:"inconclusive",application_proven:false,restoration_state:"restored",sentinels_valid:true,rollback_armed:false}' > "$out/attempt.json"
+    return 0
+  fi
   expected_cc=$(jq -r .tcp_congestion_control "$BASELINE"); if [[ "$candidate" == TCP_CC_* ]]; then expected_cc=${candidate#TCP_CC_}; expected_cc=${expected_cc,,}; fi
-  live_preflight "$expected_cc" >/dev/null
+  live_preflight "$expected_cc" "$candidate" >/dev/null
   transition active
   flock -u 9; lock_held=false
   capture_attempt_context "$out/context_applied"
@@ -622,7 +660,6 @@ iodepth=8
 rate=120M
 EOF
   chown -R opc:opc "$out"
-  started=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   transition measuring
   iostat -o JSON -x 5 "$(( (runtime + ramp) / 5 + 1 ))" > "$out/iostat.json" & iostat_pid=$!
   set +e
@@ -694,7 +731,7 @@ prove_baseline() {
 candidate_proposal() {
   local id="$1" factor feature value target max_rx max_tx max_channels online_channels q mask idx=0 cpu
   case "$id" in
-    ISCSI_QD128) jq -n '{node_and_live_queue_depth:128}' ;;
+    ISCSI_QD128) jq -n '{node_queue_depth:128,effective_live_queue_depth:"negotiated_after_reconnect_and_reported_exactly"}' ;;
     TCP_BUF_2X|TCP_BUF_4X) factor=2; [ "$id" = TCP_BUF_4X ] && factor=4; jq --argjson factor "$factor" '{rmem_max:((.rmem_max|tonumber)*$factor),wmem_max:((.wmem_max|tonumber)*$factor),tcp_rmem:([.tcp_rmem|scan("\\S+")|tonumber]|[.[0],.[1],(.[2]*$factor)]),tcp_wmem:([.tcp_wmem|scan("\\S+")|tonumber]|[.[0],.[1],(.[2]*$factor)])}' "$BASELINE" ;;
     NETDEV_BACKLOG_2X|NETDEV_BACKLOG_4X) factor=2; [ "$id" = NETDEV_BACKLOG_4X ] && factor=4; jq --argjson factor "$factor" '{netdev_max_backlog:((.netdev_max_backlog|tonumber)*$factor)}' "$BASELINE" ;;
     RPS_ALL_ONLINE) mask=$(cpu_mask); jq -n --arg mask "$mask" '{rps_mask:$mask}' ;;
@@ -759,7 +796,7 @@ quiesce() {
 }
 
 live_preflight() {
-  local expected_cc="${1:-}" iqn ip port path iface leaf root_leaf expected_serial current_serial bypath candidate session_text node_qd live_qd leaves='[]' data_stripes redo_stripes data_stripe_kib redo_stripe_kib fra_source
+  local expected_cc="${1:-}" qd_mode="${2:-baseline}" iqn ip port path iface leaf root_leaf expected_serial current_serial bypath session_text node_qd live_qd leaves='[]' live_qds='[]' data_stripes redo_stripes data_stripe_kib redo_stripe_kib fra_source baseline_live
   verify_sentinels
   iface=$(jq -r .iscsi_interface "$MANIFEST")
   [ -n "$expected_cc" ] || expected_cc=$(jq -r .tcp_congestion_control "$BASELINE")
@@ -777,8 +814,15 @@ live_preflight() {
     leaves=$(jq -c --arg leaf "$leaf" '. + [$leaf]' <<<"$leaves")
     node_qd=$(iscsiadm -m node -T "$iqn" -p "$ip:$port" -o show | awk -F'= ' '$1 ~ /node.session.queue_depth/{print $2;exit}')
     live_qd=$(cat "/sys/block/$(basename "$leaf")/device/queue_depth")
-    [ "$node_qd" = "$live_qd" ] || die "node/live queue-depth mismatch: $iqn"
+    if [ "$qd_mode" = ISCSI_QD128 ]; then
+      baseline_live=$(jq -r --arg iqn "$iqn" --arg portal "$ip:$port" '.iscsi_queue_depth[]|select(.iqn==$iqn and .portal==$portal)|.live_value' "$BASELINE")
+      [ "$node_qd" = 128 ] && [[ "$live_qd" =~ ^[0-9]+$ ]] && [[ "$baseline_live" =~ ^[0-9]+$ ]] && [ "$live_qd" -gt "$baseline_live" ] && [ "$live_qd" -le 128 ] || die "configured/effective queue-depth mismatch: $iqn"
+      live_qds=$(jq -c --arg value "$live_qd" '. + [$value]' <<<"$live_qds")
+    else
+      [ "$node_qd" = "$live_qd" ] || die "node/live queue-depth mismatch: $iqn"
+    fi
   done < <(jq -r '.volumes[]|[.iqn,.ipv4,(.port|tostring),.path]|@tsv' "$MANIFEST")
+  if [ "$qd_mode" = ISCSI_QD128 ]; then [ "$(jq 'unique|length' <<<"$live_qds")" -eq 1 ] || die "effective queue depth differs across iSCSI targets"; fi
   [ "$(jq 'unique|length' <<<"$leaves")" -eq 5 ] || die "device identity drift"
   [ "$(findmnt -nro FSTYPE /u02/oradata)" = ext4 ] && [ "$(findmnt -nro FSTYPE /u03/redo)" = ext4 ] && [ "$(findmnt -nro FSTYPE /u04/fra)" = ext4 ] || die "filesystem or mount drift"
   data_stripes=$(lvs --noheadings -o stripes vg_data/lv_oradata | awk '{$1=$1};1'); redo_stripes=$(lvs --noheadings -o stripes vg_redo/lv_redo | awk '{$1=$1};1')

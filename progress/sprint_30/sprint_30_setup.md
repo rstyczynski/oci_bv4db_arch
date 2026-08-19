@@ -8,12 +8,18 @@ The sprint follows the RUP artifact, status, test-gate, bug, and Git rules. It m
 
 ## Analysis
 
-BV4DB-72 is feasible with the existing Oracle-style FIO benchmark and `bv4db` integration-test component. This is a FIO-only sprint: the established Oracle-style block-volume layout supplies benchmark filesystems, but Oracle Database must not be installed or tested. The design must inventory the tuning controls actually available on the selected Oracle Linux image, establish one 50 VPU/GB smoke baseline, change one supported control or coupled setting group at a time, and retain FIO, CPU, and iSCSI network-path evidence for each comparable run. Every candidate receives one screening run; only candidates that improve a primary metric by more than 5% without a primary regression, CPU guard failure, integrity failure, or monitored error increase receive two additional validation runs. Every executed performance test, including a baseline, checkpoint, candidate screening or validation run, and rollback canary, must also create a human-readable Markdown report in its own evidence directory; raw JSON or HTML alone is insufficient. The 30- and 120-VPU revalidations are explicitly deferred to BV4DB-74 and BV4DB-75 and are not Sprint 30 execution scope.
+BV4DB-72 is feasible with the existing Oracle-style FIO benchmark and `bv4db` integration-test component. This is a FIO-only sprint: the established Oracle-style block-volume layout supplies benchmark filesystems, but Oracle Database must not be installed or tested. The accepted 50-VPU baseline is the archived run `live_50vpu_20260818_224723`; later tuning runs import that evidence and do not spend OCI time measuring another baseline. The test infrastructure is one reusable `oci_scaffold` state: every candidate starts from and returns to the same captured compute, volume, attachment, guest, and filesystem configuration. Resources remain available after normal tests; destruction is reserved for an explicitly authorized hard-recovery case when exact baseline restoration is impossible. Every candidate receives one screening run; only promising candidates receive two validation runs. Every executed candidate or rollback canary creates a human-readable Markdown report in its own evidence directory. The 30- and 120-VPU revalidations remain deferred to BV4DB-74 and BV4DB-75.
 
 Previous UHP multipath sprints are not a configuration baseline because this sprint explicitly evaluates a single-path attachment on a four-OCPU host. The established Oracle-style block-volume layout is the storage-layout baseline; the benchmark creates only FIO test files and must not reformat or recreate the layout.
 
-Live execution requires working OCI credentials and a disposable or otherwise approved benchmark environment. The current repository records invalid OCI authentication as blocking pre-existing live integration tests, so credential validation is a precondition for the later live gate rather than an assumption of this setup phase.
+Live execution uses OCI CLI profile `avq3` and a reusable approved benchmark environment. OCI and GitHub authentication are validated prerequisites, not reasons to provision a new environment per test.
 
 ### Readiness
 
 Ready for design. The design must be reviewed and explicitly accepted before construction because this is a managed sprint.
+
+### Final outcome
+
+The accepted design was implemented and the canonical reusable-infrastructure
+matrix completed. A3 and scoped B3 passed; final performance and report links
+are recorded in `sprint_30_tests.md`.

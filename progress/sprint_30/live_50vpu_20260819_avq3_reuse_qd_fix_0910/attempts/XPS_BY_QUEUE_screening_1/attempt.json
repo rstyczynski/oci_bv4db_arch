@@ -1,0 +1,10 @@
+{
+  "candidate_id": "XPS_BY_QUEUE",
+  "repetition": 1,
+  "started_at": "2026-08-19T10:53:54Z",
+  "ended_at": "2026-08-19T11:04:55Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

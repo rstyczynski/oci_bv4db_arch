@@ -67,6 +67,14 @@ Because this repository is specifically about OCI, the practical conclusions als
 
 Sprints **22**, **23**, and **24** document how this project actually exercises **UHP iSCSI multipath on the instance**: Sprint 22 establishes **HA-correct** multipath (paths aggregated via dm-multipath, mount on the mapper device), optional **`/etc/fstab`** persistence with `_netdev` and `nofail`, and a reproducible **multipath versus single-path** A/B benchmark with **OCI Monitoring** reports and timestamps aligned to fio. Sprint 23 keeps that baseline and adds an **explicit `multipath.conf`** load-balancing policy for the multipath phase (multibus + round-robin intent), richer **before/after configuration** captures, and **bounded `iostat`** during fio so path-level behavior is visible in artifacts. Sprint 24 adds the simplified **OCI Block Volume Management plugin-managed** path and a single evidence checklist for avoiding control-plane versus guest-reality contradictions. Details and runbooks are in [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity).
 
+Sprint **30** separately characterizes supported single-path iSCSI/network
+tunables on a four-OCPU host with five 50-VPU/GB volumes. Thirteen applicable
+candidates were measured with FIO against an archived baseline on reused OCI
+infrastructure. None cleared the REDO latency regression guardrails, so the
+evidence-backed recommendation is to retain `REGULAR_BASELINE`. This is not a
+multipath or Oracle Database test. See the [Sprint 30 test and performance
+report](progress/sprint_30/sprint_30_tests.md).
+
 ## The Three Layouts
 
 ### 1. Entry-Level Block Volume
@@ -344,6 +352,9 @@ Oracle also documents archived redo handling inside FRA:
 - Sprint 22 UHP iSCSI multipath + fstab + A/B guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
 - Sprint 23 explicit multipath load balancing, deeper diagnostics, and iostat during fio: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
 - Sprint 24 OCI agent-managed multipath checklist and runner: [progress/sprint_24/sprint24_manual.md](progress/sprint_24/sprint24_manual.md)
+- Sprint 30 single-path tuning test report: [progress/sprint_30/sprint_30_tests.md](progress/sprint_30/sprint_30_tests.md)
+- Sprint 30 aggregate FIO HTML report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
+- Sprint 30 OCI Monitoring report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md)
 
 ## Official OCI References
 

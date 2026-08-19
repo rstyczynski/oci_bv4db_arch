@@ -16,7 +16,7 @@ new_tmp() { mktemp -d "${TMPDIR:-/tmp}/sprint30-test.XXXXXX"; }
 # Production functions are invoked indirectly after sourcing the guest script.
 # shellcheck disable=SC2030,SC2031,SC2034,SC2329
 exercise_guest_preflight_shims() {
-  local root="$1" duplicate_session="${2:-0}"
+  local root="$1" duplicate_session="${2:-0}" shim_live_qd="${3:-128}" qd_mode="${4:-baseline}"
   (
     export BV4DB_GUEST_SOURCE_ONLY=1
     # shellcheck source=/dev/null
@@ -25,7 +25,7 @@ exercise_guest_preflight_shims() {
     mkdir -p "$STATE_DIR"
     jq -n '{iscsi_interface:"eth0",volumes:[range(0;5)|{role:(if .==4 then "fra" else "role-"+tostring end),iqn:("iqn.test:"+tostring),ipv4:"10.0.0.2",port:3260,path:("/dev/leaf-"+tostring)}]}' > "$MANIFEST"
     jq -n '[range(0;5)|{iqn:("iqn.test:"+tostring),serial:("serial-"+tostring)}]' > "$IDENTITIES"
-    jq -n '{tcp_congestion_control:"cubic"}' > "$BASELINE"; jq -n '[]' > "$SENTINELS"
+    jq -n '{tcp_congestion_control:"cubic",iscsi_queue_depth:[range(0;5)|{iqn:("iqn.test:"+tostring),portal:"10.0.0.2:3260",value:"32",live_value:"32"}]}' > "$BASELINE"; jq -n '[]' > "$SENTINELS"
     verify_sentinels() { :; }
     verify_all_iscsi_socket_cc() { [ "$1" = cubic ]; }
     block_device_exists() { [[ "$1" == /dev/leaf-* ]]; }
@@ -35,14 +35,33 @@ exercise_guest_preflight_shims() {
     findmnt() { if [[ "$*" == *"FSTYPE"* ]]; then echo ext4; elif [[ "$*" == *"/u04/fra"* ]]; then echo /dev/leaf-4; else echo /dev/root-source; fi; }
     lvs() { if [[ "$*" == *"stripe_size"* ]]; then echo 256; else echo 2; fi; }
     lsblk() { local last="${*: -1}"; if [[ "$*" == *"TYPE"* ]]; then echo disk; elif [[ "$*" == *"SERIAL"* ]]; then printf 'serial-%s\n' "${last##*-}"; fi; }
-    cat() { if [[ "$1" == /sys/block/*/device/queue_depth ]]; then echo 128; else command cat "$@"; fi; }
+    cat() { if [[ "$1" == /sys/block/*/device/queue_depth ]]; then echo "$shim_live_qd"; else command cat "$@"; fi; }
     iscsiadm() {
       if [[ " $* " == *" -m session "* ]]; then
         for n in 0 1 2 3 4; do printf 'tcp: [1] 10.0.0.2:3260,1 iqn.test:%s\n' "$n"; done
         [ "$duplicate_session" = 0 ] || printf 'tcp: [9] 10.0.0.2:3260,1 iqn.test:0\n'
       else printf 'node.session.queue_depth = 128\n'; fi
     }
-    live_preflight cubic >/dev/null
+    live_preflight cubic "$qd_mode" >/dev/null
+  )
+}
+
+# Validate the queue-depth readback contract without mutating storage.
+# A node request of 128 may negotiate a lower effective SCSI depth; it is
+# benchmarkable only when consistent and strictly above the captured baseline.
+# shellcheck disable=SC2030,SC2031,SC2034,SC2329
+exercise_qd128_verifier_shim() {
+  local root="$1" live_value="$2"
+  (
+    export BV4DB_GUEST_SOURCE_ONLY=1
+    # shellcheck source=/dev/null
+    source "$GUEST"
+    STATE_DIR="$root/state"; BASELINE="$STATE_DIR/baseline.json"
+    mkdir -p "$STATE_DIR"
+    jq -n '{tcp_congestion_control:"cubic",iscsi_queue_depth:[range(0;5)|{iqn:("iqn.test:"+tostring),portal:("10.0.0."+(.+2|tostring)+":3260"),value:"32",live_value:"32"}]}' > "$BASELINE"
+    jq -n --arg live "$live_value" '{tcp_congestion_control:"cubic",iscsi_queue_depth:[range(0;5)|{iqn:("iqn.test:"+tostring),portal:("10.0.0."+(.+2|tostring)+":3260"),value:"128",live_value:$live}]}' > "$root/applied.json"
+    verify_all_iscsi_socket_cc() { [ "$1" = cubic ]; }
+    verify_candidate_applied ISCSI_QD128 "$root/applied.json"
   )
 }
 
@@ -341,7 +360,7 @@ exercise_resume_volume_preflight() {
     export BV4DB_CONTROLLER_SOURCE_ONLY=1
     # shellcheck source=/dev/null
     source "$RUNNER"
-    RUN_TAG=unit-resume; mkdir -p "$root"
+    RUN_TAG=unit-resume; INFRA_TAG=unit-resume; mkdir -p "$root"
     jq -n --arg prefix "unit-resume-data1" --arg ocid "$(if [ "$ownership" = valid ]; then printf volume-1; else printf volume-other; fi)" '{inputs:{name_prefix:$prefix},blockvolume:{created:true,ocid:$ocid}}' > "$root/state.json"
     oci() { jq -n --arg state "$api_state" --argjson vpu "$api_vpu" '{data:{"lifecycle-state":$state,"vpus-per-gb":$vpu}}'; }
     validate_resume_volume_preflight data1 volume-1 "$root/state.json" "$root/evidence.json"
@@ -357,7 +376,7 @@ exercise_failure_recovery_poll() {
     export BV4DB_CONTROLLER_SOURCE_ONLY=1
     # shellcheck source=/dev/null
     source "$RUNNER"
-    OUTPUT_DIR="$root"; SC_DIR="$root/scaffold"; RUN_TAG=unit-recovery; INFRA_STATE="$root/infra.json"
+    OUTPUT_DIR="$root"; SC_DIR="$root/scaffold"; RUN_TAG=unit-recovery; INFRA_TAG=unit-recovery; INFRA_STATE="$root/infra.json"
     mkdir -p "$SC_DIR"; jq -n '{compartment:{ocid:"compartment-test"}}' > "$INFRA_STATE"
     SPRINT30_CLEANUP_POLL_SECONDS=1; SPRINT30_CLEANUP_QUIET_SECONDS=2; SPRINT30_CLEANUP_HORIZON_SECONDS=3; SPRINT30_CLEANUP_EXTENSION_SECONDS=4
     [ "$mode" != bad_timing ] || SPRINT30_CLEANUP_POLL_SECONDS=0
@@ -405,12 +424,16 @@ maybe_execute_live() {
   fi
 }
 
-test_IT1_static_runner_contract() {
+test_IT1_static_runner_contract() (
   echo "=== IT-1: static runner and CLI contract ==="
-  local tmp; tmp=$(new_tmp); trap 'rm -rf "$tmp"' RETURN
+  local tmp; tmp=$(new_tmp); trap 'rm -rf "$tmp"' EXIT
   bash -n "$RUNNER" || return 1
   bash -n "$GUEST" || return 1
   rg -q 'SPRINT30_AUTHORIZE_FRESH_LAYOUT' "$RUNNER" || return 1
+  rg -q 'classify_reusable_scaffold_state|ensure_reusable_infrastructure' "$RUNNER" || return 1
+  ! rg -q 'provisions uniquely owned disposable resources' "$RUNNER" || return 1
+  rg -q 'reuse_existing_layout' "$RUNNER" "$GUEST" || return 1
+  rg -q '\[ ! -f "\$STATE_DIR/layout_initialized" \]' "$GUEST" || return 1
   rg -q 'fresh_layout_authorization|layout_authorization.consumed' "$RUNNER" "$GUEST" || return 1
   rg -q 'ATTEMPT_LOCK_FILE' "$GUEST" || return 1
   rg -q 'guest package installation did not complete after transient SSH retries' "$RUNNER" || return 1
@@ -422,6 +445,9 @@ test_IT1_static_runner_contract() {
   jq -n '{sysstat:{hosts:[{statistics:[{disk:[{disk_device:"sdb","rkB/s":1024,"wkB/s":2048,util:50}]}]}]}}' > "$tmp/iostat.json"
   "$FIO_RENDERER" "$tmp/fio.json" "$tmp/iostat.json" "$tmp/fio_report.html" "sysstat kB/s regression" || return 1
   rg -q '<tr><td>sdb</td><td>1\.0</td><td>2\.0</td><td>50\.0</td><td>50\.0</td></tr>' "$tmp/fio_report.html" || { fail "renderer did not convert sysstat kB/s to MiB/s"; return 1; }
+  exercise_qd128_verifier_shim "$tmp/qd128-negotiated" 113 || { fail "QD128 verifier rejected a consistent effective increase"; return 1; }
+  if exercise_qd128_verifier_shim "$tmp/qd128-noop" 32 >/dev/null 2>&1; then fail "QD128 verifier accepted an unchanged effective depth"; return 1; fi
+  if exercise_qd128_verifier_shim "$tmp/qd128-over-limit" 129 >/dev/null 2>&1; then fail "QD128 verifier accepted an effective depth above the request"; return 1; fi
   mkdir -p "$tmp/canary"
   jq -n '{result:"expected_failure_restored",safe_source_candidate:"TCP_BUF_2X",baseline_equal:true,sentinels_valid:true,rollback_armed:false,unit_state:"inactive"}' > "$tmp/canary/canary.json"
   python3 "$ATTEMPT_REPORTER" "$tmp/canary" >/dev/null || return 1
@@ -429,25 +455,25 @@ test_IT1_static_runner_contract() {
   if "$RUNNER" --plan --output-dir "$tmp/rejected" --vpu 45 >/dev/null 2>&1; then fail "runner accepted non-Sprint-30 VPU"; return 1; fi
   if "$RUNNER" --execute --output-dir "$tmp/partial" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted a partial live matrix"; return 1; fi
   pass IT-1
-}
+)
 
-test_IT2_deterministic_50_vpu_plan() {
+test_IT2_deterministic_50_vpu_plan() (
   echo "=== IT-2: deterministic 50-VPU experiment plan and coverage ledger ==="
-  local tmp; tmp=$(new_tmp); trap 'rm -rf "$tmp"' RETURN
+  local tmp; tmp=$(new_tmp); trap 'rm -rf "$tmp"' EXIT
   "$RUNNER" --plan --output-dir "$tmp/first" --seed 17 >/dev/null || return 1
   "$RUNNER" --plan --output-dir "$tmp/second" --seed 17 >/dev/null || return 1
   "$RUNNER" --plan --output-dir "$tmp/different" --seed 18 >/dev/null || return 1
   cmp "$tmp/first/experiment_plan.json" "$tmp/second/experiment_plan.json" || { fail "plan is not deterministic"; return 1; }
   cmp -s "$tmp/first/experiment_plan.json" "$tmp/different/experiment_plan.json" && { fail "different seed did not change the plan"; return 1; }
-  jq -e '.vpus==[50] and .repeats==1 and .checkpoint_interval==5 and .candidate_order_blocks[0][0]=="ISCSI_QD128" and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==(.candidate_count/5|floor) and ([.attempts[]|select(.attempt_type=="measurement" and .block=="screening")|.candidate_id]|sort|group_by(.)|all(length==1)) and all(.attempts[]|select(.block=="screening");.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-3].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_LEASE") and (.attempts[-1].candidate_id=="REGULAR_BASELINE_FINAL")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
+  jq -e '.vpus==[50] and .repeats==1 and .reuse_infrastructure==true and .baseline.source=="archived" and .baseline.remeasured==false and .checkpoint_interval==0 and .candidate_order_blocks[0][0]=="ISCSI_QD128" and ([.attempts[]|select(.attempt_type=="rollback_canary")]|length)==2 and ([.attempts[]|select(.attempt_type=="checkpoint")]|length)==0 and ([.attempts[]|select(.candidate_id|startswith("REGULAR_BASELINE"))]|length)==0 and ([.attempts[]|select(.attempt_type=="measurement" and .block=="screening")|.candidate_id]|sort|group_by(.)|all(length==1)) and all(.attempts[]|select(.block=="screening");.repetitions==1) and ([.attempts[].vpu]|unique)==[50] and (.attempts[-2].candidate_id=="ROLLBACK_CANARY_TRAP") and (.attempts[-1].candidate_id=="ROLLBACK_CANARY_LEASE")' "$tmp/first/experiment_plan.json" >/dev/null || return 1
   jq -e 'all(.[];if .disposition=="testable" then .execution_status=="pending" else (has("execution_status")|not) and (.reason|length>0) and (.evidence|length>0) end)' "$tmp/first/tunable_coverage.json" >/dev/null || return 1
   if "$RUNNER" --plan --output-dir "$tmp/selected" --candidate TCP_BUF_2X >/dev/null 2>&1; then fail "runner accepted removed partial-candidate interface"; return 1; fi
   pass IT-2
-}
+)
 
-test_IT3_fail_closed_preflight_matrix() {
+test_IT3_fail_closed_preflight_matrix() (
   echo "=== IT-3: fail-closed preflight matrix ==="
-  local tmp fixture field bad; tmp=$(new_tmp); trap 'rm -rf "$tmp"' RETURN; fixture="$tmp/valid.json"; write_valid_fixture "$fixture"
+  local tmp fixture field bad; tmp=$(new_tmp); trap 'rm -rf "$tmp"' EXIT; fixture="$tmp/valid.json"; write_valid_fixture "$fixture"
   "$RUNNER" --plan --output-dir "$tmp/valid" --fixture "$fixture" >/dev/null || return 1
   for field in bad_ocpu bad_memory bad_image bad_arch bad_vpu bad_multipath bad_session bad_volume_binding bad_instance_binding duplicate_device bad_layout bad_route bad_sentinel bad_credentials; do
     bad="$tmp/$field.json"
@@ -460,6 +486,8 @@ test_IT3_fail_closed_preflight_matrix() {
   done
   exercise_guest_preflight_shims "$tmp/guest-valid" || return 1
   if exercise_guest_preflight_shims "$tmp/guest-duplicate" 1 >/dev/null 2>&1; then fail "real guest preflight accepted duplicate iSCSI sessions"; return 1; fi
+  exercise_guest_preflight_shims "$tmp/guest-qd128-effective" 0 113 ISCSI_QD128 || { fail "live preflight rejected configured 128/effective 113"; return 1; }
+  if exercise_guest_preflight_shims "$tmp/guest-qd128-noop" 0 32 ISCSI_QD128 >/dev/null 2>&1; then fail "live preflight accepted unchanged effective QD128"; return 1; fi
   exercise_preformat_single_path_shim "$tmp/preformat-valid" valid || { fail "pre-format proof rejected exact single path"; return 1; }
   for fault in wrong_portal prefix_iqn duplicate_session duplicate_other_portal mpath_leaf mpath_global; do
     if exercise_preformat_single_path_shim "$tmp/preformat-$fault" "$fault" >/dev/null 2>&1; then fail "pre-format proof accepted $fault"; return 1; fi
@@ -472,11 +500,11 @@ test_IT3_fail_closed_preflight_matrix() {
   rg -q '^attempt=3 exit_code=1$' "$tmp/tuned-persistent/tuned_verify.txt" || return 1
   if LC_ALL=C grep -q '[^ -~[:space:]]' "$tmp/tuned-transient/tuned_verify.txt" "$tmp/tuned-persistent/tuned_verify.txt"; then fail "TuneD diagnostic is not plain ASCII"; return 1; fi
   pass IT-3
-}
+)
 
-test_IT4_restore_resume_state_machine() {
+test_IT4_restore_resume_state_machine() (
   echo "=== IT-4: restore and resume state machine ==="
-  local tmp fault; tmp=$(new_tmp); trap 'rm -rf "$tmp"' RETURN
+  local tmp fault; tmp=$(new_tmp); trap 'rm -rf "$tmp"' EXIT
   for fault in none apply readback fio sigterm stale_applying stale_measuring; do
     "$RUNNER" --plan --output-dir "$tmp/$fault" --state-fault "$fault" >/dev/null || return 1
     jq -e 'index("restoring")!=null and index("restored")!=null' "$tmp/$fault/state_journal.json" >/dev/null || return 1
@@ -503,7 +531,7 @@ test_IT4_restore_resume_state_machine() {
   exercise_lease_deadline_shim "$tmp/lease-deadline" || { fail "deadline-based lease renewal/check failed"; return 1; }
   exercise_lease_claim_race_shim "$tmp/lease-claim-race" || { fail "lease expiry claim/renewal serialization failed"; return 1; }
   exercise_emergency_commit_shim "$tmp/emergency-commit" || { fail "emergency evidence-first commit failed"; return 1; }
-  rg -q 'heartbeat_elapsed.*-ge 30' "$RUNNER" || { fail "controller lease heartbeat is not 30 seconds"; return 1; }
+  if ! rg -q 'sleep 30' "$RUNNER" || ! rg -q 'controller_heartbeat_failure' "$RUNNER"; then fail "controller lease heartbeat is not 30 seconds"; return 1; fi
   rg -q 'lease_renewals.log' "$RUNNER" || { fail "controller lease renewal evidence is not archived"; return 1; }
   rg -q 'ssh_job_running' "$RUNNER" || { fail "controller does not distinguish a running SSH job from a zombie"; return 1; }
   rg -q 'rollback_armed==false and \.restoration_state==\\"restored\\"' "$RUNNER" || { fail "controller does not prove the terminal lease-disarm race"; return 1; }
@@ -544,24 +572,25 @@ test_IT4_restore_resume_state_machine() {
   exercise_failure_recovery_poll "$tmp/recovery-zero" zero || return 1
   [ "$(cat "$tmp/recovery-zero/volume.calls")" -ge 8 ] || { fail "zero-active state was not stabilized over the horizon"; return 1; }
   pass IT-4
-}
+)
 
 test_IT5_live_50_vpu_topology() {
   echo "=== IT-5: live 50-VPU topology and integrity preflight ==="; local dir role
   maybe_execute_live || return 1
   dir=$(require_live_output) || return 1
   jq -e '.status=="completed" and .topology_verified==true and .vpu==50 and .single_path==true and .sentinels_valid==true' "$dir/run_state.json" >/dev/null || return 1
-  jq -e '(.volumes|length)==5 and all(.volumes[];.vpu==50 and .created==true and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.attachment_ocid|length)>0) and ([.volumes[].path]|unique|length)==5 and .guest_cpus==8 and .guest_architecture=="x86_64" and .layout.data_stripes==2 and .layout.redo_stripes==2 and .layout.stripe_kib==256 and .layout.fra_direct==true and .layout.mounts==["/u02/oradata","/u03/redo","/u04/fra"] and .proof=="discovery/guest_preflight_initial.json" and .sentinels_valid==true' "$dir/live_topology.json" >/dev/null || return 1
+  jq -e '(.volumes|length)==5 and all(.volumes[];.vpu==50 and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.attachment_ocid|length)>0) and ([.volumes[].path]|unique|length)==5 and .guest_cpus==8 and .guest_architecture=="x86_64" and .layout.data_stripes==2 and .layout.redo_stripes==2 and .layout.stripe_kib==256 and .layout.fra_direct==true and .layout.mounts==["/u02/oradata","/u03/redo","/u04/fra"] and .proof=="discovery/guest_preflight_initial.json" and .sentinels_valid==true' "$dir/live_topology.json" >/dev/null || return 1
   jq -e '.boot_excluded and .multipath_absent and .mounts_valid and .lvm_valid and .socket_congestion_control_valid' "$dir/discovery/guest_preflight_initial.json" >/dev/null || return 1
-  jq -e '.compute.shape=="VM.Standard.E5.Flex" and .compute.ocpus==4 and .compute.memory_gb==32 and .compute.architecture=="x86_64" and (.compute.image_ocid|length)>0' "$dir/target_manifest.json" >/dev/null || return 1
+  jq -e '.infrastructure.reused==true and .compute.shape=="VM.Standard.E5.Flex" and .compute.ocpus==4 and .compute.memory_gb==32 and .compute.architecture=="x86_64" and (.compute.image_ocid|length)>0' "$dir/target_manifest.json" >/dev/null || return 1
   for role in data1 data2 redo1 redo2 fra; do jq -e --arg role "$role" --slurpfile manifest "$dir/target_manifest.json" '($manifest[0].volumes[]|select(.role==$role)) as $v | .data as $d | ($d|has("is-multipath")) and ($d|has("multipath-devices")) and $d."attachment-type"=="iscsi" and ($d."is-multipath"==false or $d."is-multipath"==null) and ($d."multipath-devices"==null or (($d."multipath-devices"|type)=="array" and ($d."multipath-devices"|length)==0)) and $d."volume-id"==$v.volume_ocid and $d."instance-id"==$manifest[0].compute.ocid and $d.iqn==$v.iqn and $d.ipv4==$v.ipv4 and $d.port==$v.port' "$dir/discovery/attachment_$role.json" >/dev/null || return 1; done
   [ -s "$dir/discovery/lvs.json" ] && [ -s "$dir/discovery/iscsi_sessions.txt" ] || return 1
   pass IT-5
 }
-test_IT6_live_regular_50_vpu_baseline() {
-  echo "=== IT-6: live regular-settings baseline at 50 VPUs/GB ==="; local dir path
+test_IT6_archived_50_vpu_baseline_reference() {
+  echo "=== IT-6: archived 50-VPU baseline reference (no remeasurement) ==="; local dir path
   dir=$(require_live_output) || return 1
-  jq -e '[.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|select(.attempt_type=="measurement" and .result=="passed")] as $b | ($b|length)==2 and all($b[];.vpu==50 and .restoration_state=="restored")' "$dir/results_index.json" >/dev/null || return 1
+  jq -e '[.[]|select(.candidate_id=="REGULAR_BASELINE_INITIAL" and .source=="archived_baseline")|select(.attempt_type=="measurement" and .result=="passed")] as $b | ($b|length)>=1 and all($b[];.vpu==50 and .restoration_state=="restored")' "$dir/results_index.json" >/dev/null || return 1
+  jq -e '.remeasured==false and .measurements>=1' "$dir/baseline_reference.json" >/dev/null || return 1
   while IFS= read -r path; do jq -e '.jobs|length==6' "$dir/$path/fio.json" >/dev/null || return 1; [ -s "$dir/$path/attempt_report.md" ] || return 1; done < <(jq -r '.[]|select(.candidate_id|startswith("REGULAR_BASELINE"))|.evidence[]' "$dir/results_index.json")
   "$VERIFIER" "$dir" >/dev/null || return 1
   pass IT-6
@@ -571,7 +600,7 @@ test_IT7_live_complete_candidate_matrix() {
   dir=$(require_live_output) || return 1
   jq -e --slurpfile plan "$dir/experiment_plan.json" '([$plan[0].candidate_ids[]]|sort)==([.[]|select(.disposition=="testable")|.id]|sort) and all(.[];if .disposition=="testable" then (.execution_status=="tested" or .execution_status=="inconclusive" or .execution_status=="failed") else (has("execution_status")|not) and (.reason|length)>0 end)' "$dir/tunable_coverage.json" >/dev/null || return 1
   jq -e 'length>6 and all(.[];.vpu==50 and .restoration_state=="restored" and (.evidence|length)>0)' "$dir/results_index.json" >/dev/null || return 1
-  expected=$(jq '.candidate_count + (.candidate_count/5|floor) + 4' "$dir/experiment_plan.json"); expected=$((expected + 2 * $(jq 'length' "$dir/shortlisted_candidates.json"))); actual=$(jq length "$dir/results_index.json"); [ "$actual" -eq "$expected" ] || { fail "result count $actual does not match smoke plus shortlisted validation count $expected"; return 1; }
+  expected=$(jq '.candidate_count + 2' "$dir/experiment_plan.json"); expected=$((expected + 2 * $(jq 'length' "$dir/shortlisted_candidates.json") + $(jq '.measurements' "$dir/baseline_reference.json"))); actual=$(jq length "$dir/results_index.json"); [ "$actual" -eq "$expected" ] || { fail "result count $actual does not match imported baseline plus candidate and canary count $expected"; return 1; }
   "$VERIFIER" "$dir" >/dev/null || return 1
   pass IT-7
 }
@@ -605,14 +634,14 @@ test_IT9_reports_and_recommendation() {
   "$VERIFIER" "$dir" >/dev/null || return 1
   if LC_ALL=C grep -R $'\033' "$dir" >/dev/null 2>&1; then fail "ANSI escape sequence in evidence"; return 1; fi; pass IT-9
 }
-test_IT10_final_state_fio_only_teardown() {
-  echo "=== IT-10: final state, FIO-only guard, and teardown ==="; local dir
+test_IT10_final_state_fio_only_resource_reuse() {
+  echo "=== IT-10: final state, FIO-only guard, restore, and resource reuse ==="; local dir
   dir=$(require_live_output) || return 1
-  jq -e '.baseline_equal==true and .sentinels_valid==true and .rollback_armed==false and .oracle_database_invoked==false and (.teardown=="completed" or .keep_infra==true)' "$dir/final_state.json" >/dev/null || return 1
-  if jq -e '.teardown=="completed"' "$dir/final_state.json" >/dev/null; then [ "$(find "$dir/scaffold" -name '*.deleted-*.json' | wc -l | tr -d ' ')" -eq 6 ] || return 1; jq -e 'length==6 and all(.[];((.post_delete.status=="not_found" and .post_delete.http_status==404 and .post_delete.code=="NotAuthorizedOrNotFound") or .post_delete.data."lifecycle-state"=="TERMINATED"))' "$dir/deletion_inventory.json" >/dev/null || return 1; jq -e '(.active_volumes|length)==0 and (.active_instances|length)==0' "$dir/post_teardown_inventory.json" >/dev/null || return 1; fi
+  jq -e '.baseline_equal==true and .sentinels_valid==true and .rollback_armed==false and .oracle_database_invoked==false and .resource_disposition=="baseline_restored_resources_retained" and .resources_retained==true and .infrastructure_reused==true' "$dir/final_state.json" >/dev/null || return 1
+  [ -s "$dir/final_recovery/baseline.json" ] || return 1
   ! rg -i 'oracle database|swingbench|awr' "$dir/results_index.json" >/dev/null || return 1
   pass IT-10
 }
 
-run_all() { local failed=0 name; local tests=(test_IT1_static_runner_contract test_IT2_deterministic_50_vpu_plan test_IT3_fail_closed_preflight_matrix test_IT4_restore_resume_state_machine test_IT5_live_50_vpu_topology test_IT6_live_regular_50_vpu_baseline test_IT7_live_complete_candidate_matrix test_IT8_live_rollback_lease_canary test_IT9_reports_and_recommendation test_IT10_final_state_fio_only_teardown); for name in "${tests[@]}"; do "$name" || failed=$((failed+1)); done; echo "Results: $(( ${#tests[@]} - failed )) passed, $failed failed"; [ "$failed" -eq 0 ]; }
-case "${1:-run_all}" in test_IT1_static_runner_contract|test_IT2_deterministic_50_vpu_plan|test_IT3_fail_closed_preflight_matrix|test_IT4_restore_resume_state_machine|test_IT5_live_50_vpu_topology|test_IT6_live_regular_50_vpu_baseline|test_IT7_live_complete_candidate_matrix|test_IT8_live_rollback_lease_canary|test_IT9_reports_and_recommendation|test_IT10_final_state_fio_only_teardown) "$1";; run_all) run_all;; *) echo "Unknown test: $1" >&2; exit 2;; esac
+run_all() { local failed=0 name; local tests=(test_IT1_static_runner_contract test_IT2_deterministic_50_vpu_plan test_IT3_fail_closed_preflight_matrix test_IT4_restore_resume_state_machine test_IT5_live_50_vpu_topology test_IT6_archived_50_vpu_baseline_reference test_IT7_live_complete_candidate_matrix test_IT8_live_rollback_lease_canary test_IT9_reports_and_recommendation test_IT10_final_state_fio_only_resource_reuse); for name in "${tests[@]}"; do "$name" || failed=$((failed+1)); done; echo "Results: $(( ${#tests[@]} - failed )) passed, $failed failed"; [ "$failed" -eq 0 ]; }
+case "${1:-run_all}" in test_IT1_static_runner_contract|test_IT2_deterministic_50_vpu_plan|test_IT3_fail_closed_preflight_matrix|test_IT4_restore_resume_state_machine|test_IT5_live_50_vpu_topology|test_IT6_archived_50_vpu_baseline_reference|test_IT7_live_complete_candidate_matrix|test_IT8_live_rollback_lease_canary|test_IT9_reports_and_recommendation|test_IT10_final_state_fio_only_resource_reuse) "$1";; run_all) run_all;; *) echo "Unknown test: $1" >&2; exit 2;; esac

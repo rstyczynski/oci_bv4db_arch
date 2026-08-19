@@ -1,0 +1,12 @@
+{
+  "unit": "bv4db-s30-restore-1787126769-80038",
+  "expiry_claim": "expiry-1787126949-81402",
+  "renewal_count": 0,
+  "expiry_observed_now_epoch": 1787126949,
+  "expiry_observed_deadline_epoch": 1787126949,
+  "byte_equal": true,
+  "tuned_verify_exit_code": 0,
+  "live_preflight": true,
+  "sentinels_valid": true,
+  "restoration_state": "restored"
+}

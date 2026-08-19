@@ -454,7 +454,7 @@ Backlog Items:
 
 ## Sprint 30 - Four-OCPU single-path iSCSI tuning on Oracle-style layout
 
-Status: Progress
+Status: Done
 Mode: managed
 Test: integration
 Regression: integration

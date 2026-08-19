@@ -1,0 +1,10 @@
+{
+  "candidate_id": "NETDEV_BACKLOG_4X",
+  "repetition": 1,
+  "started_at": "2026-08-19T10:19:42Z",
+  "ended_at": "2026-08-19T10:30:43Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

@@ -1,0 +1,143 @@
+{
+  "status": "interrupted",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_avq3_reuse_0823",
+  "resume": null,
+  "run_tag": "s30-20260819081418-68759",
+  "matrix_start": "2026-08-19T08:15:24Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "ISCSI_QD128",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T08:15:34Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T08:15:35Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T08:15:47Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T08:16:00Z"
+        },
+        {
+          "state": "inconclusive",
+          "at": "2026-08-19T08:16:01Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_BUF_2X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T08:16:17Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T08:16:18Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T08:16:19Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T08:16:19Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T08:30:17Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T08:30:19Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T08:30:19Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_BUF_4X",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T08:30:41Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T08:30:42Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T08:30:43Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T08:30:43Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T08:41:43Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T08:41:45Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T08:41:45Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": "TCP_CC_BBR",
+      "block": "screening",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T08:42:05Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T08:42:06Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T08:42:20Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T08:42:20Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T08:53:20Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T08:53:34Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T08:53:35Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 143
+}

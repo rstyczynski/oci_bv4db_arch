@@ -1,0 +1,22 @@
+[
+  {
+    "state": "planned",
+    "at": "2026-08-19T08:15:34Z"
+  },
+  {
+    "state": "applying",
+    "at": "2026-08-19T08:15:35Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-19T08:15:47Z"
+  },
+  {
+    "state": "restored",
+    "at": "2026-08-19T08:16:00Z"
+  },
+  {
+    "state": "inconclusive",
+    "at": "2026-08-19T08:16:01Z"
+  }
+]

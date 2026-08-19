@@ -1,0 +1,38 @@
+[
+  {
+    "state": "planned",
+    "at": "2026-08-19T07:53:03Z"
+  },
+  {
+    "state": "applying",
+    "at": "2026-08-19T07:53:04Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-19T07:53:17Z"
+  },
+  {
+    "state": "restored",
+    "at": "2026-08-19T07:53:31Z"
+  },
+  {
+    "state": "planned",
+    "at": "2026-08-19T08:01:10Z"
+  },
+  {
+    "state": "applying",
+    "at": "2026-08-19T08:01:11Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-19T08:01:23Z"
+  },
+  {
+    "state": "restored",
+    "at": "2026-08-19T08:01:38Z"
+  },
+  {
+    "state": "inconclusive",
+    "at": "2026-08-19T08:01:38Z"
+  }
+]

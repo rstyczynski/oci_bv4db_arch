@@ -2,8 +2,8 @@
 
 ## Implementation overview
 
-**Sprint status:** under_construction  
-**Backlog item:** BV4DB-72 — under_construction  
+**Sprint status:** implemented and tested
+**Backlog item:** BV4DB-72 — tested
 **Approved execution tier:** 50 VPUs/GB only  
 **Scope:** five attached Block Volumes and their single iSCSI paths. The boot
 volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
@@ -14,9 +14,9 @@ volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
 | --- | --- | --- |
 | Setup / inception | Define the problem, constraints, and feasibility prerequisites. | `sprint_30_setup.md` exists; OCI access verified. |
 | Elaboration / design | Approved design and executable test specification. | `sprint_30_design.md` accepted; tier changed to 50 after the documented 45 failure. |
-| Construction | Implement the approved command, fill the existing test skeletons, and prepare functional test sequences. | Complete; final RUP safety re-review returned GO for a fresh live A3. |
-| Quality gates | Run A3 first, then scoped B3, with timestamped logs. | Initial A3 failed before the executor existed; a fresh A3 is pending. |
-| Documentation | Reconcile design, implementation, evidence, test results, and backlog traceability. | Not started; cannot start before construction/gates finish. |
+| Construction | Implement the approved command, fill the existing test skeletons, and prepare functional test sequences. | Complete; the final reusable-infrastructure matrix completed. |
+| Quality gates | Run A3 first, then scoped B3, with timestamped logs and results in `sprint_30_tests.md`. | Complete; A3 passed 10/10 and B3 passed 10/10 (component 1/1). |
+| Documentation | Reconcile design, implementation, evidence, test results, and backlog traceability. | Complete; canonical evidence and reports are linked from the test and documentation summaries. |
 
 Product-owner clarification on 2026-08-19: every executed performance test
 must create a written Markdown report, not only raw JSON and optional HTML.
@@ -26,52 +26,67 @@ canary attempts. Construction and IT-9 must be updated before Sprint 30 can
 pass; evidence produced before this clarification is incomplete under the new
 contract.
 
+The canonical Phase 4 result record is `sprint_30_tests.md`. It contains the
+archived baseline values and direct links to every written and HTML FIO report.
+Test measurements are not duplicated in implementation notes; this document
+records what was built and the causes and fixes discovered during construction.
+
+Product-owner correction on 2026-08-19: tuning results must become available
+as each test finishes. Candidate execution therefore uses one screening
+measurement, the existing archived baseline, and the reusable OCI topology;
+each successful measurement is copied back and rendered to `fio_report.html`
+before the next candidate begins. The iSCSI depth verifier now distinguishes
+the exact configured request (128) from the effective value negotiated by the
+target/SCSI layer. The effective value must be identical across all five
+targets, greater than baseline, and no greater than 128. This permits the
+observed configured-128/effective-113 state to run FIO while retaining exact
+readback, reporting, and restoration gates.
+
 ## BV4DB-72 implementation
 
 ### OCI resource lifecycle correction
 
-`oci_scaffold` is the mandatory resource lifecycle implementation for this
-project. The initial disposable instance and Block Volumes were created through
-direct OCI CLI while construction was incomplete; that was a process error.
-No guest tuning or FIO ran through that path. The implemented controller now
-uses a new output directory and a run-unique scaffold name for the compute and
-each of the five volumes. It rejects adopted resources, masked helper failures,
-non-Oracle-Linux-9 images, non-50-VPU volumes, or multipath attachments. Normal
-cleanup quiesces the guest, tears down the five volume state files in reverse
-order, and terminates compute only after every volume teardown succeeds.
+`oci_scaffold` is the mandatory resource lifecycle implementation. Per-run
+scaffold state was a design error because it reprovisioned identical OCI
+resources. The corrected controller separates immutable evidence directories
+from one stable avq3 scaffold state, ensures/adopts that compute and five-volume
+topology idempotently, and retains it after tests. Every candidate restores the
+captured guest and storage configuration before the next candidate. Normal
+completion or interruption never deletes OCI resources. Hard destruction is an
+explicit exceptional recovery option used only when exact restoration fails.
 
 ### Implemented code
 
 | Artifact | Purpose | Status | Tested |
 | --- | --- | --- | --- |
-| `tools/oci_bv_single_path_tuning.sh` | Deterministic plan, fresh scaffold lifecycle, pinned-image/topology gates, remote orchestration, attempt index, reports, and ordered teardown. | Implemented; live validation pending | IT-1--IT-4 pass locally. |
-| `tools/oci_bv_single_path_guest.sh` | Exact-device iSCSI login, boot-device exclusion, guarded empty-volume layout initialization, baseline capture, reversible candidates, FIO/iostat evidence, rollback canaries, and quiescence. | Implemented; live validation pending | Bash syntax and ShellCheck pass. |
-| `tools/oci_bv_controller_lock.sh` | Atomic controller-lifetime exclusion with fail-closed live-owner handling and auditable stale-lock recovery. | Implemented; live validation pending | Active-owner rejection and stale recovery pass in IT-4. |
-| `tools/analyze_bv_single_path.py` | Primary/per-job statistics, stability/drift gates, error/CPU guards, Pareto ranking, tie-breaking, and Markdown/HTML recommendation reports. | Implemented; live validation pending | Python compilation passes; independent live reconciliation is specified in IT-6/7/9. |
-| `tools/index_oci_attempt_metrics.py` | Reconcile OCI Monitoring datapoints to each exact FIO attempt window. | Implemented; live validation pending | Python compilation passes. |
-| `tools/verify_bv_single_path_results.py` | Independently recompute options, artifacts, timestamps, statistics, thresholds, Pareto choice, restoration, topology, and metric-window indexes. | Implemented; live validation pending | Python compilation passes; invoked by IT-6/7/9. |
-| `tests/integration/test_bv4db_iscsi_tuning.sh` | Ten approved integration-test functions in the `iscsi_tuning` domain, including one-shot live execution and immutable evidence validation. | Implemented; live validation pending | IT-1--IT-4 pass; IT-5--IT-10 require the completed live directory. |
+| `tools/oci_bv_single_path_tuning.sh` | Deterministic candidate-only plan, archived baseline import, reusable scaffold lifecycle, pinned topology gates, restoration, and reports. | Complete | Live matrix and A3/B3 pass. |
+| `tools/oci_bv_single_path_guest.sh` | Exact-device iSCSI login, boot-device exclusion, guarded empty-volume layout initialization, baseline capture, reversible candidates, FIO/iostat evidence, rollback canaries, and quiescence. | Complete | Live attempts, both rollback canaries, Bash syntax, and ShellCheck pass. |
+| `tools/oci_bv_controller_lock.sh` | Atomic controller-lifetime exclusion with fail-closed live-owner handling and auditable stale-lock recovery. | Complete | Active-owner rejection and stale recovery pass in IT-4. |
+| `tools/analyze_bv_single_path.py` | Primary/per-job statistics, stability/drift gates, error/CPU guards, Pareto ranking, tie-breaking, and Markdown/HTML recommendation reports. | Complete | Recommendation independently reconciled in IT-6/7/9. |
+| `tools/index_oci_attempt_metrics.py` | Reconcile OCI Monitoring datapoints to each exact FIO attempt window. | Complete | Every indexed attempt window has the required datapoints. |
+| `tools/verify_bv_single_path_results.py` | Independently recompute options, artifacts, timestamps, statistics, thresholds, Pareto choice, restoration, topology, and metric-window indexes. | Complete | Verified 20 indexed rows and 13 testable candidates. |
+| `tests/integration/test_bv4db_iscsi_tuning.sh` | Ten approved integration-test functions in the `iscsi_tuning` domain, including one-shot live execution and immutable evidence validation. | Complete | A3 and scoped B3 pass all ten tests. |
 | `tests/manifests/component_iscsi_tuning.manifest` | Narrow B3 regression group for the changed tuning domain only. | Complete | Manifest/dispatcher checked. |
 
 ### Real tuning command status
 
 `tools/oci_bv_single_path_tuning.sh --execute` now implements the live path
-against fresh scaffold-owned resources. It does all of the following against
-the five attached Block Volumes only:
+against one reusable scaffold-owned infrastructure set. It does all of the
+following against the five attached Block Volumes only:
 
 1. logs in exactly one iSCSI path per volume with `iscsiadm`, never editing
    `/etc/iscsi/nodes` directly;
 2. initializes the DATA/REDO/FRA layout only after explicit fresh-empty
    authorization, and never touches the boot device;
-3. captures baseline state and sentinels, runs one smoke baseline, applies one
-   candidate at a time for one screening measurement, validates only
+3. imports the accepted archived performance baseline, reuses the captured
+   configuration and sentinels, applies one candidate at a time for one screening measurement, validates only
    shortlisted candidates with two additional measurements, restores the exact
    baseline after every attempt, and records evidence;
-4. runs the two rollback canaries, final regular baseline, report rendering,
-   recommendation, evidence copy, and teardown.
+4. runs the two rollback canaries, report rendering and recommendation, then
+   proves baseline restoration while retaining the OCI resources.
 
-The command remains unverified until the fresh A3 live gate completes. No
-performance claim or recommendation is accepted from code inspection alone.
+The reusable-infrastructure A3 live gate completed. The accepted evidence and
+recommendation come from the measured matrix, not code inspection.
 
 Before live execution, the final read-only RUP safety review confirmed that
 all stop-ship findings were closed. The reviewed controls include exact OCI
@@ -255,8 +270,8 @@ deleted and `failure_cleanup_inventory.json` proved zero active tagged volumes
 or instances. The Product Owner rejected repeated baselines as inappropriate
 for this screening sprint and approved one smoke baseline, one run per
 candidate, and two additional validation runs only for promising candidates.
-The controller, analyzer, verifier, plan tests, and design contract are being
-updated to that method before the next fresh A3.
+The controller, analyzer, verifier, plan tests, and design contract now import
+that archived baseline without another baseline FIO run.
 
 The same run exposed a report-rendering defect: Oracle Linux 9 sysstat emitted
 `rkB/s` and `wkB/s`, while `render_fio_report_html.sh` read only `rMB/s` and
@@ -264,7 +279,7 @@ The same run exposed a report-rendering defect: Oracle Linux 9 sysstat emitted
 zero. The shared renderer now accepts either schema and converts KiB/s to
 MiB/s; all valid archived Sprint 30 attempt HTML reports were regenerated.
 
-A fresh live retry also exposed a transient SSH reset during idempotent guest
+A later live retry also exposed a transient SSH reset during idempotent guest
 package bootstrap. The bootstrap now retries for a bounded five-minute window;
 the failed run's cleanup inventory proved that no OCI resources remained.
 
@@ -276,7 +291,7 @@ not benchmarked. The same review found that the generated rotation had placed
 NIC offload testing before iSCSI queue depth despite the approved catalogue
 sequence. Planning now enforces iSCSI first and offloads last.
 
-The next fresh baseline exposed a narrow controller/guest completion race: the
+The next diagnostic run exposed a narrow controller/guest completion race: the
 guest had persisted its restored/disarmed lease commit marker but its SSH
 process had not yet exited, so the next heartbeat renewal correctly refused an
 already-disarmed lease and the controller treated that refusal as failure. The
@@ -286,13 +301,12 @@ renewal failure remains fail-closed.
 
 ## Live environment status
 
-OCI `DEFAULT` profile access was validated against the active
-`oci_bv4db_arch` compartment in `eu-zurich-1`. A temporary direct-CLI
-four-OCPU target and five 50-VPU volumes were used only to validate OCI tier
-acceptance; they did not follow the required scaffold lifecycle. All of those
-resources and their attachments have now been detached/deleted/terminated.
-No live Sprint 30 benchmark resource is currently active, and no guest login,
-filesystem, FIO, tuning command, or boot-volume change has occurred.
+OCI `avq3` profile access was validated against the active
+`oci_bv4db_arch` compartment in `eu-zurich-1`. The completed matrix reused the
+stable scaffold state in `progress/sprint_30/reusable_50vpu_avq3`. The final
+restore proved the captured guest/storage baseline and retained the compute,
+five volumes, and attachments for later tests. Earlier disposable feasibility
+resources were independently deleted and are not part of the accepted result.
 
 ## Recorded failure: 45 VPUs/GB
 
@@ -318,13 +332,21 @@ The first attempt to adopt the temporary direct-created volumes with
 match its full adoption contract; the direct-created resource did not, so it
 began to create a replacement rather than safely adopting it. The unintended 50-GB
 replacement attachment was immediately detached and the replacement volume was
-deleted. This confirms that Sprint 30 must begin with fresh, scaffold-owned
-resources rather than custom adoption of direct-created resources.
+deleted. This confirms only that ad-hoc direct-created resources must not be
+adopted through an incomplete scaffold state. Sprint 30 uses one complete,
+stable scaffold-owned state and reuses it thereafter.
 
-## Quality-gate result to date
+## Final quality-gate result
 
-`test_run_A3_integration_20260818_120356.log` records the initial A3 attempt:
-IT-1 through IT-4 passed. IT-5 through IT-10 failed closed because the required
-completed live evidence directory did not exist; these are required acceptance
-tests, not tests designed to fail. This is not a passing gate and B3 must not
-run until the executor and live evidence are complete.
+The canonical run is
+`live_50vpu_20260819_avq3_reuse_qd_fix_0910`. A3 passed IT-1 through IT-10
+(`10 passed, 0 failed`) and scoped B3 passed the same ten checks with the
+component dispatcher reporting `1 passed, 0 failed`. The independent verifier
+reconciled 20 result rows, 13 testable candidates, per-attempt reports, iostat,
+OCI metric windows, restoration, and the `REGULAR_BASELINE` recommendation.
+The final state proves byte-equal baseline restoration, valid sentinels, a
+disarmed rollback lease, reused infrastructure, and retained resources.
+
+The earlier A3 logs remain failure-history evidence and do not affect the final
+gate. Full paths, baseline values, candidate interpretation, and rerunnable
+test commands are recorded in `sprint_30_tests.md`.

@@ -1,0 +1,19 @@
+Profile name:
+oci-rps-xps
+
+Profile summary:
+Enable RPS/XPS conditionally in OCI
+
+Profile description:
+
+
+### /usr/lib/tuned/oci-rps-xps/tuned.conf
+#
+# tuned configuration
+#
+
+[main]
+summary=Enable RPS/XPS conditionally in OCI
+
+[iscsi]
+script=${i:PROFILE_DIR}/script.sh
