@@ -74,7 +74,7 @@ infrastructure. At 50 VPUs/GB none cleared the guardrails, so the recommendation
 is `REGULAR_BASELINE`. At 120 VPUs/GB, `RPS_ALL_ONLINE` reduced REDO p99.9
 latency by 17.97% without a primary regression and is recommended for that
 exact tested configuration. This is not a multipath or Oracle Database test.
-Start with the easy-to-find [Sprint 30 final report](SPRINT_30_REPORT.md).
+Start with the easy-to-find [Sprint 30 final report](progress/sprint_30/SPRINT_30_REPORT.md).
 
 ## The Three Layouts
 

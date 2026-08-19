@@ -63,18 +63,18 @@ regression, stability, CPU, or error guard and are not recommended.
 
 ### 120-VPU result
 
-- [120-VPU written summary](progress/sprint_30/sprint_30_120vpu_summary.md)
-- [120-VPU aggregate FIO HTML](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/fio_report.html)
-- [120-VPU detailed FIO analysis](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/fio_analysis.md)
-- [120-VPU OCI Monitoring report](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/oci_metrics.md)
-- [120-VPU machine-readable recommendation](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/recommendation.json)
+- [120-VPU written summary](sprint_30_120vpu_summary.md)
+- [120-VPU aggregate FIO HTML](live_120vpu_20260819_avq3_reuse_r3/fio_report.html)
+- [120-VPU detailed FIO analysis](live_120vpu_20260819_avq3_reuse_r3/fio_analysis.md)
+- [120-VPU OCI Monitoring report](live_120vpu_20260819_avq3_reuse_r3/oci_metrics.md)
+- [120-VPU machine-readable recommendation](live_120vpu_20260819_avq3_reuse_r3/recommendation.json)
 
 ### 50-VPU result
 
-- [Sprint 30 test and baseline report](progress/sprint_30/sprint_30_tests.md)
-- [50-VPU aggregate FIO HTML](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
-- [50-VPU detailed FIO analysis](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_analysis.md)
-- [50-VPU OCI Monitoring report](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md)
+- [Sprint 30 test and baseline report](sprint_30_tests.md)
+- [50-VPU aggregate FIO HTML](live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
+- [50-VPU detailed FIO analysis](live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_analysis.md)
+- [50-VPU OCI Monitoring report](live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md)
 
 ## Scope and Use
 
