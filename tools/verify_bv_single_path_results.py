@@ -146,7 +146,8 @@ def main() -> int:
     baseline_manifest_path = root / "baseline_reference" / "target_manifest.json"
     baseline_manifest = load(baseline_manifest_path) if baseline_manifest_path.is_file() else None
     results, recommendation = load(root / "results_index.json"), load(root / "recommendation.json")
-    assert plan["vpus"] == [50] and plan["repeats"] == 1
+    expected_vpu = int(manifest["vpu"])
+    assert plan["vpus"] == [expected_vpu] and expected_vpu in {50, 120} and plan["repeats"] == 1
     assert plan["screening_repetitions"] == 1 and plan["shortlist_validation_repetitions"] == 3
     testable = [row["id"] for row in coverage if row["disposition"] == "testable"]
     assert sorted(plan["candidate_ids"]) == sorted(testable), "plan does not cover every testable candidate"
@@ -160,7 +161,7 @@ def main() -> int:
     measured = []
     indexed_keys = set()
     for row in results:
-        assert row.get("run_id") and row.get("candidate_id") and row.get("attempt_type") and row.get("vpu") == 50
+        assert row.get("run_id") and row.get("candidate_id") and row.get("attempt_type") and row.get("vpu") == expected_vpu
         assert row.get("result") and row.get("restoration_state") and row.get("evidence")
         evidence = root / row["evidence"][0]
         assert evidence.is_dir(), f"missing evidence directory {evidence}"
@@ -183,7 +184,7 @@ def main() -> int:
         assert evidence_manifest is not None, "archived baseline target manifest is missing"
         evidence_manifest_volumes = {item["role"]: item["volume_ocid"] for item in evidence_manifest["volumes"]}
         manifest_volume_rows = {item["role"]: item for item in evidence_manifest["volumes"]}
-        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == 50 and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == evidence_manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == evidence_manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
+        assert len(oci_preflight) == 5 and all(item["volume"]["vpus-per-gb"] == expected_vpu and "is-multipath" in item["attachment"] and item["attachment"]["is-multipath"] in (False, None) and "multipath-devices" in item["attachment"] and item["attachment"]["multipath-devices"] in (None, []) and item["attachment"]["attachment-type"] == "iscsi" and item["attachment"]["volume-id"] == evidence_manifest_volumes[item["role"]] and item["attachment"]["instance-id"] == evidence_manifest["compute"]["ocid"] and item["attachment"]["iqn"] == manifest_volume_rows[item["role"]]["iqn"] and item["attachment"]["ipv4"] == manifest_volume_rows[item["role"]]["ipv4"] and item["attachment"]["port"] == manifest_volume_rows[item["role"]]["port"] for item in oci_preflight)
         assert all(load(evidence / "guest_preflight.json").get(key) is True for key in ("sessions_valid", "routes_valid", "devices_unique", "boot_excluded", "multipath_absent", "mounts_valid", "lvm_valid", "socket_congestion_control_valid", "sentinels_valid"))
         assert load(evidence / "controls_before.json") == load(evidence / "controls_restored.json"), f"restore drift in {evidence}"
         restoration = load(evidence / "restoration_checks.json")
@@ -214,12 +215,19 @@ def main() -> int:
 
     performance = [row for row in measured if row["attempt_type"] == "measurement"]
     initial = [row for row in performance if row["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
-    assert initial and all(row.get("source") == "archived_baseline" for row in initial), "accepted archived baseline is missing"
+    assert initial, "accepted baseline is missing"
+    baseline_remeasured = bool(plan["baseline"]["remeasured"])
+    if baseline_remeasured:
+        assert all(row.get("source") != "archived_baseline" for row in initial), "current-run baseline was not executed locally"
+    else:
+        assert all(row.get("source") == "archived_baseline" for row in initial), "accepted archived baseline is missing"
     baseline = {name: summarize([row["metrics"][name] for row in initial]) for name in PRIMARY}
     for name in PRIMARY:
         check_summary(recommendation["baseline"][name], baseline[name], f"baseline {name}")
-    assert recommendation["baseline_source"] == "archived" and recommendation["baseline_remeasured"] is False
-    assert recommendation["baseline_drift_metrics"] == [], "archived baseline must not be remeasured for drift"
+    assert recommendation["vpu"] == expected_vpu
+    assert recommendation["baseline_source"] == ("current_run" if baseline_remeasured else "archived")
+    assert recommendation["baseline_remeasured"] is baseline_remeasured
+    assert recommendation["baseline_drift_metrics"] == []
 
     eligible = []
     computed = {}

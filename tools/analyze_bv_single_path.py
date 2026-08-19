@@ -125,6 +125,11 @@ def main() -> int:
     if len(sys.argv) != 2 and not special_mode:
         raise SystemExit("usage: analyze_bv_single_path.py [--shortlist|--checkpoint-drift|--final-drift] RUN_DIR")
     run_dir = Path(sys.argv[2] if special_mode else sys.argv[1]).resolve()
+    manifest = load(run_dir / "target_manifest.json")
+    baseline_meta = load(run_dir / "baseline_reference.json")
+    vpu = int(manifest["vpu"])
+    baseline_source = "current_run" if baseline_meta.get("remeasured") else "archived"
+    backlog_item = "BV4DB-72" if vpu == 50 else "BV4DB-75"
     rows = load(run_dir / "results_index.json")
     coverage = load(run_dir / "tunable_coverage.json")
     passed_fio_rows = [r for r in rows if r.get("attempt_type") in {"measurement", "checkpoint"} and r.get("result") == "passed"]
@@ -134,7 +139,7 @@ def main() -> int:
     if special_mode == "--shortlist":
         initial = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
         if not initial:
-            raise ValueError("accepted archived baseline is missing")
+            raise ValueError("accepted baseline is missing")
         names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
         base = {name: summary([row["metrics"][name] for row in initial])["median"] for name in names}
         baseline_cpu = summary([row["metrics"]["cpu_percent"] for row in initial])["median"]
@@ -180,7 +185,7 @@ def main() -> int:
         return 0
     initial_rows = [r for r in measurement_rows if r["candidate_id"] == "REGULAR_BASELINE_INITIAL"]
     if not initial_rows:
-        raise ValueError("accepted archived baseline is missing")
+        raise ValueError("accepted baseline is missing")
     metric_names = ("data_iops", "redo_p99_ns", "redo_p999_ns", "fra_bw_bytes")
     baseline = {name: summary([r["metrics"][name] for r in initial_rows]) for name in metric_names}
     baseline_drift = []
@@ -248,22 +253,23 @@ def main() -> int:
     pareto.sort(key=lambda item: (candidates[item]["statistics"]["redo_p999_ns"]["median"] or math.inf, candidates[item]["cpu"]["median"] or math.inf, candidates[item]["changed_controls"], item))
     decision = pareto[0] if pareto else "REGULAR_BASELINE"
     recommendation = {
-        "vpu": 50,
+        "vpu": vpu,
         "decision": decision,
         "reason": "Pareto-optimal stable non-regressing candidate" if pareto else "no stable candidate cleared improvement and regression thresholds",
         "evidence": ["baseline_reference.json", "results_index.json", "tunable_coverage.json", "attempts/"],
         "measurement_runs": len(measurement_rows),
         "baseline": baseline,
         "baseline_job_statistics": baseline_job_statistics,
-        "baseline_source": "archived",
-        "baseline_remeasured": False,
+        "baseline_source": baseline_source,
+        "baseline_remeasured": bool(baseline_meta.get("remeasured")),
         "baseline_drift_metrics": baseline_drift,
         "candidates": candidates,
         "eligible_candidates": eligible,
         "pareto_candidates": pareto,
     }
     (run_dir / "recommendation.json").write_text(json.dumps(recommendation, indent=2) + "\n", encoding="utf-8")
-    lines = ["# Sprint 30 FIO analysis", "", "- Fixed tier: `50 VPUs/GB`", "- Baseline source: archived accepted evidence; not remeasured", f"- Successful measured repetitions including archived baseline: `{len(measurement_rows)}`", f"- Recommendation: `{decision}`", "", "## Candidate statistics", "", "| Candidate | Stable | Eligible | Improvements | Regressions | Evidence |", "| --- | --- | --- | --- | --- | --- |"]
+    baseline_description = "measured once in this run" if baseline_meta.get("remeasured") else "archived accepted evidence; not remeasured"
+    lines = ["# Sprint 30 FIO analysis", "", f"- Fixed tier: `{vpu} VPUs/GB`", f"- Baseline source: {baseline_description}", f"- Successful measured repetitions including baseline: `{len(measurement_rows)}`", f"- Recommendation: `{decision}`", "", "## Candidate statistics", "", "| Candidate | Stable | Eligible | Improvements | Regressions | Evidence |", "| --- | --- | --- | --- | --- | --- |"]
     for candidate_id in candidate_ids:
         item = candidates[candidate_id]
         evidence_links = ", ".join(f"[{Path(path).name}]({path}/fio_report.html)" for path in item["evidence"])
@@ -297,6 +303,7 @@ def main() -> int:
         "</tr>"
         for cid in candidate_ids
     )
+    decision_text = (f"Apply {decision}. It is the Pareto-optimal stable candidate that passed improvement, regression, CPU, and error guards." if pareto else "Keep the regular baseline. No candidate cleared the approved improvement and regression thresholds.")
     report = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -334,9 +341,9 @@ def main() -> int:
 <body>
 <main>
   <header>
-    <div class="eyebrow">BV4DB-72 · executed FIO evidence</div>
+    <div class="eyebrow">{backlog_item} · executed FIO evidence</div>
     <h1>Sprint 30 Performance Report</h1>
-    <p>Four-OCPU, single-path iSCSI characterization on five OCI Block Volumes at 50 VPUs/GB. Infrastructure was reused, the accepted baseline was not remeasured, and every candidate restored the captured configuration.</p>
+    <p>Four-OCPU, single-path iSCSI characterization on five OCI Block Volumes at {vpu} VPUs/GB. Infrastructure was reused, the baseline was {html.escape(baseline_description)}, and every candidate restored the captured configuration.</p>
   </header>
 
   <section class="grid" aria-label="Report overview">
@@ -350,7 +357,7 @@ def main() -> int:
 
   <section class="panel note">
     <h2>Decision</h2>
-    <p><strong>Keep the regular baseline.</strong> No candidate cleared the approved improvement and regression thresholds. All 13 screening candidates were rejected, principally because REDO p99 and p99.9 latency regressed. This is a valid negative tuning result.</p>
+    <p><strong>{html.escape(decision_text)}</strong> This is the evidence-backed tuning result.</p>
   </section>
 
   <section class="panel">
@@ -367,7 +374,7 @@ def main() -> int:
   </section>
 
   <section class="panel">
-    <h2>Archived baseline reports</h2>
+    <h2>Baseline reports</h2>
     <p>The five accepted baseline measurements remain separate reports and were imported without rerunning FIO:</p>
     <ul class="reports">{baseline_links}</ul>
   </section>

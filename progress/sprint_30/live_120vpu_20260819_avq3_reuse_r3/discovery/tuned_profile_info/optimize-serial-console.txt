@@ -1,0 +1,21 @@
+Profile name:
+optimize-serial-console
+
+Profile summary:
+Optimize for serial console use.
+
+Profile description:
+
+
+### /usr/lib/tuned/optimize-serial-console/tuned.conf
+#
+# tuned configuration
+#
+# This tuned configuration optimizes for serial console performance at the
+# expense of reduced debug information to the console.
+
+[main]
+summary=Optimize for serial console use.
+
+[sysctl]
+kernel.printk="4 4 1 7"

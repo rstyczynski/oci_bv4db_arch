@@ -1,0 +1,19 @@
+Profile name:
+oci-nic
+
+Profile summary:
+Increase combined channels to 16 on NICs with bnxt_en driver on BM shapes in OCI
+
+Profile description:
+
+
+### /usr/lib/tuned/oci-nic/tuned.conf
+#
+# tuned configuration
+#
+
+[main]
+summary=Increase combined channels to 16 on NICs with bnxt_en driver on BM shapes in OCI
+
+[script]
+script=${i:PROFILE_DIR}/script.sh

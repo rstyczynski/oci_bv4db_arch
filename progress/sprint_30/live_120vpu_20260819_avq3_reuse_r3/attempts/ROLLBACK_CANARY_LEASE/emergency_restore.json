@@ -1,0 +1,12 @@
+{
+  "unit": "bv4db-sprint30-restore-316925",
+  "expiry_claim": "expiry-1787156166-317604",
+  "renewal_count": 0,
+  "expiry_observed_now_epoch": 1787156166,
+  "expiry_observed_deadline_epoch": 1787156161,
+  "byte_equal": true,
+  "tuned_verify_exit_code": 0,
+  "live_preflight": true,
+  "sentinels_valid": true,
+  "restoration_state": "restored"
+}

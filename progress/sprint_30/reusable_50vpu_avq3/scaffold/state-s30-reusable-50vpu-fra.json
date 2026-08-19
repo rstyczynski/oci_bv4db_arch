@@ -6,7 +6,7 @@
     "failed": 0
   },
   "meta": {
-    "run_id": "84509-3145-1787130524",
+    "run_id": "77168-8736-1787144874",
     "creation_order": [
       "blockvolume"
     ]
@@ -16,7 +16,7 @@
     "oci_compartment": "ocid1.compartment.oc1..aaaaaaaaoyzrzkwxz3ufozjom4cmxwpwwsir3sccbu6e46wnlwvtmlq7d22a",
     "bv_attach_type": "iscsi",
     "bv_is_multipath": false,
-    "bv_vpus_per_gb": 50,
+    "bv_vpus_per_gb": 120,
     "bv_size_gb": 100,
     "bv_device_path": "/dev/oracleoci/oraclevdf"
   },
@@ -29,7 +29,7 @@
     "attachment_ocid": "ocid1.volumeattachment.oc1.eu-zurich-1.an5heljrknhfuyicdezbux74ykujndwqu5gqbjnlbqwver372iwih234egoa",
     "device_path": "/dev/oracleoci/oraclevdf",
     "is_multipath": false,
-    "vpus_per_gb": 50,
+    "vpus_per_gb": 120,
     "iqn": "iqn.2015-12.com.oracleiaas:73e44c48-bc09-46c4-8249-158ee33a7a28",
     "ipv4": "169.254.2.6",
     "port": 3260

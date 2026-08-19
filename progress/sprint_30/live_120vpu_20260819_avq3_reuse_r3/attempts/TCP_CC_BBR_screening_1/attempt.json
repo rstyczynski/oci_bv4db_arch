@@ -1,0 +1,10 @@
+{
+  "candidate_id": "TCP_CC_BBR",
+  "repetition": 1,
+  "started_at": "2026-08-19T13:55:13Z",
+  "ended_at": "2026-08-19T14:06:26Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

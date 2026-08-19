@@ -1,0 +1,7 @@
+{
+  "title": "Sprint 30 FIO window",
+  "resource_classes": {
+    "compute": {"namespace":"oci_computeagent","interval":"1m","metrics":[{"name":"CpuUtilization","stat":"mean","unit":"percent","scale":1,"suffix":"%","decimals":2}]},
+    "blockvolume": {"namespace":"oci_blockstore","interval":"1m","metrics":[{"name":"VolumeReadThroughput","stat":"mean","unit":"bytes/interval","scale":1048576,"suffix":" MiB","decimals":2},{"name":"VolumeWriteThroughput","stat":"mean","unit":"bytes/interval","scale":1048576,"suffix":" MiB","decimals":2},{"name":"VolumeReadOps","stat":"mean","unit":"ops","scale":1,"suffix":"","decimals":2},{"name":"VolumeWriteOps","stat":"mean","unit":"ops","scale":1,"suffix":"","decimals":2}]}
+  }
+}

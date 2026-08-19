@@ -1,0 +1,16 @@
+[
+  {
+    "run_id": "s30-20260819124959-64131",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "baseline",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "failed",
+    "restoration_state": "unproven",
+    "sentinels_valid": false,
+    "evidence": [
+      "attempts/REGULAR_BASELINE_INITIAL_baseline_1"
+    ]
+  }
+]

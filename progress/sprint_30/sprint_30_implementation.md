@@ -3,8 +3,8 @@
 ## Implementation overview
 
 **Sprint status:** implemented and tested
-**Backlog item:** BV4DB-72 — tested
-**Approved execution tier:** 50 VPUs/GB only  
+**Backlog items:** BV4DB-72 — tested; BV4DB-75 — tested
+**Approved execution tiers:** separate 50- and 120-VPU/GB evidence sets
 **Scope:** five attached Block Volumes and their single iSCSI paths. The boot
 volume is excluded from FIO, LVM/filesystem work, iSCSI mutation, and tuning.
 
@@ -350,3 +350,28 @@ disarmed rollback lease, reused infrastructure, and retained resources.
 The earlier A3 logs remain failure-history evidence and do not affect the final
 gate. Full paths, baseline values, candidate interpretation, and rerunnable
 test commands are recorded in `sprint_30_tests.md`.
+
+# BV4DB-75 120-VPU extension
+
+The Product Owner extended Sprint 30 with BV4DB-75 and explicitly required
+execution at 120 VPUs/GB without changing any test. Construction therefore
+left `tests/` and the FIO profile unchanged and parameterized only the runner,
+guest manifest validation, analyzer, and independent evidence verifier for a
+single-tier value of either 50 or 120. The completed BV4DB-72 behavior remains
+the default and its unchanged integration suite passes 10/10.
+
+The runner updates the five retained `avq3` volumes in place and verifies the
+effective OCI value before guest preparation. At 120 VPU the first baseline
+attempt demonstrated that single-path FIO can starve the public SSH management
+flow. That attempt was rejected and retained as failure evidence. The
+host-local watchdog restored candidate state; construction then extended only
+the measurement lease and SSH liveness window to cover the already defined
+600-second workload. FIO jobs, runtime, ramp, candidate order, mutations, and
+restoration checks were not changed.
+
+The canonical 120-VPU run is `live_120vpu_20260819_avq3_reuse_r3`.
+All 13 screenings completed; `RPS_ALL_ONLINE` alone cleared screening and its
+two validation repetitions were stable. Both rollback canaries passed, OCI
+metrics were collected, the independent verifier reconciled 18 indexed rows,
+and the final recommendation is `RPS_ALL_ONLINE`. A3 and scoped B3 passed
+without any modification under `tests/`.

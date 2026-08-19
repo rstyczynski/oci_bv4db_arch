@@ -1,0 +1,5891 @@
+{
+  "vpu": 120,
+  "decision": "RPS_ALL_ONLINE",
+  "reason": "Pareto-optimal stable non-regressing candidate",
+  "evidence": [
+    "baseline_reference.json",
+    "results_index.json",
+    "tunable_coverage.json",
+    "attempts/"
+  ],
+  "measurement_runs": 16,
+  "baseline": {
+    "data_iops": {
+      "count": 1,
+      "median": 65349.909417999996,
+      "min": 65349.909417999996,
+      "max": 65349.909417999996,
+      "mad": 0.0,
+      "cv": 0.0
+    },
+    "redo_p99_ns": {
+      "count": 1,
+      "median": 774144.0,
+      "min": 774144.0,
+      "max": 774144.0,
+      "mad": 0.0,
+      "cv": 0.0
+    },
+    "redo_p999_ns": {
+      "count": 1,
+      "median": 1253376.0,
+      "min": 1253376.0,
+      "max": 1253376.0,
+      "mad": 0.0,
+      "cv": 0.0
+    },
+    "fra_bw_bytes": {
+      "count": 1,
+      "median": 184316272.0,
+      "min": 184316272.0,
+      "max": 184316272.0,
+      "mad": 0.0,
+      "cv": 0.0
+    }
+  },
+  "baseline_job_statistics": {
+    "data-8k#0": {
+      "read_iops": {
+        "count": 1,
+        "median": 11435.477608,
+        "min": 11435.477608,
+        "max": 11435.477608,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 4900.643499,
+        "min": 4900.643499,
+        "max": 4900.643499,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 93679596.0,
+        "min": 93679596.0,
+        "max": 93679596.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 40146112.0,
+        "min": 40146112.0,
+        "max": 40146112.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 2867200.0,
+        "min": 2867200.0,
+        "max": 2867200.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 4358144.0,
+        "min": 4358144.0,
+        "max": 4358144.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    },
+    "data-8k#1": {
+      "read_iops": {
+        "count": 1,
+        "median": 11439.150935,
+        "min": 11439.150935,
+        "max": 11439.150935,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 4901.840164,
+        "min": 4901.840164,
+        "max": 4901.840164,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 93709674.0,
+        "min": 93709674.0,
+        "max": 93709674.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 40155929.0,
+        "min": 40155929.0,
+        "max": 40155929.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 2867200.0,
+        "min": 2867200.0,
+        "max": 2867200.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 4292608.0,
+        "min": 4292608.0,
+        "max": 4292608.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    },
+    "data-8k#2": {
+      "read_iops": {
+        "count": 1,
+        "median": 11437.875937,
+        "min": 11437.875937,
+        "max": 11437.875937,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 4897.971837,
+        "min": 4897.971837,
+        "max": 4897.971837,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 93699188.0,
+        "min": 93699188.0,
+        "max": 93699188.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 40124280.0,
+        "min": 40124280.0,
+        "max": 40124280.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 2867200.0,
+        "min": 2867200.0,
+        "max": 2867200.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 4358144.0,
+        "min": 4358144.0,
+        "max": 4358144.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    },
+    "data-8k#3": {
+      "read_iops": {
+        "count": 1,
+        "median": 11440.944265,
+        "min": 11440.944265,
+        "max": 11440.944265,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 4896.005173,
+        "min": 4896.005173,
+        "max": 4896.005173,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 93724379.0,
+        "min": 93724379.0,
+        "max": 93724379.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 40108115.0,
+        "min": 40108115.0,
+        "max": 40108115.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 2867200.0,
+        "min": 2867200.0,
+        "max": 2867200.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 4358144.0,
+        "min": 4358144.0,
+        "max": 4358144.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    },
+    "fra-1m#5": {
+      "read_iops": {
+        "count": 1,
+        "median": 88.030505,
+        "min": 88.030505,
+        "max": 88.030505,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 87.735525,
+        "min": 87.735525,
+        "max": 87.735525,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 92306674.0,
+        "min": 92306674.0,
+        "max": 92306674.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 92009598.0,
+        "min": 92009598.0,
+        "max": 92009598.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 72876032.0,
+        "min": 72876032.0,
+        "max": 72876032.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 78118912.0,
+        "min": 78118912.0,
+        "max": 78118912.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    },
+    "redo#4": {
+      "read_iops": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_iops": {
+        "count": 1,
+        "median": 2146.436423,
+        "min": 2146.436423,
+        "max": 2146.436423,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "read_bw_bytes": {
+        "count": 1,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_bw_bytes": {
+        "count": 1,
+        "median": 8791803.0,
+        "min": 8791803.0,
+        "max": 8791803.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p99_ns": {
+        "count": 1,
+        "median": 774144.0,
+        "min": 774144.0,
+        "max": 774144.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "write_p999_ns": {
+        "count": 1,
+        "median": 1253376.0,
+        "min": 1253376.0,
+        "max": 1253376.0,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "sync_mean_ns": {
+        "count": 1,
+        "median": 449520.305427,
+        "min": 449520.305427,
+        "max": 449520.305427,
+        "mad": 0.0,
+        "cv": 0.0
+      }
+    }
+  },
+  "baseline_source": "current_run",
+  "baseline_remeasured": true,
+  "baseline_drift_metrics": [],
+  "candidates": {
+    "ISCSI_QD128": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 69530.309117,
+          "min": 69530.309117,
+          "max": 69530.309117,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 946176.0,
+          "min": 946176.0,
+          "max": 946176.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 2932736.0,
+          "min": 2932736.0,
+          "max": 2932736.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184318634.0,
+          "min": 184318634.0,
+          "max": 184318634.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 12167.581387,
+            "min": 12167.581387,
+            "max": 12167.581387,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5212.464646,
+            "min": 5212.464646,
+            "max": 5212.464646,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 99676949.0,
+            "min": 99676949.0,
+            "max": 99676949.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 42700605.0,
+            "min": 42700605.0,
+            "max": 42700605.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3325952.0,
+            "min": 3325952.0,
+            "max": 3325952.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 12170.19305,
+            "min": 12170.19305,
+            "max": 12170.19305,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5215.609641,
+            "min": 5215.609641,
+            "max": 5215.609641,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 99698357.0,
+            "min": 99698357.0,
+            "max": 99698357.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 42726342.0,
+            "min": 42726342.0,
+            "max": 42726342.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3325952.0,
+            "min": 3325952.0,
+            "max": 3325952.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 12169.801384,
+            "min": 12169.801384,
+            "max": 12169.801384,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5213.261311,
+            "min": 5213.261311,
+            "max": 5213.261311,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 99695176.0,
+            "min": 99695176.0,
+            "max": 99695176.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 42707091.0,
+            "min": 42707091.0,
+            "max": 42707091.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3325952.0,
+            "min": 3325952.0,
+            "max": 3325952.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 12172.25138,
+            "min": 12172.25138,
+            "max": 12172.25138,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5209.146318,
+            "min": 5209.146318,
+            "max": 5209.146318,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 99715219.0,
+            "min": 99715219.0,
+            "max": 99715219.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 42673394.0,
+            "min": 42673394.0,
+            "max": 42673394.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3325952.0,
+            "min": 3325952.0,
+            "max": 3325952.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.047464,
+            "min": 88.047464,
+            "max": 88.047464,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.720819,
+            "min": 87.720819,
+            "max": 87.720819,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92324457.0,
+            "min": 92324457.0,
+            "max": 92324457.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 91994177.0,
+            "min": 91994177.0,
+            "max": 91994177.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 1987.030022,
+            "min": 1987.030022,
+            "max": 1987.030022,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8138874.0,
+            "min": 8138874.0,
+            "max": 8138874.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 946176.0,
+            "min": 946176.0,
+            "max": 946176.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 2932736.0,
+            "min": 2932736.0,
+            "max": 2932736.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 486327.426531,
+            "min": 486327.426531,
+            "max": 486327.426531,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 486327.426531,
+        "min": 486327.426531,
+        "max": 486327.426531,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 40.14616541353383,
+        "min": 40.14616541353383,
+        "max": 40.14616541353383,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [
+        "data_iops"
+      ],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.0639694796248417,
+        "redo_p99_ns": -0.2222222222222222,
+        "redo_p999_ns": -1.3398692810457515,
+        "fra_bw_bytes": 1.2814929329733839e-05
+      },
+      "changed_controls": 10,
+      "evidence": [
+        "attempts/ISCSI_QD128_screening_1"
+      ],
+      "eligible": false
+    },
+    "NETDEV_BACKLOG_2X": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 65400.040334,
+          "min": 65400.040334,
+          "max": 65400.040334,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 831488.0,
+          "min": 831488.0,
+          "max": 831488.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1843200.0,
+          "min": 1843200.0,
+          "max": 1843200.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184316579.0,
+          "min": 184316579.0,
+          "max": 184316579.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11445.691848,
+            "min": 11445.691848,
+            "max": 11445.691848,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4904.506985,
+            "min": 4904.506985,
+            "max": 4904.506985,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93763216.0,
+            "min": 93763216.0,
+            "max": 93763216.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40177816.0,
+            "min": 40177816.0,
+            "max": 40177816.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11446.975177,
+            "min": 11446.975177,
+            "max": 11446.975177,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4904.920317,
+            "min": 4904.920317,
+            "max": 4904.920317,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93773784.0,
+            "min": 93773784.0,
+            "max": 93773784.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40181148.0,
+            "min": 40181148.0,
+            "max": 40181148.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5144576.0,
+            "min": 5144576.0,
+            "max": 5144576.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11445.670181,
+            "min": 11445.670181,
+            "max": 11445.670181,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4901.346996,
+            "min": 4901.346996,
+            "max": 4901.346996,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93763093.0,
+            "min": 93763093.0,
+            "max": 93763093.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40151875.0,
+            "min": 40151875.0,
+            "max": 40151875.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11451.04683,
+            "min": 11451.04683,
+            "max": 11451.04683,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4899.882,
+            "min": 4899.882,
+            "max": 4899.882,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93807139.0,
+            "min": 93807139.0,
+            "max": 93807139.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40139887.0,
+            "min": 40139887.0,
+            "max": 40139887.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.043984,
+            "min": 88.043984,
+            "max": 88.043984,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.722339,
+            "min": 87.722339,
+            "max": 87.722339,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92322555.0,
+            "min": 92322555.0,
+            "max": 92322555.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 91994024.0,
+            "min": 91994024.0,
+            "max": 91994024.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2134.323109,
+            "min": 2134.323109,
+            "max": 2134.323109,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8742187.0,
+            "min": 8742187.0,
+            "max": 8742187.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 831488.0,
+            "min": 831488.0,
+            "max": 831488.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1843200.0,
+            "min": 1843200.0,
+            "max": 1843200.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 452047.408596,
+            "min": 452047.408596,
+            "max": 452047.408596,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 452047.408596,
+        "min": 452047.408596,
+        "max": 452047.408596,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 38.59105263157895,
+        "min": 38.59105263157895,
+        "max": 38.59105263157895,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.0007671153096685673,
+        "redo_p99_ns": -0.07407407407407407,
+        "redo_p999_ns": -0.47058823529411764,
+        "fra_bw_bytes": 1.6656152854480477e-06
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/NETDEV_BACKLOG_2X_screening_1"
+      ],
+      "eligible": false
+    },
+    "NETDEV_BACKLOG_4X": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 64606.705153,
+          "min": 64606.705153,
+          "max": 64606.705153,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 806912.0,
+          "min": 806912.0,
+          "max": 806912.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1728512.0,
+          "min": 1728512.0,
+          "max": 1728512.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184317405.0,
+          "min": 184317405.0,
+          "max": 184317405.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11306.469489,
+            "min": 11306.469489,
+            "max": 11306.469489,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4845.82359,
+            "min": 4845.82359,
+            "max": 4845.82359,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92622707.0,
+            "min": 92622707.0,
+            "max": 92622707.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39697082.0,
+            "min": 39697082.0,
+            "max": 39697082.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11308.11782,
+            "min": 11308.11782,
+            "max": 11308.11782,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4845.180258,
+            "min": 4845.180258,
+            "max": 4845.180258,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92636210.0,
+            "min": 92636210.0,
+            "max": 92636210.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39691812.0,
+            "min": 39691812.0,
+            "max": 39691812.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11307.287309,
+            "min": 11307.287309,
+            "max": 11307.287309,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4842.338859,
+            "min": 4842.338859,
+            "max": 4842.338859,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92629406.0,
+            "min": 92629406.0,
+            "max": 92629406.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39668535.0,
+            "min": 39668535.0,
+            "max": 39668535.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2998272.0,
+            "min": 2998272.0,
+            "max": 2998272.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4882432.0,
+            "min": 4882432.0,
+            "max": 4882432.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11311.728961,
+            "min": 11311.728961,
+            "max": 11311.728961,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4839.758867,
+            "min": 4839.758867,
+            "max": 4839.758867,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92665806.0,
+            "min": 92665806.0,
+            "max": 92665806.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39647386.0,
+            "min": 39647386.0,
+            "max": 39647386.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4882432.0,
+            "min": 4882432.0,
+            "max": 4882432.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.031878,
+            "min": 88.031878,
+            "max": 88.031878,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.735233,
+            "min": 87.735233,
+            "max": 87.735233,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92308114.0,
+            "min": 92308114.0,
+            "max": 92308114.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92009291.0,
+            "min": 92009291.0,
+            "max": 92009291.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2177.758037,
+            "min": 2177.758037,
+            "max": 2177.758037,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8920096.0,
+            "min": 8920096.0,
+            "max": 8920096.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 806912.0,
+            "min": 806912.0,
+            "max": 806912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1728512.0,
+            "min": 1728512.0,
+            "max": 1728512.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 443096.714108,
+            "min": 443096.714108,
+            "max": 443096.714108,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 443096.714108,
+        "min": 443096.714108,
+        "max": 443096.714108,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 38.076466165413535,
+        "min": 38.076466165413535,
+        "max": 38.076466165413535,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": -0.01137269005602148,
+        "redo_p99_ns": -0.042328042328042326,
+        "redo_p999_ns": -0.3790849673202614,
+        "fra_bw_bytes": 6.147042730985792e-06
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/NETDEV_BACKLOG_4X_screening_1"
+      ],
+      "eligible": false
+    },
+    "OFFLOAD_GRO": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 65744.769186,
+          "min": 65744.769186,
+          "max": 65744.769186,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 798720.0,
+          "min": 798720.0,
+          "max": 798720.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1728512.0,
+          "min": 1728512.0,
+          "max": 1728512.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184319556.0,
+          "min": 184319556.0,
+          "max": 184319556.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11505.643315,
+            "min": 11505.643315,
+            "max": 11505.643315,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4930.306899,
+            "min": 4930.306899,
+            "max": 4930.306899,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94254393.0,
+            "min": 94254393.0,
+            "max": 94254393.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40389115.0,
+            "min": 40389115.0,
+            "max": 40389115.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3096576.0,
+            "min": 3096576.0,
+            "max": 3096576.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11507.344976,
+            "min": 11507.344976,
+            "max": 11507.344976,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4931.14523,
+            "min": 4931.14523,
+            "max": 4931.14523,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94268320.0,
+            "min": 94268320.0,
+            "max": 94268320.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40395996.0,
+            "min": 40395996.0,
+            "max": 40395996.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3096576.0,
+            "min": 3096576.0,
+            "max": 3096576.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11506.848311,
+            "min": 11506.848311,
+            "max": 11506.848311,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4927.406909,
+            "min": 4927.406909,
+            "max": 4927.406909,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94264292.0,
+            "min": 94264292.0,
+            "max": 94264292.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40365331.0,
+            "min": 40365331.0,
+            "max": 40365331.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3096576.0,
+            "min": 3096576.0,
+            "max": 3096576.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11510.808297,
+            "min": 11510.808297,
+            "max": 11510.808297,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4925.265249,
+            "min": 4925.265249,
+            "max": 4925.265249,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94296650.0,
+            "min": 94296650.0,
+            "max": 94296650.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40347868.0,
+            "min": 40347868.0,
+            "max": 40347868.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3096576.0,
+            "min": 3096576.0,
+            "max": 3096576.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.032905,
+            "min": 88.032905,
+            "max": 88.032905,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.736256,
+            "min": 87.736256,
+            "max": 87.736256,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92312686.0,
+            "min": 92312686.0,
+            "max": 92312686.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92006870.0,
+            "min": 92006870.0,
+            "max": 92006870.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2165.213058,
+            "min": 2165.213058,
+            "max": 2165.213058,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8868712.0,
+            "min": 8868712.0,
+            "max": 8868712.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 798720.0,
+            "min": 798720.0,
+            "max": 798720.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1728512.0,
+            "min": 1728512.0,
+            "max": 1728512.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 445216.817262,
+            "min": 445216.817262,
+            "max": 445216.817262,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 445216.817262,
+        "min": 445216.817262,
+        "max": 445216.817262,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 38.913082706766914,
+        "min": 38.913082706766914,
+        "max": 38.913082706766914,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.006042238949014504,
+        "redo_p99_ns": -0.031746031746031744,
+        "redo_p999_ns": -0.3790849673202614,
+        "fra_bw_bytes": 1.781720064303384e-05
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/OFFLOAD_GRO_screening_1"
+      ],
+      "eligible": false
+    },
+    "OFFLOAD_GSO": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 66942.284748,
+          "min": 66942.284748,
+          "max": 66942.284748,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 790528.0,
+          "min": 790528.0,
+          "max": 790528.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1794048.0,
+          "min": 1794048.0,
+          "max": 1794048.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184318634.0,
+          "min": 184318634.0,
+          "max": 184318634.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11718.279272,
+            "min": 11718.279272,
+            "max": 11718.279272,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5020.703264,
+            "min": 5020.703264,
+            "max": 5020.703264,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95996348.0,
+            "min": 95996348.0,
+            "max": 95996348.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 41129614.0,
+            "min": 41129614.0,
+            "max": 41129614.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5275648.0,
+            "min": 5275648.0,
+            "max": 5275648.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11715.567615,
+            "min": 11715.567615,
+            "max": 11715.567615,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5020.0266,
+            "min": 5020.0266,
+            "max": 5020.0266,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95974080.0,
+            "min": 95974080.0,
+            "max": 95974080.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 41124112.0,
+            "min": 41124112.0,
+            "max": 41124112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11717.290471,
+            "min": 11717.290471,
+            "max": 11717.290471,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5016.966638,
+            "min": 5016.966638,
+            "max": 5016.966638,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95988166.0,
+            "min": 95988166.0,
+            "max": 95988166.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 41099072.0,
+            "min": 41099072.0,
+            "max": 41099072.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11718.689271,
+            "min": 11718.689271,
+            "max": 11718.689271,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 5014.761617,
+            "min": 5014.761617,
+            "max": 5014.761617,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95999680.0,
+            "min": 95999680.0,
+            "max": 95999680.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 41080968.0,
+            "min": 41080968.0,
+            "max": 41080968.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3063808.0,
+            "min": 3063808.0,
+            "max": 3063808.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5275648.0,
+            "min": 5275648.0,
+            "max": 5275648.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.032465,
+            "min": 88.032465,
+            "max": 88.032465,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.735818,
+            "min": 87.735818,
+            "max": 87.735818,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92308729.0,
+            "min": 92308729.0,
+            "max": 92308729.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92009905.0,
+            "min": 92009905.0,
+            "max": 92009905.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2196.416339,
+            "min": 2196.416339,
+            "max": 2196.416339,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8996521.0,
+            "min": 8996521.0,
+            "max": 8996521.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 790528.0,
+            "min": 790528.0,
+            "max": 790528.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1794048.0,
+            "min": 1794048.0,
+            "max": 1794048.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 438628.427101,
+            "min": 438628.427101,
+            "max": 438628.427101,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 438628.427101,
+        "min": 438628.427101,
+        "max": 438628.427101,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 39.427368421052634,
+        "min": 39.427368421052634,
+        "max": 39.427368421052634,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.024366909521092703,
+        "redo_p99_ns": -0.021164021164021163,
+        "redo_p999_ns": -0.43137254901960786,
+        "fra_bw_bytes": 1.2814929329733839e-05
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/OFFLOAD_GSO_screening_1"
+      ],
+      "eligible": false
+    },
+    "OFFLOAD_TSO": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 63923.391857,
+          "min": 63923.391857,
+          "max": 63923.391857,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 815104.0,
+          "min": 815104.0,
+          "max": 815104.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1744896.0,
+          "min": 1744896.0,
+          "max": 1744896.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184317098.0,
+          "min": 184317098.0,
+          "max": 184317098.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11186.752711,
+            "min": 11186.752711,
+            "max": 11186.752711,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4794.362352,
+            "min": 4794.362352,
+            "max": 4794.362352,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 91641973.0,
+            "min": 91641973.0,
+            "max": 91641973.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39275525.0,
+            "min": 39275525.0,
+            "max": 39275525.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3260416.0,
+            "min": 3260416.0,
+            "max": 3260416.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5275648.0,
+            "min": 5275648.0,
+            "max": 5275648.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11189.104685,
+            "min": 11189.104685,
+            "max": 11189.104685,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4793.86701,
+            "min": 4793.86701,
+            "max": 4793.86701,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 91661254.0,
+            "min": 91661254.0,
+            "max": 91661254.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39271454.0,
+            "min": 39271454.0,
+            "max": 39271454.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3260416.0,
+            "min": 3260416.0,
+            "max": 3260416.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5210112.0,
+            "min": 5210112.0,
+            "max": 5210112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11188.05802,
+            "min": 11188.05802,
+            "max": 11188.05802,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4789.938683,
+            "min": 4789.938683,
+            "max": 4789.938683,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 91652721.0,
+            "min": 91652721.0,
+            "max": 91652721.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39239232.0,
+            "min": 39239232.0,
+            "max": 39239232.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3260416.0,
+            "min": 3260416.0,
+            "max": 3260416.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5275648.0,
+            "min": 5275648.0,
+            "max": 5275648.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11192.546025,
+            "min": 11192.546025,
+            "max": 11192.546025,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4788.762371,
+            "min": 4788.762371,
+            "max": 4788.762371,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 91689446.0,
+            "min": 91689446.0,
+            "max": 91689446.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39229650.0,
+            "min": 39229650.0,
+            "max": 39229650.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3260416.0,
+            "min": 3260416.0,
+            "max": 3260416.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5275648.0,
+            "min": 5275648.0,
+            "max": 5275648.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.031731,
+            "min": 88.031731,
+            "max": 88.031731,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.735087,
+            "min": 87.735087,
+            "max": 87.735087,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92307960.0,
+            "min": 92307960.0,
+            "max": 92307960.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92009138.0,
+            "min": 92009138.0,
+            "max": 92009138.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2171.063048,
+            "min": 2171.063048,
+            "max": 2171.063048,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8892674.0,
+            "min": 8892674.0,
+            "max": 8892674.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 815104.0,
+            "min": 815104.0,
+            "max": 815104.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1744896.0,
+            "min": 1744896.0,
+            "max": 1744896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 444030.80278,
+            "min": 444030.80278,
+            "max": 444030.80278,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 444030.80278,
+        "min": 444030.80278,
+        "max": 444030.80278,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 39.57827067669173,
+        "min": 39.57827067669173,
+        "max": 39.57827067669173,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": -0.021828914128641054,
+        "redo_p99_ns": -0.05291005291005291,
+        "redo_p999_ns": -0.39215686274509803,
+        "fra_bw_bytes": 4.481427445537744e-06
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/OFFLOAD_TSO_screening_1"
+      ],
+      "eligible": false
+    },
+    "RFS_65536": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 62118.183136,
+          "min": 62118.183136,
+          "max": 62118.183136,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 880640.0,
+          "min": 880640.0,
+          "max": 880640.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 2056192.0,
+          "min": 2056192.0,
+          "max": 2056192.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184318326.0,
+          "min": 184318326.0,
+          "max": 184318326.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 10868.448553,
+            "min": 10868.448553,
+            "max": 10868.448553,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4657.685571,
+            "min": 4657.685571,
+            "max": 4657.685571,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 89034494.0,
+            "min": 89034494.0,
+            "max": 89034494.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 38155801.0,
+            "min": 38155801.0,
+            "max": 38155801.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3883008.0,
+            "min": 3883008.0,
+            "max": 3883008.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 6258688.0,
+            "min": 6258688.0,
+            "max": 6258688.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 10871.798547,
+            "min": 10871.798547,
+            "max": 10871.798547,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4657.393904,
+            "min": 4657.393904,
+            "max": 4657.393904,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 89061951.0,
+            "min": 89061951.0,
+            "max": 89061951.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 38153398.0,
+            "min": 38153398.0,
+            "max": 38153398.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3883008.0,
+            "min": 3883008.0,
+            "max": 3883008.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 6258688.0,
+            "min": 6258688.0,
+            "max": 6258688.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 10873.101878,
+            "min": 10873.101878,
+            "max": 10873.101878,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4654.913908,
+            "min": 4654.913908,
+            "max": 4654.913908,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 89072614.0,
+            "min": 89072614.0,
+            "max": 89072614.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 38133095.0,
+            "min": 38133095.0,
+            "max": 38133095.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3883008.0,
+            "min": 3883008.0,
+            "max": 3883008.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 6258688.0,
+            "min": 6258688.0,
+            "max": 6258688.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 10880.281866,
+            "min": 10880.281866,
+            "max": 10880.281866,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4654.558909,
+            "min": 4654.558909,
+            "max": 4654.558909,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 89131432.0,
+            "min": 89131432.0,
+            "max": 89131432.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 38130187.0,
+            "min": 38130187.0,
+            "max": 38130187.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3883008.0,
+            "min": 3883008.0,
+            "max": 3883008.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 6258688.0,
+            "min": 6258688.0,
+            "max": 6258688.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.032318,
+            "min": 88.032318,
+            "max": 88.032318,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.735671,
+            "min": 87.735671,
+            "max": 87.735671,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92312070.0,
+            "min": 92312070.0,
+            "max": 92312070.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92006256.0,
+            "min": 92006256.0,
+            "max": 92006256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2109.508151,
+            "min": 2109.508151,
+            "max": 2109.508151,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8640545.0,
+            "min": 8640545.0,
+            "max": 8640545.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 880640.0,
+            "min": 880640.0,
+            "max": 880640.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 2056192.0,
+            "min": 2056192.0,
+            "max": 2056192.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 457764.183122,
+            "min": 457764.183122,
+            "max": 457764.183122,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 457764.183122,
+        "min": 457764.183122,
+        "max": 457764.183122,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 36.611203007518796,
+        "min": 36.611203007518796,
+        "max": 36.611203007518796,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": -0.04945265128569327,
+        "redo_p99_ns": -0.13756613756613756,
+        "redo_p999_ns": -0.6405228758169934,
+        "fra_bw_bytes": 1.1143888587329934e-05
+      },
+      "changed_controls": 3,
+      "evidence": [
+        "attempts/RFS_65536_screening_1"
+      ],
+      "eligible": false
+    },
+    "RPS_ALL_ONLINE": {
+      "repetitions": 3,
+      "stable": true,
+      "statistics": {
+        "data_iops": {
+          "count": 3,
+          "median": 65028.78657,
+          "min": 64676.737205,
+          "max": 65456.649538,
+          "mad": 352.04936499999894,
+          "cv": 0.004902060476914649
+        },
+        "redo_p99_ns": {
+          "count": 3,
+          "median": 733184.0,
+          "min": 733184.0,
+          "max": 733184.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 3,
+          "median": 1028096.0,
+          "min": 987136.0,
+          "max": 1036288.0,
+          "mad": 8192.0,
+          "cv": 0.021138276171843787
+        },
+        "fra_bw_bytes": {
+          "count": 3,
+          "median": 184318846.0,
+          "min": 184318634.0,
+          "max": 184319767.0,
+          "mad": 212.0,
+          "cv": 2.668241237612714e-06
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 3,
+            "median": 11378.85207,
+            "min": 11320.611132,
+            "max": 11455.156058,
+            "mad": 58.240938000000824,
+            "cv": 0.004839095706302746
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 4876.758744,
+            "min": 4851.640247,
+            "max": 4908.610457,
+            "mad": 25.11849699999948,
+            "cv": 0.004778040461330812
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 93215720.0,
+            "min": 92738555.0,
+            "max": 93840774.0,
+            "mad": 477165.0,
+            "cv": 0.004839190031637538
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 39950448.0,
+            "min": 39744732.0,
+            "max": 40211405.0,
+            "mad": 205716.0,
+            "cv": 0.004777790755313546
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 3096576.0,
+            "min": 2998272.0,
+            "max": 3129344.0,
+            "mad": 32768.0,
+            "cv": 0.01811374605183938
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 5144576.0,
+            "min": 4947968.0,
+            "max": 5210112.0,
+            "mad": 65536.0,
+            "cv": 0.021837342670632913
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 3,
+            "median": 11383.525388,
+            "min": 11319.214468,
+            "max": 11453.515155,
+            "mad": 64.3109199999999,
+            "cv": 0.004817070434596397
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 4877.478742,
+            "min": 4849.658584,
+            "max": 4907.89864,
+            "mad": 27.820158000000447,
+            "cv": 0.004875484716897479
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 93253976.0,
+            "min": 92727141.0,
+            "max": 93827373.0,
+            "mad": 526835.0,
+            "cv": 0.004817243637991226
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 39956387.0,
+            "min": 39728471.0,
+            "max": 40205532.0,
+            "mad": 227916.0,
+            "cv": 0.004875043057856258
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 3096576.0,
+            "min": 2998272.0,
+            "max": 3129344.0,
+            "mad": 32768.0,
+            "cv": 0.01811374605183938
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 5144576.0,
+            "min": 4947968.0,
+            "max": 5210112.0,
+            "mad": 65536.0,
+            "cv": 0.021837342670632913
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 3,
+            "median": 11384.370385,
+            "min": 11318.407803,
+            "max": 11456.740144,
+            "mad": 65.96258200000011,
+            "cv": 0.0049614982624513
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 4875.017083,
+            "min": 4846.538589,
+            "max": 4906.253646,
+            "mad": 28.478493999999955,
+            "cv": 0.005001549202214101
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 93260912.0,
+            "min": 92720546.0,
+            "max": 93853738.0,
+            "mad": 540366.0,
+            "cv": 0.004961372815900828
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 39936208.0,
+            "min": 39702898.0,
+            "max": 40192111.0,
+            "mad": 233310.0,
+            "cv": 0.005001818996478355
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 3096576.0,
+            "min": 2998272.0,
+            "max": 3129344.0,
+            "mad": 32768.0,
+            "cv": 0.01811374605183938
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 5144576.0,
+            "min": 4947968.0,
+            "max": 5275648.0,
+            "mad": 131072.0,
+            "cv": 0.026287479756797343
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 3,
+            "median": 11382.230393,
+            "min": 11325.192791,
+            "max": 11463.665121,
+            "mad": 57.037602000000334,
+            "cv": 0.004988674600855143
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 4870.553765,
+            "min": 4845.473591,
+            "max": 4904.810317,
+            "mad": 25.080173999999715,
+            "cv": 0.004990237496929864
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 93243367.0,
+            "min": 92776088.0,
+            "max": 93910453.0,
+            "mad": 467279.0,
+            "cv": 0.004988653024346478
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 39899644.0,
+            "min": 39694215.0,
+            "max": 40180301.0,
+            "mad": 205429.0,
+            "cv": 0.0049902510236009
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 3096576.0,
+            "min": 2998272.0,
+            "max": 3129344.0,
+            "mad": 32768.0,
+            "cv": 0.01811374605183938
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 5144576.0,
+            "min": 4947968.0,
+            "max": 5210112.0,
+            "mad": 65536.0,
+            "cv": 0.021837342670632913
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 3,
+            "median": 88.032171,
+            "min": 88.031731,
+            "max": 88.032465,
+            "mad": 0.0002939999999966858,
+            "cv": 3.4262919700559643e-06
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 87.736753,
+            "min": 87.735818,
+            "max": 87.737192,
+            "mad": 0.0004390000000000782,
+            "cv": 6.5307591536396155e-06
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 92308421.0,
+            "min": 92307960.0,
+            "max": 92308729.0,
+            "mad": 308.0,
+            "cv": 3.423388191991433e-06
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 92010886.0,
+            "min": 92009905.0,
+            "max": 92011346.0,
+            "mad": 460.0,
+            "cv": 6.531479420845938e-06
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 3,
+            "median": 2192.608012,
+            "min": 2188.029687,
+            "max": 2200.253,
+            "mad": 4.57832499999995,
+            "cv": 0.0022985755593680737
+          },
+          "read_bw_bytes": {
+            "count": 3,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 3,
+            "median": 8980922.0,
+            "min": 8962169.0,
+            "max": 9012236.0,
+            "mad": 18753.0,
+            "cv": 0.0022985894138215775
+          },
+          "write_p99_ns": {
+            "count": 3,
+            "median": 733184.0,
+            "min": 733184.0,
+            "max": 733184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 3,
+            "median": 1028096.0,
+            "min": 987136.0,
+            "max": 1036288.0,
+            "mad": 8192.0,
+            "cv": 0.021138276171843787
+          },
+          "sync_mean_ns": {
+            "count": 3,
+            "median": 439304.78944,
+            "min": 437721.774313,
+            "max": 440305.772412,
+            "mad": 1000.9829719999689,
+            "cv": 0.0024226133032940493
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 3,
+        "median": 439304.78944,
+        "min": 437721.774313,
+        "max": 440305.772412,
+        "mad": 1000.9829719999689,
+        "cv": 0.0024226133032940493
+      },
+      "cpu": {
+        "count": 3,
+        "median": 39.18796992481203,
+        "min": 38.81917293233082,
+        "max": 39.61857142857143,
+        "mad": 0.368796992481208,
+        "cv": 0.008331801456592399
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "regressions": [],
+      "gains": {
+        "data_iops": -0.004913898899935566,
+        "redo_p99_ns": 0.05291005291005291,
+        "redo_p999_ns": 0.17973856209150327,
+        "fra_bw_bytes": 1.3965126204375488e-05
+      },
+      "changed_controls": 2,
+      "evidence": [
+        "attempts/RPS_ALL_ONLINE_screening_1",
+        "attempts/RPS_ALL_ONLINE_validation_2",
+        "attempts/RPS_ALL_ONLINE_validation_3"
+      ],
+      "eligible": true
+    },
+    "TCP_BUF_2X": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 64550.828164000006,
+          "min": 64550.828164000006,
+          "max": 64550.828164000006,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 970752.0,
+          "min": 970752.0,
+          "max": 970752.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 2310144.0,
+          "min": 2310144.0,
+          "max": 2310144.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184318327.0,
+          "min": 184318327.0,
+          "max": 184318327.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11296.412345,
+            "min": 11296.412345,
+            "max": 11296.412345,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4841.412195,
+            "min": 4841.412195,
+            "max": 4841.412195,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92540319.0,
+            "min": 92540319.0,
+            "max": 92540319.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39660944.0,
+            "min": 39660944.0,
+            "max": 39660944.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3162112.0,
+            "min": 3162112.0,
+            "max": 3162112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5341184.0,
+            "min": 5341184.0,
+            "max": 5341184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11298.775671,
+            "min": 11298.775671,
+            "max": 11298.775671,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4840.96553,
+            "min": 4840.96553,
+            "max": 4840.96553,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92559652.0,
+            "min": 92559652.0,
+            "max": 92559652.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39657312.0,
+            "min": 39657312.0,
+            "max": 39657312.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3129344.0,
+            "min": 3129344.0,
+            "max": 3129344.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5341184.0,
+            "min": 5341184.0,
+            "max": 5341184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11295.785681,
+            "min": 11295.785681,
+            "max": 11295.785681,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4837.217209,
+            "min": 4837.217209,
+            "max": 4837.217209,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92535212.0,
+            "min": 92535212.0,
+            "max": 92535212.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39626551.0,
+            "min": 39626551.0,
+            "max": 39626551.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3129344.0,
+            "min": 3129344.0,
+            "max": 3129344.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5406720.0,
+            "min": 5406720.0,
+            "max": 5406720.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11303.860654,
+            "min": 11303.860654,
+            "max": 11303.860654,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4836.398879,
+            "min": 4836.398879,
+            "max": 4836.398879,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92601390.0,
+            "min": 92601390.0,
+            "max": 92601390.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39619820.0,
+            "min": 39619820.0,
+            "max": 39619820.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3129344.0,
+            "min": 3129344.0,
+            "max": 3129344.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5341184.0,
+            "min": 5341184.0,
+            "max": 5341184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.047317,
+            "min": 88.047317,
+            "max": 88.047317,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.720672,
+            "min": 87.720672,
+            "max": 87.720672,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92327798.0,
+            "min": 92327798.0,
+            "max": 92327798.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 91990529.0,
+            "min": 91990529.0,
+            "max": 91990529.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 1974.15171,
+            "min": 1974.15171,
+            "max": 1974.15171,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8086125.0,
+            "min": 8086125.0,
+            "max": 8086125.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 970752.0,
+            "min": 970752.0,
+            "max": 970752.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 2310144.0,
+            "min": 2310144.0,
+            "max": 2310144.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 489383.999812,
+            "min": 489383.999812,
+            "max": 489383.999812,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 489383.999812,
+        "min": 489383.999812,
+        "max": 489383.999812,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 37.80842105263157,
+        "min": 37.80842105263157,
+        "max": 37.80842105263157,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": -0.012227733153978796,
+        "redo_p99_ns": -0.25396825396825395,
+        "redo_p999_ns": -0.8431372549019608,
+        "fra_bw_bytes": 1.1149314044285791e-05
+      },
+      "changed_controls": 4,
+      "evidence": [
+        "attempts/TCP_BUF_2X_screening_1"
+      ],
+      "eligible": false
+    },
+    "TCP_BUF_4X": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 66236.756808,
+          "min": 66236.756808,
+          "max": 66236.756808,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 954368.0,
+          "min": 954368.0,
+          "max": 954368.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 2342912.0,
+          "min": 2342912.0,
+          "max": 2342912.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184316272.0,
+          "min": 184316272.0,
+          "max": 184316272.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11593.168023,
+            "min": 11593.168023,
+            "max": 11593.168023,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4967.538442,
+            "min": 4967.538442,
+            "max": 4967.538442,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94971409.0,
+            "min": 94971409.0,
+            "max": 94971409.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40694102.0,
+            "min": 40694102.0,
+            "max": 40694102.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3194880.0,
+            "min": 3194880.0,
+            "max": 3194880.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11591.409014,
+            "min": 11591.409014,
+            "max": 11591.409014,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4967.098388,
+            "min": 4967.098388,
+            "max": 4967.098388,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94957000.0,
+            "min": 94957000.0,
+            "max": 94957000.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40690510.0,
+            "min": 40690510.0,
+            "max": 40690510.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3194880.0,
+            "min": 3194880.0,
+            "max": 3194880.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11594.001353,
+            "min": 11594.001353,
+            "max": 11594.001353,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4964.496785,
+            "min": 4964.496785,
+            "max": 4964.496785,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 94978222.0,
+            "min": 94978222.0,
+            "max": 94978222.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40669198.0,
+            "min": 40669198.0,
+            "max": 40669198.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3194880.0,
+            "min": 3194880.0,
+            "max": 3194880.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11596.693011,
+            "min": 11596.693011,
+            "max": 11596.693011,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4962.351792,
+            "min": 4962.351792,
+            "max": 4962.351792,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95000300.0,
+            "min": 95000300.0,
+            "max": 95000300.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40651599.0,
+            "min": 40651599.0,
+            "max": 40651599.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3194880.0,
+            "min": 3194880.0,
+            "max": 3194880.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.030505,
+            "min": 88.030505,
+            "max": 88.030505,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.735525,
+            "min": 87.735525,
+            "max": 87.735525,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92306674.0,
+            "min": 92306674.0,
+            "max": 92306674.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92009598.0,
+            "min": 92009598.0,
+            "max": 92009598.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2011.166648,
+            "min": 2011.166648,
+            "max": 2011.166648,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8237738.0,
+            "min": 8237738.0,
+            "max": 8237738.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 954368.0,
+            "min": 954368.0,
+            "max": 954368.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 2342912.0,
+            "min": 2342912.0,
+            "max": 2342912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 479788.612697,
+            "min": 479788.612697,
+            "max": 479788.612697,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 479788.612697,
+        "min": 479788.612697,
+        "max": 479788.612697,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 38.515864661654135,
+        "min": 38.515864661654135,
+        "max": 38.515864661654135,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.013570751633754161,
+        "redo_p99_ns": -0.2328042328042328,
+        "redo_p999_ns": -0.869281045751634,
+        "fra_bw_bytes": 0.0
+      },
+      "changed_controls": 4,
+      "evidence": [
+        "attempts/TCP_BUF_4X_screening_1"
+      ],
+      "eligible": false
+    },
+    "TCP_CC_BBR": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 66391.578354,
+          "min": 66391.578354,
+          "max": 66391.578354,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 839680.0,
+          "min": 839680.0,
+          "max": 839680.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1712128.0,
+          "min": 1712128.0,
+          "max": 1712128.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184318327.0,
+          "min": 184318327.0,
+          "max": 184318327.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11619.647301,
+            "min": 11619.647301,
+            "max": 11619.647301,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4978.411703,
+            "min": 4978.411703,
+            "max": 4978.411703,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95188300.0,
+            "min": 95188300.0,
+            "max": 95188300.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40783203.0,
+            "min": 40783203.0,
+            "max": 40783203.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3162112.0,
+            "min": 3162112.0,
+            "max": 3162112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11617.712941,
+            "min": 11617.712941,
+            "max": 11617.712941,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4978.493405,
+            "min": 4978.493405,
+            "max": 4978.493405,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95172427.0,
+            "min": 95172427.0,
+            "max": 95172427.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40783899.0,
+            "min": 40783899.0,
+            "max": 40783899.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3162112.0,
+            "min": 3162112.0,
+            "max": 3162112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5406720.0,
+            "min": 5406720.0,
+            "max": 5406720.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11619.315634,
+            "min": 11619.315634,
+            "max": 11619.315634,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4975.546707,
+            "min": 4975.546707,
+            "max": 4975.546707,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95185611.0,
+            "min": 95185611.0,
+            "max": 95185611.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40759705.0,
+            "min": 40759705.0,
+            "max": 40759705.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3162112.0,
+            "min": 3162112.0,
+            "max": 3162112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11627.033955,
+            "min": 11627.033955,
+            "max": 11627.033955,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4975.416708,
+            "min": 4975.416708,
+            "max": 4975.416708,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 95248812.0,
+            "min": 95248812.0,
+            "max": 95248812.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 40758668.0,
+            "min": 40758668.0,
+            "max": 40758668.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3162112.0,
+            "min": 3162112.0,
+            "max": 3162112.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.047317,
+            "min": 88.047317,
+            "max": 88.047317,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.720672,
+            "min": 87.720672,
+            "max": 87.720672,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92324303.0,
+            "min": 92324303.0,
+            "max": 92324303.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 91994024.0,
+            "min": 91994024.0,
+            "max": 91994024.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2107.631487,
+            "min": 2107.631487,
+            "max": 2107.631487,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8632858.0,
+            "min": 8632858.0,
+            "max": 8632858.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 839680.0,
+            "min": 839680.0,
+            "max": 839680.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1712128.0,
+            "min": 1712128.0,
+            "max": 1712128.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 456312.876126,
+            "min": 456312.876126,
+            "max": 456312.876126,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 456312.876126,
+        "min": 456312.876126,
+        "max": 456312.876126,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 41.02398496240601,
+        "min": 41.02398496240601,
+        "max": 41.02398496240601,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": 0.01593986809281,
+        "redo_p99_ns": -0.08465608465608465,
+        "redo_p999_ns": -0.3660130718954248,
+        "fra_bw_bytes": 1.1149314044285791e-05
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/TCP_CC_BBR_screening_1"
+      ],
+      "eligible": false
+    },
+    "TCP_CC_RENO": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 64784.83336800001,
+          "min": 64784.83336800001,
+          "max": 64784.83336800001,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 897024.0,
+          "min": 897024.0,
+          "max": 897024.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 2056192.0,
+          "min": 2056192.0,
+          "max": 2056192.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184319248.0,
+          "min": 184319248.0,
+          "max": 184319248.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11336.402212,
+            "min": 11336.402212,
+            "max": 11336.402212,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4858.397139,
+            "min": 4858.397139,
+            "max": 4858.397139,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92867916.0,
+            "min": 92867916.0,
+            "max": 92867916.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39800098.0,
+            "min": 39800098.0,
+            "max": 39800098.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3293184.0,
+            "min": 3293184.0,
+            "max": 3293184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11337.714437,
+            "min": 11337.714437,
+            "max": 11337.714437,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4857.816904,
+            "min": 4857.816904,
+            "max": 4857.816904,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92878679.0,
+            "min": 92878679.0,
+            "max": 92878679.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39795317.0,
+            "min": 39795317.0,
+            "max": 39795317.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3293184.0,
+            "min": 3293184.0,
+            "max": 3293184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11341.554431,
+            "min": 11341.554431,
+            "max": 11341.554431,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4856.535239,
+            "min": 4856.535239,
+            "max": 4856.535239,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92910150.0,
+            "min": 92910150.0,
+            "max": 92910150.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39784804.0,
+            "min": 39784804.0,
+            "max": 39784804.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3293184.0,
+            "min": 3293184.0,
+            "max": 3293184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5537792.0,
+            "min": 5537792.0,
+            "max": 5537792.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11343.101095,
+            "min": 11343.101095,
+            "max": 11343.101095,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4853.311911,
+            "min": 4853.311911,
+            "max": 4853.311911,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92922793.0,
+            "min": 92922793.0,
+            "max": 92922793.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39758426.0,
+            "min": 39758426.0,
+            "max": 39758426.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 3293184.0,
+            "min": 3293184.0,
+            "max": 3293184.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 5472256.0,
+            "min": 5472256.0,
+            "max": 5472256.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.041091,
+            "min": 88.041091,
+            "max": 88.041091,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.727777,
+            "min": 87.727777,
+            "max": 87.727777,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92321269.0,
+            "min": 92321269.0,
+            "max": 92321269.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 91997979.0,
+            "min": 91997979.0,
+            "max": 91997979.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 79167488.0,
+            "min": 79167488.0,
+            "max": 79167488.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2043.83826,
+            "min": 2043.83826,
+            "max": 2043.83826,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 8371561.0,
+            "min": 8371561.0,
+            "max": 8371561.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 897024.0,
+            "min": 897024.0,
+            "max": 897024.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 2056192.0,
+            "min": 2056192.0,
+            "max": 2056192.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 471234.482362,
+            "min": 471234.482362,
+            "max": 471234.482362,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 471234.482362,
+        "min": 471234.482362,
+        "max": 471234.482362,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 39.31729323308271,
+        "min": 39.31729323308271,
+        "max": 39.31729323308271,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [
+        "redo_p99_ns",
+        "redo_p999_ns"
+      ],
+      "gains": {
+        "data_iops": -0.008646929353575264,
+        "redo_p99_ns": -0.15873015873015872,
+        "redo_p999_ns": -0.6405228758169934,
+        "fra_bw_bytes": 1.6146159900629935e-05
+      },
+      "changed_controls": 1,
+      "evidence": [
+        "attempts/TCP_CC_RENO_screening_1"
+      ],
+      "eligible": false
+    },
+    "XPS_BY_QUEUE": {
+      "repetitions": 1,
+      "stable": false,
+      "statistics": {
+        "data_iops": {
+          "count": 1,
+          "median": 65005.395823,
+          "min": 65005.395823,
+          "max": 65005.395823,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p99_ns": {
+          "count": 1,
+          "median": 741376.0,
+          "min": 741376.0,
+          "max": 741376.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "redo_p999_ns": {
+          "count": 1,
+          "median": 1253376.0,
+          "min": 1253376.0,
+          "max": 1253376.0,
+          "mad": 0.0,
+          "cv": 0.0
+        },
+        "fra_bw_bytes": {
+          "count": 1,
+          "median": 184316272.0,
+          "min": 184316272.0,
+          "max": 184316272.0,
+          "mad": 0.0,
+          "cv": 0.0
+        }
+      },
+      "job_statistics": {
+        "data-8k#0": {
+          "read_iops": {
+            "count": 1,
+            "median": 11372.739379,
+            "min": 11372.739379,
+            "max": 11372.739379,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4874.11521,
+            "min": 4874.11521,
+            "max": 4874.11521,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93165590.0,
+            "min": 93165590.0,
+            "max": 93165590.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39928847.0,
+            "min": 39928847.0,
+            "max": 39928847.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#1": {
+          "read_iops": {
+            "count": 1,
+            "median": 11375.393749,
+            "min": 11375.393749,
+            "max": 11375.393749,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4873.877087,
+            "min": 4873.877087,
+            "max": 4873.877087,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93187375.0,
+            "min": 93187375.0,
+            "max": 93187375.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39926869.0,
+            "min": 39926869.0,
+            "max": 39926869.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2998272.0,
+            "min": 2998272.0,
+            "max": 2998272.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#2": {
+          "read_iops": {
+            "count": 1,
+            "median": 11382.877695,
+            "min": 11382.877695,
+            "max": 11382.877695,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4874.325209,
+            "min": 4874.325209,
+            "max": 4874.325209,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93248615.0,
+            "min": 93248615.0,
+            "max": 93248615.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39930594.0,
+            "min": 39930594.0,
+            "max": 39930594.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "data-8k#3": {
+          "read_iops": {
+            "count": 1,
+            "median": 11381.733728,
+            "min": 11381.733728,
+            "max": 11381.733728,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 4870.333766,
+            "min": 4870.333766,
+            "max": 4870.333766,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 93239353.0,
+            "min": 93239353.0,
+            "max": 93239353.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 39897801.0,
+            "min": 39897801.0,
+            "max": 39897801.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 2965504.0,
+            "min": 2965504.0,
+            "max": 2965504.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 4816896.0,
+            "min": 4816896.0,
+            "max": 4816896.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "fra-1m#5": {
+          "read_iops": {
+            "count": 1,
+            "median": 88.032171,
+            "min": 88.032171,
+            "max": 88.032171,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 87.733859,
+            "min": 87.733859,
+            "max": 87.733859,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 92308421.0,
+            "min": 92308421.0,
+            "max": 92308421.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 92007851.0,
+            "min": 92007851.0,
+            "max": 92007851.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 72876032.0,
+            "min": 72876032.0,
+            "max": 72876032.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 78118912.0,
+            "min": 78118912.0,
+            "max": 78118912.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        },
+        "redo#4": {
+          "read_iops": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_iops": {
+            "count": 1,
+            "median": 2213.469644,
+            "min": 2213.469644,
+            "max": 2213.469644,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "read_bw_bytes": {
+            "count": 1,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_bw_bytes": {
+            "count": 1,
+            "median": 9066371.0,
+            "min": 9066371.0,
+            "max": 9066371.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p99_ns": {
+            "count": 1,
+            "median": 741376.0,
+            "min": 741376.0,
+            "max": 741376.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "write_p999_ns": {
+            "count": 1,
+            "median": 1253376.0,
+            "min": 1253376.0,
+            "max": 1253376.0,
+            "mad": 0.0,
+            "cv": 0.0
+          },
+          "sync_mean_ns": {
+            "count": 1,
+            "median": 435271.076849,
+            "min": 435271.076849,
+            "max": 435271.076849,
+            "mad": 0.0,
+            "cv": 0.0
+          }
+        }
+      },
+      "redo_sync_mean_ns": {
+        "count": 1,
+        "median": 435271.076849,
+        "min": 435271.076849,
+        "max": 435271.076849,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu": {
+        "count": 1,
+        "median": 38.675413533834586,
+        "min": 38.675413533834586,
+        "max": 38.675413533834586,
+        "mad": 0.0,
+        "cv": 0.0
+      },
+      "cpu_guard": true,
+      "errors_clean": true,
+      "improvements": [],
+      "regressions": [],
+      "gains": {
+        "data_iops": -0.005271829725063151,
+        "redo_p99_ns": 0.042328042328042326,
+        "redo_p999_ns": -0.0,
+        "fra_bw_bytes": 0.0
+      },
+      "changed_controls": 2,
+      "evidence": [
+        "attempts/XPS_BY_QUEUE_screening_1"
+      ],
+      "eligible": false
+    }
+  },
+  "eligible_candidates": [
+    "RPS_ALL_ONLINE"
+  ],
+  "pareto_candidates": [
+    "RPS_ALL_ONLINE"
+  ]
+}

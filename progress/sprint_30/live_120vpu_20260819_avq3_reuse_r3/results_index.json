@@ -1,0 +1,288 @@
+[
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "baseline",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T13:09:11Z",
+    "ended_at": "2026-08-19T13:20:13Z",
+    "evidence": [
+      "attempts/REGULAR_BASELINE_INITIAL_baseline_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "ISCSI_QD128",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T13:20:37Z",
+    "ended_at": "2026-08-19T13:31:50Z",
+    "evidence": [
+      "attempts/ISCSI_QD128_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "TCP_BUF_2X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T13:32:25Z",
+    "ended_at": "2026-08-19T13:43:26Z",
+    "evidence": [
+      "attempts/TCP_BUF_2X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "TCP_BUF_4X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T13:43:48Z",
+    "ended_at": "2026-08-19T13:54:50Z",
+    "evidence": [
+      "attempts/TCP_BUF_4X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "TCP_CC_BBR",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T13:55:13Z",
+    "ended_at": "2026-08-19T14:06:26Z",
+    "evidence": [
+      "attempts/TCP_CC_BBR_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "TCP_CC_RENO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T14:07:00Z",
+    "ended_at": "2026-08-19T14:18:13Z",
+    "evidence": [
+      "attempts/TCP_CC_RENO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "NETDEV_BACKLOG_2X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T14:18:47Z",
+    "ended_at": "2026-08-19T14:29:49Z",
+    "evidence": [
+      "attempts/NETDEV_BACKLOG_2X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "NETDEV_BACKLOG_4X",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T14:30:12Z",
+    "ended_at": "2026-08-19T14:41:13Z",
+    "evidence": [
+      "attempts/NETDEV_BACKLOG_4X_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "RFS_65536",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T14:41:35Z",
+    "ended_at": "2026-08-19T14:52:37Z",
+    "evidence": [
+      "attempts/RFS_65536_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "RPS_ALL_ONLINE",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T14:52:59Z",
+    "ended_at": "2026-08-19T15:04:00Z",
+    "evidence": [
+      "attempts/RPS_ALL_ONLINE_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "XPS_BY_QUEUE",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T15:04:23Z",
+    "ended_at": "2026-08-19T15:15:24Z",
+    "evidence": [
+      "attempts/XPS_BY_QUEUE_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "OFFLOAD_GRO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T15:15:47Z",
+    "ended_at": "2026-08-19T15:26:49Z",
+    "evidence": [
+      "attempts/OFFLOAD_GRO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "OFFLOAD_GSO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T15:27:13Z",
+    "ended_at": "2026-08-19T15:38:14Z",
+    "evidence": [
+      "attempts/OFFLOAD_GSO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "OFFLOAD_TSO",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T15:38:37Z",
+    "ended_at": "2026-08-19T15:49:39Z",
+    "evidence": [
+      "attempts/OFFLOAD_TSO_screening_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "RPS_ALL_ONLINE",
+    "attempt_type": "measurement",
+    "block": "validation",
+    "repetition": 2,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T15:50:02Z",
+    "ended_at": "2026-08-19T16:01:03Z",
+    "evidence": [
+      "attempts/RPS_ALL_ONLINE_validation_2"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "RPS_ALL_ONLINE",
+    "attempt_type": "measurement",
+    "block": "validation",
+    "repetition": 3,
+    "vpu": 120,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T16:01:25Z",
+    "ended_at": "2026-08-19T16:12:27Z",
+    "evidence": [
+      "attempts/RPS_ALL_ONLINE_validation_3"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "ROLLBACK_CANARY_TRAP",
+    "safe_source_candidate": "TCP_BUF_2X",
+    "attempt_type": "rollback_canary",
+    "vpu": 120,
+    "result": "expected_failure_restored",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "rollback_armed": false,
+    "unit_state": "not_applicable",
+    "evidence": [
+      "attempts/ROLLBACK_CANARY_TRAP"
+    ]
+  },
+  {
+    "run_id": "s30-20260819130750-77168",
+    "candidate_id": "ROLLBACK_CANARY_LEASE",
+    "safe_source_candidate": "TCP_BUF_2X",
+    "attempt_type": "rollback_canary",
+    "vpu": 120,
+    "result": "expected_failure_restored",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "rollback_armed": false,
+    "unit_state": "active",
+    "evidence": [
+      "attempts/ROLLBACK_CANARY_LEASE"
+    ]
+  }
+]

@@ -429,7 +429,7 @@ prepare() {
   need jq; need lsblk; need iscsiadm; need fio; need iostat; need sha256sum; need flock
   [ "$(uname -m)" = x86_64 ] || die "Sprint 30 guest architecture must be x86_64"
   install -d -m 0700 "$STATE_DIR" "$evidence"
-  jq -e '.vpu==50 and (.run_id|length)>0 and (.volumes|length)==5 and all(.volumes[];.created==true and .vpu==50 and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.iqn|length)>0) and ([.volumes[].path]|unique|length)==5 and ([.volumes[].volume_ocid]|unique|length)==5 and ([.volumes[].iqn]|unique|length)==5' "$input" >/dev/null || die "manifest contract rejected"
+  jq -e '(.vpu==50 or .vpu==120) and (.vpu as $vpu | (.run_id|length)>0 and (.volumes|length)==5 and all(.volumes[];.created==true and .vpu==$vpu and .is_multipath==false and .multipath_devices==0 and (.volume_ocid|length)>0 and (.iqn|length)>0) and ([.volumes[].path]|unique|length)==5 and ([.volumes[].volume_ocid]|unique|length)==5 and ([.volumes[].iqn]|unique|length)==5)' "$input" >/dev/null || die "manifest contract rejected"
   manifest_sha=$(sha256sum "$input" | awk '{print $1}'); run_id=$(jq -r '.run_id' "$input")
   jq -e --arg run_id "$run_id" --arg sha "$manifest_sha" '.run_id==$run_id and .manifest_sha256==$sha and (.volumes|length)==5 and ((.authorize_fresh_layout==true and .reuse_existing_layout==false) or (.authorize_fresh_layout==false and .reuse_existing_layout==true))' "$authorization" >/dev/null || die "layout authorization rejected"
   diff -u <(jq -S '[.volumes[]|{volume_ocid,path,iqn}]' "$input") <(jq -S '.volumes' "$authorization") >/dev/null || die "authorization volume set mismatch"
@@ -528,7 +528,7 @@ prepare() {
 }
 
 run_attempt() {
-  local candidate="$1" repetition="$2" out="$3" runtime="$4" ramp="$5" started ended rc=0 profile unit deadline_epoch fio_pid='' iostat_pid='' expected_cc lock_held=false attempt_lock_held=false
+  local candidate="$1" repetition="$2" out="$3" runtime="$4" ramp="$5" started ended rc=0 profile unit deadline_epoch lease_seconds fio_pid='' iostat_pid='' expected_cc lock_held=false attempt_lock_held=false
   transition() {
     local state="$1" file="$out/state.json" now tmp
     now=$(date -u +%Y-%m-%dT%H:%M:%SZ); tmp="$file.tmp.$$"
@@ -584,8 +584,9 @@ run_attempt() {
   restore_controls
   verify_sentinels
   unit="bv4db-s30-restore-$(date +%s)-$$"
-  deadline_epoch=$(( $(date +%s) + 180 ))
-  jq -n --arg unit "$unit" --arg out "$out" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:180,deadline_epoch:$deadline,renewal_count:0,expiry_claimed:false,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
+  lease_seconds=$((runtime + ramp + 300))
+  deadline_epoch=$(( $(date +%s) + lease_seconds ))
+  jq -n --arg unit "$unit" --arg out "$out" --argjson lease "$lease_seconds" --argjson deadline "$deadline_epoch" '{rollback_armed:true,unit:$unit,deadline_seconds:$lease,deadline_epoch:$deadline,renewal_count:0,expiry_claimed:false,evidence_dir:$out}' | atomic_json "$STATE_DIR/rollback.json"
   systemd-run --quiet --unit "$unit" --on-active=5s --on-unit-active=5s --timer-property=AccuracySec=1s /usr/local/sbin/bv4db-sprint30-guest lease-check
   systemctl is-active --quiet "$unit.timer" || die "rollback watchdog timer did not become active"
   trap 'cleanup_attempt' EXIT
@@ -682,16 +683,17 @@ EOF
 }
 
 renew_rollback_lease() {
-  local unit now deadline tmp renewed_at
+  local unit now deadline lease_seconds tmp renewed_at
   exec 6>"$LEASE_LOCK_FILE"; flock -w 15 6 || die "could not acquire rollback lease-state lock"
   jq -e '.rollback_armed==true and (.unit|length)>0' "$STATE_DIR/rollback.json" >/dev/null || die "rollback lease is not armed"
   jq -e '(.expiry_claimed//false)==false' "$STATE_DIR/rollback.json" >/dev/null || die "rollback expiry was already claimed"
   unit=$(jq -r .unit "$STATE_DIR/rollback.json")
   systemctl is-active --quiet "$unit.timer" || die "rollback timer is not active"
-  now=$(date +%s); deadline=$((now + 180)); renewed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ); tmp=$(json_tmp "$STATE_DIR/rollback.json")
+  lease_seconds=$(jq -r '.deadline_seconds // 180' "$STATE_DIR/rollback.json")
+  now=$(date +%s); deadline=$((now + lease_seconds)); renewed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ); tmp=$(json_tmp "$STATE_DIR/rollback.json")
   jq --argjson deadline "$deadline" --arg renewed_at "$renewed_at" '.deadline_epoch=$deadline | .renewed_at=$renewed_at | .renewal_count=((.renewal_count//0)+1)' "$STATE_DIR/rollback.json" > "$tmp"
   mv "$tmp" "$STATE_DIR/rollback.json"
-  jq -e --argjson now "$now" '.rollback_armed==true and .deadline_epoch >= ($now+180)' "$STATE_DIR/rollback.json" >/dev/null || die "rollback deadline renewal was not persisted"
+  jq -e --argjson now "$now" --argjson lease "$lease_seconds" '.rollback_armed==true and .deadline_epoch >= ($now+$lease)' "$STATE_DIR/rollback.json" >/dev/null || die "rollback deadline renewal was not persisted"
   systemctl is-active --quiet "$unit.timer" || die "rollback timer became inactive during renewal"
   jq -c '{unit,deadline_epoch,renewed_at,renewal_count}' "$STATE_DIR/rollback.json"
   flock -u 6

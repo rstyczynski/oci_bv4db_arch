@@ -140,3 +140,33 @@ Earlier `live_50vpu_*` directories and A3 logs are retained as diagnostic and
 safety-development evidence. They are not pooled into the accepted candidate
 comparison. The canonical run and the two `*_final.log` files above supersede
 their incomplete gate outcomes.
+
+## BV4DB-75 Extension - 120 VPUs/GB
+
+The Product Owner extended Sprint 30 without changing any test or FIO job. The
+canonical 120-VPU run is:
+
+```text
+progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/
+```
+
+The run reused the existing compute, volumes, attachments, filesystems, and
+benchmark files. It measured one same-tier baseline, screened the same 13
+candidates, ran two additional validations for the sole shortlist candidate,
+and executed both rollback canaries. All 16 measurements passed and restored;
+the independent verifier reconciled 18 rows and 13 testable candidates.
+
+Baseline: 65,349.91 DATA IOPS, 1.253 ms REDO p99.9, and 175.78 MiB/s FRA.
+The recommendation is `RPS_ALL_ONLINE`: across three stable runs its median was
+65,028.79 DATA IOPS, 1.028 ms REDO p99.9, and 175.78 MiB/s FRA. REDO p99.9
+improved 17.97% with no primary regression, clean errors, and CPU within the
+10% guard. Full interpretation and report links are in
+`sprint_30_120vpu_summary.md` and the canonical aggregate
+`live_120vpu_20260819_avq3_reuse_r3/fio_report.html`.
+
+The extension A3 log `test_run_A3_integration_20260819_120vpu_extension.log`
+passed 10/10. Scoped B3 log
+`test_run_B3_integration_20260819_120vpu_extension.log` passed 10/10 with the
+component dispatcher at 1/1. Tests under `tests/` were not changed. Final state
+proved byte-equal guest baseline restoration, valid sentinels, disarmed
+rollback, reused infrastructure, and retained resources at 120 VPUs/GB.

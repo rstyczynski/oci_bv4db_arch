@@ -1,0 +1,10 @@
+{
+  "candidate_id": "OFFLOAD_TSO",
+  "repetition": 1,
+  "started_at": "2026-08-19T15:38:37Z",
+  "ended_at": "2026-08-19T15:49:39Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

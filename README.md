@@ -355,6 +355,8 @@ Oracle also documents archived redo handling inside FRA:
 - Sprint 30 single-path tuning test report: [progress/sprint_30/sprint_30_tests.md](progress/sprint_30/sprint_30_tests.md)
 - Sprint 30 aggregate FIO HTML report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
 - Sprint 30 OCI Monitoring report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md)
+- Sprint 30 120-VPU summary: [progress/sprint_30/sprint_30_120vpu_summary.md](progress/sprint_30/sprint_30_120vpu_summary.md)
+- Sprint 30 120-VPU aggregate FIO HTML report: [progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/fio_report.html](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/fio_report.html)
 
 ## Official OCI References
 

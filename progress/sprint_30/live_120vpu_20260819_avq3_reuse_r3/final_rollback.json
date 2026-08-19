@@ -1,0 +1,7 @@
+{
+  "rollback_armed": false,
+  "unit": "bv4db-sprint30-restore-316925",
+  "canary": false,
+  "canary_observation_pending": false,
+  "restoration_state": "restored"
+}

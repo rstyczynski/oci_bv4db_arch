@@ -460,8 +460,9 @@ Test: integration
 Regression: integration
 Regression scope: iscsi_tuning
 
-Sprint 30 evaluates supported iSCSI network-path tuning on a four-OCPU midrange server without multipath, with every test volume configured at 50 VPUs/GB. It uses the established Oracle-style block-volume layout only for FIO file placement and does not install or test Oracle Database. Later backlog items separately revalidate the Sprint 30 method at 30 and 120 VPUs/GB.
+Sprint 30 evaluates supported iSCSI network-path tuning on a four-OCPU midrange server without multipath. BV4DB-72 established the 50-VPU/GB result; the Product Owner extended the sprint with BV4DB-75 to execute the identical test method at 120 VPUs/GB. The 120-VPU evidence remains separate and explicitly reports the effective four-OCPU single-path limits. The established Oracle-style layout is used only for FIO file placement; Oracle Database is not installed or tested.
 
 Backlog Items:
 
 * BV4DB-72. Tune single-path iSCSI performance on a four-OCPU midrange server
+* BV4DB-75. Revalidate single-path iSCSI tuning at 120 VPUs/GB

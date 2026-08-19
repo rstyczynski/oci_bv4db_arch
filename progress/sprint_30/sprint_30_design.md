@@ -36,15 +36,29 @@ Sources:
 
 RPS/XPS masks and NIC channel limits are derived from the online Linux vCPU and queue topology. They must never be hard-coded from the OCPU count. A different image OCID, kernel, shape, memory size, CPU topology, or iSCSI-facing interface starts a different experiment and cannot be merged into the Sprint 30 comparison.
 
-### Fixed 50-VPU Baseline
+### Tier-specific Baselines
 
-Every Sprint 30 tuning candidate is compared only with the regular OCI/guest-settings baseline at 50 VPUs/GB. All five volumes remain at that value for the entire experiment. The pinned image, compute topology, single-path attachments, volume sizes, filesystems, FIO profile, and collection window remain fixed.
+Every BV4DB-72 tuning candidate is compared only with the regular OCI/guest-settings baseline at 50 VPUs/GB. Every BV4DB-75 candidate is compared only with the separately measured regular baseline at 120 VPUs/GB. Within each evidence set all five volumes remain at its single declared tier. The pinned image, compute topology, single-path attachments, volume sizes, filesystems, FIO profile, and collection window remain fixed.
 
 | VPUs/GB | Attachment | Baseline action | Interpretation |
 | --- | --- | --- | --- |
 | 50 | single-path iSCSI | Reuse the archived accepted FIO baseline; do not remeasure it during tuning. | Characterize candidates relative to the documented regular-settings evidence. |
+| 120 | single-path iSCSI | Measure one same-tier baseline before screening; do not repeat it per candidate. | Keep the result separate and expose the four-OCPU single-path limit. |
 
-Sprint 30 performs no 30-, 45-, or 120-VPU run and no VPU transition experiment. An attempt, plan entry, index row, report row, or recommendation containing any value other than 50 fails the Sprint 30 gate.
+BV4DB-72 performs no 30-, 45-, or 120-VPU run; its immutable evidence remains
+fixed at 50. The BV4DB-75 Sprint extension executes the same method at exactly
+120 VPUs/GB in a separate evidence directory. An evidence set must contain one
+tier only, and its plan, manifest, OCI preflight, result rows, and recommendation
+must all agree. The existing integration test definitions remain unchanged;
+the independent evidence verifier derives the expected tier from the manifest.
+
+The existing five volumes are updated in place through OCI profile `avq3` and
+must reach `AVAILABLE` with an effective value of 120 before guest preparation
+or FIO. No compute, volume, attachment, filesystem, or benchmark file is
+reprovisioned. One 120-VPU regular baseline is measured before the candidates;
+it is not repeated before each candidate. Normal candidate teardown restores
+only candidate configuration, leaving retained resources in the 120-VPU
+regular baseline state. Hard destruction remains exceptional recovery only.
 
 ### Block-Volume Layout
 
@@ -132,11 +146,24 @@ The layout names describe FIO file placement only. No Oracle binaries, database 
 
 ### Experiment Schedule and Decision Rules
 
-The accepted baseline is imported once and is not an executable plan row. The generated `experiment_plan.json` records its source plus one deterministic candidate screening order: iSCSI session first, then TCP buffers, TCP congestion control, receive backlog, RPS/RFS/XPS, NIC rings, NIC channels, NIC coalescing, and finally independently changeable NIC offloads. Each testable candidate appears exactly once. There are no repeated baseline, checkpoint, or final-baseline FIO runs. A candidate is shortlisted only when its screening result improves a primary metric by more than 5%, regresses no primary metric by more than 5%, remains within the CPU guard, preserves integrity and restoration, and introduces no monitored error increase. Only shortlisted candidates receive repetitions two and three. After screening and conditional validation, execute the two non-measurement rollback canaries and prove full recovery. The plan reconciles archived baseline references, candidate count, canaries, conditional runs, elapsed time, and incremental test cost.
+The accepted 50-VPU baseline is imported once and is not an executable plan
+row. The separate 120-VPU plan measures one initial baseline row because no
+same-tier accepted baseline exists. Neither tier repeats a baseline before
+candidates or adds checkpoint/final-baseline FIO. The generated
+`experiment_plan.json` records the source plus one deterministic candidate
+screening order: iSCSI session first, then TCP buffers, TCP congestion control,
+receive backlog, RPS/RFS/XPS, NIC rings, NIC channels, NIC coalescing, and
+finally independently changeable NIC offloads. Each testable candidate appears
+exactly once. A candidate is shortlisted only when its screening result
+improves a primary metric by more than 5%, regresses no primary metric by more
+than 5%, remains within the CPU guard, preserves integrity and restoration,
+and introduces no monitored error increase. Only shortlisted candidates receive
+repetitions two and three. After screening and conditional validation, execute
+the two non-measurement rollback canaries and prove full recovery.
 
-For every FIO job and metric, report the screening value. For shortlisted candidates, additionally report the median, minimum, maximum, median absolute deviation, and coefficient of variation across their three total measurements. A shortlisted candidate is eligible for recommendation only when each primary measure’s CV is at most 5%; an unstable validated candidate is ineligible and reported as inconclusive. Baseline statistics come only from the documented archived baseline evidence.
+For every FIO job and metric, report the screening value. For shortlisted candidates, additionally report the median, minimum, maximum, median absolute deviation, and coefficient of variation across their three total measurements. A shortlisted candidate is eligible for recommendation only when each primary measure’s CV is at most 5%; an unstable validated candidate is ineligible and reported as inconclusive. Baseline statistics come only from the documented same-tier baseline evidence.
 
-Primary measures are DATA IOPS, REDO p99 and p99.9 write-completion latency from `jobs[].write.clat_ns.percentile`, and FRA bandwidth. Report `sync.lat_ns` separately but do not substitute it for the REDO primary measure. A candidate is eligible only if it is stable; has no FIO, iSCSI, kernel, TCP, checksum, or restoration error or monitored error-class counter increment; improves at least one primary measure by more than `max(5%, 2 × baseline CV)`; does not regress any other primary measure or p99/p99.9 latency by more than that metric’s `max(5%, 2 × baseline CV)`; and increases median host CPU utilization by no more than 10% relative. The monitored error-class set is frozen in the plan and includes iSCSI/SCSI failures and timeouts, TCP retransmits/resets, NIC errors/drops, and new kernel block/network error records; ordinary byte, packet, and command counters are expected to rise and are not errors. Eligible candidates are Pareto-ranked at 50 VPUs/GB only. Ties prefer lower p99.9 REDO latency, then lower CPU use, then the configuration with fewer changed controls; if no candidate clears the noise and guardrails, the regular OCI/guest baseline is the recommendation.
+Primary measures are DATA IOPS, REDO p99 and p99.9 write-completion latency from `jobs[].write.clat_ns.percentile`, and FRA bandwidth. Report `sync.lat_ns` separately but do not substitute it for the REDO primary measure. A candidate is eligible only if it is stable; has no FIO, iSCSI, kernel, TCP, checksum, or restoration error or monitored error-class counter increment; improves at least one primary measure by more than `max(5%, 2 × baseline CV)`; does not regress any other primary measure or p99/p99.9 latency by more than that metric’s `max(5%, 2 × baseline CV)`; and increases median host CPU utilization by no more than 10% relative. The monitored error-class set is frozen in the plan and includes iSCSI/SCSI failures and timeouts, TCP retransmits/resets, NIC errors/drops, and new kernel block/network error records; ordinary byte, packet, and command counters are expected to rise and are not errors. Eligible candidates are Pareto-ranked only within their evidence set's single tier; 50- and 120-VPU results are never pooled. Ties prefer lower p99.9 REDO latency, then lower CPU use, then the configuration with fewer changed controls; if no candidate clears the noise and guardrails, that tier's regular OCI/guest baseline is the recommendation.
 
 Every results-index entry declares `attempt_type=measurement` or `rollback_canary`. Archived baseline measurement rows are marked `source=archived_baseline`; new candidate rows are never confused with them. Only successful candidate measurement rows contribute to candidate repetition counts and stability. The two canaries use dedicated IDs and never change their source candidate's performance status.
 

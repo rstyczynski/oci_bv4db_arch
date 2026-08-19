@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 30 REGULAR_BASELINE_INITIAL block baseline repetition 1</title>
+  <style>
+    :root {
+      --bg: #f7f0e7;
+      --panel: #fffaf3;
+      --ink: #22170f;
+      --muted: #6f6152;
+      --line: #ddcfbe;
+      --accent: #8a4f15;
+      --accent2: #236f83;
+      --accent3: #7c2439;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fbf6ef 0%, #f0e4d3 100%);
+    }
+    main { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+    .hero {
+      background: linear-gradient(135deg, rgba(138,79,21,.96), rgba(52,30,10,.96));
+      color: #fff7ee;
+      border-radius: 28px;
+      padding: 28px 30px;
+      box-shadow: 0 18px 50px rgba(67,34,11,.18);
+    }
+    .eyebrow { margin: 0; letter-spacing: .18em; text-transform: uppercase; font-size: 12px; opacity: .84; }
+    h1 { margin: 10px 0 8px; font-size: clamp(34px, 5vw, 58px); line-height: 1; }
+    .toc, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: 0 10px 30px rgba(70,46,22,.08);
+    }
+    .toc ul { margin: 8px 0 0; padding-left: 18px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fffdf8;
+      padding: 16px 18px;
+    }
+    .stat-card h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .stat-card p { margin: 0; font-size: 24px; font-weight: 700; }
+    h2 { margin: 0 0 14px; font-size: 28px; }
+    .section-kicker { margin: 0 0 18px; color: var(--muted); }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .metric-chart { width: 100%; height: auto; display: block; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">FIO Results</p>
+      <h1>Sprint 30 REGULAR_BASELINE_INITIAL block baseline repetition 1</h1>
+      <p>Standalone HTML presentation for the archived Oracle-style fio phase, combining fio per-job results with guest iostat device observations.</p>
+    </section>
+
+    <section class="toc">
+      <h2>Table of Contents</h2>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#jobs">fio Jobs</a></li>
+        <li><a href="#devices">Device Activity</a></li>
+        <li><a href="#runtime">Top Device Charts</a></li>
+      </ul>
+    </section>
+
+    <section id="overview" class="panel">
+      <h2>Overview</h2>
+      <p class="section-kicker">High-level fio context and aggregated throughput from the archived result set.</p>
+      <div class="stats">
+        <article class="stat-card"><h3>Runtime</h3><p>600 s</p></article>
+        <article class="stat-card"><h3>Ramp Time</h3><p>60 s</p></article>
+        <article class="stat-card"><h3>IO Engine</h3><p>libaio</p></article>
+        <article class="stat-card"><h3>Total Read IOPS</h3><p>45841.48</p></article>
+        <article class="stat-card"><h3>Total Write IOPS</h3><p>21830.64</p></article>
+        <article class="stat-card"><h3>Total Read MiB/s</h3><p>445.48</p></article>
+        <article class="stat-card"><h3>Total Write MiB/s</h3><p>249.22</p></article>
+        <article class="stat-card"><h3>Most Active Device</h3><p>dm-2</p></article>
+      </div>
+    </section>
+
+    <section id="jobs" class="panel">
+      <h2>fio Jobs</h2>
+      <p class="section-kicker">Per-job fio throughput and latency extracted from the JSON output.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Job</th>
+            <th>Read IOPS</th>
+            <th>Read MiB/s</th>
+            <th>Read Lat ms</th>
+            <th>Write IOPS</th>
+            <th>Write MiB/s</th>
+            <th>Write Lat ms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>data-8k</td><td>11435.48</td><td>89.34</td><td>0.93</td><td>4900.64</td><td>38.29</td><td>1.09</td></tr><tr><td>data-8k</td><td>11439.15</td><td>89.37</td><td>0.93</td><td>4901.84</td><td>38.29</td><td>1.08</td></tr><tr><td>data-8k</td><td>11437.88</td><td>89.36</td><td>0.93</td><td>4897.97</td><td>38.26</td><td>1.09</td></tr><tr><td>data-8k</td><td>11440.94</td><td>89.38</td><td>0.93</td><td>4896.01</td><td>38.25</td><td>1.09</td></tr><tr><td>redo</td><td>0.0</td><td>0.0</td><td>0.0</td><td>2146.44</td><td>8.38</td><td>0.46</td></tr><tr><td>fra-1m</td><td>88.03</td><td>88.03</td><td>44.54</td><td>87.74</td><td>87.75</td><td>46.49</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="devices" class="panel">
+      <h2>Device Activity</h2>
+      <p class="section-kicker">Guest iostat averages used to confirm device-level behavior during the fio phase.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>Avg Read MiB/s</th>
+            <th>Avg Write MiB/s</th>
+            <th>Avg Util %</th>
+            <th>Max Util %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>dm-2</td><td>354.34</td><td>151.81</td><td>99.43</td><td>100.04</td></tr><tr><td>sdc</td><td>177.2</td><td>75.92</td><td>99.43</td><td>100.04</td></tr><tr><td>sdb</td><td>177.15</td><td>75.89</td><td>99.43</td><td>100.04</td></tr><tr><td>sdf</td><td>87.74</td><td>87.27</td><td>99.17</td><td>100.04</td></tr><tr><td>dm-3</td><td>0.0</td><td>8.34</td><td>91.45</td><td>93.34</td></tr><tr><td>sde</td><td>0.0</td><td>4.17</td><td>46.64</td><td>48.52</td></tr><tr><td>sdd</td><td>0.0</td><td>4.17</td><td>44.88</td><td>47.22</td></tr><tr><td>dm-0</td><td>0.0</td><td>0.01</td><td>2.1</td><td>112.62</td></tr><tr><td>sda</td><td>0.0</td><td>0.02</td><td>0.02</td><td>0.16</td></tr><tr><td>dm-1</td><td>0.0</td><td>0.01</td><td>0.01</td><td>0.04</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="runtime" class="panel">
+      <h2>Top Device Charts</h2>
+      <p class="section-kicker">Runtime samples for the most active device seen in guest iostat.</p>
+      <div class="chart-grid">
+        <article>
+          <h3>dm-2 Read MiB/s</h3>
+          
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="dm-2 read throughput">
+  <rect x="0" y="0" width="720" height="220" rx="18" fill="#fffdf8"/>
+  <line x1="48" y1="188.00" x2="696" y2="188.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="192.00" text-anchor="end" font-size="11" fill="#6b5d4e">0.0</text><line x1="48" y1="146.00" x2="696" y2="146.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="150.00" text-anchor="end" font-size="11" fill="#6b5d4e">96.9</text><line x1="48" y1="104.00" x2="696" y2="104.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="108.00" text-anchor="end" font-size="11" fill="#6b5d4e">193.8</text><line x1="48" y1="62.00" x2="696" y2="62.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="66.00" text-anchor="end" font-size="11" fill="#6b5d4e">290.8</text><line x1="48" y1="20.00" x2="696" y2="20.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="24.00" text-anchor="end" font-size="11" fill="#6b5d4e">387.7</text>
+  <polyline fill="none" stroke="#8a4f15" stroke-width="3" points="48.00,155.40 52.91,41.65 57.82,40.40 62.73,37.42 67.64,41.34 72.55,38.89 77.45,37.12 82.36,34.93 87.27,36.47 92.18,32.65 97.09,36.93 102.00,38.98 106.91,37.17 111.82,36.18 116.73,37.09 121.64,35.96 126.55,38.80 131.45,39.65 136.36,37.16 141.27,34.85 146.18,40.57 151.09,33.80 156.00,32.95 160.91,33.38 165.82,36.43 170.73,37.84 175.64,38.13 180.55,37.56 185.45,36.85 190.36,32.62 195.27,37.16 200.18,37.98 205.09,37.11 210.00,34.48 214.91,31.06 219.82,33.13 224.73,32.59 229.64,35.39 234.55,39.12 239.45,36.48 244.36,36.64 249.27,35.67 254.18,34.93 259.09,37.13 264.00,37.01 268.91,36.10 273.82,37.86 278.73,35.69 283.64,36.03 288.55,38.06 293.45,36.55 298.36,35.25 303.27,38.98 308.18,39.90 313.09,38.09 318.00,35.01 322.91,35.11 327.82,39.60 332.73,39.63 337.64,38.42 342.55,37.12 347.45,35.01 352.36,40.45 357.27,40.48 362.18,42.20 367.09,38.41 372.00,37.23 376.91,26.51 381.82,28.85 386.73,30.86 391.64,33.31 396.55,36.39 401.45,37.60 406.36,34.52 411.27,31.35 416.18,27.35 421.09,36.00 426.00,33.56 430.91,36.79 435.82,35.90 440.73,40.18 445.64,38.69 450.55,33.68 455.45,34.33 460.36,34.10 465.27,35.45 470.18,36.61 475.09,36.62 480.00,38.79 484.91,35.98 489.82,27.81 494.73,22.63 499.64,28.24 504.55,26.97 509.45,25.16 514.36,27.21 519.27,28.46 524.18,24.09 529.09,25.53 534.00,21.76 538.91,26.70 543.82,22.03 548.73,24.38 553.64,24.22 558.55,26.24 563.45,24.59 568.36,21.05 573.27,20.00 578.18,25.08 583.09,23.59 588.00,23.41 592.91,26.71 597.82,30.68 602.73,26.62 607.64,24.00 612.55,31.49 617.45,32.73 622.36,32.32 627.27,31.80 632.18,29.51 637.09,27.56 642.00,33.76 646.91,31.57 651.82,29.54 656.73,29.62 661.64,29.61 666.55,31.60 671.45,35.13 676.36,30.29 681.27,34.15 686.18,38.10 691.09,30.89 696.00,24.31"/>
+</svg>
+
+        </article>
+        <article>
+          <h3>dm-2 Write MiB/s</h3>
+          
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="dm-2 write throughput">
+  <rect x="0" y="0" width="720" height="220" rx="18" fill="#fffdf8"/>
+  <line x1="48" y1="188.00" x2="696" y2="188.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="192.00" text-anchor="end" font-size="11" fill="#6b5d4e">0.0</text><line x1="48" y1="146.00" x2="696" y2="146.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="150.00" text-anchor="end" font-size="11" fill="#6b5d4e">41.7</text><line x1="48" y1="104.00" x2="696" y2="104.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="108.00" text-anchor="end" font-size="11" fill="#6b5d4e">83.4</text><line x1="48" y1="62.00" x2="696" y2="62.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="66.00" text-anchor="end" font-size="11" fill="#6b5d4e">125.1</text><line x1="48" y1="20.00" x2="696" y2="20.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="24.00" text-anchor="end" font-size="11" fill="#6b5d4e">166.8</text>
+  <polyline fill="none" stroke="#236f83" stroke-width="3" points="48.00,155.55 52.91,41.71 57.82,40.80 62.73,37.41 67.64,40.98 72.55,38.58 77.45,37.65 82.36,34.97 87.27,37.53 92.18,33.63 97.09,37.09 102.00,39.12 106.91,37.86 111.82,36.77 116.73,38.15 121.64,36.58 126.55,39.59 131.45,40.17 136.36,38.30 141.27,36.25 146.18,41.96 151.09,34.93 156.00,33.64 160.91,33.84 165.82,36.25 170.73,38.61 175.64,39.31 180.55,37.76 185.45,38.07 190.36,33.22 195.27,37.82 200.18,38.27 205.09,37.14 210.00,35.70 214.91,32.45 219.82,32.94 224.73,33.38 229.64,36.61 234.55,40.36 239.45,37.78 244.36,36.60 249.27,36.98 254.18,36.09 259.09,38.22 264.00,37.54 268.91,37.29 273.82,37.94 278.73,36.73 283.64,36.63 288.55,38.44 293.45,37.65 298.36,37.06 303.27,39.49 308.18,40.38 313.09,37.83 318.00,35.66 322.91,36.43 327.82,40.12 332.73,39.16 337.64,39.06 342.55,38.52 347.45,36.59 352.36,40.55 357.27,41.45 362.18,43.64 367.09,38.16 372.00,37.26 376.91,28.08 381.82,29.13 386.73,32.08 391.64,34.32 396.55,36.98 401.45,37.86 406.36,34.19 411.27,32.06 416.18,27.98 421.09,36.60 426.00,35.15 430.91,37.95 435.82,36.51 440.73,41.18 445.64,39.94 450.55,34.35 455.45,34.91 460.36,34.29 465.27,36.24 470.18,37.20 475.09,37.40 480.00,39.53 484.91,37.71 489.82,28.83 494.73,23.42 499.64,29.01 504.55,27.11 509.45,25.16 514.36,28.35 519.27,28.89 524.18,25.35 529.09,25.91 534.00,22.36 538.91,27.86 543.82,23.39 548.73,24.41 553.64,25.08 558.55,25.91 563.45,26.81 568.36,22.41 573.27,20.00 578.18,26.56 583.09,24.30 588.00,24.83 592.91,26.76 597.82,31.35 602.73,27.12 607.64,26.53 612.55,31.07 617.45,32.86 622.36,32.58 627.27,32.53 632.18,30.29 637.09,28.07 642.00,35.58 646.91,33.05 651.82,30.20 656.73,29.67 661.64,31.75 666.55,31.58 671.45,35.54 676.36,29.89 681.27,35.50 686.18,39.08 691.09,30.33 696.00,24.05"/>
+</svg>
+
+        </article>
+        <article>
+          <h3>dm-2 Util %</h3>
+          
+<svg viewBox="0 0 720 220" class="metric-chart" role="img" aria-label="dm-2 utilization">
+  <rect x="0" y="0" width="720" height="220" rx="18" fill="#fffdf8"/>
+  <line x1="48" y1="188.00" x2="696" y2="188.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="192.00" text-anchor="end" font-size="11" fill="#6b5d4e">0.0</text><line x1="48" y1="146.00" x2="696" y2="146.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="150.00" text-anchor="end" font-size="11" fill="#6b5d4e">25.0</text><line x1="48" y1="104.00" x2="696" y2="104.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="108.00" text-anchor="end" font-size="11" fill="#6b5d4e">50.0</text><line x1="48" y1="62.00" x2="696" y2="62.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="66.00" text-anchor="end" font-size="11" fill="#6b5d4e">75.0</text><line x1="48" y1="20.00" x2="696" y2="20.00" stroke="#ddd5c6" stroke-width="1"/><text x="40" y="24.00" text-anchor="end" font-size="11" fill="#6b5d4e">100.0</text>
+  <polyline fill="none" stroke="#7c2439" stroke-width="3" points="48.00,140.51 52.91,26.65 57.82,20.10 62.73,20.07 67.64,20.07 72.55,20.00 77.45,20.13 82.36,20.03 87.27,20.10 92.18,20.07 97.09,20.03 102.00,20.07 106.91,20.07 111.82,20.07 116.73,20.07 121.64,20.07 126.55,20.07 131.45,20.07 136.36,20.07 141.27,20.07 146.18,20.07 151.09,20.07 156.00,20.07 160.91,20.07 165.82,20.07 170.73,20.07 175.64,20.07 180.55,20.07 185.45,20.07 190.36,20.07 195.27,20.07 200.18,20.07 205.09,20.07 210.00,20.07 214.91,20.07 219.82,20.07 224.73,20.07 229.64,20.07 234.55,20.07 239.45,20.07 244.36,20.03 249.27,20.07 254.18,20.10 259.09,20.07 264.00,20.07 268.91,20.07 273.82,20.07 278.73,20.03 283.64,20.07 288.55,20.07 293.45,20.07 298.36,20.07 303.27,20.07 308.18,20.07 313.09,20.07 318.00,20.07 322.91,20.07 327.82,20.07 332.73,20.07 337.64,20.07 342.55,20.07 347.45,20.07 352.36,20.07 357.27,20.07 362.18,20.07 367.09,20.07 372.00,20.07 376.91,20.07 381.82,20.07 386.73,20.03 391.64,20.10 396.55,20.07 401.45,20.07 406.36,20.03 411.27,20.07 416.18,20.07 421.09,20.07 426.00,20.07 430.91,20.07 435.82,20.07 440.73,20.07 445.64,20.07 450.55,20.07 455.45,20.07 460.36,20.07 465.27,20.07 470.18,20.07 475.09,20.07 480.00,20.07 484.91,20.07 489.82,20.07 494.73,20.07 499.64,20.07 504.55,20.07 509.45,20.07 514.36,20.03 519.27,20.10 524.18,20.07 529.09,20.03 534.00,20.10 538.91,20.07 543.82,20.03 548.73,20.07 553.64,20.07 558.55,20.07 563.45,20.07 568.36,20.07 573.27,20.07 578.18,20.07 583.09,20.07 588.00,20.07 592.91,20.07 597.82,20.07 602.73,20.07 607.64,20.07 612.55,20.07 617.45,20.07 622.36,20.07 627.27,20.07 632.18,20.07 637.09,20.03 642.00,20.07 646.91,20.07 651.82,20.07 656.73,20.07 661.64,20.07 666.55,20.03 671.45,20.10 676.36,20.07 681.27,20.07 686.18,20.07 691.09,20.07 696.00,20.07"/>
+</svg>
+
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

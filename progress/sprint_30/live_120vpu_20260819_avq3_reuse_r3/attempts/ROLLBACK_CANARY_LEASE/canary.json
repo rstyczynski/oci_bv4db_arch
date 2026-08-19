@@ -1,0 +1,11 @@
+{
+  "kind": "lease",
+  "safe_source_candidate": "TCP_BUF_2X",
+  "result": "expected_failure_restored",
+  "baseline_equal": true,
+  "sentinels_valid": true,
+  "rollback_armed": false,
+  "unit_state": "active",
+  "restore_service_result": "state_proven",
+  "restore_service_exit_status": 0
+}

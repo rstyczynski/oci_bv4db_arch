@@ -1,0 +1,3 @@
+timer stop_exit_code=0 missing_unit_only=false load_state=not-found active_state=inactive
+service stop_exit_code=5 missing_unit_only=true load_state=not-found active_state=inactive
+Failed to stop bv4db-s30-restore-1787153232-297798.service: Unit bv4db-s30-restore-1787153232-297798.service not loaded.

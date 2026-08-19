@@ -1,0 +1,10 @@
+{
+  "candidate_id": "RFS_65536",
+  "repetition": 1,
+  "started_at": "2026-08-19T14:41:35Z",
+  "ended_at": "2026-08-19T14:52:37Z",
+  "fio_exit_code": 0,
+  "restoration_state": "restored",
+  "sentinels_valid": true,
+  "rollback_armed": false
+}

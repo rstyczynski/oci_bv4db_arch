@@ -4,7 +4,7 @@
 
 **Validation date:** 2026-08-19
 **Sprint status:** tested and documented
-**Backlog item:** BV4DB-72
+**Backlog items:** BV4DB-72 and BV4DB-75
 
 Sprint 30 uses `sprint_30_setup.md` for both contracting and requirements
 analysis, as defined by this repository's merged contractor/analyst phase.
@@ -20,7 +20,8 @@ analysis, as defined by this repository's merged contractor/analyst phase.
 ## Compliance Verification
 
 - [x] Backlog scope and names are consistent across artifacts.
-- [x] The accepted 50-VPU/GB, four-OCPU, single-path topology is consistent.
+- [x] The separate accepted 50- and 120-VPU/GB four-OCPU single-path
+      topologies are internally consistent and never pooled.
 - [x] Baseline measurements are documented in the test artifact rather than
       construction notes.
 - [x] Every measured attempt has a written Markdown report and standalone FIO
@@ -44,10 +45,23 @@ analysis, as defined by this repository's merged contractor/analyst phase.
 - Final disposition: baseline restored, sentinels valid, rollback disarmed,
   reusable OCI resources retained
 
+### BV4DB-75 extension
+
+- Canonical run: `live_120vpu_20260819_avq3_reuse_r3`
+- Summary report: `sprint_30_120vpu_summary.md`
+- A3: `test_run_A3_integration_20260819_120vpu_extension.log` - 10/10 passed
+- B3: `test_run_B3_integration_20260819_120vpu_extension.log` - 10/10 passed,
+  component 1/1 passed
+- Independent verifier: 18 indexed rows and 13 testable candidates reconciled
+- Recommendation: `RPS_ALL_ONLINE`
+- Final disposition: baseline restored, sentinels valid, rollback disarmed,
+  reused OCI resources retained at 120 VPUs/GB
+
 ## Backlog Traceability
 
-`progress/backlog/BV4DB-72/` links the setup, design, implementation, tests,
-and documentation artifacts for direct requirement-to-evidence navigation.
+`progress/backlog/BV4DB-72/` and `progress/backlog/BV4DB-75/` link the setup,
+design, implementation, tests, documentation, and 120-VPU summary artifacts
+for direct requirement-to-evidence navigation.
 
 ## Quality Assessment
 
@@ -58,4 +72,4 @@ the RUP artifact purposes.
 
 ## Status
 
-Documentation phase complete. Sprint 30 is ready to close.
+Documentation phase complete. Sprint 30, including BV4DB-75, is closed.

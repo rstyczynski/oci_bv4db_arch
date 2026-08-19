@@ -1,0 +1,16 @@
+  {
+      "report": [
+          {
+              "pv": [
+                  {"pv_name":"/dev/sda3", "vg_name":"ocivolume", "pv_fmt":"lvm2", "pv_attr":"a--", "pv_size":"44.50g", "pv_free":"0 "},
+                  {"pv_name":"/dev/sdb", "vg_name":"vg_data", "pv_fmt":"lvm2", "pv_attr":"a--", "pv_size":"<200.00g", "pv_free":"0 "},
+                  {"pv_name":"/dev/sdc", "vg_name":"vg_data", "pv_fmt":"lvm2", "pv_attr":"a--", "pv_size":"<200.00g", "pv_free":"0 "},
+                  {"pv_name":"/dev/sdd", "vg_name":"vg_redo", "pv_fmt":"lvm2", "pv_attr":"a--", "pv_size":"<50.00g", "pv_free":"0 "},
+                  {"pv_name":"/dev/sde", "vg_name":"vg_redo", "pv_fmt":"lvm2", "pv_attr":"a--", "pv_size":"<50.00g", "pv_free":"0 "}
+              ]
+          }
+      ]
+      ,
+      "log": [
+      ]
+  }

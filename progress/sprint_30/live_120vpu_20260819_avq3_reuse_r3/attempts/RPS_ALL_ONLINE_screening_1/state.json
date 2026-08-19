@@ -1,0 +1,30 @@
+[
+  {
+    "state": "planned",
+    "at": "2026-08-19T14:52:58Z"
+  },
+  {
+    "state": "applying",
+    "at": "2026-08-19T14:52:59Z"
+  },
+  {
+    "state": "active",
+    "at": "2026-08-19T14:53:00Z"
+  },
+  {
+    "state": "measuring",
+    "at": "2026-08-19T14:53:00Z"
+  },
+  {
+    "state": "restoring",
+    "at": "2026-08-19T15:04:00Z"
+  },
+  {
+    "state": "restored",
+    "at": "2026-08-19T15:04:02Z"
+  },
+  {
+    "state": "passed",
+    "at": "2026-08-19T15:04:02Z"
+  }
+]

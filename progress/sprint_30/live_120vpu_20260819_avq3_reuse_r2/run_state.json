@@ -1,0 +1,9 @@
+{
+  "status": "failed",
+  "vpu": 120,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_120vpu_20260819_avq3_reuse_r2",
+  "resume": null,
+  "run_tag": "s30-20260819124959-64131",
+  "matrix_start": "2026-08-19T12:51:10Z",
+  "exit_code": 2
+}
