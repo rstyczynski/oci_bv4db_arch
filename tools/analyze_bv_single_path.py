@@ -274,15 +274,112 @@ def main() -> int:
             for metric, values in metrics.items():
                 lines.append(f"| `{candidate_id}` | `{job}` | `{metric}` | {values['median']} | {values['min']} | {values['max']} | {values['mad']} | {values['cv']} |")
     (run_dir / "fio_analysis.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    table_rows = "".join(
-        f"<tr><td>{html.escape(cid)}</td><td>{str(candidates[cid]['stable']).lower()}</td><td>{str(candidates[cid]['eligible']).lower()}</td>"
-        f"<td>{candidates[cid]['statistics']['data_iops']['median']}</td><td>{candidates[cid]['statistics']['redo_p99_ns']['median']}</td>"
-        f"<td>{candidates[cid]['statistics']['redo_p999_ns']['median']}</td><td>{candidates[cid]['statistics']['fra_bw_bytes']['median']}</td>"
-        f"<td>{candidates[cid]['redo_sync_mean_ns']['median']}</td><td>{candidates[cid]['cpu']['median']}</td>"
-        f"<td>{html.escape(', '.join(candidates[cid]['improvements']) or '-')}</td><td>{html.escape(', '.join(candidates[cid]['regressions']) or '-')}</td></tr>"
+    def number(value, digits=2):
+        return "n/a" if value is None else f"{value:,.{digits}f}"
+
+    baseline_links = "".join(
+        f'<li><a href="{html.escape(row["evidence"][0])}/fio_report.html">'
+        f'{html.escape(Path(row["evidence"][0]).name)}</a></li>'
+        for row in initial_rows
+    )
+    table_rows = "\n".join(
+        "<tr>"
+        f'<td><strong>{html.escape(cid)}</strong><br><a href="{html.escape(candidates[cid]["evidence"][0])}/fio_report.html">open regular FIO report</a></td>'
+        f'<td>{number(candidates[cid]["statistics"]["data_iops"]["median"])}</td>'
+        f'<td>{number(candidates[cid]["statistics"]["redo_p99_ns"]["median"] / 1_000_000, 3)}</td>'
+        f'<td>{number(candidates[cid]["statistics"]["redo_p999_ns"]["median"] / 1_000_000, 3)}</td>'
+        f'<td>{number(candidates[cid]["statistics"]["fra_bw_bytes"]["median"] / (1024 * 1024))}</td>'
+        f'<td>{number(candidates[cid]["cpu"]["median"])}</td>'
+        f'<td><span class="badge {"pass" if candidates[cid]["eligible"] else "fail"}">'
+        f'{"eligible" if candidates[cid]["eligible"] else "rejected"}</span></td>'
+        f'<td>{html.escape(", ".join(candidates[cid]["improvements"]) or "-")}</td>'
+        f'<td>{html.escape(", ".join(candidates[cid]["regressions"]) or "-")}</td>'
+        "</tr>"
         for cid in candidate_ids
     )
-    report = f'<!doctype html><html><head><meta charset="utf-8"><title>Sprint 30 FIO report</title></head><body><h1>Sprint 30 FIO report</h1><p>Fixed tier: 50 VPUs/GB.</p><p>Baseline: archived accepted evidence; not remeasured.</p><p>Recommendation: <code>{html.escape(decision)}</code></p><table><thead><tr><th>Candidate</th><th>Stable</th><th>Eligible</th><th>DATA IOPS median</th><th>REDO p99 ns</th><th>REDO p99.9 ns</th><th>FRA B/s</th><th>REDO sync mean ns</th><th>Host CPU %</th><th>Improvements</th><th>Regressions</th></tr></thead><tbody>{table_rows}</tbody></table></body></html>\n'
+    report = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 30 FIO Performance Report</title>
+  <style>
+    :root {{ --ink:#1f2933; --muted:#65717c; --line:#d9e0e6; --paper:#fff; --bg:#eef3f6; --accent:#075985; --good:#166534; --bad:#9f1239; }}
+    * {{ box-sizing:border-box; }}
+    body {{ margin:0; color:var(--ink); background:var(--bg); font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }}
+    main {{ max-width:1440px; margin:auto; padding:32px 22px 60px; }}
+    header {{ color:white; padding:30px; border-radius:22px; background:linear-gradient(135deg,#0c4a6e,#155e75); box-shadow:0 16px 42px #0c4a6e33; }}
+    header h1 {{ margin:4px 0 8px; font-size:clamp(30px,5vw,52px); line-height:1.05; }}
+    header p {{ margin:0; max-width:900px; color:#e0f2fe; }}
+    .eyebrow {{ text-transform:uppercase; letter-spacing:.16em; font-weight:700; font-size:12px; }}
+    .grid {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:22px 0; }}
+    .card,.panel {{ background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:0 8px 26px #274c5e12; }}
+    .card {{ padding:18px; }} .card span {{ display:block; color:var(--muted); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }}
+    .card strong {{ display:block; margin-top:5px; font-size:clamp(19px,2vw,25px); overflow-wrap:anywhere; }}
+    .card.recommendation strong {{ font-size:19px; white-space:nowrap; overflow-wrap:normal; }}
+    .panel {{ padding:22px; margin-top:18px; }} h2 {{ margin:0 0 8px; font-size:25px; }}
+    .note {{ border-left:5px solid var(--accent); }}
+    .table-wrap {{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin-top:14px; }}
+    table {{ width:100%; min-width:1100px; border-collapse:collapse; background:white; }}
+    th,td {{ padding:11px 12px; border-bottom:1px solid var(--line); text-align:right; vertical-align:top; white-space:nowrap; }}
+    th {{ position:sticky; top:0; background:#f5f8fa; color:var(--muted); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }}
+    th:first-child,td:first-child,th:nth-last-child(-n+2),td:nth-last-child(-n+2) {{ text-align:left; }}
+    tbody tr:hover {{ background:#f8fbfc; }} a {{ color:var(--accent); }}
+    .badge {{ display:inline-block; padding:3px 9px; border-radius:999px; font-weight:700; font-size:12px; }}
+    .badge.pass {{ color:var(--good); background:#dcfce7; }} .badge.fail {{ color:var(--bad); background:#ffe4e6; }}
+    ul.reports {{ columns:2; padding-left:20px; }} code {{ background:#e8eef2; padding:2px 6px; border-radius:5px; }}
+    @media(max-width:700px) {{ main {{ padding:14px 10px 40px; }} header,.panel {{ padding:18px; }} ul.reports {{ columns:1; }} }}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">BV4DB-72 · executed FIO evidence</div>
+    <h1>Sprint 30 Performance Report</h1>
+    <p>Four-OCPU, single-path iSCSI characterization on five OCI Block Volumes at 50 VPUs/GB. Infrastructure was reused, the accepted baseline was not remeasured, and every candidate restored the captured configuration.</p>
+  </header>
+
+  <section class="grid" aria-label="Report overview">
+    <div class="card recommendation"><span>Recommendation</span><strong>{html.escape(decision)}</strong></div>
+    <div class="card"><span>Baseline DATA</span><strong>{number(baseline["data_iops"]["median"])} IOPS</strong></div>
+    <div class="card"><span>Baseline REDO p99.9</span><strong>{number(baseline["redo_p999_ns"]["median"] / 1_000_000, 3)} ms</strong></div>
+    <div class="card"><span>Baseline FRA</span><strong>{number(baseline["fra_bw_bytes"]["median"] / (1024 * 1024))} MiB/s</strong></div>
+    <div class="card"><span>Measured candidates</span><strong>{len(candidate_ids)}</strong></div>
+    <div class="card"><span>Eligible candidates</span><strong>{len(eligible)}</strong></div>
+  </section>
+
+  <section class="panel note">
+    <h2>Decision</h2>
+    <p><strong>Keep the regular baseline.</strong> No candidate cleared the approved improvement and regression thresholds. All 13 screening candidates were rejected, principally because REDO p99 and p99.9 latency regressed. This is a valid negative tuning result.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Candidate comparison</h2>
+    <p>Each candidate name links to its full standalone FIO job and iostat report. Latencies are shown in milliseconds and FRA is combined read/write throughput.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Candidate / report</th><th>DATA IOPS</th><th>REDO p99 ms</th><th>REDO p99.9 ms</th><th>FRA MiB/s</th><th>Host CPU %</th><th>Decision</th><th>Improvements</th><th>Regressions</th></tr></thead>
+        <tbody>
+{table_rows}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Archived baseline reports</h2>
+    <p>The five accepted baseline measurements remain separate reports and were imported without rerunning FIO:</p>
+    <ul class="reports">{baseline_links}</ul>
+  </section>
+
+  <section class="panel">
+    <h2>Evidence index</h2>
+    <p>See <a href="fio_analysis.md">detailed statistical analysis</a>, <a href="sprint_30_summary.md">tunable coverage and Sprint summary</a>, <a href="oci_metrics.html">OCI Monitoring report</a>, and <a href="recommendation.json">machine-readable recommendation</a>.</p>
+  </section>
+</main>
+</body>
+</html>
+"""
     (run_dir / "fio_report.html").write_text(report, encoding="utf-8")
     return 0
 

@@ -1,1 +1,94 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Sprint 30 FIO report</title></head><body><h1>Sprint 30 FIO report</h1><p>Fixed tier: 50 VPUs/GB.</p><p>Baseline: archived accepted evidence; not remeasured.</p><p>Recommendation: <code>REGULAR_BASELINE</code></p><table><thead><tr><th>Candidate</th><th>Stable</th><th>Eligible</th><th>DATA IOPS median</th><th>REDO p99 ns</th><th>REDO p99.9 ns</th><th>FRA B/s</th><th>REDO sync mean ns</th><th>Host CPU %</th><th>Improvements</th><th>Regressions</th></tr></thead><tbody><tr><td>ISCSI_QD128</td><td>false</td><td>false</td><td>48002.516549</td><td>806912.0</td><td>1515520.0</td><td>98301705.0</td><td>531949.398737</td><td>34.43330827067669</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>NETDEV_BACKLOG_2X</td><td>false</td><td>false</td><td>48017.231497</td><td>749568.0</td><td>1044480.0</td><td>98301269.0</td><td>445032.704043</td><td>33.05766917293233</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>NETDEV_BACKLOG_4X</td><td>false</td><td>false</td><td>48008.276543</td><td>733184.0</td><td>1028096.0</td><td>98302798.0</td><td>443407.826372</td><td>33.02120300751879</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>OFFLOAD_GRO</td><td>false</td><td>false</td><td>48006.174879</td><td>724992.0</td><td>1011712.0</td><td>98302688.0</td><td>439593.004728</td><td>32.62864661654135</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>OFFLOAD_GSO</td><td>false</td><td>false</td><td>48004.996537</td><td>733184.0</td><td>1019904.0</td><td>98302798.0</td><td>438877.039089</td><td>32.74390977443609</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>OFFLOAD_TSO</td><td>false</td><td>false</td><td>48003.358292000004</td><td>733184.0</td><td>1019904.0</td><td>98302798.0</td><td>438023.305609</td><td>32.422406015037595</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>RFS_65536</td><td>false</td><td>false</td><td>48003.891593</td><td>815104.0</td><td>1286144.0</td><td>98302470.0</td><td>466460.348492</td><td>30.916992481203007</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>RPS_ALL_ONLINE</td><td>false</td><td>false</td><td>48003.403307</td><td>733184.0</td><td>1155072.0</td><td>98301705.0</td><td>436330.325814</td><td>33.475563909774436</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>TCP_BUF_2X</td><td>false</td><td>false</td><td>48017.506283</td><td>790528.0</td><td>1286144.0</td><td>98302798.0</td><td>453263.12623</td><td>33.772706766917295</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>TCP_BUF_4X</td><td>false</td><td>false</td><td>48009.49321</td><td>806912.0</td><td>1269760.0</td><td>98301869.0</td><td>455629.854646</td><td>33.47812030075188</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>TCP_CC_BBR</td><td>false</td><td>false</td><td>48014.744859</td><td>798720.0</td><td>1630208.0</td><td>98301377.0</td><td>444948.339881</td><td>34.53270676691729</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>TCP_CC_RENO</td><td>false</td><td>false</td><td>48010.091445</td><td>757760.0</td><td>1286144.0</td><td>98302689.0</td><td>444654.730895</td><td>33.605338345864666</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr><tr><td>XPS_BY_QUEUE</td><td>false</td><td>false</td><td>48008.276550999995</td><td>724992.0</td><td>1028096.0</td><td>98300941.0</td><td>438649.944436</td><td>32.76466165413534</td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr></tbody></table></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint 30 FIO Performance Report</title>
+  <style>
+    :root { --ink:#1f2933; --muted:#65717c; --line:#d9e0e6; --paper:#fff; --bg:#eef3f6; --accent:#075985; --good:#166534; --bad:#9f1239; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:15px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { max-width:1440px; margin:auto; padding:32px 22px 60px; }
+    header { color:white; padding:30px; border-radius:22px; background:linear-gradient(135deg,#0c4a6e,#155e75); box-shadow:0 16px 42px #0c4a6e33; }
+    header h1 { margin:4px 0 8px; font-size:clamp(30px,5vw,52px); line-height:1.05; }
+    header p { margin:0; max-width:900px; color:#e0f2fe; }
+    .eyebrow { text-transform:uppercase; letter-spacing:.16em; font-weight:700; font-size:12px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:22px 0; }
+    .card,.panel { background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:0 8px 26px #274c5e12; }
+    .card { padding:18px; } .card span { display:block; color:var(--muted); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .card strong { display:block; margin-top:5px; font-size:clamp(19px,2vw,25px); overflow-wrap:anywhere; }
+    .card.recommendation strong { font-size:19px; white-space:nowrap; overflow-wrap:normal; }
+    .panel { padding:22px; margin-top:18px; } h2 { margin:0 0 8px; font-size:25px; }
+    .note { border-left:5px solid var(--accent); }
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin-top:14px; }
+    table { width:100%; min-width:1100px; border-collapse:collapse; background:white; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:right; vertical-align:top; white-space:nowrap; }
+    th { position:sticky; top:0; background:#f5f8fa; color:var(--muted); font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+    th:first-child,td:first-child,th:nth-last-child(-n+2),td:nth-last-child(-n+2) { text-align:left; }
+    tbody tr:hover { background:#f8fbfc; } a { color:var(--accent); }
+    .badge { display:inline-block; padding:3px 9px; border-radius:999px; font-weight:700; font-size:12px; }
+    .badge.pass { color:var(--good); background:#dcfce7; } .badge.fail { color:var(--bad); background:#ffe4e6; }
+    ul.reports { columns:2; padding-left:20px; } code { background:#e8eef2; padding:2px 6px; border-radius:5px; }
+    @media(max-width:700px) { main { padding:14px 10px 40px; } header,.panel { padding:18px; } ul.reports { columns:1; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">BV4DB-72 · executed FIO evidence</div>
+    <h1>Sprint 30 Performance Report</h1>
+    <p>Four-OCPU, single-path iSCSI characterization on five OCI Block Volumes at 50 VPUs/GB. Infrastructure was reused, the accepted baseline was not remeasured, and every candidate restored the captured configuration.</p>
+  </header>
+
+  <section class="grid" aria-label="Report overview">
+    <div class="card recommendation"><span>Recommendation</span><strong>REGULAR_BASELINE</strong></div>
+    <div class="card"><span>Baseline DATA</span><strong>48,005.76 IOPS</strong></div>
+    <div class="card"><span>Baseline REDO p99.9</span><strong>0.913 ms</strong></div>
+    <div class="card"><span>Baseline FRA</span><strong>93.75 MiB/s</strong></div>
+    <div class="card"><span>Measured candidates</span><strong>13</strong></div>
+    <div class="card"><span>Eligible candidates</span><strong>0</strong></div>
+  </section>
+
+  <section class="panel note">
+    <h2>Decision</h2>
+    <p><strong>Keep the regular baseline.</strong> No candidate cleared the approved improvement and regression thresholds. All 13 screening candidates were rejected, principally because REDO p99 and p99.9 latency regressed. This is a valid negative tuning result.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Candidate comparison</h2>
+    <p>Each candidate name links to its full standalone FIO job and iostat report. Latencies are shown in milliseconds and FRA is combined read/write throughput.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Candidate / report</th><th>DATA IOPS</th><th>REDO p99 ms</th><th>REDO p99.9 ms</th><th>FRA MiB/s</th><th>Host CPU %</th><th>Decision</th><th>Improvements</th><th>Regressions</th></tr></thead>
+        <tbody>
+<tr><td><strong>ISCSI_QD128</strong><br><a href="attempts/ISCSI_QD128_screening_1/fio_report.html">open regular FIO report</a></td><td>48,002.52</td><td>0.807</td><td>1.516</td><td>93.75</td><td>34.43</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>NETDEV_BACKLOG_2X</strong><br><a href="attempts/NETDEV_BACKLOG_2X_screening_1/fio_report.html">open regular FIO report</a></td><td>48,017.23</td><td>0.750</td><td>1.044</td><td>93.75</td><td>33.06</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>NETDEV_BACKLOG_4X</strong><br><a href="attempts/NETDEV_BACKLOG_4X_screening_1/fio_report.html">open regular FIO report</a></td><td>48,008.28</td><td>0.733</td><td>1.028</td><td>93.75</td><td>33.02</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>OFFLOAD_GRO</strong><br><a href="attempts/OFFLOAD_GRO_screening_1/fio_report.html">open regular FIO report</a></td><td>48,006.17</td><td>0.725</td><td>1.012</td><td>93.75</td><td>32.63</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>OFFLOAD_GSO</strong><br><a href="attempts/OFFLOAD_GSO_screening_1/fio_report.html">open regular FIO report</a></td><td>48,005.00</td><td>0.733</td><td>1.020</td><td>93.75</td><td>32.74</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>OFFLOAD_TSO</strong><br><a href="attempts/OFFLOAD_TSO_screening_1/fio_report.html">open regular FIO report</a></td><td>48,003.36</td><td>0.733</td><td>1.020</td><td>93.75</td><td>32.42</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>RFS_65536</strong><br><a href="attempts/RFS_65536_screening_1/fio_report.html">open regular FIO report</a></td><td>48,003.89</td><td>0.815</td><td>1.286</td><td>93.75</td><td>30.92</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>RPS_ALL_ONLINE</strong><br><a href="attempts/RPS_ALL_ONLINE_screening_1/fio_report.html">open regular FIO report</a></td><td>48,003.40</td><td>0.733</td><td>1.155</td><td>93.75</td><td>33.48</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>TCP_BUF_2X</strong><br><a href="attempts/TCP_BUF_2X_screening_1/fio_report.html">open regular FIO report</a></td><td>48,017.51</td><td>0.791</td><td>1.286</td><td>93.75</td><td>33.77</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>TCP_BUF_4X</strong><br><a href="attempts/TCP_BUF_4X_screening_1/fio_report.html">open regular FIO report</a></td><td>48,009.49</td><td>0.807</td><td>1.270</td><td>93.75</td><td>33.48</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>TCP_CC_BBR</strong><br><a href="attempts/TCP_CC_BBR_screening_1/fio_report.html">open regular FIO report</a></td><td>48,014.74</td><td>0.799</td><td>1.630</td><td>93.75</td><td>34.53</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>TCP_CC_RENO</strong><br><a href="attempts/TCP_CC_RENO_screening_1/fio_report.html">open regular FIO report</a></td><td>48,010.09</td><td>0.758</td><td>1.286</td><td>93.75</td><td>33.61</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+<tr><td><strong>XPS_BY_QUEUE</strong><br><a href="attempts/XPS_BY_QUEUE_screening_1/fio_report.html">open regular FIO report</a></td><td>48,008.28</td><td>0.725</td><td>1.028</td><td>93.75</td><td>32.76</td><td><span class="badge fail">rejected</span></td><td>-</td><td>redo_p99_ns, redo_p999_ns</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Archived baseline reports</h2>
+    <p>The five accepted baseline measurements remain separate reports and were imported without rerunning FIO:</p>
+    <ul class="reports"><li><a href="baseline_reference/REGULAR_BASELINE_INITIAL_initial_1/fio_report.html">REGULAR_BASELINE_INITIAL_initial_1</a></li><li><a href="baseline_reference/REGULAR_BASELINE_INITIAL_initial_2/fio_report.html">REGULAR_BASELINE_INITIAL_initial_2</a></li><li><a href="baseline_reference/REGULAR_BASELINE_INITIAL_initial_3/fio_report.html">REGULAR_BASELINE_INITIAL_initial_3</a></li><li><a href="baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_4/fio_report.html">REGULAR_BASELINE_INITIAL_stability_extension_4</a></li><li><a href="baseline_reference/REGULAR_BASELINE_INITIAL_stability_extension_5/fio_report.html">REGULAR_BASELINE_INITIAL_stability_extension_5</a></li></ul>
+  </section>
+
+  <section class="panel">
+    <h2>Evidence index</h2>
+    <p>See <a href="fio_analysis.md">detailed statistical analysis</a>, <a href="sprint_30_summary.md">tunable coverage and Sprint summary</a>, <a href="oci_metrics.html">OCI Monitoring report</a>, and <a href="recommendation.json">machine-readable recommendation</a>.</p>
+  </section>
+</main>
+</body>
+</html>
