@@ -1,0 +1,32 @@
+[
+  {
+    "run_id": "s30-20260819005433-81086",
+    "candidate_id": "REGULAR_BASELINE_INITIAL",
+    "attempt_type": "measurement",
+    "block": "initial",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "passed",
+    "restoration_state": "restored",
+    "sentinels_valid": true,
+    "started_at": "2026-08-19T01:00:57Z",
+    "ended_at": "2026-08-19T01:16:37Z",
+    "evidence": [
+      "attempts/REGULAR_BASELINE_INITIAL_initial_1"
+    ]
+  },
+  {
+    "run_id": "s30-20260819005433-81086",
+    "candidate_id": "OFFLOAD_TX_CHECKSUM",
+    "attempt_type": "measurement",
+    "block": "screening",
+    "repetition": 1,
+    "vpu": 50,
+    "result": "failed",
+    "restoration_state": "unproven",
+    "sentinels_valid": false,
+    "evidence": [
+      "attempts/OFFLOAD_TX_CHECKSUM_screening_1"
+    ]
+  }
+]

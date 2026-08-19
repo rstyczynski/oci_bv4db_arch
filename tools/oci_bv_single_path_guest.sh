@@ -338,7 +338,13 @@ verify_candidate_applied() {
       feature=${id#OFFLOAD_}; case "$feature" in RX_CHECKSUM) feature="rx-checksumming";; TX_CHECKSUM) feature="tx-checksumming";; TSO) feature="tcp-segmentation-offload";; GSO) feature="generic-segmentation-offload";; GRO) feature="generic-receive-offload";; esac
       baseline_value=$(jq -r --arg key "$feature" '.offloads[$key]' "$BASELINE"); expected=on; [ "$baseline_value" = on ] && expected=off
       [ "$(jq -r --arg key "$feature" '.offloads[$key]' "$file")" = "$expected" ] || die "offload readback failed: $feature"
-      diff -u <(jq -S --arg key "$feature" 'del(.offloads[$key])' "$BASELINE") <(jq -S --arg key "$feature" 'del(.offloads[$key])' "$file") >/dev/null || die "offload candidate changed an unrelated captured control" ;;
+      if [ "$id" = OFFLOAD_TX_CHECKSUM ]; then
+        [ "$expected" = off ] || die "TX checksum candidate requires the discovered enabled baseline"
+        [ "$(jq -r '.offloads["tcp-segmentation-offload"]' "$file")" = off ] || die "TX checksum dependent TSO readback failed"
+        diff -u <(jq -S 'del(.offloads["tx-checksumming"],.offloads["tcp-segmentation-offload"])' "$BASELINE") <(jq -S 'del(.offloads["tx-checksumming"],.offloads["tcp-segmentation-offload"])' "$file") >/dev/null || die "TX checksum/TSO coupled candidate changed an unrelated captured control"
+      else
+        diff -u <(jq -S --arg key "$feature" 'del(.offloads[$key])' "$BASELINE") <(jq -S --arg key "$feature" 'del(.offloads[$key])' "$file") >/dev/null || die "offload candidate changed an unrelated captured control"
+      fi ;;
     NIC_RING_MAX)
       max_rx=$(ethtool -g "$(jq -r .interface "$BASELINE")" | awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="RX:"{print $2;exit}'); max_tx=$(ethtool -g "$(jq -r .interface "$BASELINE")" | awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="TX:"{print $2;exit}')
       jq -e --arg rx "$max_rx" --arg tx "$max_tx" '.nic.ring_rx==$rx and .nic.ring_tx==$tx' "$file" >/dev/null || die "ring readback failed"
@@ -702,7 +708,7 @@ candidate_proposal() {
     RFS_65536) q=$(jq '.rx_queues|length' "$BASELINE"); jq -n --argjson per_queue "$((65536/q))" '{rps_sock_flow_entries:65536,rps_flow_count_per_queue:$per_queue}' ;;
     XPS_BY_QUEUE) local -a cpus=(); local rows='[]'; mapfile -t cpus < <(online_cpu_ids); while IFS= read -r q; do cpu=${cpus[$((idx % ${#cpus[@]}))]}; printf -v mask '%x' "$((1 << cpu))"; rows=$(jq -c --arg queue "$q" --arg mask "$mask" '.+[{queue:$queue,mask:$mask}]' <<<"$rows"); idx=$((idx+1)); done < <(jq -r '.tx_queues[]' "$BASELINE"); printf '%s\n' "$rows" ;;
     TCP_CC_*) value=${id#TCP_CC_}; jq -n --arg value "${value,,}" '{tcp_congestion_control:$value}' ;;
-    OFFLOAD_*) feature=${id#OFFLOAD_}; case "$feature" in RX_CHECKSUM) feature="rx-checksumming";; TX_CHECKSUM) feature="tx-checksumming";; TSO) feature="tcp-segmentation-offload";; GSO) feature="generic-segmentation-offload";; GRO) feature="generic-receive-offload";; esac; value=$(jq -r --arg key "$feature" '.offloads[$key]' "$BASELINE"); target=on; [ "$value" = on ] && target=off; jq -n --arg feature "$feature" --arg target "$target" '{feature:$feature,value:$target}' ;;
+    OFFLOAD_*) feature=${id#OFFLOAD_}; case "$feature" in RX_CHECKSUM) feature="rx-checksumming";; TX_CHECKSUM) feature="tx-checksumming";; TSO) feature="tcp-segmentation-offload";; GSO) feature="generic-segmentation-offload";; GRO) feature="generic-receive-offload";; esac; value=$(jq -r --arg key "$feature" '.offloads[$key]' "$BASELINE"); target=on; [ "$value" = on ] && target=off; if [ "$id" = OFFLOAD_TX_CHECKSUM ]; then jq -n --arg target "$target" '{feature:"tx-checksumming",value:$target,dependent_feature:"tcp-segmentation-offload",dependent_value:"off"}'; else jq -n --arg feature "$feature" --arg target "$target" '{feature:$feature,value:$target}'; fi ;;
     NIC_RING_MAX) max_rx=$(ethtool -g "$(jq -r .interface "$BASELINE")" | awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="RX:"{print $2;exit}'); max_tx=$(ethtool -g "$(jq -r .interface "$BASELINE")" | awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="TX:"{print $2;exit}'); jq -n --argjson rx "$max_rx" --argjson tx "$max_tx" '{rx:$rx,tx:$tx}' ;;
     NIC_CHANNEL_MAX) max_channels=$(ethtool -l "$(jq -r .interface "$BASELINE")" | awk '/Pre-set maximums:/{s=1;next}/Current hardware settings:/{s=0}s&&$1=="Combined:"{print $2;exit}'); online_channels=$(online_cpu_ids|wc -l); [ "$max_channels" -le "$online_channels" ] || max_channels=$online_channels; jq -n --argjson combined "$max_channels" '{combined:$combined}' ;;
     NIC_COAL_ADAPTIVE_ON) jq -n '{adaptive_rx:"on",adaptive_tx:"on"}' ;;

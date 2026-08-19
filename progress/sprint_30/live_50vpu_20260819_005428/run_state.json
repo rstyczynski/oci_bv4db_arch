@@ -1,0 +1,46 @@
+{
+  "status": "failed",
+  "vpu": 50,
+  "output_dir": "/Users/rstyczynski/projects/oci_bv4db_arch/progress/sprint_30/live_50vpu_20260819_005428",
+  "resume": null,
+  "run_tag": "s30-20260819005433-81086",
+  "matrix_start": "2026-08-19T01:00:45Z",
+  "attempt_transitions": [
+    {
+      "candidate_id": "REGULAR_BASELINE_INITIAL",
+      "block": "initial",
+      "repetition": 1,
+      "transitions": [
+        {
+          "state": "planned",
+          "at": "2026-08-19T01:00:54Z"
+        },
+        {
+          "state": "applying",
+          "at": "2026-08-19T01:00:56Z"
+        },
+        {
+          "state": "active",
+          "at": "2026-08-19T01:00:56Z"
+        },
+        {
+          "state": "measuring",
+          "at": "2026-08-19T01:00:57Z"
+        },
+        {
+          "state": "restoring",
+          "at": "2026-08-19T01:16:37Z"
+        },
+        {
+          "state": "restored",
+          "at": "2026-08-19T01:16:38Z"
+        },
+        {
+          "state": "passed",
+          "at": "2026-08-19T01:16:39Z"
+        }
+      ]
+    }
+  ],
+  "exit_code": 2
+}

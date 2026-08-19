@@ -506,7 +506,10 @@ reconcile_live_catalogue() {
 
   for feature in RX_CHECKSUM TX_CHECKSUM TSO GSO GRO; do
     case "$feature" in RX_CHECKSUM) line=rx-checksumming;; TX_CHECKSUM) line=tx-checksumming;; TSO) line=tcp-segmentation-offload;; GSO) line=generic-segmentation-offload;; GRO) line=generic-receive-offload;; esac
-    if grep -Eq "^$line: (on|off)( |$)" "$discovery/ethtool_features.txt" && ! grep -E "^$line:.*\[fixed\]" "$discovery/ethtool_features.txt" >/dev/null; then disposition=testable; reason="driver reports the feature as independently changeable"; else disposition=unsupported; reason="driver reports the feature absent or fixed"; fi
+    if grep -Eq "^$line: (on|off)( |$)" "$discovery/ethtool_features.txt" && ! grep -E "^$line:.*\[fixed\]" "$discovery/ethtool_features.txt" >/dev/null; then
+      disposition=testable
+      if [ "$feature" = TX_CHECKSUM ]; then reason="documented coupled profile: disabling TX checksum also disables dependent TSO; exact two-control readback is enforced"; else reason="driver reports the feature as independently changeable"; fi
+    else disposition=unsupported; reason="driver reports the feature absent or fixed"; fi
     ledger=$(jq -c --arg id "OFFLOAD_$feature" --arg disposition "$disposition" --arg reason "$reason" '. + [{id:$id,control:"NIC offload",disposition:$disposition,reason:$reason,evidence:"discovery/ethtool_features.txt"}] | map(if .id==$id and .disposition=="testable" then .execution_status="pending" else . end)' <<<"$ledger")
   done
 

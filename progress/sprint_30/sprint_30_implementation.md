@@ -268,6 +268,12 @@ A fresh live retry also exposed a transient SSH reset during idempotent guest
 package bootstrap. The bootstrap now retries for a bounded five-minute window;
 the failed run's cleanup inventory proved that no OCI resources remained.
 
+The first candidate screening then proved a driver dependency that discovery
+could not infer from the top-level feature flags: disabling TX checksum also
+disables TSO. `OFFLOAD_TX_CHECKSUM` is therefore recorded as an explicit
+two-control coupled profile, with exact readback permitting only those two
+changes and byte-equal restoration still required afterward.
+
 ## Live environment status
 
 OCI `DEFAULT` profile access was validated against the active
