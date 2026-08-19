@@ -20,6 +20,10 @@ This repository now focuses on practical OCI Oracle layouts across OCI block vol
     - [2. Single-Volume OCI Tiers](#2-single-volume-oci-tiers)
     - [3. Multiple Volumes With Storage-Domain Separation](#3-multiple-volumes-with-storage-domain-separation)
   - [Direct Comparison](#direct-comparison)
+  - [Single-Path iSCSI Tuning Attempts](#single-path-iscsi-tuning-attempts)
+    - [What was tested](#what-was-tested)
+    - [Findings at 50 and 120 VPUsGB](#findings-at-50-and-120-vpusgb)
+    - [How to use the result](#how-to-use-the-result)
   - [UHP iSCSI multipath connectivity](#uhp-iscsi-multipath-connectivity)
     - [Single-path vs multipath (HA) vs multipath (load balancing)](#single-path-vs-multipath-ha-vs-multipath-load-balancing)
     - [Multipath HA vs. load balancing sprint summary](#multipath-ha-vs-load-balancing-sprint-summary)
@@ -229,6 +233,67 @@ Single-volume safety clarification:
 
 That is the central OCI Oracle result of this repository.
 
+## Single-Path iSCSI Tuning Attempts
+
+Sprint 30 tested whether host-side iSCSI and network tuning improves the
+Oracle-style DATA, REDO, and FRA FIO workload when each of five OCI Block
+Volumes has exactly one iSCSI path. The work reused one
+`VM.Standard.E5.Flex` instance with four OCPUs and preserved the same compute,
+attachments, filesystems, volume layout, benchmark files, FIO jobs, and tests.
+Each attempt applied one isolated candidate, created its report immediately,
+and restored the captured guest configuration before the next candidate.
+
+The 50-VPU run reused its already accepted five-measurement baseline; it did
+not collect another baseline before every candidate. The later 120-VPU
+extension changed only the volume performance tier in place, collected one
+tier-specific comparison baseline, and executed the unchanged matrix.
+
+### What was tested
+
+The 13 safe and applicable candidates were:
+
+- iSCSI requested queue depth 128;
+- TCP buffer sizing at 2x and 4x;
+- BBR and Reno TCP congestion control;
+- network-device backlog at 2x and 4x;
+- RFS with 65,536 flow entries;
+- RPS across all online CPUs;
+- XPS by transmit queue;
+- GRO, GSO, and TSO offload changes.
+
+Unsupported, fixed, coupled, unsafe, or no-op settings were recorded but not
+silently executed. In particular, TX-checksum disablement was excluded because
+it also disables TSO on the tested `virtio_net` device, and TuneD profiles were
+excluded because their coupled mutations could not be bounded by the approved
+restoration contract.
+
+### Findings at 50 and 120 VPUs/GB
+
+| Tier and result | DATA IOPS | REDO p99.9 | FRA throughput | Finding |
+| --- | ---: | ---: | ---: | --- |
+| 50-VPU baseline | 48,005.76 | 0.913 ms | 93.75 MiB/s | Keep `REGULAR_BASELINE` |
+| 120-VPU baseline | 65,349.91 | 1.253 ms | 175.78 MiB/s | Tier comparison baseline |
+| 120-VPU `RPS_ALL_ONLINE`, median of 3 | 65,028.79 | 1.028 ms | 175.78 MiB/s | Recommended for this configuration |
+
+At 50 VPUs/GB, none of the candidates passed the approved improvement and
+regression guardrails. At 120 VPUs/GB, `RPS_ALL_ONLINE` was the only eligible
+and Pareto-optimal candidate: DATA IOPS changed by -0.49%, REDO p99 improved
+5.29%, REDO p99.9 improved 17.97%, FRA throughput was unchanged, and CPU
+remained within its guard. Its three runs were stable and error-clean.
+
+### How to use the result
+
+Use `REGULAR_BASELINE` at 50 VPUs/GB. Consider `RPS_ALL_ONLINE` only for a
+configuration matching the 120-VPU evidence, and revalidate it for different
+shapes, OCPU counts, path layouts, workloads, or Oracle Database deployments.
+This test does not demonstrate multipath behavior or a general UHP entitlement.
+
+Start with the [Sprint 30 final report](progress/sprint_30/SPRINT_30_REPORT.md).
+Detailed evidence is available in the [50-VPU aggregate FIO HTML
+report](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
+and [120-VPU aggregate FIO HTML
+report](progress/sprint_30/live_120vpu_20260819_avq3_reuse_r3/fio_report.html).
+
 ## UHP iSCSI multipath connectivity
 
 Sprint 9 and Sprint 10 focus on **Oracle-visible layout and fio results** across OCI tiers. Sprints **22**, **23**, and **24** answer a different question that still gates UHP usefulness in production: **is the block volume attached the way we think it is**, **what changes when we deliberately run single-path instead of multipath**, and **can the OCI agent manage the multipath setup cleanly without project guest-side connection scripts**?
@@ -353,6 +418,7 @@ Oracle also documents archived redo handling inside FRA:
 - Sprint 22 UHP iSCSI multipath + fstab + A/B guide: [progress/sprint_22/sprint22_manual.md](progress/sprint_22/sprint22_manual.md)
 - Sprint 23 explicit multipath load balancing, deeper diagnostics, and iostat during fio: [progress/sprint_23/sprint23_manual.md](progress/sprint_23/sprint23_manual.md)
 - Sprint 24 OCI agent-managed multipath checklist and runner: [progress/sprint_24/sprint24_manual.md](progress/sprint_24/sprint24_manual.md)
+- Sprint 30 final single-path tuning report: [progress/sprint_30/SPRINT_30_REPORT.md](progress/sprint_30/SPRINT_30_REPORT.md)
 - Sprint 30 single-path tuning test report: [progress/sprint_30/sprint_30_tests.md](progress/sprint_30/sprint_30_tests.md)
 - Sprint 30 aggregate FIO HTML report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/fio_report.html)
 - Sprint 30 OCI Monitoring report: [progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md](progress/sprint_30/live_50vpu_20260819_avq3_reuse_qd_fix_0910/oci_metrics.md)
